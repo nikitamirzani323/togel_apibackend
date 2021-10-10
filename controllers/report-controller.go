@@ -3,12 +3,12 @@ package controllers
 import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/nikitamirzani323/togel_apibackend/helpers"
 	"github.com/nikitamirzani323/togel_apibackend/models"
 )
 
 type winlose struct {
-	Client_key   string `json:"client_key" validate:"required"`
 	Client_start string `json:"client_start" validate:"required"`
 	Client_end   string `json:"client_end" validate:"required"`
 }
@@ -41,7 +41,10 @@ func Reportwinlose(c *fiber.Ctx) error {
 			"record":  errors,
 		})
 	}
-	temp_decp := helpers.Decryption(client.Client_key)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	result, err := models.Fetch_winlose(client_company, client.Client_start, client.Client_end)
 	if err != nil {
