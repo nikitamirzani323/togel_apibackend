@@ -49,7 +49,7 @@ func Encryption(datatext string) (string, int) {
 	}
 	return result, keymap
 }
-func Decryption(dataencrypt string) (string, error) {
+func Decryption(dataencrypt string) string {
 	temp := s.Split(dataencrypt, "|")
 	keymap, _ := strconv.Atoi(temp[1])
 	var key string = config.Keymap[keymap]
@@ -60,7 +60,7 @@ func Decryption(dataencrypt string) (string, error) {
 		temp_indexsource := s.Index(source, string(source[temp_indexkey]))
 		result += string(source[temp_indexsource])
 	}
-	return result, nil
+	return result
 }
 
 func Parsing_Decry(data, pemisah string) (string, string, string, int) {

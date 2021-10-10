@@ -10,5 +10,5 @@ import (
 func main() {
 	db.Init()
 	app := routes.Init()
-	log.Fatal(app.Listen(":7071"))
+	log.Fatal(app.Listen(":7072"))
 }

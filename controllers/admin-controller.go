@@ -7,19 +7,15 @@ import (
 	"github.com/buger/jsonparser"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/nikitamirzani323/togel_apibackend/helpers"
 	"github.com/nikitamirzani323/togel_apibackend/models"
 )
 
-type adminhome struct {
-	Client_key string `json:"client_key" validate:"required"`
-}
 type admindetail struct {
-	Client_key string `json:"client_key" validate:"required"`
-	Username   string `json:"username" validate:"required"`
+	Username string `json:"username" validate:"required"`
 }
 type adminsave struct {
-	Client_key  string `json:"client_key" validate:"required"`
 	Sdata       string `json:"sdata" validate:"required"`
 	Page        string `json:"page"`
 	Idruleadmin int    `json:"idruleadmin" `
@@ -29,14 +25,12 @@ type adminsave struct {
 	Status      string `json:"status" validate:"required,alpha"`
 }
 type adminsaveiplist struct {
-	Sdata      string `json:"sdata" validate:"required"`
-	Client_key string `json:"client_key" validate:"required"`
-	Page       string `json:"page"`
-	Username   string `json:"username" validate:"required,alphanum,max=20"`
-	Ipaddress  string `json:"ipaddress" validate:"required,max=20"`
+	Sdata     string `json:"sdata" validate:"required"`
+	Page      string `json:"page"`
+	Username  string `json:"username" validate:"required,alphanum,max=20"`
+	Ipaddress string `json:"ipaddress" validate:"required,max=20"`
 }
 type admindeleteiplist struct {
-	Client_key   string `json:"client_key" validate:"required"`
 	Idcompiplist int    `json:"idcompiplist" validate:"required"`
 	Username     string `json:"username" validate:"required,alphanum,max=20"`
 	Page         string `json:"page"`
@@ -58,34 +52,10 @@ type responseredis_adminhome_listruleadmin struct {
 }
 
 func AdminHome(c *fiber.Ctx) error {
-	var errors []*helpers.ErrorResponse
-	client := new(adminhome)
-	validate := validator.New()
-	if err := c.BodyParser(client); err != nil {
-		c.Status(fiber.StatusBadRequest)
-		return c.JSON(fiber.Map{
-			"status":  fiber.StatusBadRequest,
-			"message": err.Error(),
-			"record":  nil,
-		})
-	}
-	err := validate.Struct(client)
-	if err != nil {
-		for _, err := range err.(validator.ValidationErrors) {
-			var element helpers.ErrorResponse
-			element.Field = err.StructField()
-			element.Tag = err.Tag()
-			errors = append(errors, &element)
-		}
-		c.Status(fiber.StatusBadRequest)
-		return c.JSON(fiber.Map{
-			"status":  fiber.StatusBadRequest,
-			"message": "validation",
-			"record":  errors,
-		})
-	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	field_redis := "LISTADMINM_AGENT_" + client_company
 	var obj responseredis_adminhome
@@ -179,8 +149,10 @@ func AdminDetail(c *fiber.Ctx) error {
 			"record":  errors,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	result, err := models.Fetch_adminDetail(client_company, client.Username)
 	if err != nil {
@@ -221,8 +193,10 @@ func AdminSave(c *fiber.Ctx) error {
 			"record":  errors,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -301,8 +275,10 @@ func AdminSaveIplist(c *fiber.Ctx) error {
 			"record":  errors,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -380,8 +356,10 @@ func AdminDeleteIplist(c *fiber.Ctx) error {
 		})
 	}
 
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	_, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)

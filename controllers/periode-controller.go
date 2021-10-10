@@ -74,8 +74,7 @@ func PeriodeHome(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	temp_decp := helpers.Decryption(client.Client_key)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	field_redis := "LISTPERIODE_AGENT_" + client_company
 	var obj responseredis_periodehome
@@ -162,8 +161,7 @@ func PeriodeDetail(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	temp_decp := helpers.Decryption(client.Client_key)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	result, err := models.Fetch_periodedetail(client_company, client.Idtrxkeluaran)
 	if err != nil {
@@ -186,8 +184,7 @@ func PeriodeListMember(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	temp_decp := helpers.Decryption(client.Client_key)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	result, err := models.Fetch_membergroup(client_company, client.Idtrxkeluaran)
 	if err != nil {
@@ -210,8 +207,7 @@ func PeriodeListBet(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	temp_decp := helpers.Decryption(client.Client_key)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	result, err := models.Fetch_listbet(client_company, client.Idtrxkeluaran)
 	if err != nil {
@@ -234,8 +230,7 @@ func PeriodeBetTable(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	temp_decp := helpers.Decryption(client.Client_key)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	result, err := models.Fetch_bettable(client_company, client.Idtrxkeluaran)
 	if err != nil {
@@ -258,8 +253,7 @@ func PeriodeListMemberByNomor(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	temp_decp := helpers.Decryption(client.Client_key)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	result, err := models.Fetch_membergroupbynomor(client_company, client.Permainan, client.Nomor, client.Idtrxkeluaran)
 	if err != nil {
@@ -299,8 +293,7 @@ func PeriodeSave(c *fiber.Ctx) error {
 			"record":  errors,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	temp_decp := helpers.Decryption(client.Client_key)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
@@ -383,8 +376,7 @@ func PeriodeSaveNew(c *fiber.Ctx) error {
 			"record":  errors,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	temp_decp := helpers.Decryption(client.Client_key)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -446,8 +438,7 @@ func Periodelistpasaran(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	temp_decp := helpers.Decryption(client.Client_key)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	result, err := models.Fetch_listpasaran(client_company)
 	if err != nil {
@@ -470,8 +461,7 @@ func Periodelistprediksi(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	temp_decp := helpers.Decryption(client.Client_key)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	result, err := models.Fetch_listprediksi(client_company, client.Nomorkeluaran, client.Idcomppasaran)
 	if err != nil {

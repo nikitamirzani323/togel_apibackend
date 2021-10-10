@@ -36,7 +36,7 @@ type ResponseAdminManagement struct {
 	Message       string      `json:"message"`
 	Record        interface{} `json:"record"`
 	Time          string      `json:"time"`
-	Lisiruleadmin interface{} `json:"listruleadmin"`
+	Listruleadmin interface{} `json:"listruleadmin"`
 	Listiplist    interface{} `json:"listip"`
 }
 type ErrorResponse struct {

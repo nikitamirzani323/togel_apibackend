@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"log"
 	"strconv"
 
 	"github.com/go-playground/validator/v10"
@@ -82,7 +81,6 @@ func CheckLogin(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{
 			"status": fiber.StatusOK,
 			"token":  t,
-			"key":    dataclient_encr_final,
 		})
 
 	}
@@ -101,8 +99,7 @@ func Home(c *fiber.Ctx) error {
 	user := c.Locals("jwt").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	name := claims["name"].(string)
-	temp_decp, err := helpers.Decryption(name)
-	log.Panic(err)
+	temp_decp := helpers.Decryption(name)
 	_, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)

@@ -7,19 +7,15 @@ import (
 	"github.com/buger/jsonparser"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/nikitamirzani323/togel_apibackend/helpers"
 	"github.com/nikitamirzani323/togel_apibackend/models"
 )
 
-type pasaranhome struct {
-	Client_key string `json:"client_key" validate:"required"`
-}
 type pasarandetail struct {
-	Client_key string `json:"client_key" validate:"required"`
-	Idpasaran  int    `json:"idpasaran"`
+	Idpasaran int `json:"idpasaran"`
 }
 type pasaransave struct {
-	Client_key        string `json:"client_key" validate:"required"`
 	Idpasaran         int    `json:"idpasaran"`
 	Page              string `json:"page"`
 	Pasaran_diundi    string `json:"pasaran_diundi"`
@@ -31,19 +27,16 @@ type pasaransave struct {
 	Pasaran_status    string `json:"pasaran_status"`
 }
 type Pasaransaveonline struct {
-	Client_key  string `json:"client_key" validate:"required"`
 	Idpasaran   int    `json:"idpasaran" validate:"required"`
 	Page        string `json:"page"`
 	Haripasaran string `json:"pasaran_hariraya" validate:"required,alpha"`
 }
 type Pasarandeleteonline struct {
-	Client_key     string `json:"client_key" validate:"required"`
 	Idpasaran      int    `json:"idpasaran" validate:"required"`
 	Idpasaraonline int    `json:"idpasaraonline" validate:"required,numeric"`
 	Page           string `json:"page"`
 }
 type pasaransavelimit struct {
-	Client_key           string `json:"client_key" validate:"required"`
 	Idpasaran            int    `json:"idpasaran"`
 	Page                 string `json:"page"`
 	Pasaran_limitline4d  int    `json:"pasaran_limitline4d"`
@@ -53,7 +46,6 @@ type pasaransavelimit struct {
 	Pasaran_limitline2dt int    `json:"pasaran_limitline2dt"`
 }
 type pasaranconf432 struct {
-	Client_key                  string  `json:"client_key" validate:"required"`
 	Idpasaran                   int     `json:"idpasaran"`
 	Idpasarantogel              string  `json:"idpasarantogel"`
 	Page                        string  `json:"page"`
@@ -85,7 +77,6 @@ type pasaranconf432 struct {
 	Pasaran_disc2dt_432d        float32 `json:"pasaran_disc2dt_432d"`
 }
 type pasaranconfcbebas struct {
-	Client_key                 string  `json:"client_key" validate:"required"`
 	Idpasaran                  int     `json:"idpasaran"`
 	Idpasarantogel             string  `json:"idpasarantogel"`
 	Page                       string  `json:"page"`
@@ -97,7 +88,6 @@ type pasaranconfcbebas struct {
 	Pasaran_disc_cbebas        float32 `json:"pasaran_disc_cbebas"`
 }
 type pasaranconfcmacau struct {
-	Client_key                 string  `json:"client_key" validate:"required"`
 	Idpasaran                  int     `json:"idpasaran"`
 	Idpasarantogel             string  `json:"idpasarantogel"`
 	Page                       string  `json:"page"`
@@ -111,7 +101,6 @@ type pasaranconfcmacau struct {
 	Pasaran_disc_cmacau        float32 `json:"pasaran_disc_cmacau"`
 }
 type pasaranconfcnaga struct {
-	Client_key                string  `json:"client_key" validate:"required"`
 	Idpasaran                 int     `json:"idpasaran"`
 	Idpasarantogel            string  `json:"idpasarantogel"`
 	Page                      string  `json:"page"`
@@ -124,7 +113,6 @@ type pasaranconfcnaga struct {
 	Pasaran_disc_cnaga        float32 `json:"pasaran_disc_cnaga"`
 }
 type pasaranconfcjitu struct {
-	Client_key                string  `json:"client_key" validate:"required"`
 	Idpasaran                 int     `json:"idpasaran"`
 	Idpasarantogel            string  `json:"idpasarantogel"`
 	Page                      string  `json:"page"`
@@ -139,7 +127,6 @@ type pasaranconfcjitu struct {
 	Pasaran_desc_cjitu        float32 `json:"pasaran_desc_cjitu"`
 }
 type pasaranconfc5050 struct {
-	Client_key                   string  `json:"client_key" validate:"required"`
 	Idpasaran                    int     `json:"idpasaran"`
 	Idpasarantogel               string  `json:"idpasarantogel"`
 	Page                         string  `json:"page"`
@@ -161,7 +148,6 @@ type pasaranconfc5050 struct {
 	Pasaran_disctepi_5050umum    float32 `json:"pasaran_disctepi_5050umum"`
 }
 type pasaranconfc5050special struct {
-	Client_key                           string  `json:"client_key" validate:"required"`
 	Idpasaran                            int     `json:"idpasaran"`
 	Idpasarantogel                       string  `json:"idpasarantogel"`
 	Page                                 string  `json:"page"`
@@ -203,7 +189,6 @@ type pasaranconfc5050special struct {
 	Pasaran_discekorkecil_5050special    float32 `json:"pasaran_discekorkecil_5050special"`
 }
 type pasaranconfc5050kombinasi struct {
-	Client_key                                string  `json:"client_key" validate:"required"`
 	Idpasaran                                 int     `json:"idpasaran"`
 	Idpasarantogel                            string  `json:"idpasarantogel"`
 	Page                                      string  `json:"page"`
@@ -243,7 +228,6 @@ type pasaranconfc5050kombinasi struct {
 	Pasaran_depandisckembar_5050kombinasi     float32 `json:"pasaran_depandisckembar_5050kombinasi"`
 }
 type pasaranconfmakaukombinasi struct {
-	Client_key                    string  `json:"client_key" validate:"required"`
 	Idpasaran                     int     `json:"idpasaran"`
 	Idpasarantogel                string  `json:"idpasarantogel"`
 	Page                          string  `json:"page"`
@@ -255,7 +239,6 @@ type pasaranconfmakaukombinasi struct {
 	Pasaran_disc_kombinasi        float32 `json:"pasaran_disc_kombinasi"`
 }
 type pasaranconfdasar struct {
-	Client_key                string  `json:"client_key" validate:"required"`
 	Idpasaran                 int     `json:"idpasaran"`
 	Idpasarantogel            string  `json:"idpasarantogel"`
 	Page                      string  `json:"page"`
@@ -273,7 +256,6 @@ type pasaranconfdasar struct {
 	Pasaran_discganjil_dasar  float32 `json:"pasaran_discganjil_dasar"`
 }
 type pasaranconfshio struct {
-	Client_key               string  `json:"client_key" validate:"required"`
 	Idpasaran                int     `json:"idpasaran"`
 	Idpasarantogel           string  `json:"idpasarantogel"`
 	Page                     string  `json:"page"`
@@ -300,17 +282,10 @@ type responseredis_pasaranhome struct {
 }
 
 func PasaranHome(c *fiber.Ctx) error {
-	client := new(pasaranhome)
-	if err := c.BodyParser(client); err != nil {
-		c.Status(fiber.StatusBadRequest)
-		return c.JSON(fiber.Map{
-			"status":  fiber.StatusBadRequest,
-			"message": err.Error(),
-			"record":  nil,
-		})
-	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	field_redis := "LISTPASARAN_AGENT_" + client_company
 	var obj responseredis_pasaranhome
@@ -378,8 +353,10 @@ func PasaranDetail(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	result, err := models.Fetch_detail(client_company, client.Idpasaran)
 	if err != nil {
@@ -402,8 +379,10 @@ func PasaranSave(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 	field_redis := "LISTPASARAN_AGENT_" + client_company
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -494,8 +473,10 @@ func PasaranSaveOnline(c *fiber.Ctx) error {
 			"record":  errors,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
@@ -572,8 +553,10 @@ func PasaranDeleteOnline(c *fiber.Ctx) error {
 			"record":  errors,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	_, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -632,8 +615,10 @@ func PasaranSaveLimit(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -702,8 +687,10 @@ func PasaranSaveConf432d(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -770,8 +757,10 @@ func PasaranSaveConfColokBebas(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -842,8 +831,10 @@ func PasaranSaveConfColokMacau(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -918,8 +909,10 @@ func PasaranSaveConfColokNaga(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -992,8 +985,10 @@ func PasaranSaveConfColokJitu(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -1070,8 +1065,10 @@ func PasaranSaveConf5050Umum(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -1162,8 +1159,10 @@ func PasaranSaveConf5050Special(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -1294,8 +1293,10 @@ func PasaranSaveConf5050Kombinasi(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -1422,9 +1423,10 @@ func PasaranSaveConfMacauKombinasi(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -1495,8 +1497,10 @@ func PasaranSaveConfDasar(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -1579,8 +1583,10 @@ func PasaranSaveConfShio(c *fiber.Ctx) error {
 			"record":  nil,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)

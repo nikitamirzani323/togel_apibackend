@@ -126,7 +126,7 @@ func Fetch_adminHome(company string) (helpers.ResponseAdminManagement, error) {
 	res.Status = fiber.StatusOK
 	res.Message = msg
 	res.Record = arraobj
-	res.Lisiruleadmin = arraobjRule
+	res.Listruleadmin = arraobjRule
 	res.Time = time.Since(start).String()
 
 	return res, nil
@@ -218,7 +218,7 @@ func Fetch_adminDetail(company, username string) (helpers.ResponseAdminManagemen
 	res.Status = fiber.StatusOK
 	res.Message = msg
 	res.Record = arraobj
-	res.Lisiruleadmin = arraobjRule
+	res.Listruleadmin = arraobjRule
 	res.Listiplist = arraobjIplist
 	res.Time = time.Since(render_page).String()
 

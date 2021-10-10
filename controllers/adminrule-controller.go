@@ -7,30 +7,25 @@ import (
 	"github.com/buger/jsonparser"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/nikitamirzani323/togel_apibackend/helpers"
 	"github.com/nikitamirzani323/togel_apibackend/models"
 )
 
-type adminrulehome struct {
-	Client_key string `json:"client_key" validate:"required"`
-}
 type adminruledetail struct {
-	Client_key string `json:"client_key" validate:"required"`
-	Idrule     int    `json:"idrule" validate:"required"`
+	Idrule int `json:"idrule" validate:"required"`
 }
 type adminrulesavedetail struct {
-	Client_key string `json:"client_key" validate:"required"`
-	Idrule     int    `json:"idrule" validate:"required"`
-	Page       string `json:"page"`
-	Sdata      string `json:"sData" validate:"required"`
-	Nama       string `json:"nama" validate:"required"`
+	Idrule int    `json:"idrule" validate:"required"`
+	Page   string `json:"page"`
+	Sdata  string `json:"sData" validate:"required"`
+	Nama   string `json:"nama" validate:"required"`
 }
 type adminrulesaveconf struct {
-	Client_key string `json:"client_key" validate:"required"`
-	Idrule     int    `json:"idrule" validate:"required"`
-	Page       string `json:"page"`
-	Sdata      string `json:"sData" validate:"required"`
-	Rule       string `json:"rule" validate:"required"`
+	Idrule int    `json:"idrule" validate:"required"`
+	Page   string `json:"page"`
+	Sdata  string `json:"sData" validate:"required"`
+	Rule   string `json:"rule" validate:"required"`
 }
 type responseredis_adminrulehome struct {
 	Adminrule_no   int    `json:"adminrule_no"`
@@ -39,35 +34,10 @@ type responseredis_adminrulehome struct {
 }
 
 func AdminruleHome(c *fiber.Ctx) error {
-	var errors []*helpers.ErrorResponse
-	client := new(adminrulehome)
-	validate := validator.New()
-	if err := c.BodyParser(client); err != nil {
-		c.Status(fiber.StatusBadRequest)
-		return c.JSON(fiber.Map{
-			"status":  fiber.StatusBadRequest,
-			"message": err.Error(),
-			"record":  nil,
-		})
-	}
-
-	err := validate.Struct(client)
-	if err != nil {
-		for _, err := range err.(validator.ValidationErrors) {
-			var element helpers.ErrorResponse
-			element.Field = err.StructField()
-			element.Tag = err.Tag()
-			errors = append(errors, &element)
-		}
-		c.Status(fiber.StatusBadRequest)
-		return c.JSON(fiber.Map{
-			"status":  fiber.StatusBadRequest,
-			"message": "validation",
-			"record":  errors,
-		})
-	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	field_redis := "LISTADMINRULE_AGENT_" + client_company
 	var obj responseredis_adminrulehome
@@ -137,8 +107,10 @@ func AdminruleDetail(c *fiber.Ctx) error {
 			"record":  errors,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	result, err := models.Fetch_adminruleDetail(client_company, client.Idrule)
 	if err != nil {
@@ -179,8 +151,10 @@ func SaveAdminruleDetail(c *fiber.Ctx) error {
 			"record":  errors,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
@@ -247,8 +221,10 @@ func SaveAdminruleConf(c *fiber.Ctx) error {
 			"record":  errors,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)

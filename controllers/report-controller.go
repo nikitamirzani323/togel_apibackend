@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"log"
-
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/nikitamirzani323/togel_apibackend/helpers"
@@ -43,8 +41,7 @@ func Reportwinlose(c *fiber.Ctx) error {
 			"record":  errors,
 		})
 	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	temp_decp := helpers.Decryption(client.Client_key)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	result, err := models.Fetch_winlose(client_company, client.Client_start, client.Client_end)
 	if err != nil {

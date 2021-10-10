@@ -5,15 +5,12 @@ import (
 	"time"
 
 	"github.com/buger/jsonparser"
-	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/nikitamirzani323/togel_apibackend/helpers"
 	"github.com/nikitamirzani323/togel_apibackend/models"
 )
 
-type dashboardhome struct {
-	Client_key string `json:"client_key" validate:"required"`
-}
 type responseredis_dashboardchart struct {
 	Pasaran_name   string      `json:"pasaran_name"`
 	Pasaran_detial interface{} `json:"pasaran_detial"`
@@ -23,35 +20,10 @@ type responseredis_dashboardchartchild struct {
 }
 
 func DashboardHome(c *fiber.Ctx) error {
-	var errors []*helpers.ErrorResponse
-	client := new(dashboardhome)
-	validate := validator.New()
-	if err := c.BodyParser(client); err != nil {
-		c.Status(fiber.StatusBadRequest)
-		return c.JSON(fiber.Map{
-			"status":  fiber.StatusBadRequest,
-			"message": err.Error(),
-			"record":  nil,
-		})
-	}
-
-	err := validate.Struct(client)
-	if err != nil {
-		for _, err := range err.(validator.ValidationErrors) {
-			var element helpers.ErrorResponse
-			element.Field = err.StructField()
-			element.Tag = err.Tag()
-			errors = append(errors, &element)
-		}
-		c.Status(fiber.StatusBadRequest)
-		return c.JSON(fiber.Map{
-			"status":  fiber.StatusBadRequest,
-			"message": "validation",
-			"record":  errors,
-		})
-	}
-	temp_decp, err := helpers.Decryption(client.Client_key)
-	log.Panic(err)
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 
 	field_redis := "DASHBOARD_CHART_AGENT_" + client_company
