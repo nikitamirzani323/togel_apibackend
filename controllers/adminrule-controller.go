@@ -4,12 +4,12 @@ import (
 	"log"
 	"time"
 
+	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
+	"bitbucket.org/isbtotogroup/apibackend_go/models"
 	"github.com/buger/jsonparser"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/nikitamirzani323/togel_apibackend/helpers"
-	"github.com/nikitamirzani323/togel_apibackend/models"
 )
 
 type adminruledetail struct {

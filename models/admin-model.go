@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"time"
 
+	"bitbucket.org/isbtotogroup/apibackend_go/config"
+	"bitbucket.org/isbtotogroup/apibackend_go/db"
+	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
 	"github.com/gofiber/fiber/v2"
-	"github.com/nikitamirzani323/togel_apibackend/config"
-	"github.com/nikitamirzani323/togel_apibackend/db"
-	"github.com/nikitamirzani323/togel_apibackend/helpers"
 	"github.com/nleeper/goment"
 )
 

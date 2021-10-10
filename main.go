@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/nikitamirzani323/togel_apibackend/db"
-	"github.com/nikitamirzani323/togel_apibackend/routes"
+	"bitbucket.org/isbtotogroup/apibackend_go/db"
+	"bitbucket.org/isbtotogroup/apibackend_go/routes"
 )
 
 func main() {

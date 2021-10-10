@@ -9,7 +9,7 @@ import (
 	s "strings"
 	"time"
 
-	"github.com/nikitamirzani323/togel_apibackend/config"
+	"bitbucket.org/isbtotogroup/apibackend_go/config"
 	"golang.org/x/crypto/bcrypt"
 )
 

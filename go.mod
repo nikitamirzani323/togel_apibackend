@@ -1,4 +1,4 @@
-module github.com/nikitamirzani323/togel_apibackend
+module bitbucket.org/isbtotogroup/apibackend_go
 
 go 1.16
 

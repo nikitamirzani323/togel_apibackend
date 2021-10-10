@@ -1,12 +1,12 @@
 package routes
 
 import (
+	"bitbucket.org/isbtotogroup/apibackend_go/controllers"
+	"bitbucket.org/isbtotogroup/apibackend_go/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/nikitamirzani323/togel_apibackend/controllers"
-	"github.com/nikitamirzani323/togel_apibackend/middleware"
 )
 
 func Init() *fiber.App {
