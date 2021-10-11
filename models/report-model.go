@@ -13,7 +13,7 @@ import (
 
 type winlose struct {
 	Report_client_username string  `json:"report_client_username"`
-	Report_client_turnover int     `json:"report_client_turnover"`
+	Report_client_turnover float64 `json:"report_client_turnover"`
 	Report_client_winlose  int     `json:"report_client_winlose"`
 	Report_agent_winlose   float64 `json:"report_agent_winlose"`
 }
@@ -47,13 +47,14 @@ func Fetch_winlose(company, start, end string) (helpers.ResponseReportWinlose, e
 	helpers.ErrorCheck(err)
 	for row.Next() {
 		var (
-			turnover_db, winlose_db int
-			username_db             string
+			turnover_db float64
+			winlose_db  int
+			username_db string
 		)
 
 		err = row.Scan(&username_db, &turnover_db, &winlose_db)
 		helpers.ErrorCheck(err)
-		subtotal_turnover = subtotal_turnover + turnover_db
+		subtotal_turnover = subtotal_turnover + int(turnover_db)
 		subtotal_winlose = subtotal_winlose + winlose_db
 		subtotal_winlose_agent = subtotal_winlose_agent + math.Abs(float64(winlose_db))
 		obj.Report_client_username = username_db
