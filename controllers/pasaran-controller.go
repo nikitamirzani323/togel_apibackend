@@ -409,7 +409,9 @@ func PasaranSave(c *fiber.Ctx) error {
 			})
 		}
 		val_agent := helpers.DeleteRedis(field_redis)
+		val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + client_company)
 		log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
+		log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -440,7 +442,9 @@ func PasaranSave(c *fiber.Ctx) error {
 				})
 			}
 			val_agent := helpers.DeleteRedis(field_redis)
+			val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + client_company)
 			log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
+			log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
 			return c.JSON(result)
 		}
 	}
