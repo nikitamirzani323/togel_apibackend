@@ -279,9 +279,12 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 		statuspasaran = "ONLINE"
 	}
 	statusrevisi := "LOCK"
-	if revisi_db < 2 {
-		statusrevisi = "OPEN"
+	if keluarantogel_db != "" {
+		if revisi_db < 2 {
+			statusrevisi = "OPEN"
+		}
 	}
+
 	obj.Idinvoice = strconv.Itoa(idtrxkeluaran)
 	obj.TanggalPeriode = datekeluaran_db
 	obj.TanggalNext = Get_NextPasaran(company, datekeluaran_db, idcomppasaran_db)
