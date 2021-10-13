@@ -68,6 +68,28 @@ func Get_listitemsearch(data, pemisah, search string) bool {
 	}
 	return flag
 }
+func CheckDB(table, field, value string) bool {
+	con := db.CreateCon()
+	ctx := context.Background()
+	flag := false
+	sql_db := `SELECT 
+					` + field + ` 
+					FROM ` + table + ` 
+					WHERE ` + field + ` = ? 
+				`
+	log.Println(sql_db)
+	row := con.QueryRowContext(ctx, sql_db, value)
+	switch e := row.Scan(&field); e {
+	case sql.ErrNoRows:
+		log.Println("No rows were returned!")
+		flag = false
+	case nil:
+		flag = true
+	default:
+		panic(e)
+	}
+	return flag
+}
 func CheckDBTwoField(table, field_1, value_1, field_2, value_2 string) bool {
 	con := db.CreateCon()
 	ctx := context.Background()
@@ -370,4 +392,37 @@ func Get_OnlinePasaran(company string, idcomppasaran int, hari, tipe string) boo
 	}
 
 	return flag
+}
+func Get_Trxkeluaran(company, tipe string, idtrxkeluaran int) string {
+	con := db.CreateCon()
+	ctx := context.Background()
+	flag := false
+	result := ""
+	temp := ""
+	idcomppasaran := 0
+	tbl_trx_keluarantogel, _, _ := Get_mappingdatabase(company)
+	sql_select := `SELECT
+		idcomppasaran 
+		FROM ` + tbl_trx_keluarantogel + `  
+		WHERE idcompany = ? 
+		AND idtrxkeluaran  = ? 
+	`
+	row := con.QueryRowContext(ctx, sql_select, company, idtrxkeluaran)
+	switch e := row.Scan(&idcomppasaran); e {
+	case sql.ErrNoRows:
+		flag = false
+	case nil:
+		flag = true
+
+	default:
+		panic(e)
+	}
+	if flag {
+		switch tipe {
+		case "idcomppasaran":
+			temp = strconv.Itoa(idcomppasaran)
+		}
+		result = temp
+	}
+	return result
 }

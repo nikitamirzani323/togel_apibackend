@@ -1250,6 +1250,109 @@ func Save_PeriodeNew(agent, company string, idcomppasaran int) (helpers.Response
 
 	return res, nil
 }
+func Save_PeriodeRevisi(agent, company string, idtrxkeluaran int) (helpers.Response, error) {
+	var res helpers.Response
+	tglnow, _ := goment.New()
+	con := db.CreateCon()
+	ctx := context.Background()
+	render_page := time.Now()
+	msg := "Failed"
+	flag := false
+	revisi := 0
+	tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, _ := Get_mappingdatabase(company)
+
+	sql_select := `SELECT 
+		revisi   
+		FROM ` + tbl_trx_keluarantogel + `   
+		WHERE idcompany = ? 
+		AND idtrxkeluaran = ? 
+		AND keluarantogel != "" 
+		ORDER BY idtrxkeluaran DESC LIMIT 1 
+	`
+	row_select := con.QueryRowContext(ctx, sql_select, company, idtrxkeluaran)
+	switch err_select := row_select.Scan(&revisi); err_select {
+	case sql.ErrNoRows:
+		msg = "Cannot Update"
+	case nil:
+		flag = true
+	default:
+		helpers.ErrorCheck(err_select)
+	}
+
+	if flag {
+		revisi = revisi + 1
+		//UPDATE PARENT
+		stmt_keluarantogel, e := con.PrepareContext(ctx, `
+			UPDATE 
+			`+tbl_trx_keluarantogel+`   
+			SET keluarantogel=?, revisi=?, total_member=?, 
+			total_bet=?, total_outstanding=?, total_win=?, total_lose=?, winlose=?
+			updatekeluaran=?, updatedatekeluaran=? 
+			WHERE idtrxkeluaran=? AND idcompany=? 
+		`)
+		helpers.ErrorCheck(e)
+		rec_keluarantogel, e_keluarantogel := stmt_keluarantogel.ExecContext(ctx,
+			"", revisi, 0, 0, 0, 0, 0,
+			agent, tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idtrxkeluaran, company)
+		helpers.ErrorCheck(e_keluarantogel)
+
+		a_keluarantogel, e_keluarantogel := rec_keluarantogel.RowsAffected()
+		helpers.ErrorCheck(e_keluarantogel)
+
+		defer stmt_keluarantogel.Close()
+		if a_keluarantogel > 0 {
+			flag = true
+			log.Printf("Update Parent tbl_trx_keluarantogel : %d\n", idtrxkeluaran)
+		} else {
+			flag = false
+			log.Println("Update tbl_trx_keluarantogel failed")
+		}
+		if flag {
+			//UPDATE CHILD
+			stmt_keluarantogeldetail, e_detail := con.PrepareContext(ctx, `
+					UPDATE 
+					`+tbl_trx_keluarantogel_detail+`   
+					SET statuskeluarandetail=?, winhasil=?,  
+					updatekeluarandetail=?, updatedatekeluarandetail=? 
+					WHERE idtrxkeluaran=? AND idcompany=? 
+			`)
+
+			helpers.ErrorCheck(e_detail)
+			rec_keluarantogeldetail, e_keluarantogeldetail := stmt_keluarantogeldetail.ExecContext(ctx,
+				"RUNNING", 0,
+				agent, tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+				idtrxkeluaran, company)
+			helpers.ErrorCheck(e_keluarantogeldetail)
+
+			affect_keluarantogeldetail, err_affer_keluarantogeldetail := rec_keluarantogeldetail.RowsAffected()
+			helpers.ErrorCheck(err_affer_keluarantogeldetail)
+
+			defer stmt_keluarantogeldetail.Close()
+			if affect_keluarantogeldetail > 0 {
+				flag = true
+				log.Printf("Update Parent tbl_trx_keluarantogel_detail : %d\n", idtrxkeluaran)
+			} else {
+				flag = false
+				log.Println("Update tbl_trx_keluarantogel_detail failed")
+			}
+		}
+	}
+
+	if flag {
+		res.Status = fiber.StatusOK
+		res.Message = msg
+		res.Record = nil
+		res.Time = time.Since(render_page).String()
+	} else {
+		res.Status = fiber.StatusBadRequest
+		res.Message = msg
+		res.Record = nil
+		res.Time = time.Since(render_page).String()
+	}
+
+	return res, nil
+}
 func _togel_bayar_SUM(idtrxkeluaran int, company string) int {
 	con := db.CreateCon()
 	ctx := context.Background()
