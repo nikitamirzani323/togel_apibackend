@@ -45,6 +45,7 @@ type periodeEdit struct {
 	TanggalNext        string `json:"periode_tanggalnext"`
 	PeriodeKeluaran    string `json:"periode_keluaranperiode"`
 	Keluaran           string `json:"periode_keluaran"`
+	Revisi             int    `json:"revisi"`
 	StatusOnlineOffice string `json:"periode_statusonline"`
 	Create             string `json:"periode_create"`
 	CreateDate         string `json:"periode_createdate"`
@@ -247,14 +248,14 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 	sql := `SELECT 
 		A.idtrxkeluaran, A.idcomppasaran, A.keluaranperiode, A.datekeluaran, A.keluarantogel, 
 		A.createkeluaran, A.createdatekeluaran, A.updatekeluaran, COALESCE(A.updatedatekeluaran,''), 
-		B.idpasarantogel, B.jamtutup, B.jamjadwal, B.jamopen   
+		B.idpasarantogel, B.jamtutup, B.jamjadwal, B.jamopen, A.revisi    
 		FROM ` + tbl_trx_keluarantogel + ` as A 
 		JOIN ` + config.DB_tbl_mst_company_game_pasaran + ` as B ON B.idcomppasaran = A.idcomppasaran 
 		WHERE A.idcompany = ? 
 		AND A.idtrxkeluaran = ? 
 	`
 	var (
-		idtrxkeluaran_db, idcomppasaran_db                                                                    int
+		idtrxkeluaran_db, idcomppasaran_db, revisi_db                                                         int
 		keluaranperiode_db, datekeluaran_db, keluarantogel_db                                                 string
 		createkeluaran_db, createdatekeluaran_db, updatekeluaran_db, updatedatekeluaran_db, idpasarantogel_db string
 		jamtutup_db, jamjadwal_db, jamopen_db                                                                 string
@@ -262,7 +263,7 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 	err := con.QueryRowContext(ctx, sql, company, idtrxkeluaran).Scan(
 		&idtrxkeluaran_db, &idcomppasaran_db, &keluaranperiode_db, &datekeluaran_db, &keluarantogel_db,
 		&createkeluaran_db, &createdatekeluaran_db, &updatekeluaran_db, &updatedatekeluaran_db, &idpasarantogel_db,
-		&jamtutup_db, &jamjadwal_db, &jamopen_db)
+		&jamtutup_db, &jamjadwal_db, &jamopen_db, &revisi_db)
 
 	if err != nil {
 		helpers.ErrorCheck(err)
@@ -281,6 +282,7 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 	obj.TanggalNext = Get_NextPasaran(company, datekeluaran_db, idcomppasaran_db)
 	obj.PeriodeKeluaran = keluaranperiode_db + "-" + idpasarantogel_db
 	obj.Keluaran = keluarantogel_db
+	obj.Revisi = revisi_db
 	obj.StatusOnlineOffice = statuspasaran
 	obj.Create = createkeluaran_db
 	obj.CreateDate = createdatekeluaran_db
@@ -747,30 +749,32 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 	flag := false
 	idcomppasaran := 0
 	datekeluaran := ""
+	revisi := 0
 	render_page := time.Now()
 	tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, tbl_trx_keluarantogel_member := Get_mappingdatabase(company)
 
 	sql := `SELECT 
-		idcomppasaran, datekeluaran 
+		idcomppasaran, datekeluaran, revisi  
 		FROM ` + tbl_trx_keluarantogel + `   
 		WHERE idcompany = ? 
 		AND idtrxkeluaran = ? 
 	`
-	err := con.QueryRowContext(ctx, sql, company, idtrxkeluaran).Scan(&idcomppasaran, &datekeluaran)
+	err := con.QueryRowContext(ctx, sql, company, idtrxkeluaran).Scan(&idcomppasaran, &datekeluaran, &revisi)
 
 	helpers.ErrorCheck(err)
 	if idcomppasaran > 0 {
+		revisi = revisi + 1
 		//UPDATE PARENT
 		stmt_keluarantogel, e := con.PrepareContext(ctx, `
 			UPDATE 
 			`+tbl_trx_keluarantogel+`   
-			SET keluarantogel=?,  
+			SET keluarantogel=?, revisi=?,  
 			updatekeluaran=?, updatedatekeluaran=? 
 			WHERE idtrxkeluaran=? AND idcompany=? 
 		`)
 		helpers.ErrorCheck(e)
 		rec_keluarantogel, e_keluarantogel := stmt_keluarantogel.ExecContext(ctx,
-			keluarantogel,
+			keluarantogel, revisi,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idtrxkeluaran,
