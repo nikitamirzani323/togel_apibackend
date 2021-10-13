@@ -265,9 +265,8 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 		&createkeluaran_db, &createdatekeluaran_db, &updatekeluaran_db, &updatedatekeluaran_db, &idpasarantogel_db,
 		&jamtutup_db, &jamjadwal_db, &jamopen_db, &revisi_db)
 
-	if err != nil {
-		helpers.ErrorCheck(err)
-	}
+	helpers.ErrorCheck(err)
+
 	tglopen, _ := goment.New(datekeluaran_db)
 	tglskrg := tglnow.Format("YYYY-MM-DD HH:mm:ss")
 	jamtutup := tglnow.Format("YYYY-MM-DD") + " " + jamtutup_db
@@ -282,6 +281,14 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 	if keluarantogel_db != "" {
 		if revisi_db < 2 {
 			statusrevisi = "OPEN"
+		}
+	}
+	if updatedatekeluaran_db != "" {
+		tglupdate, _ := goment.New(updatedatekeluaran_db)
+		tglexpirerevisi := tglupdate.Add(20, "minutes").Format("YYYY-MM-DD HH:mm:ss")
+
+		if tglexpirerevisi < tglskrg {
+			statusrevisi = "LOCK"
 		}
 	}
 
