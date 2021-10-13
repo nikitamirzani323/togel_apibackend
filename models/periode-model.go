@@ -45,7 +45,7 @@ type periodeEdit struct {
 	TanggalNext        string `json:"periode_tanggalnext"`
 	PeriodeKeluaran    string `json:"periode_keluaranperiode"`
 	Keluaran           string `json:"periode_keluaran"`
-	Revisi             int    `json:"revisi"`
+	Statusrevisi       string `json:"periode_statusrevisi"`
 	StatusOnlineOffice string `json:"periode_statusonline"`
 	Create             string `json:"periode_create"`
 	CreateDate         string `json:"periode_createdate"`
@@ -268,21 +268,26 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 	if err != nil {
 		helpers.ErrorCheck(err)
 	}
-	taiskrg := tglnow.Format("YYYY-MM-DD HH:mm:ss")
+	tglopen, _ := goment.New(datekeluaran_db)
+	tglskrg := tglnow.Format("YYYY-MM-DD HH:mm:ss")
 	jamtutup := tglnow.Format("YYYY-MM-DD") + " " + jamtutup_db
-	jamopen := tglnow.Format("YYYY-MM-DD") + " " + jamopen_db
+	jamopen := tglopen.Format("YYYY-MM-DD") + " " + jamopen_db
 	statuspasaran := "OFFLINE"
-	if taiskrg >= jamtutup && taiskrg <= jamopen {
+	if tglskrg >= jamtutup && tglskrg <= jamopen {
 		statuspasaran = "OFFLINE"
 	} else {
 		statuspasaran = "ONLINE"
+	}
+	statusrevisi := "LOCK"
+	if revisi_db < 2 {
+		statusrevisi = "OPEN"
 	}
 	obj.Idinvoice = strconv.Itoa(idtrxkeluaran)
 	obj.TanggalPeriode = datekeluaran_db
 	obj.TanggalNext = Get_NextPasaran(company, datekeluaran_db, idcomppasaran_db)
 	obj.PeriodeKeluaran = keluaranperiode_db + "-" + idpasarantogel_db
 	obj.Keluaran = keluarantogel_db
-	obj.Revisi = revisi_db
+	obj.Statusrevisi = statusrevisi
 	obj.StatusOnlineOffice = statuspasaran
 	obj.Create = createkeluaran_db
 	obj.CreateDate = createdatekeluaran_db
