@@ -17,6 +17,7 @@ type periodedetail struct {
 	Idtrxkeluaran int    `json:"idinvoice"`
 	Permainan     string `json:"permainan"`
 }
+
 type periodedetailmembernomor struct {
 	Idtrxkeluaran int    `json:"idinvoice" validate:"required"`
 	Permainan     string `json:"permainan" validate:"required"`
@@ -264,7 +265,7 @@ func PeriodeBetTable(c *fiber.Ctx) error {
 	name := claims["name"].(string)
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
-	result, err := models.Fetch_bettable(client_company, client.Idtrxkeluaran)
+	result, err := models.Fetch_bettable(client_company, client.Permainan, client.Idtrxkeluaran)
 	if err != nil {
 		c.Status(fiber.StatusBadRequest)
 		return c.JSON(fiber.Map{

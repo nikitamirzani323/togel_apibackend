@@ -713,9 +713,9 @@ func Fetch_listbettable(company string, idtrxkeluaran int) (helpers.Response, er
 	res.Time = time.Since(render_page).String()
 	return res, nil
 }
-func Fetch_bettable(company string, idtrxkeluaran int) (helpers.Response, error) {
-	var obj betTableType
-	var arraobj []betTableType
+func Fetch_bettable(company, permainan string, idtrxkeluaran int) (helpers.Response, error) {
+	var objdetail ListBet
+	var arraobjdetail []ListBet
 	var res helpers.Response
 	render_page := time.Now()
 	msg := "Error"
@@ -723,24 +723,7 @@ func Fetch_bettable(company string, idtrxkeluaran int) (helpers.Response, error)
 	ctx := context.Background()
 	_, tbl_trx_keluarantogel_detail, _ := Get_mappingdatabase(company)
 
-	sql := `SELECT 
-		typegame 
-		FROM ` + tbl_trx_keluarantogel_detail + `  
-		WHERE idcompany = ? 
-		AND idtrxkeluaran = ? 
-		GROUP BY typegame 
-	`
-	row, err := con.QueryContext(ctx, sql, company, idtrxkeluaran)
-	helpers.ErrorCheck(err)
-	for row.Next() {
-		var typegame_db string
-
-		err = row.Scan(&typegame_db)
-		helpers.ErrorCheck(err)
-
-		var objdetail ListBet
-		var arraobjdetail []ListBet
-		sql_betgroup := `SELECT 
+	sql_betgroup := `SELECT 
 			nomortogel, COUNT(username) as totalmember, SUM(bet) as totalbet 
 			FROM ` + tbl_trx_keluarantogel_detail + `  
 			WHERE idcompany = ? 
@@ -749,32 +732,26 @@ func Fetch_bettable(company string, idtrxkeluaran int) (helpers.Response, error)
 			GROUP BY nomortogel  
 			ORDER BY totalbet DESC, totalmember DESC 
 		`
-		row_betgroup, err_betgroup := con.QueryContext(ctx, sql_betgroup, company, idtrxkeluaran, typegame_db)
-		helpers.ErrorCheck(err_betgroup)
-		for row_betgroup.Next() {
-			var (
-				nomortogel_db               string
-				totalmember_db, totalbet_db int
-			)
+	row_betgroup, err_betgroup := con.QueryContext(ctx, sql_betgroup, company, idtrxkeluaran, permainan)
+	helpers.ErrorCheck(err_betgroup)
+	for row_betgroup.Next() {
+		var (
+			nomortogel_db               string
+			totalmember_db, totalbet_db int
+		)
 
-			err = row_betgroup.Scan(&nomortogel_db, &totalmember_db, &totalbet_db)
-			helpers.ErrorCheck(err)
+		err := row_betgroup.Scan(&nomortogel_db, &totalmember_db, &totalbet_db)
+		helpers.ErrorCheck(err)
 
-			objdetail.Nomortogel = nomortogel_db
-			objdetail.Totalmember = totalmember_db
-			objdetail.Totalbet = totalbet_db
-			arraobjdetail = append(arraobjdetail, objdetail)
-		}
-		defer row_betgroup.Close()
-		obj.Permainan = typegame_db
-		obj.Bet = arraobjdetail
-		arraobj = append(arraobj, obj)
-		msg = "Success"
+		objdetail.Nomortogel = nomortogel_db
+		objdetail.Totalmember = totalmember_db
+		objdetail.Totalbet = totalbet_db
+		arraobjdetail = append(arraobjdetail, objdetail)
 	}
-	defer row.Close()
+	defer row_betgroup.Close()
 	res.Status = fiber.StatusOK
 	res.Message = msg
-	res.Record = arraobj
+	res.Record = arraobjdetail
 	res.Time = time.Since(render_page).String()
 	return res, nil
 }
