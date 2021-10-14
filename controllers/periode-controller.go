@@ -223,6 +223,32 @@ func PeriodeListBet(c *fiber.Ctx) error {
 	}
 	return c.JSON(result)
 }
+func PeriodeListBetTable(c *fiber.Ctx) error {
+	client := new(periodedetail)
+	if err := c.BodyParser(client); err != nil {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": err.Error(),
+			"record":  nil,
+		})
+	}
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
+	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
+	result, err := models.Fetch_listbettable(client_company, client.Idtrxkeluaran)
+	if err != nil {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": err.Error(),
+			"record":  nil,
+		})
+	}
+	return c.JSON(result)
+}
 func PeriodeBetTable(c *fiber.Ctx) error {
 	client := new(periodedetail)
 	if err := c.BodyParser(client); err != nil {

@@ -75,7 +75,9 @@ type periodeBet struct {
 	Bet_update       string  `json:"bet_update"`
 	Bet_updateDate   string  `json:"bet_updatedate"`
 }
-
+type listbetTable struct {
+	Permainan string `json:"permainan"`
+}
 type betTableType struct {
 	Permainan string      `json:"permainan"`
 	Bet       interface{} `json:"bet"`
@@ -674,6 +676,41 @@ func Fetch_listprediksi(company, nomorkeluaran string, idcomppasaran int) (helpe
 	res.Subtotalwin = subtotal - subtotalwin
 	res.Time = time.Since(render_page).String()
 
+	return res, nil
+}
+func Fetch_listbettable(company string, idtrxkeluaran int) (helpers.Response, error) {
+	var obj listbetTable
+	var arraobj []listbetTable
+	var res helpers.Response
+	render_page := time.Now()
+	msg := "Error"
+	con := db.CreateCon()
+	ctx := context.Background()
+	_, tbl_trx_keluarantogel_detail, _ := Get_mappingdatabase(company)
+
+	sql := `SELECT 
+		typegame 
+		FROM ` + tbl_trx_keluarantogel_detail + `  
+		WHERE idcompany = ? 
+		AND idtrxkeluaran = ? 
+		GROUP BY typegame 
+	`
+	row, err := con.QueryContext(ctx, sql, company, idtrxkeluaran)
+	helpers.ErrorCheck(err)
+	for row.Next() {
+		var typegame_db string
+
+		err = row.Scan(&typegame_db)
+		helpers.ErrorCheck(err)
+		obj.Permainan = typegame_db
+		arraobj = append(arraobj, obj)
+		msg = "Success"
+	}
+	defer row.Close()
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = arraobj
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Fetch_bettable(company string, idtrxkeluaran int) (helpers.Response, error) {
