@@ -34,6 +34,7 @@ type periodeHome struct {
 	Total_outstanding float32 `json:"pasaran_totaloutstanding"`
 	Winlose           float32 `json:"pasaran_winlose"`
 	Revisi            int     `json:"pasaran_revisi"`
+	Msgrevisi         string  `json:"pasaran_msgrevisi"`
 }
 type periodeHomePasaran struct {
 	Idcomppasaran int    `json:"pasarancomp_idcompp"`
@@ -46,7 +47,6 @@ type periodeEdit struct {
 	PeriodeKeluaran    string `json:"periode_keluaranperiode"`
 	Keluaran           string `json:"periode_keluaran"`
 	Statusrevisi       string `json:"periode_statusrevisi"`
-	Msgrevisi          string `json:"periode_msgrevisi"`
 	StatusOnlineOffice string `json:"periode_statusonline"`
 	Create             string `json:"periode_create"`
 	CreateDate         string `json:"periode_createdate"`
@@ -140,7 +140,7 @@ func Fetch_periode(company string) (helpers.ResponsePasaran, error) {
 
 	sql_periode := `SELECT 
 			A.idtrxkeluaran, A.idcomppasaran, A.keluaranperiode, A.datekeluaran, A.keluarantogel, 
-			A.total_member, A.total_bet, A.total_outstanding, A.winlose, C.nmpasarantogel, B.idpasarantogel, A.revisi   
+			A.total_member, A.total_bet, A.total_outstanding, A.winlose, C.nmpasarantogel, B.idpasarantogel, A.revisi, A.noterevisi    
 			FROM ` + tbl_trx_keluarantogel + ` as A 
 			JOIN ` + config.DB_tbl_mst_company_game_pasaran + ` as B ON B.idcomppasaran = A.idcomppasaran  
 			JOIN ` + config.DB_tbl_mst_pasaran_togel + ` as C ON C.idpasarantogel  = B.idpasarantogel  
@@ -154,16 +154,16 @@ func Fetch_periode(company string) (helpers.ResponsePasaran, error) {
 	for row.Next() {
 		no += 1
 		var (
-			idtrxkeluaran_db, idcomppasaran_db, revisi_db                                               int
-			datekeluaran_db, keluarantogel_db, nmpasarantogel_db, idpasarantogel_db, keluaranperiode_db string
-			total_member_db, total_bet_db, total_outstanding_db, winlose_db                             float32
+			idtrxkeluaran_db, idcomppasaran_db, revisi_db                                                              int
+			datekeluaran_db, keluarantogel_db, nmpasarantogel_db, idpasarantogel_db, keluaranperiode_db, noterevisi_db string
+			total_member_db, total_bet_db, total_outstanding_db, winlose_db                                            float32
 		)
 
 		err = row.Scan(
 			&idtrxkeluaran_db, &idcomppasaran_db, &keluaranperiode_db,
 			&datekeluaran_db, &keluarantogel_db, &total_member_db,
 			&total_bet_db, &total_outstanding_db, &winlose_db,
-			&nmpasarantogel_db, &idpasarantogel_db, &revisi_db)
+			&nmpasarantogel_db, &idpasarantogel_db, &revisi_db, &noterevisi_db)
 
 		helpers.ErrorCheck(err)
 		status := "DONE"
@@ -187,6 +187,7 @@ func Fetch_periode(company string) (helpers.ResponsePasaran, error) {
 		obj.Total_outstanding = total_outstanding_db
 		obj.Winlose = totalwinlose
 		obj.Revisi = revisi_db
+		obj.Msgrevisi = noterevisi_db
 		obj.Status = status
 		obj.Status_css = status_css
 		arraobj = append(arraobj, obj)
@@ -249,7 +250,7 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 	sql := `SELECT 
 		A.idtrxkeluaran, A.idcomppasaran, A.keluaranperiode, A.datekeluaran, A.keluarantogel, 
 		A.createkeluaran, A.createdatekeluaran, A.updatekeluaran, COALESCE(A.updatedatekeluaran,''), 
-		B.idpasarantogel, B.jamtutup, B.jamjadwal, B.jamopen, A.revisi, A.noterevisi     
+		B.idpasarantogel, B.jamtutup, B.jamjadwal, B.jamopen, A.revisi      
 		FROM ` + tbl_trx_keluarantogel + ` as A 
 		JOIN ` + config.DB_tbl_mst_company_game_pasaran + ` as B ON B.idcomppasaran = A.idcomppasaran 
 		WHERE A.idcompany = ? 
@@ -257,14 +258,14 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 	`
 	var (
 		idtrxkeluaran_db, idcomppasaran_db, revisi_db                                                         int
-		keluaranperiode_db, datekeluaran_db, keluarantogel_db, noterevisi_db                                  string
+		keluaranperiode_db, datekeluaran_db, keluarantogel_db                                                 string
 		createkeluaran_db, createdatekeluaran_db, updatekeluaran_db, updatedatekeluaran_db, idpasarantogel_db string
 		jamtutup_db, jamjadwal_db, jamopen_db                                                                 string
 	)
 	err := con.QueryRowContext(ctx, sql, company, idtrxkeluaran).Scan(
 		&idtrxkeluaran_db, &idcomppasaran_db, &keluaranperiode_db, &datekeluaran_db, &keluarantogel_db,
 		&createkeluaran_db, &createdatekeluaran_db, &updatekeluaran_db, &updatedatekeluaran_db, &idpasarantogel_db,
-		&jamtutup_db, &jamjadwal_db, &jamopen_db, &revisi_db, &noterevisi_db)
+		&jamtutup_db, &jamjadwal_db, &jamopen_db, &revisi_db)
 
 	helpers.ErrorCheck(err)
 
@@ -299,7 +300,6 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 	obj.PeriodeKeluaran = keluaranperiode_db + "-" + idpasarantogel_db
 	obj.Keluaran = keluarantogel_db
 	obj.Statusrevisi = statusrevisi
-	obj.Msgrevisi = noterevisi_db
 	obj.StatusOnlineOffice = statuspasaran
 	obj.Create = createkeluaran_db
 	obj.CreateDate = createdatekeluaran_db
