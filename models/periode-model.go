@@ -78,10 +78,7 @@ type periodeBet struct {
 type listbetTable struct {
 	Permainan string `json:"permainan"`
 }
-type betTableType struct {
-	Permainan string      `json:"permainan"`
-	Bet       interface{} `json:"bet"`
-}
+
 type ListBet struct {
 	Nomortogel  string `json:"bet_keluaran"`
 	Totalmember int    `json:"bet_totalmember"`
@@ -747,6 +744,7 @@ func Fetch_bettable(company, permainan string, idtrxkeluaran int) (helpers.Respo
 		objdetail.Totalmember = totalmember_db
 		objdetail.Totalbet = totalbet_db
 		arraobjdetail = append(arraobjdetail, objdetail)
+		msg = "Success"
 	}
 	defer row_betgroup.Close()
 	res.Status = fiber.StatusOK

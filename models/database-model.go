@@ -262,7 +262,7 @@ func Get_CompanyPasaran(company, tipe string, idcomppasaran int) string {
 	flag := false
 	result := ""
 	temp := ""
-	idpasarantogel := 0
+	idpasarantogel := ""
 
 	sql_select := `SELECT
 		idpasarantogel 
@@ -283,7 +283,7 @@ func Get_CompanyPasaran(company, tipe string, idcomppasaran int) string {
 	if flag {
 		switch tipe {
 		case "idpasarantogel":
-			temp = strconv.Itoa(idpasarantogel)
+			temp = idpasarantogel
 		}
 		result = temp
 	}

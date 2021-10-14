@@ -432,7 +432,7 @@ func PeriodeSaveNew(c *fiber.Ctx) error {
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
 	idpasarantogel := models.Get_CompanyPasaran(client_company, "idpasarantogel", client.Idcomppasaran)
-
+	log.Println(idpasarantogel)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PeriodeNew(client_username, client_company, client.Idcomppasaran)
 		if err != nil {
