@@ -763,33 +763,31 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 	flag := false
 	idcomppasaran := 0
 	datekeluaran := ""
-	revisi := 0
 	render_page := time.Now()
 	tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, tbl_trx_keluarantogel_member := Get_mappingdatabase(company)
 	// tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, _ := Get_mappingdatabase(company)
 
 	sql := `SELECT 
-		idcomppasaran, datekeluaran, revisi  
+		idcomppasaran, datekeluaran   
 		FROM ` + tbl_trx_keluarantogel + `   
 		WHERE idcompany = ? 
 		AND idtrxkeluaran = ? 
 	`
-	err := con.QueryRowContext(ctx, sql, company, idtrxkeluaran).Scan(&idcomppasaran, &datekeluaran, &revisi)
+	err := con.QueryRowContext(ctx, sql, company, idtrxkeluaran).Scan(&idcomppasaran, &datekeluaran)
 
 	helpers.ErrorCheck(err)
 	if idcomppasaran > 0 {
-		revisi = revisi + 1
 		//UPDATE PARENT
 		stmt_keluarantogel, e := con.PrepareContext(ctx, `
 			UPDATE 
 			`+tbl_trx_keluarantogel+`   
-			SET keluarantogel=?, revisi=?,  
+			SET keluarantogel=?,  
 			updatekeluaran=?, updatedatekeluaran=? 
 			WHERE idtrxkeluaran=? AND idcompany=? 
 		`)
 		helpers.ErrorCheck(e)
 		rec_keluarantogel, e_keluarantogel := stmt_keluarantogel.ExecContext(ctx,
-			keluarantogel, revisi,
+			keluarantogel,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idtrxkeluaran,
