@@ -39,7 +39,7 @@ type periodesaverevisi struct {
 	Sdata     string `json:"sData" validate:"required"`
 	Page      string `json:"page"`
 	Idinvoice int    `json:"idinvoice" validate:"required"`
-	Msgrevisi int    `json:"msgrevisi" validate:"required"`
+	Msgrevisi string `json:"msgrevisi" validate:"required"`
 }
 type periodeSavePrediksi struct {
 	Sdata     string `json:"sData" validate:"required"`
@@ -527,7 +527,7 @@ func PeriodeSaveRevisi(c *fiber.Ctx) error {
 	idpasarantogel := models.Get_CompanyPasaran(client_company, "idpasarantogel", idcomppasaran_int)
 
 	if typeadmin == "MASTER" {
-		result, err := models.Save_PeriodeRevisi(client_username, client_company, client.Idinvoice)
+		result, err := models.Save_PeriodeRevisi(client_username, client_company, client.Msgrevisi, client.Idinvoice)
 		if err != nil {
 			c.Status(fiber.StatusBadRequest)
 			return c.JSON(fiber.Map{
@@ -552,7 +552,7 @@ func PeriodeSaveRevisi(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		} else {
-			result, err := models.Save_PeriodeRevisi(client_username, client_company, client.Idinvoice)
+			result, err := models.Save_PeriodeRevisi(client_username, client_company, client.Msgrevisi, client.Idinvoice)
 			if err != nil {
 				c.Status(fiber.StatusBadRequest)
 				return c.JSON(fiber.Map{
