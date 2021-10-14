@@ -35,6 +35,12 @@ type periodeSaveNew struct {
 	Page          string `json:"page"`
 	Idcomppasaran int    `json:"pasaran_code" validate:"required"`
 }
+type periodesaverevisi struct {
+	Sdata     string `json:"sData" validate:"required"`
+	Page      string `json:"page"`
+	Idinvoice int    `json:"idinvoice" validate:"required"`
+	Msgrevisi int    `json:"msgrevisi" validate:"required"`
+}
 type periodeSavePrediksi struct {
 	Sdata     string `json:"sData" validate:"required"`
 	Page      string `json:"page"`
@@ -483,7 +489,7 @@ func PeriodeSaveNew(c *fiber.Ctx) error {
 }
 func PeriodeSaveRevisi(c *fiber.Ctx) error {
 	var errors []*helpers.ErrorResponse
-	client := new(periodeSavePrediksi)
+	client := new(periodesaverevisi)
 	validate := validator.New()
 	if err := c.BodyParser(client); err != nil {
 		c.Status(fiber.StatusBadRequest)

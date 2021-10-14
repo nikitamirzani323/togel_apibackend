@@ -279,7 +279,7 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 	}
 	statusrevisi := "LOCK"
 	if keluarantogel_db != "" {
-		if revisi_db < 2 {
+		if revisi_db < 1 {
 			statusrevisi = "OPEN"
 		}
 	}
@@ -1264,7 +1264,7 @@ func Save_PeriodeNew(agent, company string, idcomppasaran int) (helpers.Response
 
 	return res, nil
 }
-func Save_PeriodeRevisi(agent, company string, idtrxkeluaran int) (helpers.Response, error) {
+func Save_PeriodeRevisi(agent, company, msgrevisi string, idtrxkeluaran int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
 	con := db.CreateCon()
@@ -1320,16 +1320,16 @@ func Save_PeriodeRevisi(agent, company string, idtrxkeluaran int) (helpers.Respo
 			revisi = revisi + 1
 			//UPDATE PARENT
 			stmt_keluarantogel, e := con.PrepareContext(ctx, `
-			UPDATE 
-			`+tbl_trx_keluarantogel+`   
-			SET keluarantogel=?, revisi=?, total_member=?, 
-			total_bet=?, total_outstanding=?, total_win=?, total_lose=?, winlose=?, 
-			updatekeluaran=?, updatedatekeluaran=? 
-			WHERE idtrxkeluaran=? AND idcompany=? 
-		`)
+				UPDATE 
+				`+tbl_trx_keluarantogel+`   
+				SET keluarantogel=?, revisi=?, noterevisi=?, total_member=?, 
+				total_bet=?, total_outstanding=?, total_win=?, total_lose=?, winlose=?, 
+				updatekeluaran=?, updatedatekeluaran=? 
+				WHERE idtrxkeluaran=? AND idcompany=? 
+			`)
 			helpers.ErrorCheck(e)
 			rec_keluarantogel, e_keluarantogel := stmt_keluarantogel.ExecContext(ctx,
-				"", revisi, 0, 0, 0, 0, 0, 0,
+				"", revisi, msgrevisi, 0, 0, 0, 0, 0, 0,
 				agent, tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 				idtrxkeluaran, company)
 			helpers.ErrorCheck(e_keluarantogel)
