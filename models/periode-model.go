@@ -764,6 +764,7 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 	revisi := 0
 	render_page := time.Now()
 	tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, tbl_trx_keluarantogel_member := Get_mappingdatabase(company)
+	// tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, _ := Get_mappingdatabase(company)
 
 	sql := `SELECT 
 		idcomppasaran, datekeluaran, revisi  
@@ -1272,7 +1273,7 @@ func Save_PeriodeRevisi(agent, company string, idtrxkeluaran int) (helpers.Respo
 	msg := "Failed"
 	flag := false
 	revisi := 0
-	tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, _ := Get_mappingdatabase(company)
+	tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, tbl_trx_keluarantogel_member := Get_mappingdatabase(company)
 
 	sql_select := `SELECT 
 		revisi   
@@ -1348,6 +1349,30 @@ func Save_PeriodeRevisi(agent, company string, idtrxkeluaran int) (helpers.Respo
 			} else {
 				flag = false
 				log.Println("Update tbl_trx_keluarantogel_detail failed")
+			}
+		}
+		if flag {
+			//DELETE MEMBER
+			stmt_keluarantogelmember, e_member := con.PrepareContext(ctx, `
+					DELETE FROM  
+					`+tbl_trx_keluarantogel_member+`   
+					WHERE idtrxkeluaran=? AND idcompany=? 
+			`)
+
+			helpers.ErrorCheck(e_member)
+			rec_keluarantogelmember, e_keluarantogelmember := stmt_keluarantogelmember.ExecContext(ctx, idtrxkeluaran, company)
+			helpers.ErrorCheck(e_keluarantogelmember)
+
+			affect_keluarantogelmember, err_affer_keluarantogelmember := rec_keluarantogelmember.RowsAffected()
+			helpers.ErrorCheck(err_affer_keluarantogelmember)
+
+			defer stmt_keluarantogelmember.Close()
+			if affect_keluarantogelmember > 0 {
+				flag = true
+				log.Printf("Update Parent tbl_trx_keluarantogel_member : %d\n", idtrxkeluaran)
+			} else {
+				flag = false
+				log.Println("Update tbl_trx_keluarantogel_member failed")
 			}
 		}
 	}
