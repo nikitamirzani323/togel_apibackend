@@ -849,7 +849,7 @@ func PasaranSaveConfColokMacau(c *fiber.Ctx) error {
 			client_username,
 			client_company,
 			client.Idpasaran,
-			client.Pasaran_maxbet_cmacau,
+			client.Pasaran_minbet_cmacau,
 			client.Pasaran_maxbet_cmacau,
 			client.Pasaran_win2_cmacau,
 			client.Pasaran_win3_cmacau,
