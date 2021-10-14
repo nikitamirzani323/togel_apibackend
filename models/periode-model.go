@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"runtime"
 	"strconv"
 	"sync"
 	"time"
@@ -431,7 +430,7 @@ func Fetch_membergroup(company string, idtrxkeluaran int) (helpers.Response, err
 
 	return res, nil
 }
-func Fetch_listbet(company string, idtrxkeluaran int) (helpers.ResponsePeriode, error) {
+func Fetch_listbet(company, permainan string, idtrxkeluaran int) (helpers.ResponsePeriode, error) {
 	var obj periodeBet
 	var arraobj []periodeBet
 	var res helpers.ResponsePeriode
@@ -444,99 +443,85 @@ func Fetch_listbet(company string, idtrxkeluaran int) (helpers.ResponsePeriode, 
 	render_page := time.Now()
 	_, tbl_trx_keluarantogel_detail, _ := Get_mappingdatabase(company)
 
-	wg.Add(1)
-	go func() {
-		sqldetail := `SELECT
+	sqldetail := `SELECT
 					idtrxkeluarandetail , datetimedetail, ipaddress, browsertogel, devicetogel,  username, typegame, nomortogel, 
 					bet, diskon, win, kei, statuskeluarandetail , createkeluarandetail, 
 					createdatekeluarandetail, updatekeluarandetail, updatedatekeluarandetail 
 					FROM ` + tbl_trx_keluarantogel_detail + ` 
 					WHERE idcompany = ? 
 					AND idtrxkeluaran = ? 
+					AND typegame = ? 
 					ORDER BY datetimedetail DESC 
 				`
-		row, err := con.QueryContext(ctx, sqldetail, company, idtrxkeluaran)
+	row, err := con.QueryContext(ctx, sqldetail, company, idtrxkeluaran, permainan)
+
+	helpers.ErrorCheck(err)
+
+	for row.Next() {
+		totalbet += 1
+		var (
+			idtrxkeluarandetail_db, bet_db                                                                                                      int
+			datetimedetail_db, ipaddresss_db, username_db, typegame_db, nomortogel_db, browsertogel_db, devicetogel_db                          string
+			statuskeluarandetail_db, createkeluarandetail_db, createdatekeluarandetail_db, updatekeluarandetail_db, updatedatekeluarandetail_db string
+			diskon_db, win_db, kei_db                                                                                                           float32
+		)
+
+		err = row.Scan(
+			&idtrxkeluarandetail_db,
+			&datetimedetail_db, &ipaddresss_db, &browsertogel_db, &devicetogel_db, &username_db, &typegame_db, &nomortogel_db,
+			&bet_db, &diskon_db, &win_db, &kei_db, &statuskeluarandetail_db, &createkeluarandetail_db,
+			&createdatekeluarandetail_db, &updatekeluarandetail_db, &updatedatekeluarandetail_db)
 
 		helpers.ErrorCheck(err)
 
-		for row.Next() {
-			totalbet += 1
-			var (
-				idtrxkeluarandetail_db, bet_db                                                                                                      int
-				datetimedetail_db, ipaddresss_db, username_db, typegame_db, nomortogel_db, browsertogel_db, devicetogel_db                          string
-				statuskeluarandetail_db, createkeluarandetail_db, createdatekeluarandetail_db, updatekeluarandetail_db, updatedatekeluarandetail_db string
-				diskon_db, win_db, kei_db                                                                                                           float32
-			)
+		diskonpercen := diskon_db * 100
+		diskonbet := int(float32(bet_db) * diskon_db)
+		keipercen := kei_db * 100
+		keibet := int(float32(bet_db) * kei_db)
+		bayar := bet_db - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
+		subtotalbayar = subtotalbayar + bayar
+		winhasil := _rumuswinhasil(typegame_db, bayar, bet_db, win_db)
+		totalwin := 0
 
-			err = row.Scan(
-				&idtrxkeluarandetail_db,
-				&datetimedetail_db, &ipaddresss_db, &browsertogel_db, &devicetogel_db, &username_db, &typegame_db, &nomortogel_db,
-				&bet_db, &diskon_db, &win_db, &kei_db, &statuskeluarandetail_db, &createkeluarandetail_db,
-				&createdatekeluarandetail_db, &updatekeluarandetail_db, &updatedatekeluarandetail_db)
-
-			helpers.ErrorCheck(err)
-
-			diskonpercen := diskon_db * 100
-			diskonbet := int(float32(bet_db) * diskon_db)
-			keipercen := kei_db * 100
-			keibet := int(float32(bet_db) * kei_db)
-			bayar := bet_db - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
-			subtotalbayar = subtotalbayar + bayar
-			winhasil := _rumuswinhasil(typegame_db, bayar, bet_db, win_db)
-			totalwin := 0
-
-			status_css := ""
-			switch statuskeluarandetail_db {
-			case "RUNNING":
-				totalwin = 0
-				status_css = "background:#FFEB3B;font-weight:bold;color:black;"
-			case "WINNER":
-				totalwin = winhasil
-				subtotalwin = subtotalwin + winhasil
-				status_css = "background:#8BC34A;color:black;font-weight:bold;"
-			case "LOSE":
-				totalwin = 0
-				status_css = "background:#E91E63;font-size:12px;font-weight:bold;color:white;"
-			}
-			obj.Bet_id = idtrxkeluarandetail_db
-			obj.Bet_datetime = datetimedetail_db
-			obj.Bet_ipaddress = ipaddresss_db
-			obj.Bet_device = devicetogel_db
-			obj.Bet_timezone = browsertogel_db
-			obj.Bet_username = username_db
-			obj.Bet_typegame = typegame_db
-			obj.Bet_nomortogel = nomortogel_db
-			obj.Bet_bet = bet_db
-			obj.Bet_diskon = diskonbet
-			obj.Bet_diskonpercen = int(diskonpercen)
-			obj.Bet_kei = keibet
-			obj.Bet_keipercen = int(keipercen)
-			obj.Bet_bayar = bayar
-			obj.Bet_win = win_db
-			obj.Bet_totalwin = totalwin
-			obj.Bet_status = statuskeluarandetail_db
-			obj.Bet_statuscss = status_css
-			obj.Bet_create = createkeluarandetail_db
-			obj.Bet_createDate = createdatekeluarandetail_db
-			obj.Bet_update = updatekeluarandetail_db
-			obj.Bet_updateDate = updatedatekeluarandetail_db
-			arraobj = append(arraobj, obj)
-			msg = "Success"
+		status_css := ""
+		switch statuskeluarandetail_db {
+		case "RUNNING":
+			totalwin = 0
+			status_css = "background:#FFEB3B;font-weight:bold;color:black;"
+		case "WINNER":
+			totalwin = winhasil
+			subtotalwin = subtotalwin + winhasil
+			status_css = "background:#8BC34A;color:black;font-weight:bold;"
+		case "LOSE":
+			totalwin = 0
+			status_css = "background:#E91E63;font-size:12px;font-weight:bold;color:white;"
 		}
-		defer row.Close()
-		wg.Done()
-	}()
-	wg.Wait()
-	totalCPU := runtime.NumCPU()
-	fmt.Println("CPU", totalCPU)
-
-	// -1 artinya dibawah 0 THREAD SESUAI PC
-	// 1 artinya diatas 0 Mengubah Jumlah Thread
-	totalThread := runtime.GOMAXPROCS(-1)
-	fmt.Println("Thread", totalThread)
-
-	totalGoroutine := runtime.NumGoroutine()
-	fmt.Println("Goroutine", totalGoroutine)
+		obj.Bet_id = idtrxkeluarandetail_db
+		obj.Bet_datetime = datetimedetail_db
+		obj.Bet_ipaddress = ipaddresss_db
+		obj.Bet_device = devicetogel_db
+		obj.Bet_timezone = browsertogel_db
+		obj.Bet_username = username_db
+		obj.Bet_typegame = typegame_db
+		obj.Bet_nomortogel = nomortogel_db
+		obj.Bet_bet = bet_db
+		obj.Bet_diskon = diskonbet
+		obj.Bet_diskonpercen = int(diskonpercen)
+		obj.Bet_kei = keibet
+		obj.Bet_keipercen = int(keipercen)
+		obj.Bet_bayar = bayar
+		obj.Bet_win = win_db
+		obj.Bet_totalwin = totalwin
+		obj.Bet_status = statuskeluarandetail_db
+		obj.Bet_statuscss = status_css
+		obj.Bet_create = createkeluarandetail_db
+		obj.Bet_createDate = createdatekeluarandetail_db
+		obj.Bet_update = updatekeluarandetail_db
+		obj.Bet_updateDate = updatedatekeluarandetail_db
+		arraobj = append(arraobj, obj)
+		msg = "Success"
+	}
+	defer row.Close()
 	res.Status = fiber.StatusOK
 	res.Message = msg
 	res.Record = arraobj
