@@ -763,8 +763,7 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 	datekeluaran := ""
 	revisi := 0
 	render_page := time.Now()
-	// tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, tbl_trx_keluarantogel_member := Get_mappingdatabase(company)
-	tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, _ := Get_mappingdatabase(company)
+	tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, tbl_trx_keluarantogel_member := Get_mappingdatabase(company)
 
 	sql := `SELECT 
 		idcomppasaran, datekeluaran, revisi  
@@ -895,238 +894,239 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 			}()
 			wg.Wait()
 		}
-		// if flag {
-		// 	sql_detailbetwinner := `SELECT
-		// 		idtrxkeluarandetail, username, typegame, bet, diskon, kei, win
-		// 		FROM ` + tbl_trx_keluarantogel_detail + `
-		// 		WHERE idtrxkeluaran = ?
-		// 		AND idcompany = ?
-		// 		AND statuskeluarandetail = "WINNER"
-		// 	`
-		// 	row_detailbetwinner, err_detailbetwinner := con.QueryContext(ctx, sql_detailbetwinner, idtrxkeluaran, company)
 
-		// 	helpers.ErrorCheck(err_detailbetwinner)
-		// 	totalmembertogel := _togel_member_COUNT(idtrxkeluaran, company)
-		// 	totalbet := _togel_bet_SUM(idtrxkeluaran, company)
-		// 	totalbayar := _togel_bayar_SUM(idtrxkeluaran, company)
-		// 	totalwin := 0
-		// 	for row_detailbetwinner.Next() {
-		// 		var (
-		// 			bet_db, idtrxkeluarandetail_db2 int
-		// 			username_db, typegame_db        string
-		// 			diskon_db, kei_db, win_db       float32
-		// 		)
+		if flag {
+			sql_detailbetwinner := `SELECT
+				idtrxkeluarandetail, username, typegame, bet, diskon, kei, win
+				FROM ` + tbl_trx_keluarantogel_detail + `
+				WHERE idtrxkeluaran = ?
+				AND idcompany = ?
+				AND statuskeluarandetail = "WINNER"
+			`
+			row_detailbetwinner, err_detailbetwinner := con.QueryContext(ctx, sql_detailbetwinner, idtrxkeluaran, company)
 
-		// 		err_detailbetwinner = row_detailbetwinner.Scan(
-		// 			&idtrxkeluarandetail_db2,
-		// 			&username_db,
-		// 			&typegame_db,
-		// 			&bet_db,
-		// 			&diskon_db,
-		// 			&kei_db,
-		// 			&win_db)
-		// 		bayar := bet_db - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
-		// 		winhasil := _rumuswinhasil(typegame_db, bayar, bet_db, win_db)
-		// 		totalwin = totalwin + winhasil
+			helpers.ErrorCheck(err_detailbetwinner)
+			totalmembertogel := _togel_member_COUNT(idtrxkeluaran, company)
+			totalbet := _togel_bet_SUM(idtrxkeluaran, company)
+			totalbayar := _togel_bayar_SUM(idtrxkeluaran, company)
+			totalwin := 0
+			for row_detailbetwinner.Next() {
+				var (
+					bet_db, idtrxkeluarandetail_db2 int
+					username_db, typegame_db        string
+					diskon_db, kei_db, win_db       float32
+				)
 
-		// 		//UPDATE DETAIL KELUARAN MEMBER WINHASIL
-		// 		stmt_detailkeluaranwin_member, e := con.PrepareContext(ctx, `
-		// 			UPDATE
-		// 			`+tbl_trx_keluarantogel_detail+`
-		// 			SET winhasil=? ,
-		// 			updatekeluarandetail=?, updatedatekeluarandetail=?
-		// 			WHERE idtrxkeluarandetail=?  AND idtrxkeluaran=? AND username=?
-		// 			`)
-		// 		helpers.ErrorCheck(e)
-		// 		rec_detailkeluaran_member, e_detailkeluaran_member := stmt_detailkeluaranwin_member.ExecContext(ctx,
-		// 			winhasil,
-		// 			agent,
-		// 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		// 			idtrxkeluarandetail_db2, idtrxkeluaran, username_db)
-		// 		helpers.ErrorCheck(e_detailkeluaran_member)
+				err_detailbetwinner = row_detailbetwinner.Scan(
+					&idtrxkeluarandetail_db2,
+					&username_db,
+					&typegame_db,
+					&bet_db,
+					&diskon_db,
+					&kei_db,
+					&win_db)
+				bayar := bet_db - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
+				winhasil := _rumuswinhasil(typegame_db, bayar, bet_db, win_db)
+				totalwin = totalwin + winhasil
 
-		// 		a_detailkeluaran_member, e_detailkeluaran_member := rec_detailkeluaran_member.RowsAffected()
-		// 		helpers.ErrorCheck(e_detailkeluaran_member)
-		// 		if a_detailkeluaran_member < 1 {
-		// 			flag = false
-		// 			log.Println("Update tbl_trx_keluarantogel_detail MEMBER WIN failed")
-		// 		} else {
-		// 			log.Printf("Update MEMBER WIN tbl_trx_keluarantogel_detail : %d\n", idtrxkeluarandetail_db2)
-		// 		}
-		// 		defer stmt_detailkeluaranwin_member.Close()
-		// 	}
+				//UPDATE DETAIL KELUARAN MEMBER WINHASIL
+				stmt_detailkeluaranwin_member, e := con.PrepareContext(ctx, `
+					UPDATE
+					`+tbl_trx_keluarantogel_detail+`
+					SET winhasil=? ,
+					updatekeluarandetail=?, updatedatekeluarandetail=?
+					WHERE idtrxkeluarandetail=?  AND idtrxkeluaran=? AND username=?
+					`)
+				helpers.ErrorCheck(e)
+				rec_detailkeluaran_member, e_detailkeluaran_member := stmt_detailkeluaranwin_member.ExecContext(ctx,
+					winhasil,
+					agent,
+					tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+					idtrxkeluarandetail_db2, idtrxkeluaran, username_db)
+				helpers.ErrorCheck(e_detailkeluaran_member)
 
-		// 	defer row_detailbetwinner.Close()
-		// 	log.Printf("TOTAL BET: %d - TOTAL BAYAR: %d - TOTAL WIN: %d - TOTAL MEMBER:%d", totalbet, totalbayar, totalwin, totalmembertogel)
-		// 	if totalbet > 0 {
-		// 		//UPDATE DETAIL KELUARAN
-		// 		stmt_detailkeluaran2, e := con.PrepareContext(ctx, `
-		// 			UPDATE
-		// 			`+tbl_trx_keluarantogel+`
-		// 			SET total_bet=? , total_outstanding=?, winlose=?, total_member=?,
-		// 			updatekeluaran=?, updatedatekeluaran=?
-		// 			WHERE idtrxkeluaran=?
-		// 		`)
-		// 		helpers.ErrorCheck(e)
+				a_detailkeluaran_member, e_detailkeluaran_member := rec_detailkeluaran_member.RowsAffected()
+				helpers.ErrorCheck(e_detailkeluaran_member)
+				if a_detailkeluaran_member < 1 {
+					flag = false
+					log.Println("Update tbl_trx_keluarantogel_detail MEMBER WIN failed")
+				} else {
+					log.Printf("Update MEMBER WIN tbl_trx_keluarantogel_detail : %d\n", idtrxkeluarandetail_db2)
+				}
+				defer stmt_detailkeluaranwin_member.Close()
+			}
 
-		// 		rec_detailkeluaran2, e_detailkeluaran2 := stmt_detailkeluaran2.ExecContext(ctx,
-		// 			totalbet,
-		// 			totalbayar,
-		// 			totalwin,
-		// 			totalmembertogel,
-		// 			agent,
-		// 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		// 			idtrxkeluaran)
-		// 		helpers.ErrorCheck(e_detailkeluaran2)
+			defer row_detailbetwinner.Close()
+			log.Printf("TOTAL BET: %d - TOTAL BAYAR: %d - TOTAL WIN: %d - TOTAL MEMBER:%d", totalbet, totalbayar, totalwin, totalmembertogel)
+			if totalbet > 0 {
+				//UPDATE DETAIL KELUARAN
+				stmt_detailkeluaran2, e := con.PrepareContext(ctx, `
+					UPDATE
+					`+tbl_trx_keluarantogel+`
+					SET total_bet=? , total_outstanding=?, winlose=?, total_member=?,
+					updatekeluaran=?, updatedatekeluaran=?
+					WHERE idtrxkeluaran=?
+				`)
+				helpers.ErrorCheck(e)
 
-		// 		a_detailkeluaran2, e_detailkeluaran2 := rec_detailkeluaran2.RowsAffected()
-		// 		if a_detailkeluaran2 < 1 {
-		// 			flag = false
-		// 			log.Println("Update tbl_trx_keluarantogel failed")
-		// 		} else {
-		// 			log.Printf("Update tbl_trx_keluarantogel id: %d\n", idtrxkeluaran)
-		// 		}
-		// 		helpers.ErrorCheck(e_detailkeluaran2)
+				rec_detailkeluaran2, e_detailkeluaran2 := stmt_detailkeluaran2.ExecContext(ctx,
+					totalbet,
+					totalbayar,
+					totalwin,
+					totalmembertogel,
+					agent,
+					tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+					idtrxkeluaran)
+				helpers.ErrorCheck(e_detailkeluaran2)
 
-		// 		defer stmt_detailkeluaran2.Close()
-		// 	}
+				a_detailkeluaran2, e_detailkeluaran2 := rec_detailkeluaran2.RowsAffected()
+				if a_detailkeluaran2 < 1 {
+					flag = false
+					log.Println("Update tbl_trx_keluarantogel failed")
+				} else {
+					log.Printf("Update tbl_trx_keluarantogel id: %d\n", idtrxkeluaran)
+				}
+				helpers.ErrorCheck(e_detailkeluaran2)
 
-		// 	//NEW PASARAN
-		// 	idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
-		// 	year := tglnow.Format("YYYY")
-		// 	month := tglnow.Format("MM")
-		// 	field_col := tbl_trx_keluarantogel + year + month
-		// 	idkeluaran_counter := Get_counter(field_col)
-		// 	idkeluaran := tglnow.Format("YY") + tglnow.Format("MM") + tglnow.Format("DD") + tglnow.Format("HH") + strconv.Itoa(idkeluaran_counter)
-		// 	field_col = company + "_" + idpasarantogel + "_" + year
-		// 	idperiode_counter := Get_counter(field_col)
-		// 	stmt_newpasaran, e_newpasaran := con.PrepareContext(ctx, `
-		// 		insert into
-		// 		`+tbl_trx_keluarantogel+` (
-		// 			idtrxkeluaran, yearmonth, idcomppasaran,
-		// 			idcompany, keluaranperiode, datekeluaran,
-		// 			createkeluaran, createdatekeluaran
-		// 		) values (
-		// 			?, ?, ?,
-		// 			?, ?, ?,
-		// 			?, ?
-		// 		)
-		// 	`)
-		// 	helpers.ErrorCheck(e_newpasaran)
-		// 	defer stmt_newpasaran.Close()
-		// 	res_newpasaran, e_newpasaran := stmt_newpasaran.ExecContext(ctx,
-		// 		idkeluaran,
-		// 		tglnow.Format("YYYY-MM"),
-		// 		idcomppasaran,
-		// 		company,
-		// 		idperiode_counter,
-		// 		Get_NextPasaran(company, datekeluaran, idcomppasaran),
-		// 		agent,
-		// 		tglnow.Format("YYYY-MM-DD HH:mm:ss"))
-		// 	helpers.ErrorCheck(e_newpasaran)
-		// 	insert, e := res_newpasaran.RowsAffected()
-		// 	helpers.ErrorCheck(e)
-		// 	if insert > 0 {
-		// 		log.Println("Data Berhasil di save")
-		// 	}
-		// 	//UPDATE COMPANY PASARAN - ONLINE
-		// 	stmt_compgamepasaran, e := con.PrepareContext(ctx, `
-		// 		UPDATE
-		// 		`+config.DB_tbl_mst_company_game_pasaran+`
-		// 		SET statuspasaran=?,
-		// 		updatecomppas=?, updatedatecompas=?
-		// 		WHERE idcomppasaran=? AND idcompany=?
-		// 	`)
-		// 	helpers.ErrorCheck(e)
+				defer stmt_detailkeluaran2.Close()
+			}
 
-		// 	rec_compgamepasaran, e_compgamepasaran := stmt_compgamepasaran.ExecContext(ctx,
-		// 		"ONLINE",
-		// 		agent,
-		// 		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		// 		idcomppasaran,
-		// 		company)
-		// 	helpers.ErrorCheck(e_compgamepasaran)
+			//NEW PASARAN
+			idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+			year := tglnow.Format("YYYY")
+			month := tglnow.Format("MM")
+			field_col := tbl_trx_keluarantogel + year + month
+			idkeluaran_counter := Get_counter(field_col)
+			idkeluaran := tglnow.Format("YY") + tglnow.Format("MM") + tglnow.Format("DD") + tglnow.Format("HH") + strconv.Itoa(idkeluaran_counter)
+			field_col = company + "_" + idpasarantogel + "_" + year
+			idperiode_counter := Get_counter(field_col)
+			stmt_newpasaran, e_newpasaran := con.PrepareContext(ctx, `
+				insert into
+				`+tbl_trx_keluarantogel+` (
+					idtrxkeluaran, yearmonth, idcomppasaran,
+					idcompany, keluaranperiode, datekeluaran,
+					createkeluaran, createdatekeluaran
+				) values (
+					?, ?, ?,
+					?, ?, ?,
+					?, ?
+				)
+			`)
+			helpers.ErrorCheck(e_newpasaran)
+			defer stmt_newpasaran.Close()
+			res_newpasaran, e_newpasaran := stmt_newpasaran.ExecContext(ctx,
+				idkeluaran,
+				tglnow.Format("YYYY-MM"),
+				idcomppasaran,
+				company,
+				idperiode_counter,
+				Get_NextPasaran(company, datekeluaran, idcomppasaran),
+				agent,
+				tglnow.Format("YYYY-MM-DD HH:mm:ss"))
+			helpers.ErrorCheck(e_newpasaran)
+			insert, e := res_newpasaran.RowsAffected()
+			helpers.ErrorCheck(e)
+			if insert > 0 {
+				log.Println("Data Berhasil di save")
+			}
+			//UPDATE COMPANY PASARAN - ONLINE
+			stmt_compgamepasaran, e := con.PrepareContext(ctx, `
+				UPDATE
+				`+config.DB_tbl_mst_company_game_pasaran+`
+				SET statuspasaran=?,
+				updatecomppas=?, updatedatecompas=?
+				WHERE idcomppasaran=? AND idcompany=?
+			`)
+			helpers.ErrorCheck(e)
 
-		// 	a_compgamepasaran, e_compgamepasaran := rec_compgamepasaran.RowsAffected()
-		// 	if a_compgamepasaran < 1 {
-		// 		flag = false
-		// 		log.Println("Update tbl_mst_company_game_pasaran failed")
-		// 	} else {
-		// 		log.Printf("Update tbl_mst_company_game_pasaran id: %d\n", idtrxkeluaran)
-		// 	}
-		// 	helpers.ErrorCheck(e_compgamepasaran)
-		// 	defer stmt_compgamepasaran.Close()
+			rec_compgamepasaran, e_compgamepasaran := stmt_compgamepasaran.ExecContext(ctx,
+				"ONLINE",
+				agent,
+				tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+				idcomppasaran,
+				company)
+			helpers.ErrorCheck(e_compgamepasaran)
 
-		// 	totalmember_tblmember := _togel_totalmember_COUNT(idtrxkeluaran, company)
+			a_compgamepasaran, e_compgamepasaran := rec_compgamepasaran.RowsAffected()
+			if a_compgamepasaran < 1 {
+				flag = false
+				log.Println("Update tbl_mst_company_game_pasaran failed")
+			} else {
+				log.Printf("Update tbl_mst_company_game_pasaran id: %d\n", idtrxkeluaran)
+			}
+			helpers.ErrorCheck(e_compgamepasaran)
+			defer stmt_compgamepasaran.Close()
 
-		// 	if totalmember_tblmember < 1 {
-		// 		// INSERT TABLE TOGEL MEMBER
-		// 		sql_detailgroupmember := `SELECT
-		// 			username,
-		// 			count(username) as totalbet,
-		// 			sum(bet-(bet*diskon)-(bet*kei)) as totalbayar,
-		// 			sum(winhasil) as totalwin
-		// 			FROM ` + tbl_trx_keluarantogel_detail + `
-		// 			WHERE idtrxkeluaran = ?
-		// 			AND idcompany = ?
-		// 			GROUP BY username
-		// 		`
-		// 		row_detailgroupmember, err_detailgroupmember := con.QueryContext(ctx, sql_detailgroupmember, idtrxkeluaran, company)
-		// 		helpers.ErrorCheck(err_detailgroupmember)
-		// 		for row_detailgroupmember.Next() {
-		// 			var (
-		// 				totalbet_db, totalbayar_db, totalwin_db int
-		// 				username_db                             string
-		// 			)
+			totalmember_tblmember := _togel_totalmember_COUNT(idtrxkeluaran, company)
 
-		// 			err_detailgroupmember = row_detailgroupmember.Scan(
-		// 				&username_db,
-		// 				&totalbet_db,
-		// 				&totalbayar_db,
-		// 				&totalwin_db)
+			if totalmember_tblmember < 1 {
+				// INSERT TABLE TOGEL MEMBER
+				sql_detailgroupmember := `SELECT
+					username,
+					count(username) as totalbet,
+					sum(bet-(bet*diskon)-(bet*kei)) as totalbayar,
+					sum(winhasil) as totalwin
+					FROM ` + tbl_trx_keluarantogel_detail + `
+					WHERE idtrxkeluaran = ?
+					AND idcompany = ?
+					GROUP BY username
+				`
+				row_detailgroupmember, err_detailgroupmember := con.QueryContext(ctx, sql_detailgroupmember, idtrxkeluaran, company)
+				helpers.ErrorCheck(err_detailgroupmember)
+				for row_detailgroupmember.Next() {
+					var (
+						totalbet_db, totalbayar_db, totalwin_db int
+						username_db                             string
+					)
 
-		// 			field_col2 := tbl_trx_keluarantogel_member + year + month
-		// 			idkeluaranmember_counter := Get_counter(field_col2)
-		// 			idkeluaranmember := year + month + strconv.Itoa(idkeluaranmember_counter)
-		// 			//INSERT TABLE KELUARAN TOGEL MEMBER
-		// 			stmt_keluaranmember, e_keluaranmember := con.PrepareContext(ctx, `
-		// 				insert into
-		// 				`+tbl_trx_keluarantogel_member+` (
-		// 					idkeluaranmember, idtrxkeluaran, idcompany,
-		// 					username, totalbet, totalbayar, totalwin,
-		// 					createkeluaranmember, createdatekeluaranmember
-		// 				) values (
-		// 					?, ?, ?,
-		// 					?, ?, ?, ?,
-		// 					?, ?
-		// 				)
-		// 			`)
-		// 			helpers.ErrorCheck(e_keluaranmember)
-		// 			defer stmt_keluaranmember.Close()
-		// 			res_keluaranmember, e_keluaranmember := stmt_keluaranmember.ExecContext(ctx,
-		// 				idkeluaranmember,
-		// 				idtrxkeluaran,
-		// 				company,
-		// 				username_db,
-		// 				totalbet_db,
-		// 				totalbayar_db,
-		// 				totalwin_db,
-		// 				agent,
-		// 				tglnow.Format("YYYY-MM-DD HH:mm:ss"))
-		// 			helpers.ErrorCheck(e_keluaranmember)
-		// 			insert_keluaranmember2, e_keluaranmember2 := res_keluaranmember.RowsAffected()
-		// 			helpers.ErrorCheck(e_keluaranmember2)
-		// 			log.Println("Affected :", insert_keluaranmember2)
-		// 			if insert_keluaranmember2 > 0 {
-		// 				log.Println("Data Member tbl_trx_keluarantogel_member Berhasil di save ")
-		// 			} else {
-		// 				log.Println("Data Member tbl_trx_keluarantogel_member failed ")
-		// 			}
-		// 		}
-		// 	} else {
-		// 		log.Println("Data Member tbl_trx_keluarantogel_member Failed ")
-		// 	}
-		// }
+					err_detailgroupmember = row_detailgroupmember.Scan(
+						&username_db,
+						&totalbet_db,
+						&totalbayar_db,
+						&totalwin_db)
+
+					field_col2 := tbl_trx_keluarantogel_member + year + month
+					idkeluaranmember_counter := Get_counter(field_col2)
+					idkeluaranmember := year + month + strconv.Itoa(idkeluaranmember_counter)
+					//INSERT TABLE KELUARAN TOGEL MEMBER
+					stmt_keluaranmember, e_keluaranmember := con.PrepareContext(ctx, `
+						insert into
+						`+tbl_trx_keluarantogel_member+` (
+							idkeluaranmember, idtrxkeluaran, idcompany,
+							username, totalbet, totalbayar, totalwin,
+							createkeluaranmember, createdatekeluaranmember
+						) values (
+							?, ?, ?,
+							?, ?, ?, ?,
+							?, ?
+						)
+					`)
+					helpers.ErrorCheck(e_keluaranmember)
+					defer stmt_keluaranmember.Close()
+					res_keluaranmember, e_keluaranmember := stmt_keluaranmember.ExecContext(ctx,
+						idkeluaranmember,
+						idtrxkeluaran,
+						company,
+						username_db,
+						totalbet_db,
+						totalbayar_db,
+						totalwin_db,
+						agent,
+						tglnow.Format("YYYY-MM-DD HH:mm:ss"))
+					helpers.ErrorCheck(e_keluaranmember)
+					insert_keluaranmember2, e_keluaranmember2 := res_keluaranmember.RowsAffected()
+					helpers.ErrorCheck(e_keluaranmember2)
+					log.Println("Affected :", insert_keluaranmember2)
+					if insert_keluaranmember2 > 0 {
+						log.Println("Data Member tbl_trx_keluarantogel_member Berhasil di save ")
+					} else {
+						log.Println("Data Member tbl_trx_keluarantogel_member failed ")
+					}
+				}
+			} else {
+				log.Println("Data Member tbl_trx_keluarantogel_member Failed ")
+			}
+		}
 	}
 
 	if flag {
