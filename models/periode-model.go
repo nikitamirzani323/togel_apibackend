@@ -33,6 +33,7 @@ type periodeHome struct {
 	Total_bet         float32 `json:"pasaran_totalbet"`
 	Total_outstanding float32 `json:"pasaran_totaloutstanding"`
 	Winlose           float32 `json:"pasaran_winlose"`
+	Revisi            int     `json:"pasaran_revisi"`
 }
 type periodeHomePasaran struct {
 	Idcomppasaran int    `json:"pasarancomp_idcompp"`
@@ -138,7 +139,7 @@ func Fetch_periode(company string) (helpers.ResponsePasaran, error) {
 
 	sql_periode := `SELECT 
 			A.idtrxkeluaran, A.idcomppasaran, A.keluaranperiode, A.datekeluaran, A.keluarantogel, 
-			A.total_member, A.total_bet, A.total_outstanding, A.winlose, C.nmpasarantogel, B.idpasarantogel  
+			A.total_member, A.total_bet, A.total_outstanding, A.winlose, C.nmpasarantogel, B.idpasarantogel, A.revisi   
 			FROM ` + tbl_trx_keluarantogel + ` as A 
 			JOIN ` + config.DB_tbl_mst_company_game_pasaran + ` as B ON B.idcomppasaran = A.idcomppasaran  
 			JOIN ` + config.DB_tbl_mst_pasaran_togel + ` as C ON C.idpasarantogel  = B.idpasarantogel  
@@ -152,7 +153,7 @@ func Fetch_periode(company string) (helpers.ResponsePasaran, error) {
 	for row.Next() {
 		no += 1
 		var (
-			idtrxkeluaran_db, idcomppasaran_db                                                          int
+			idtrxkeluaran_db, idcomppasaran_db, revisi_db                                               int
 			datekeluaran_db, keluarantogel_db, nmpasarantogel_db, idpasarantogel_db, keluaranperiode_db string
 			total_member_db, total_bet_db, total_outstanding_db, winlose_db                             float32
 		)
@@ -161,7 +162,7 @@ func Fetch_periode(company string) (helpers.ResponsePasaran, error) {
 			&idtrxkeluaran_db, &idcomppasaran_db, &keluaranperiode_db,
 			&datekeluaran_db, &keluarantogel_db, &total_member_db,
 			&total_bet_db, &total_outstanding_db, &winlose_db,
-			&nmpasarantogel_db, &idpasarantogel_db)
+			&nmpasarantogel_db, &idpasarantogel_db, &revisi_db)
 
 		helpers.ErrorCheck(err)
 		status := "DONE"
@@ -184,6 +185,7 @@ func Fetch_periode(company string) (helpers.ResponsePasaran, error) {
 		obj.Total_bet = total_bet_db
 		obj.Total_outstanding = total_outstanding_db
 		obj.Winlose = totalwinlose
+		obj.Revisi = revisi_db
 		obj.Status = status
 		obj.Status_css = status_css
 		arraobj = append(arraobj, obj)
@@ -1298,11 +1300,11 @@ func Save_PeriodeRevisi(agent, company string, idtrxkeluaran int) (helpers.Respo
 		stmt_keluarantogel_delete, e_keluarantogel_delete := con.PrepareContext(ctx, `
 				DELETE FROM  
 				`+tbl_trx_keluarantogel+`   
-				WHERE idtrxkeluaran=? AND idcompany=? AND keluarantogel="" 
+				WHERE idcomppasaran=? AND idcompany=? AND keluarantogel="" 
 		`)
 
 		helpers.ErrorCheck(e_keluarantogel_delete)
-		rec_keluarantogel_delete, e_rec_keluarantogel_delete := stmt_keluarantogel_delete.ExecContext(ctx, idtrxkeluaran, company)
+		rec_keluarantogel_delete, e_rec_keluarantogel_delete := stmt_keluarantogel_delete.ExecContext(ctx, idcomppasaran, company)
 		helpers.ErrorCheck(e_rec_keluarantogel_delete)
 
 		affect_keluarantogel_delete, err_affer_keluarantogel_delete := rec_keluarantogel_delete.RowsAffected()

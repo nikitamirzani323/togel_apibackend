@@ -59,6 +59,7 @@ type responseredis_periodehome struct {
 	Pasaran_totalbet         int    `json:"pasaran_totalbet"`
 	Pasaran_totaloutstanding int    `json:"pasaran_totaloutstanding"`
 	Pasaran_winlose          int    `json:"pasaran_winlose"`
+	Pasaran_revisi           int    `json:"pasaran_revisi"`
 }
 type responseredis_periodelistpasaranonline struct {
 	Pasarancomp_idcompp int    `json:"pasarancomp_idcompp"`
@@ -97,6 +98,7 @@ func PeriodeHome(c *fiber.Ctx) error {
 		pasaran_totalbet, _ := jsonparser.GetInt(value, "pasaran_totalbet")
 		pasaran_totaloutstanding, _ := jsonparser.GetInt(value, "pasaran_totaloutstanding")
 		pasaran_winlose, _ := jsonparser.GetInt(value, "pasaran_winlose")
+		pasaran_revisi, _ := jsonparser.GetInt(value, "pasaran_revisi")
 
 		obj.Pasaran_no = int(pasaran_no)
 		obj.Pasaran_invoice = int(pasaran_invoice)
@@ -112,6 +114,7 @@ func PeriodeHome(c *fiber.Ctx) error {
 		obj.Pasaran_totalbet = int(pasaran_totalbet)
 		obj.Pasaran_totaloutstanding = int(pasaran_totaloutstanding)
 		obj.Pasaran_winlose = int(pasaran_winlose)
+		obj.Pasaran_revisi = int(pasaran_revisi)
 		arraobj = append(arraobj, obj)
 	})
 	jsonparser.ArrayEach(pasaranonline_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
