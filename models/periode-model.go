@@ -1418,6 +1418,78 @@ func Save_PeriodeRevisi(agent, company, msgrevisi string, idtrxkeluaran int) (he
 
 	return res, nil
 }
+func Cancelbet_Periode(agent, company, msgrevisi string, idtrxkeluaran, idtrxkeluarandetail int) (helpers.Response, error) {
+	var res helpers.Response
+	tglnow, _ := goment.New()
+	con := db.CreateCon()
+	ctx := context.Background()
+	render_page := time.Now()
+	msg := "Failed"
+	flag := false
+	revisi := 0
+	idcomppasaran := 0
+	tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, _ := Get_mappingdatabase(company)
+
+	sql_select := `SELECT 
+		revisi, idcomppasaran    
+		FROM ` + tbl_trx_keluarantogel + `   
+		WHERE idcompany = ? 
+		AND idtrxkeluaran = ? 
+		AND keluarantogel = "" 
+		ORDER BY idtrxkeluaran DESC LIMIT 1 
+	`
+	row_select := con.QueryRowContext(ctx, sql_select, company, idtrxkeluaran)
+	switch err_select := row_select.Scan(&revisi, &idcomppasaran); err_select {
+	case sql.ErrNoRows:
+		msg = "Cannot Update"
+	case nil:
+		flag = true
+	default:
+		helpers.ErrorCheck(err_select)
+	}
+
+	if flag {
+		stmt_keluarantogeldetail, e := con.PrepareContext(ctx, `
+			UPDATE 
+			`+tbl_trx_keluarantogel_detail+`   
+			SET statuskeluarandetail=?, 
+			updatekeluarandetail=?, updatedatekeluarandetail=? 
+			WHERE idtrxkeluarandetail =? AND idtrxkeluaran=? AND idcompany=? 
+		`)
+		helpers.ErrorCheck(e)
+		rec_keluarantogeldetail, e_keluarantogeldetail := stmt_keluarantogeldetail.ExecContext(ctx,
+			"CANCEL", agent, tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idtrxkeluarandetail, idtrxkeluaran, company)
+		helpers.ErrorCheck(e_keluarantogeldetail)
+
+		a_keluarantogeldetail, e_keluarantogel := rec_keluarantogeldetail.RowsAffected()
+		helpers.ErrorCheck(e_keluarantogel)
+
+		defer stmt_keluarantogeldetail.Close()
+		if a_keluarantogeldetail > 0 {
+			flag = true
+			log.Printf("Update Detail tbl_trx_keluarantogel_detail : %d\n", idtrxkeluaran)
+		} else {
+			flag = false
+			log.Println("Update tbl_trx_keluarantogel_detail failed")
+		}
+
+	}
+
+	if flag {
+		res.Status = fiber.StatusOK
+		res.Message = msg
+		res.Record = nil
+		res.Time = time.Since(render_page).String()
+	} else {
+		res.Status = fiber.StatusBadRequest
+		res.Message = msg
+		res.Record = nil
+		res.Time = time.Since(render_page).String()
+	}
+
+	return res, nil
+}
 func _togel_bayar_SUM(idtrxkeluaran int, company string) int {
 	con := db.CreateCon()
 	ctx := context.Background()
