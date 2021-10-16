@@ -1426,12 +1426,11 @@ func Cancelbet_Periode(agent, company, msgrevisi string, idtrxkeluaran, idtrxkel
 	render_page := time.Now()
 	msg := "Failed"
 	flag := false
-	revisi := 0
 	idcomppasaran := 0
 	tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, _ := Get_mappingdatabase(company)
 
 	sql_select := `SELECT 
-		revisi, idcomppasaran    
+		idcomppasaran    
 		FROM ` + tbl_trx_keluarantogel + `   
 		WHERE idcompany = ? 
 		AND idtrxkeluaran = ? 
@@ -1439,7 +1438,7 @@ func Cancelbet_Periode(agent, company, msgrevisi string, idtrxkeluaran, idtrxkel
 		ORDER BY idtrxkeluaran DESC LIMIT 1 
 	`
 	row_select := con.QueryRowContext(ctx, sql_select, company, idtrxkeluaran)
-	switch err_select := row_select.Scan(&revisi, &idcomppasaran); err_select {
+	switch err_select := row_select.Scan(&idcomppasaran); err_select {
 	case sql.ErrNoRows:
 		msg = "Cannot Update"
 	case nil:
