@@ -17,7 +17,10 @@ type periodedetail struct {
 	Idtrxkeluaran int    `json:"idinvoice"`
 	Permainan     string `json:"permainan"`
 }
-
+type periodedetailstatus struct {
+	Idtrxkeluaran int    `json:"idinvoice"`
+	Status        string `json:"status"`
+}
 type periodedetailmembernomor struct {
 	Idtrxkeluaran int    `json:"idinvoice" validate:"required"`
 	Permainan     string `json:"permainan" validate:"required"`
@@ -232,6 +235,32 @@ func PeriodeListBet(c *fiber.Ctx) error {
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	result, err := models.Fetch_listbet(client_company, client.Permainan, client.Idtrxkeluaran)
+	if err != nil {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": err.Error(),
+			"record":  nil,
+		})
+	}
+	return c.JSON(result)
+}
+func PeriodeListBetstatus(c *fiber.Ctx) error {
+	client := new(periodedetailstatus)
+	if err := c.BodyParser(client); err != nil {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": err.Error(),
+			"record":  nil,
+		})
+	}
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
+	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
+	result, err := models.Fetch_listbetbystatus(client_company, client.Status, client.Idtrxkeluaran)
 	if err != nil {
 		c.Status(fiber.StatusBadRequest)
 		return c.JSON(fiber.Map{

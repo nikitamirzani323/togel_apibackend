@@ -44,6 +44,7 @@ func Init() *fiber.App {
 	app.Post("/api/periodelistmemberbynomor", middleware.JWTProtected(), controllers.PeriodeListMemberByNomor)
 	app.Post("/api/periodelistmember", middleware.JWTProtected(), controllers.PeriodeListMember)
 	app.Post("/api/periodelistbet", middleware.JWTProtected(), controllers.PeriodeListBet)
+	app.Post("/api/periodelistbetstatus", middleware.JWTProtected(), controllers.PeriodeListBetstatus)
 	app.Post("/api/periodelistbettable", middleware.JWTProtected(), controllers.PeriodeListBetTable)
 	app.Post("/api/periodebettable", middleware.JWTProtected(), controllers.PeriodeBetTable)
 	app.Post("/api/saveperiode", middleware.JWTProtected(), controllers.PeriodeSave)
