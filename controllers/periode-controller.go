@@ -41,6 +41,12 @@ type periodesaverevisi struct {
 	Idinvoice int    `json:"idinvoice" validate:"required"`
 	Msgrevisi string `json:"msgrevisi" validate:"required"`
 }
+type periodecancelbet struct {
+	Sdata           string `json:"sData" validate:"required"`
+	Page            string `json:"page"`
+	Idinvoice       int    `json:"idinvoice" validate:"required"`
+	Idinvoicedetail int    `json:"idinvoicedetail" validate:"required"`
+}
 type periodeSavePrediksi struct {
 	Sdata     string `json:"sData" validate:"required"`
 	Page      string `json:"page"`
@@ -556,6 +562,90 @@ func PeriodeSaveRevisi(c *fiber.Ctx) error {
 			})
 		} else {
 			result, err := models.Save_PeriodeRevisi(client_username, client_company, client.Msgrevisi, client.Idinvoice)
+			if err != nil {
+				c.Status(fiber.StatusBadRequest)
+				return c.JSON(fiber.Map{
+					"status":  fiber.StatusBadRequest,
+					"message": err.Error(),
+					"record":  nil,
+				})
+			}
+			val := helpers.DeleteRedis("listresult_" + client_company + "_" + idpasarantogel)
+			val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + client_company)
+			val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + client_company)
+			log.Printf("Redis Delete status: %d", val)
+			log.Printf("Redis Delete Agent status: %d", val_agent)
+			log.Printf("Redis Delete Agent DASHBOARD status: %d", val_agent_dashboard)
+			return c.JSON(result)
+		}
+	}
+}
+func PeriodeCancelBet(c *fiber.Ctx) error {
+	var errors []*helpers.ErrorResponse
+	client := new(periodecancelbet)
+	validate := validator.New()
+	if err := c.BodyParser(client); err != nil {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": err.Error(),
+			"record":  nil,
+		})
+	}
+	err := validate.Struct(client)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element helpers.ErrorResponse
+			element.Field = err.StructField()
+			element.Tag = err.Tag()
+			errors = append(errors, &element)
+		}
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": "validation",
+			"record":  errors,
+		})
+	}
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
+	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
+
+	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
+	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
+	idcomppasaran := models.Get_Trxkeluaran(client_company, "idpasarantogel", client.Idinvoice)
+	idcomppasaran_int, _ := strconv.Atoi(idcomppasaran)
+	idpasarantogel := models.Get_CompanyPasaran(client_company, "idpasarantogel", idcomppasaran_int)
+
+	if typeadmin == "MASTER" {
+		result, err := models.Cancelbet_Periode(client_username, client_company, client.Idinvoice, client.Idinvoicedetail)
+		if err != nil {
+			c.Status(fiber.StatusBadRequest)
+			return c.JSON(fiber.Map{
+				"status":  fiber.StatusBadRequest,
+				"message": err.Error(),
+				"record":  nil,
+			})
+		}
+		val := helpers.DeleteRedis("listresult_" + client_company + "_" + idpasarantogel)
+		val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + client_company)
+		val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + client_company)
+		log.Printf("Redis Delete status: %d", val)
+		log.Printf("Redis Delete Agent status: %d", val_agent)
+		log.Printf("Redis Delete Agent DASHBOARD status: %d", val_agent_dashboard)
+		return c.JSON(result)
+	} else {
+		if !flag_page {
+			c.Status(fiber.StatusForbidden)
+			return c.JSON(fiber.Map{
+				"status":  fiber.StatusForbidden,
+				"message": "Mohon maaf Anda tidak bisa akses halaman ini",
+				"record":  nil,
+			})
+		} else {
+			result, err := models.Cancelbet_Periode(client_username, client_company, client.Idinvoice, client.Idinvoicedetail)
 			if err != nil {
 				c.Status(fiber.StatusBadRequest)
 				return c.JSON(fiber.Map{

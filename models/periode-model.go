@@ -1418,7 +1418,7 @@ func Save_PeriodeRevisi(agent, company, msgrevisi string, idtrxkeluaran int) (he
 
 	return res, nil
 }
-func Cancelbet_Periode(agent, company, msgrevisi string, idtrxkeluaran, idtrxkeluarandetail int) (helpers.Response, error) {
+func Cancelbet_Periode(agent, company string, idtrxkeluaran, idtrxkeluarandetail int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
 	con := db.CreateCon()
