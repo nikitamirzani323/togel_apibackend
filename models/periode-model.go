@@ -668,7 +668,7 @@ func Fetch_listbetbyusername(company, username string, idtrxkeluaran int) (helpe
 					AND username = ? 
 					ORDER BY datetimedetail DESC 
 				`
-	row, err := con.QueryContext(ctx, sqldetail, company, idtrxkeluaran, status)
+	row, err := con.QueryContext(ctx, sqldetail, company, idtrxkeluaran, username)
 
 	helpers.ErrorCheck(err)
 
