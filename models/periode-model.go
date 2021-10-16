@@ -953,6 +953,7 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 					FROM ` + tbl_trx_keluarantogel_detail + `  
 					WHERE idtrxkeluaran = ? 
 					AND idcompany = ? 
+					AND statuskeluarandetail = "RUNNING" 
 				`
 
 				row_detailbet, err_detailbet := con.QueryContext(ctx, sql_detailbet, idtrxkeluaran, company)
