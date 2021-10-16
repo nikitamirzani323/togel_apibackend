@@ -946,9 +946,7 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 		}
 		defer stmt_companypasaran.Close()
 		if flag {
-			wg.Add(1)
-			go func() {
-				sql_detailbet := `SELECT 
+			sql_detailbet := `SELECT 
 					idtrxkeluarandetail, typegame, bet, diskon, kei, nomortogel   
 					FROM ` + tbl_trx_keluarantogel_detail + `  
 					WHERE idtrxkeluaran = ? 
@@ -956,57 +954,54 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 					AND statuskeluarandetail = "RUNNING" 
 				`
 
-				row_detailbet, err_detailbet := con.QueryContext(ctx, sql_detailbet, idtrxkeluaran, company)
+			row_detailbet, err_detailbet := con.QueryContext(ctx, sql_detailbet, idtrxkeluaran, company)
+
+			helpers.ErrorCheck(err_detailbet)
+			for row_detailbet.Next() {
+				var (
+					idtrxkeluarandetail_db, bet_db int
+					typegame_db, nomortogel_db     string
+					diskon_db, kei_db              float32
+				)
+
+				err_detailbet = row_detailbet.Scan(
+					&idtrxkeluarandetail_db,
+					&typegame_db,
+					&bet_db,
+					&diskon_db,
+					&kei_db,
+					&nomortogel_db)
 
 				helpers.ErrorCheck(err_detailbet)
-				for row_detailbet.Next() {
-					var (
-						idtrxkeluarandetail_db, bet_db int
-						typegame_db, nomortogel_db     string
-						diskon_db, kei_db              float32
-					)
+				statuskeluarandetail, _ := _rumusTogel(keluarantogel, typegame_db, nomortogel_db, company, "Y", idcomppasaran, idtrxkeluarandetail_db)
 
-					err_detailbet = row_detailbet.Scan(
-						&idtrxkeluarandetail_db,
-						&typegame_db,
-						&bet_db,
-						&diskon_db,
-						&kei_db,
-						&nomortogel_db)
-
-					helpers.ErrorCheck(err_detailbet)
-					statuskeluarandetail, _ := _rumusTogel(keluarantogel, typegame_db, nomortogel_db, company, "Y", idcomppasaran, idtrxkeluarandetail_db)
-
-					//UPDATE DETAIL KELUARAN
-					stmt_detailkeluaran, e := con.PrepareContext(ctx, `
+				//UPDATE DETAIL KELUARAN
+				stmt_detailkeluaran, e := con.PrepareContext(ctx, `
 						UPDATE 
 						`+tbl_trx_keluarantogel_detail+`      
 						SET statuskeluarandetail=? , 
 						updatekeluarandetail=?, updatedatekeluarandetail=? 
 						WHERE idtrxkeluarandetail=?  AND idtrxkeluaran=? 
 						`)
-					helpers.ErrorCheck(e)
-					rec_detailkeluaran, e_detailkeluaran := stmt_detailkeluaran.ExecContext(ctx,
-						statuskeluarandetail,
-						agent,
-						tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-						idtrxkeluarandetail_db, idtrxkeluaran)
-					helpers.ErrorCheck(e_detailkeluaran)
+				helpers.ErrorCheck(e)
+				rec_detailkeluaran, e_detailkeluaran := stmt_detailkeluaran.ExecContext(ctx,
+					statuskeluarandetail,
+					agent,
+					tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+					idtrxkeluarandetail_db, idtrxkeluaran)
+				helpers.ErrorCheck(e_detailkeluaran)
 
-					a_detailkeluaran, e_detailkeluaran := rec_detailkeluaran.RowsAffected()
-					helpers.ErrorCheck(e_detailkeluaran)
-					if a_detailkeluaran < 1 {
-						flag = false
-						log.Println("Update tbl_trx_keluarantogel_detail failed")
-					} else {
-						log.Printf("Update tbl_trx_keluarantogel_detail : %d - %s\n", idtrxkeluarandetail_db, typegame_db)
-					}
-					defer stmt_detailkeluaran.Close()
+				a_detailkeluaran, e_detailkeluaran := rec_detailkeluaran.RowsAffected()
+				helpers.ErrorCheck(e_detailkeluaran)
+				if a_detailkeluaran < 1 {
+					flag = false
+					log.Println("Update tbl_trx_keluarantogel_detail failed")
+				} else {
+					log.Printf("Update tbl_trx_keluarantogel_detail : %d - %s\n", idtrxkeluarandetail_db, typegame_db)
 				}
-				defer row_detailbet.Close()
-				wg.Done()
-			}()
-			wg.Wait()
+				defer stmt_detailkeluaran.Close()
+			}
+			defer row_detailbet.Close()
 		}
 
 		if flag {
