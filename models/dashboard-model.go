@@ -106,7 +106,7 @@ func _winlose(company, start, end string, idcomppasaran int) int {
 	tbl_trx_keluarantogel, _, _ := Get_mappingdatabase(company)
 
 	sql_keluaran := `SELECT
-		COALESCE(SUM(total_outstanding-winlose),0 )  as winlose
+		COALESCE(SUM(total_outstanding-total_cancel-winlose),0 )  as winlose
 		FROM ` + tbl_trx_keluarantogel + `  
 		WHERE idcompany = ? 
 		AND idcomppasaran = ? 
