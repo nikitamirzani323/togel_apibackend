@@ -77,6 +77,7 @@ type responseredis_periodehome struct {
 	Pasaran_totalmember      int    `json:"pasaran_totalmember"`
 	Pasaran_totalbet         int    `json:"pasaran_totalbet"`
 	Pasaran_totaloutstanding int    `json:"pasaran_totaloutstanding"`
+	Pasaran_totalcancelbet   int    `json:"pasaran_totalcancelbet"`
 	Pasaran_winlose          int    `json:"pasaran_winlose"`
 	Pasaran_revisi           int    `json:"pasaran_revisi"`
 	Pasaran_msgrevisi        string `json:"pasaran_msgrevisi"`
@@ -117,6 +118,7 @@ func PeriodeHome(c *fiber.Ctx) error {
 		pasaran_totalmember, _ := jsonparser.GetInt(value, "pasaran_totalmember")
 		pasaran_totalbet, _ := jsonparser.GetInt(value, "pasaran_totalbet")
 		pasaran_totaloutstanding, _ := jsonparser.GetInt(value, "pasaran_totaloutstanding")
+		pasaran_totalcancelbet, _ := jsonparser.GetInt(value, "pasaran_totalcancelbet")
 		pasaran_winlose, _ := jsonparser.GetInt(value, "pasaran_winlose")
 		pasaran_revisi, _ := jsonparser.GetInt(value, "pasaran_revisi")
 		pasaran_msgrevisi, _ := jsonparser.GetString(value, "pasaran_msgrevisi")
@@ -134,6 +136,7 @@ func PeriodeHome(c *fiber.Ctx) error {
 		obj.Pasaran_totalmember = int(pasaran_totalmember)
 		obj.Pasaran_totalbet = int(pasaran_totalbet)
 		obj.Pasaran_totaloutstanding = int(pasaran_totaloutstanding)
+		obj.Pasaran_totalcancelbet = int(pasaran_totalcancelbet)
 		obj.Pasaran_winlose = int(pasaran_winlose)
 		obj.Pasaran_revisi = int(pasaran_revisi)
 		obj.Pasaran_msgrevisi = pasaran_msgrevisi

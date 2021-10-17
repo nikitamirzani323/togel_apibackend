@@ -32,6 +32,7 @@ type periodeHome struct {
 	Total_Member      float32 `json:"pasaran_totalmember"`
 	Total_bet         float32 `json:"pasaran_totalbet"`
 	Total_outstanding float32 `json:"pasaran_totaloutstanding"`
+	Total_cancelbet   float32 `json:"pasaran_totalcancelbet"`
 	Winlose           float32 `json:"pasaran_winlose"`
 	Revisi            int     `json:"pasaran_revisi"`
 	Msgrevisi         string  `json:"pasaran_msgrevisi"`
@@ -87,10 +88,11 @@ type ListBet struct {
 	Totalbet    int    `json:"bet_totalbet"`
 }
 type listMember struct {
-	Member     string `json:"member"`
-	Totalbet   int    `json:"totalbet"`
-	Totalbayar int    `json:"totalbayar"`
-	Totalwin   int    `json:"totalwin"`
+	Member         string `json:"member"`
+	Totalbet       int    `json:"totalbet"`
+	Totalbayar     int    `json:"totalbayar"`
+	Totalcancelbet int    `json:"totalcancelbet"`
+	Totalwin       int    `json:"totalwin"`
 }
 type listMemberByNomor struct {
 	Member     string  `json:"member"`
@@ -140,7 +142,8 @@ func Fetch_periode(company string) (helpers.ResponsePasaran, error) {
 
 	sql_periode := `SELECT 
 			A.idtrxkeluaran, A.idcomppasaran, A.keluaranperiode, A.datekeluaran, A.keluarantogel, 
-			A.total_member, A.total_bet, A.total_outstanding, A.winlose, C.nmpasarantogel, B.idpasarantogel, A.revisi, A.noterevisi    
+			A.total_member, A.total_bet, A.total_outstanding, A.winlose, A.total_cancel, 
+			C.nmpasarantogel, B.idpasarantogel, A.revisi, A.noterevisi    
 			FROM ` + tbl_trx_keluarantogel + ` as A 
 			JOIN ` + config.DB_tbl_mst_company_game_pasaran + ` as B ON B.idcomppasaran = A.idcomppasaran  
 			JOIN ` + config.DB_tbl_mst_pasaran_togel + ` as C ON C.idpasarantogel  = B.idpasarantogel  
@@ -156,13 +159,13 @@ func Fetch_periode(company string) (helpers.ResponsePasaran, error) {
 		var (
 			idtrxkeluaran_db, idcomppasaran_db, revisi_db                                                              int
 			datekeluaran_db, keluarantogel_db, nmpasarantogel_db, idpasarantogel_db, keluaranperiode_db, noterevisi_db string
-			total_member_db, total_bet_db, total_outstanding_db, winlose_db                                            float32
+			total_member_db, total_bet_db, total_outstanding_db, winlose_db, total_cancel_db                           float32
 		)
 
 		err = row.Scan(
 			&idtrxkeluaran_db, &idcomppasaran_db, &keluaranperiode_db,
 			&datekeluaran_db, &keluarantogel_db, &total_member_db,
-			&total_bet_db, &total_outstanding_db, &winlose_db,
+			&total_bet_db, &total_outstanding_db, &winlose_db, &total_cancel_db,
 			&nmpasarantogel_db, &idpasarantogel_db, &revisi_db, &noterevisi_db)
 
 		helpers.ErrorCheck(err)
@@ -172,7 +175,7 @@ func Fetch_periode(company string) (helpers.ResponsePasaran, error) {
 			status = "RUNNING"
 			status_css = config.STATUS_RUNNING
 		}
-		totalwinlose := total_outstanding_db - winlose_db
+		totalwinlose := total_outstanding_db - total_cancel_db - winlose_db
 
 		obj.No = no
 		obj.Idtrxkeluaran = idtrxkeluaran_db
@@ -185,6 +188,7 @@ func Fetch_periode(company string) (helpers.ResponsePasaran, error) {
 		obj.Total_Member = total_member_db
 		obj.Total_bet = total_bet_db
 		obj.Total_outstanding = total_outstanding_db
+		obj.Total_cancelbet = total_cancel_db
 		obj.Winlose = totalwinlose
 		obj.Revisi = revisi_db
 		obj.Msgrevisi = noterevisi_db
@@ -393,6 +397,7 @@ func Fetch_membergroup(company string, idtrxkeluaran int) (helpers.Response, err
 		username, 
 		count(username) as totalbet, 
 		sum(bet-(bet*diskon)-(bet*kei)) as totalbayar,
+		sum(cancelbet) as totalcancel,  
 		sum(winhasil) as totalwin 
 		FROM ` + tbl_trx_keluarantogel_detail + ` 
 		WHERE idcompany = ? 
@@ -405,14 +410,15 @@ func Fetch_membergroup(company string, idtrxkeluaran int) (helpers.Response, err
 	helpers.ErrorCheck(err)
 	for row.Next() {
 		var (
-			totalbet_db, totalbayar_db, totalwin_db float64
-			username_db                             string
+			totalbet_db, totalbayar_db, totalwin_db, totalcancel_db float64
+			username_db                                             string
 		)
 
 		err = row.Scan(
 			&username_db,
 			&totalbet_db,
 			&totalbayar_db,
+			&totalcancel_db,
 			&totalwin_db)
 
 		helpers.ErrorCheck(err)
@@ -420,6 +426,7 @@ func Fetch_membergroup(company string, idtrxkeluaran int) (helpers.Response, err
 		obj.Member = username_db
 		obj.Totalbet = int(totalbet_db)
 		obj.Totalbayar = int(totalbayar_db)
+		obj.Totalcancelbet = int(totalcancel_db)
 		obj.Totalwin = int(totalwin_db)
 		arraobj = append(arraobj, obj)
 		msg = "Success"
@@ -1113,7 +1120,7 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 		if flag {
 			//UPDATE WINHASIL DI tbl_trx_keluarantogel_detail
 			sql_detailbetwinner := `SELECT
-				idtrxkeluarandetail, username, typegame, bet, diskon, kei, win
+				idtrxkeluarandetail, username, typegame, bet, diskon, kei, win 
 				FROM ` + tbl_trx_keluarantogel_detail + `
 				WHERE idtrxkeluaran = ?
 				AND idcompany = ?
@@ -1341,7 +1348,7 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 					count(username) as totalbet,
 					sum(bet-(bet*diskon)-(bet*kei)) as totalbayar,
 					sum(winhasil) as totalwin, 
-					sum(cancelbet) as totalcancel,
+					sum(cancelbet) as totalcancel 
 					FROM ` + tbl_trx_keluarantogel_detail + `
 					WHERE idtrxkeluaran = ?
 					AND idcompany = ?
@@ -1569,7 +1576,6 @@ func Save_PeriodeRevisi(agent, company, msgrevisi string, idtrxkeluaran int) (he
 	default:
 		helpers.ErrorCheck(err_select)
 	}
-
 	if flag {
 		stmt_keluarantogel_delete, e_keluarantogel_delete := con.PrepareContext(ctx, `
 				DELETE FROM  
@@ -1599,13 +1605,13 @@ func Save_PeriodeRevisi(agent, company, msgrevisi string, idtrxkeluaran int) (he
 				UPDATE 
 				`+tbl_trx_keluarantogel+`   
 				SET keluarantogel=?, revisi=?, noterevisi=?, total_member=?, 
-				total_bet=?, total_outstanding=?, total_win=?, total_lose=?, winlose=?, 
+				total_bet=?, total_outstanding=?, total_win=?, total_lose=?, winlose=?, total_cancel=?, 
 				updatekeluaran=?, updatedatekeluaran=? 
 				WHERE idtrxkeluaran=? AND idcompany=? 
 			`)
 			helpers.ErrorCheck(e)
 			rec_keluarantogel, e_keluarantogel := stmt_keluarantogel.ExecContext(ctx,
-				"", revisi, msgrevisi, 0, 0, 0, 0, 0, 0,
+				"", revisi, msgrevisi, 0, 0, 0, 0, 0, 0, 0,
 				agent, tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 				idtrxkeluaran, company)
 			helpers.ErrorCheck(e_keluarantogel)
@@ -1626,14 +1632,14 @@ func Save_PeriodeRevisi(agent, company, msgrevisi string, idtrxkeluaran int) (he
 				stmt_keluarantogeldetail, e_detail := con.PrepareContext(ctx, `
 					UPDATE 
 					`+tbl_trx_keluarantogel_detail+`   
-					SET statuskeluarandetail=?, winhasil=?,  
+					SET statuskeluarandetail=?, winhasil=?, cancelbet=?,  
 					updatekeluarandetail=?, updatedatekeluarandetail=? 
 					WHERE idtrxkeluaran=? AND idcompany=? 
 			`)
 
 				helpers.ErrorCheck(e_detail)
 				rec_keluarantogeldetail, e_keluarantogeldetail := stmt_keluarantogeldetail.ExecContext(ctx,
-					"RUNNING", 0,
+					"RUNNING", 0, 0,
 					agent, tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 					idtrxkeluaran, company)
 				helpers.ErrorCheck(e_keluarantogeldetail)
