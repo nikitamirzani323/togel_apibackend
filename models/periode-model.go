@@ -331,7 +331,6 @@ func Fetch_membergroupbynomor(company, typegame, nomortogel string, idtrxkeluara
 		WHERE idcompany = ? 
 		AND idtrxkeluaran = ? 
 		AND typegame = ? 
-		AND statuskeluarandetail != "CANCEL"  
 		AND nomortogel = ? 
 	`
 
@@ -398,8 +397,6 @@ func Fetch_membergroup(company string, idtrxkeluaran int) (helpers.Response, err
 		FROM ` + tbl_trx_keluarantogel_detail + ` 
 		WHERE idcompany = ? 
 		AND idtrxkeluaran = ? 
-		AND idtrxkeluaran = ? 
-		AND statuskeluarandetail != "CANCEL"  
 		GROUP BY username 
 	`
 
@@ -1114,6 +1111,7 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 		}
 
 		if flag {
+			//UPDATE WINHASIL DI tbl_trx_keluarantogel_detail
 			sql_detailbetwinner := `SELECT
 				idtrxkeluarandetail, username, typegame, bet, diskon, kei, win
 				FROM ` + tbl_trx_keluarantogel_detail + `
@@ -1173,15 +1171,73 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 				}
 				defer stmt_detailkeluaranwin_member.Close()
 			}
-
 			defer row_detailbetwinner.Close()
-			log.Printf("TOTAL BET: %d - TOTAL BAYAR: %d - TOTAL WIN: %d - TOTAL MEMBER:%d", totalbet, totalbayar, totalwin, totalmembertogel)
+
+			//UPDATE CANCELBET DI tbl_trx_keluarantogel_detail
+			sql_detailbetcancel := `SELECT
+				idtrxkeluarandetail, username, typegame, bet, diskon, kei, win
+				FROM ` + tbl_trx_keluarantogel_detail + `
+				WHERE idtrxkeluaran = ?
+				AND idcompany = ?
+				AND statuskeluarandetail = "CANCEL"
+			`
+			row_detailbetcancel, err_detailbetcancel := con.QueryContext(ctx, sql_detailbetcancel, idtrxkeluaran, company)
+
+			helpers.ErrorCheck(err_detailbetcancel)
+			totalcancel := 0
+			for row_detailbetcancel.Next() {
+				var (
+					bet_db, idtrxkeluarandetail_db2 int
+					username_db, typegame_db        string
+					diskon_db, kei_db, win_db       float32
+				)
+
+				err_detailbetcancel = row_detailbetcancel.Scan(
+					&idtrxkeluarandetail_db2,
+					&username_db,
+					&typegame_db,
+					&bet_db,
+					&diskon_db,
+					&kei_db,
+					&win_db)
+				bayar := bet_db - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
+				totalcancel = totalcancel + bayar
+
+				//UPDATE DETAIL KELUARAN MEMBER CANCELBET
+				stmt_detailkeluarancancel_member, e := con.PrepareContext(ctx, `
+					UPDATE
+					`+tbl_trx_keluarantogel_detail+`
+					SET cancelbet=? ,
+					updatekeluarandetail=?, updatedatekeluarandetail=?
+					WHERE idtrxkeluarandetail=?  AND idtrxkeluaran=? AND username=?
+					`)
+				helpers.ErrorCheck(e)
+				rec_detailkeluaran_member, e_detailkeluaran_member := stmt_detailkeluarancancel_member.ExecContext(ctx,
+					bayar,
+					agent,
+					tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+					idtrxkeluarandetail_db2, idtrxkeluaran, username_db)
+				helpers.ErrorCheck(e_detailkeluaran_member)
+
+				a_detailkeluaran_member, e_detailkeluaran_member := rec_detailkeluaran_member.RowsAffected()
+				helpers.ErrorCheck(e_detailkeluaran_member)
+				if a_detailkeluaran_member < 1 {
+					flag = false
+					log.Println("Update tbl_trx_keluarantogel_detail MEMBER CANCEL failed")
+				} else {
+					log.Printf("Update MEMBER CANCEL tbl_trx_keluarantogel_detail : %d\n", idtrxkeluarandetail_db2)
+				}
+				defer stmt_detailkeluarancancel_member.Close()
+			}
+			defer row_detailbetwinner.Close()
+
+			log.Printf("TOTAL BET: %d - TOTAL BAYAR: %d - TOTAL WIN: %d - TOTAL MEMBER:%d - TOTAL CANCEL:%d", totalbet, totalbayar, totalwin, totalmembertogel, totalcancel)
 			if totalbet > 0 {
 				//UPDATE DETAIL KELUARAN
 				stmt_detailkeluaran2, e := con.PrepareContext(ctx, `
 					UPDATE
 					`+tbl_trx_keluarantogel+`
-					SET total_bet=? , total_outstanding=?, winlose=?, total_member=?,
+					SET total_bet=? , total_outstanding=?, winlose=?, total_member=?, total_cancel=?, 
 					updatekeluaran=?, updatedatekeluaran=?
 					WHERE idtrxkeluaran=?
 				`)
@@ -1192,6 +1248,7 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 					totalbayar,
 					totalwin,
 					totalmembertogel,
+					totalcancel,
 					agent,
 					tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 					idtrxkeluaran)
@@ -1283,7 +1340,8 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 					username,
 					count(username) as totalbet,
 					sum(bet-(bet*diskon)-(bet*kei)) as totalbayar,
-					sum(winhasil) as totalwin
+					sum(winhasil) as totalwin, 
+					sum(cancelbet) as totalcancel,
 					FROM ` + tbl_trx_keluarantogel_detail + `
 					WHERE idtrxkeluaran = ?
 					AND idcompany = ?
@@ -1293,15 +1351,15 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 				helpers.ErrorCheck(err_detailgroupmember)
 				for row_detailgroupmember.Next() {
 					var (
-						totalbet_db, totalbayar_db, totalwin_db int
-						username_db                             string
+						totalbet_db, totalbayar_db, totalwin_db, totalcancel_db int
+						username_db                                             string
 					)
 
 					err_detailgroupmember = row_detailgroupmember.Scan(
 						&username_db,
 						&totalbet_db,
 						&totalbayar_db,
-						&totalwin_db)
+						&totalwin_db, &totalcancel_db)
 
 					field_col2 := tbl_trx_keluarantogel_member + year + month
 					idkeluaranmember_counter := Get_counter(field_col2)
@@ -1311,11 +1369,11 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 						insert into
 						`+tbl_trx_keluarantogel_member+` (
 							idkeluaranmember, idtrxkeluaran, idcompany,
-							username, totalbet, totalbayar, totalwin,
+							username, totalbet, totalbayar, totalwin, totalcancel, 
 							createkeluaranmember, createdatekeluaranmember
 						) values (
 							?, ?, ?,
-							?, ?, ?, ?,
+							?, ?, ?, ?, ?, 
 							?, ?
 						)
 					`)
@@ -1329,6 +1387,7 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 						totalbet_db,
 						totalbayar_db,
 						totalwin_db,
+						totalcancel_db,
 						agent,
 						tglnow.Format("YYYY-MM-DD HH:mm:ss"))
 					helpers.ErrorCheck(e_keluaranmember)
