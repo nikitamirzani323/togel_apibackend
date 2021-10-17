@@ -331,6 +331,7 @@ func Fetch_membergroupbynomor(company, typegame, nomortogel string, idtrxkeluara
 		WHERE idcompany = ? 
 		AND idtrxkeluaran = ? 
 		AND typegame = ? 
+		AND statuskeluarandetail != "CANCEL"  
 		AND nomortogel = ? 
 	`
 
@@ -397,6 +398,8 @@ func Fetch_membergroup(company string, idtrxkeluaran int) (helpers.Response, err
 		FROM ` + tbl_trx_keluarantogel_detail + ` 
 		WHERE idcompany = ? 
 		AND idtrxkeluaran = ? 
+		AND idtrxkeluaran = ? 
+		AND statuskeluarandetail != "CANCEL"  
 		GROUP BY username 
 	`
 
