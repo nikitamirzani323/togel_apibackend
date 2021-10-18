@@ -283,12 +283,14 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 	} else {
 		statuspasaran = "ONLINE"
 	}
+
 	statusrevisi := "LOCK"
 	if keluarantogel_db != "" {
 		if revisi_db < 1 {
 			statusrevisi = "OPEN"
 		}
 	}
+
 	if updatedatekeluaran_db != "" {
 		tglupdate, _ := goment.New(updatedatekeluaran_db)
 		tglexpirerevisi := tglupdate.Add(30, "minutes").Format("YYYY-MM-DD HH:mm:ss")
@@ -297,7 +299,10 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 			statusrevisi = "LOCK"
 		}
 	}
-
+	if tglskrg >= jamopen { //EXPIRE
+		statuspasaran = "OFFLINE"
+		statusrevisi = "LOCK"
+	}
 	obj.Idinvoice = strconv.Itoa(idtrxkeluaran)
 	obj.TanggalPeriode = datekeluaran_db
 	obj.TanggalNext = Get_NextPasaran(company, datekeluaran_db, idcomppasaran_db)

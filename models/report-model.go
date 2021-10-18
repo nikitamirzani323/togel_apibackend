@@ -34,7 +34,7 @@ func Fetch_winlose(company, start, end string) (helpers.ResponseReportWinlose, e
 	subtotal_winlose := 0
 	var subtotal_winlose_agent float64 = 0
 	sql_winlose := `SELECT 
-			A.username , SUM(A.totalbayar) as turnover, SUM(A.totalwin-A.totalbayar) as winlose
+			A.username , SUM(A.totalbayar) as turnover, SUM(A.totalwin-A.totalbayar-A.totalcancel) as winlose
 			FROM ` + tbl_trx_keluarantogel_member + ` as A 
 			JOIN ` + tbl_trx_keluarantogel + ` as B ON B.idtrxkeluaran  = A.idtrxkeluaran  
 			WHERE B.idcompany = ? 
@@ -48,18 +48,18 @@ func Fetch_winlose(company, start, end string) (helpers.ResponseReportWinlose, e
 	for row.Next() {
 		var (
 			turnover_db float64
-			winlose_db  int
+			winlose_db  float64
 			username_db string
 		)
 
 		err = row.Scan(&username_db, &turnover_db, &winlose_db)
 		helpers.ErrorCheck(err)
 		subtotal_turnover = subtotal_turnover + int(turnover_db)
-		subtotal_winlose = subtotal_winlose + winlose_db
+		subtotal_winlose = subtotal_winlose + int(winlose_db)
 		subtotal_winlose_agent = subtotal_winlose_agent + math.Abs(float64(winlose_db))
 		obj.Report_client_username = username_db
 		obj.Report_client_turnover = turnover_db
-		obj.Report_client_winlose = winlose_db
+		obj.Report_client_winlose = int(winlose_db)
 		obj.Report_agent_winlose = math.Abs(float64(winlose_db))
 		arraobj = append(arraobj, obj)
 		msg = "Success"
