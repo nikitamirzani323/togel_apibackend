@@ -1438,12 +1438,12 @@ type datajobs struct {
 	Idtrxkeluaran            string
 	Idtrxkeluarandetail      string
 	Statuskeluarandetail     string
-	Agent                    string
 	Updatekeluarandetail     string
 	Updatedatekeluarandetail string
 }
 type dataresult struct {
 	Idtrxkeluarandetail string
+	Message             string
 	Status              string
 }
 
@@ -1583,10 +1583,14 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 				flag_result := <-results_bet
 				if flag_result.Status == "Failed" {
 					flag = false
+					log.Printf("ID : %s, Message: %s", flag_result.Idtrxkeluarandetail, flag_result.Message)
 				}
+
 			}
 			close(results_bet)
 			wg.Wait()
+			log.Println("TIME JOBS: ", time.Since(render_page).String())
+			log.Println("FLAGS: ", flag)
 		}
 
 		if flag {
@@ -3137,9 +3141,9 @@ func _doJobUpdateTransaksi(fieldtable string, jobs <-chan datajobs, results chan
 				a_detailkeluaran, e_detailkeluaran := rec_detailkeluaran.RowsAffected()
 				helpers.ErrorCheck(e_detailkeluaran)
 				if a_detailkeluaran < 1 {
-					results <- dataresult{Idtrxkeluarandetail: capture.Idtrxkeluarandetail, Status: "Success"}
+					results <- dataresult{Idtrxkeluarandetail: capture.Idtrxkeluarandetail, Message: "Tidak ada masalah", Status: "Success"}
 				} else {
-					results <- dataresult{Idtrxkeluarandetail: capture.Idtrxkeluarandetail, Status: "Failed"}
+					results <- dataresult{Idtrxkeluarandetail: capture.Idtrxkeluarandetail, Message: e_detailkeluaran.Error(), Status: "Failed"}
 				}
 				defer stmt_detailkeluaran.Close()
 			}(&outerError)
