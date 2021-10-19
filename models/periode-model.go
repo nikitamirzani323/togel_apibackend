@@ -17,7 +17,6 @@ import (
 	"github.com/nleeper/goment"
 )
 
-var wg sync.WaitGroup
 var mutex sync.RWMutex
 
 type periodeHome struct {
