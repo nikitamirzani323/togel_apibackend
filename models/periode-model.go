@@ -2050,7 +2050,7 @@ func Save_PeriodeRevisi(agent, company, msgrevisi string, idtrxkeluaran int) (he
 	case nil:
 		flag = true
 	default:
-		helpers.ErrorCheck(err_select)
+		msg = err_select.Error()
 	}
 	if flag {
 		stmt_keluarantogel_delete, e_keluarantogel_delete := con.PrepareContext(ctx, `
