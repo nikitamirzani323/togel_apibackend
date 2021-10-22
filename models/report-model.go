@@ -34,7 +34,7 @@ func Fetch_winlose(company, start, end string) (helpers.ResponseReportWinlose, e
 	subtotal_winlose := 0
 	var subtotal_winlose_agent float64 = 0
 	sql_winlose := `SELECT 
-			A.username , SUM(A.totalbayar) as turnover, SUM(A.totalwin-A.totalbayar-A.totalcancel) as winlose
+			A.username , SUM(A.totalbayar) as turnover, SUM(A.totalbayar-A.totalcancel-A.totalwin) as winlose
 			FROM ` + tbl_trx_keluarantogel_member + ` as A 
 			JOIN ` + tbl_trx_keluarantogel + ` as B ON B.idtrxkeluaran  = A.idtrxkeluaran  
 			WHERE B.idcompany = ? 
