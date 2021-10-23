@@ -277,32 +277,34 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 	tglopen, _ := goment.New(datekeluaran_db)
 	tglskrg := tglnow.Format("YYYY-MM-DD HH:mm:ss")
 	jamtutup := tglnow.Format("YYYY-MM-DD") + " " + jamtutup_db
-	jamopen := tglopen.Format("YYYY-MM-DD") + " " + jamopen_db
+	jamopen := tglnow.Format("YYYY-MM-DD") + " " + jamopen_db
+	jamopen2 := tglopen.Format("YYYY-MM-DD") + " " + jamopen_db
 	statuspasaran := "OFFLINE"
-	if tglskrg >= jamtutup && tglskrg <= jamopen {
-		statuspasaran = "OFFLINE"
-	} else {
-		statuspasaran = "ONLINE"
-	}
-
 	statusrevisi := "LOCK"
-	if keluarantogel_db != "" {
-		if revisi_db < 1 {
-			statusrevisi = "OPEN"
-		}
-	}
-
-	if updatedatekeluaran_db != "" {
-		tglupdate, _ := goment.New(updatedatekeluaran_db)
-		tglexpirerevisi := tglupdate.Add(30, "minutes").Format("YYYY-MM-DD HH:mm:ss")
-
-		if tglexpirerevisi < tglskrg {
-			statusrevisi = "LOCK"
-		}
-	}
-	if tglskrg >= jamopen { //EXPIRE
+	if tglskrg > jamopen2 { //EXPIRE
 		statuspasaran = "OFFLINE"
 		statusrevisi = "LOCK"
+	} else {
+		if tglskrg >= jamtutup && tglskrg <= jamopen {
+			statuspasaran = "OFFLINE"
+		} else {
+			statuspasaran = "ONLINE"
+		}
+
+		if keluarantogel_db != "" {
+			if revisi_db < 1 {
+				statusrevisi = "OPEN"
+			}
+		}
+
+		if updatedatekeluaran_db != "" {
+			tglupdate, _ := goment.New(updatedatekeluaran_db)
+			tglexpirerevisi := tglupdate.Add(30, "minutes").Format("YYYY-MM-DD HH:mm:ss")
+
+			if tglexpirerevisi < tglskrg {
+				statusrevisi = "LOCK"
+			}
+		}
 	}
 	obj.Idinvoice = strconv.Itoa(idtrxkeluaran)
 	obj.TanggalPeriode = datekeluaran_db
