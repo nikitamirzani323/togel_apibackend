@@ -285,26 +285,32 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 		statuspasaran = "OFFLINE"
 		statusrevisi = "LOCK"
 	} else {
-		if tglskrg >= jamtutup && tglskrg <= jamopen {
-			statuspasaran = "OFFLINE"
+		flag := _checkpasaranonline(idcomppasaran_db, company)
+		if flag {
+			if tglskrg >= jamtutup && tglskrg <= jamopen {
+				statuspasaran = "OFFLINE"
+			} else {
+				statuspasaran = "ONLINE"
+			}
+
+			if keluarantogel_db != "" {
+				if revisi_db < 1 {
+					statusrevisi = "OPEN"
+				}
+			}
+
+			if updatedatekeluaran_db != "" {
+				tglupdate, _ := goment.New(updatedatekeluaran_db)
+				tglexpirerevisi := tglupdate.Add(30, "minutes").Format("YYYY-MM-DD HH:mm:ss")
+
+				if tglexpirerevisi < tglskrg {
+					statusrevisi = "LOCK"
+				}
+			}
 		} else {
 			statuspasaran = "ONLINE"
 		}
 
-		if keluarantogel_db != "" {
-			if revisi_db < 1 {
-				statusrevisi = "OPEN"
-			}
-		}
-
-		if updatedatekeluaran_db != "" {
-			tglupdate, _ := goment.New(updatedatekeluaran_db)
-			tglexpirerevisi := tglupdate.Add(30, "minutes").Format("YYYY-MM-DD HH:mm:ss")
-
-			if tglexpirerevisi < tglskrg {
-				statusrevisi = "LOCK"
-			}
-		}
 	}
 	obj.Idinvoice = strconv.Itoa(idtrxkeluaran)
 	obj.TanggalPeriode = datekeluaran_db
@@ -3154,4 +3160,33 @@ func _doJobUpdateTransaksi(fieldtable string, jobs <-chan datajobs, results chan
 		}
 	}
 	wg.Done()
+}
+func _checkpasaranonline(idcomppasaran int, company string) bool {
+	var myDays = []string{"minggu", "senin", "selasa", "rabu", "kamis", "jumat", "sabtu"}
+	flag := false
+
+	con := db.CreateCon()
+	ctx := context.Background()
+
+	tglnow, _ := goment.New()
+	daynow := tglnow.Format("d")
+	intVar, _ := strconv.ParseInt(daynow, 0, 8)
+	daynowhari := myDays[intVar]
+	haripasaran := ""
+	sqlpasaranonline := `
+			SELECT
+				haripasaran
+			FROM ` + config.DB_tbl_mst_company_game_pasaran_offline + ` 
+			WHERE idcomppasaran = ?
+			AND idcompany = ? 
+			AND haripasaran = ? 
+		`
+
+	errpasaranonline := con.QueryRowContext(ctx, sqlpasaranonline, idcomppasaran, company, daynowhari).Scan(&haripasaran)
+
+	if errpasaranonline != sql.ErrNoRows {
+		flag = true
+	}
+	log.Println(flag)
+	return flag
 }
