@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"log"
+	"strconv"
 	"time"
 
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
@@ -280,6 +281,198 @@ type responseredis_pasaranhome struct {
 	Statuspasaran_css       string `json:"statuspasaran_css"`
 	Statuspasaranactive_css string `json:"statuspasaranactive_css"`
 }
+type responseredis_pasarandetail struct {
+	Idpasarantogel                    string  `json:"idpasarantogel"`
+	Nmpasarantogel                    string  `json:"nmpasaran"`
+	PasaranDiundi                     string  `json:"pasarandiundi"`
+	PasaranURL                        string  `json:"pasaranurl"`
+	Jamtutup                          string  `json:"jamtutup"`
+	Jamjadwal                         string  `json:"jamjadwal"`
+	Jamopen                           string  `json:"jamopen"`
+	Limitline4d                       int     `json:"limitline_4d"`
+	Limitline3d                       int     `json:"limitline_3d"`
+	Limitline2d                       int     `json:"limitline_2d"`
+	Limitline2dd                      int     `json:"limitline_2dd"`
+	Limitline2dt                      int     `json:"limitline_2dt"`
+	Bbfs                              int     `json:"bbfs"`
+	Minbet_432d                       float32 `json:"minbet_432d"`
+	Maxbet4d_432d                     float32 `json:"maxbet4d_432d"`
+	Maxbet3d_432d                     float32 `json:"maxbet3d_432d"`
+	Maxbet2d_432d                     float32 `json:"maxbet2d_432d"`
+	Maxbet2dd_432d                    float32 `json:"maxbet2dd_432d"`
+	Maxbet2dt_432d                    float32 `json:"maxbet2dt_432d"`
+	Limitotal4d_432d                  float32 `json:"limitotal4d_432d"`
+	Limitotal3d_432d                  float32 `json:"limitotal3d_432d"`
+	Limitotal2d_432d                  float32 `json:"limitotal2d_432d"`
+	Limitotal2dd_432d                 float32 `json:"limitotal2dd_432d"`
+	Limitotal2dt_432d                 float32 `json:"limitotal2dt_432d"`
+	Limitglobal4d_432d                float32 `json:"limitglobal4d_432d"`
+	Limitglobal3d_432d                float32 `json:"limitglobal3d_432d"`
+	Limitglobal2d_432d                float32 `json:"limitglobal2d_432d"`
+	Limitglobal2dd_432d               float32 `json:"limitglobal2dd_432d"`
+	Limitglobal2dt_432d               float32 `json:"limitglobal2dt_432d"`
+	Disc4d_432d                       float32 `json:"disc4d_432d"`
+	Disc3d_432d                       float32 `json:"disc3d_432d"`
+	Disc2d_432d                       float32 `json:"disc2d_432d"`
+	Disc2dd_432d                      float32 `json:"disc2dd_432d"`
+	Disc2dt_432d                      float32 `json:"disc2dt_432d"`
+	Win4d_432d                        float32 `json:"win4d_432d"`
+	Win3d_432d                        float32 `json:"win3d_432d"`
+	Win2d_432d                        float32 `json:"win2d_432d"`
+	Win2dd_432d                       float32 `json:"win2dd_432d"`
+	Win2dt_432d                       float32 `json:"win2dt_432d"`
+	Minbet_cbebas                     float32 `json:"minbet_cbebas"`
+	Maxbet_cbebas                     float32 `json:"maxbet_cbebas"`
+	Win_cbebas                        float32 `json:"win_cbebas"`
+	Disc_cbebas                       float32 `json:"disc_cbebas"`
+	Limitglobal_cbebas                float32 `json:"limitglobal_cbebas"`
+	Limittotal_cbebas                 float32 `json:"limittotal_cbebas"`
+	Minbet_cmacau                     float32 `json:"minbet_cmacau"`
+	Maxbet_cmacau                     float32 `json:"maxbet_cmacau"`
+	Win2d_cmacau                      float32 `json:"win2d_cmacau"`
+	Win3d_cmacau                      float32 `json:"win3d_cmacau"`
+	Win4d_cmacau                      float32 `json:"win4d_cmacau"`
+	Disc_cmacau                       float32 `json:"disc_cmacau"`
+	Limitglobal_cmacau                float32 `json:"limitglobal_cmacau"`
+	Limitotal_cmacau                  float32 `json:"limitotal_cmacau"`
+	Minbet_cnaga                      float32 `json:"minbet_cnaga"`
+	Maxbet_cnaga                      float32 `json:"maxbet_cnaga"`
+	Win3_cnaga                        float32 `json:"win3_cnaga"`
+	Win4_cnaga                        float32 `json:"win4_cnaga"`
+	Disc_cnaga                        float32 `json:"disc_cnaga"`
+	Limitglobal_cnaga                 float32 `json:"limitglobal_cnaga"`
+	Limittotal_cnaga                  float32 `json:"limittotal_cnaga"`
+	Minbet_cjitu                      float32 `json:"minbet_cjitu"`
+	Maxbet_cjitu                      float32 `json:"maxbet_cjitu"`
+	Winas_cjitu                       float32 `json:"winas_cjitu"`
+	Winkop_cjitu                      float32 `json:"winkop_cjitu"`
+	Winkepala_cjitu                   float32 `json:"winkepala_cjitu"`
+	Winekor_cjitu                     float32 `json:"winekor_cjitu"`
+	Desc_cjitu                        float32 `json:"desc_cjitu"`
+	Limitglobal_cjitu                 float32 `json:"limitglobal_cjitu"`
+	Limittotal_cjitu                  float32 `json:"limittotal_cjitu"`
+	Minbet_5050umum                   float32 `json:"minbet_5050umum"`
+	Maxbet_5050umum                   float32 `json:"maxbet_5050umum"`
+	Keibesar_5050umum                 float32 `json:"keibesar_5050umum"`
+	Keikecil_5050umum                 float32 `json:"keikecil_5050umum"`
+	Keigenap_5050umum                 float32 `json:"keigenap_5050umum"`
+	Keiganjil_5050umum                float32 `json:"keiganjil_5050umum"`
+	Keitengah_5050umum                float32 `json:"keitengah_5050umum"`
+	Keitepi_5050umum                  float32 `json:"keitepi_5050umum"`
+	Discbesar_5050umum                float32 `json:"discbesar_5050umum"`
+	Disckecil_5050umum                float32 `json:"disckecil_5050umum"`
+	Discgenap_5050umum                float32 `json:"discgenap_5050umum"`
+	Discganjil_5050umum               float32 `json:"discganjil_5050umum"`
+	Disctengah_5050umum               float32 `json:"disctengah_5050umum"`
+	Disctepi_5050umum                 float32 `json:"disctepi_5050umum"`
+	Limitglobal_5050umum              float32 `json:"limitglobal_5050umum"`
+	Limittotal_5050umum               float32 `json:"limittotal_5050umum"`
+	Minbet_5050special                float32 `json:"minbet_5050special"`
+	Maxbet_5050special                float32 `json:"maxbet_5050special"`
+	Keiasganjil_5050special           float32 `json:"keiasganjil_5050special"`
+	Keiasgenap_5050special            float32 `json:"keiasgenap_5050special"`
+	Keiasbesar_5050special            float32 `json:"keiasbesar_5050special"`
+	Keiaskecil_5050special            float32 `json:"keiaskecil_5050special"`
+	Keikopganjil_5050special          float32 `json:"keikopganjil_5050special"`
+	Keikopgenap_5050special           float32 `json:"keikopgenap_5050special"`
+	Keikopbesar_5050special           float32 `json:"keikopbesar_5050special"`
+	Keikopkecil_5050special           float32 `json:"keikopkecil_5050special"`
+	Keikepalaganjil_5050special       float32 `json:"keikepalaganjil_5050special"`
+	Keikepalagenap_5050special        float32 `json:"keikepalagenap_5050special"`
+	Keikepalabesar_5050special        float32 `json:"keikepalabesar_5050special"`
+	Keikepalakecil_5050special        float32 `json:"keikepalakecil_5050special"`
+	Keiekorganjil_5050special         float32 `json:"keiekorganjil_5050special"`
+	Keiekorgenap_5050special          float32 `json:"keiekorgenap_5050special"`
+	Keiekorbesar_5050special          float32 `json:"keiekorbesar_5050special"`
+	Keiekorkecil_5050special          float32 `json:"keiekorkecil_5050special"`
+	Discasganjil_5050special          float32 `json:"discasganjil_5050special"`
+	Discasgenap_5050special           float32 `json:"discasgenap_5050special"`
+	Discasbesar_5050special           float32 `json:"discasbesar_5050special"`
+	Discaskecil_5050special           float32 `json:"discaskecil_5050special"`
+	Disckopganjil_5050special         float32 `json:"disckopganjil_5050special"`
+	Disckopgenap_5050special          float32 `json:"disckopgenap_5050special"`
+	Disckopbesar_5050special          float32 `json:"disckopbesar_5050special"`
+	Disckopkecil_5050special          float32 `json:"disckopkecil_5050special"`
+	Disckepalaganjil_5050special      float32 `json:"disckepalaganjil_5050special"`
+	Disckepalagenap_5050special       float32 `json:"disckepalagenap_5050special"`
+	Disckepalabesar_5050special       float32 `json:"disckepalabesar_5050special"`
+	Disckepalakecil_5050special       float32 `json:"disckepalakecil_5050special"`
+	Discekorganjil_5050special        float32 `json:"discekorganjil_5050special"`
+	Discekorgenap_5050special         float32 `json:"discekorgenap_5050special"`
+	Discekorbesar_5050special         float32 `json:"discekorbesar_5050special"`
+	Discekorkecil_5050special         float32 `json:"discekorkecil_5050special"`
+	Limitglobal_5050special           float32 `json:"limitglobal_5050special"`
+	Limittotal_5050special            float32 `json:"limittotal_5050special"`
+	Minbet_5050kombinasi              float32 `json:"minbet_5050kombinasi"`
+	Maxbet_5050kombinasi              float32 `json:"maxbet_5050kombinasi"`
+	Belakangkeimono_5050kombinasi     float32 `json:"belakangkeimono_5050kombinasi"`
+	Belakangkeistereo_5050kombinasi   float32 `json:"belakangkeistereo_5050kombinasi"`
+	Belakangkeikembang_5050kombinasi  float32 `json:"belakangkeikembang_5050kombinasi"`
+	Belakangkeikempis_5050kombinasi   float32 `json:"belakangkeikempis_5050kombinasi"`
+	Belakangkeikembar_5050kombinasi   float32 `json:"belakangkeikembar_5050kombinasi"`
+	Tengahkeimono_5050kombinasi       float32 `json:"tengahkeimono_5050kombinasi"`
+	Tengahkeistereo_5050kombinasi     float32 `json:"tengahkeistereo_5050kombinasi"`
+	Tengahkeikembang_5050kombinasi    float32 `json:"tengahkeikembang_5050kombinasi"`
+	Tengahkeikempis_5050kombinasi     float32 `json:"tengahkeikempis_5050kombinasi"`
+	Tengahkeikembar_5050kombinasi     float32 `json:"tengahkeikembar_5050kombinasi"`
+	Depankeimono_5050kombinasi        float32 `json:"depankeimono_5050kombinasi"`
+	Depankeistereo_5050kombinasi      float32 `json:"depankeistereo_5050kombinasi"`
+	Depankeikembang_5050kombinasi     float32 `json:"depankeikembang_5050kombinasi"`
+	Depankeikempis_5050kombinasi      float32 `json:"depankeikempis_5050kombinasi"`
+	Depankeikembar_5050kombinasi      float32 `json:"depankeikembar_5050kombinasi"`
+	Belakangdiscmono_5050kombinasi    float32 `json:"belakangdiscmono_5050kombinasi"`
+	Belakangdiscstereo_5050kombinasi  float32 `json:"belakangdiscstereo_5050kombinasi"`
+	Belakangdisckembang_5050kombinasi float32 `json:"belakangdisckembang_5050kombinasi"`
+	Belakangdisckempis_5050kombinasi  float32 `json:"belakangdisckempis_5050kombinasi"`
+	Belakangdisckembar_5050kombinasi  float32 `json:"belakangdisckembar_5050kombinasi"`
+	Tengahdiscmono_5050kombinasi      float32 `json:"tengahdiscmono_5050kombinasi"`
+	Tengahdiscstereo_5050kombinasi    float32 `json:"tengahdiscstereo_5050kombinasi"`
+	Tengahdisckembang_5050kombinasi   float32 `json:"tengahdisckembang_5050kombinasi"`
+	Tengahdisckempis_5050kombinasi    float32 `json:"tengahdisckempis_5050kombinasi"`
+	Tengahdisckembar_5050kombinasi    float32 `json:"tengahdisckembar_5050kombinasi"`
+	Depandiscmono_5050kombinasi       float32 `json:"depandiscmono_5050kombinasi"`
+	Depandiscstereo_5050kombinasi     float32 `json:"depandiscstereo_5050kombinasi"`
+	Depandisckembang_5050kombinasi    float32 `json:"depandisckembang_5050kombinasi"`
+	Depandisckempis_5050kombinasi     float32 `json:"depandisckempis_5050kombinasi"`
+	Depandisckembar_5050kombinasi     float32 `json:"depandisckembar_5050kombinasi"`
+	Limitglobal_5050kombinasi         float32 `json:"limitglobal_5050kombinasi"`
+	Limittotal_5050kombinasi          float32 `json:"limittotal_5050kombinasi"`
+	Minbet_kombinasi                  float32 `json:"minbet_kombinasi"`
+	Maxbet_kombinasi                  float32 `json:"maxbet_kombinasi"`
+	Win_kombinasi                     float32 `json:"win_kombinasi"`
+	Disc_kombinasi                    float32 `json:"disc_kombinasi"`
+	Limitglobal_kombinasi             float32 `json:"limitglobal_kombinasi"`
+	Limittotal_kombinasi              float32 `json:"limittotal_kombinasi"`
+	Minbet_dasar                      float32 `json:"minbet_dasar"`
+	Maxbet_dasar                      float32 `json:"maxbet_dasar"`
+	Keibesar_dasar                    float32 `json:"keibesar_dasar"`
+	Keikecil_dasar                    float32 `json:"keikecil_dasar"`
+	Keigenap_dasar                    float32 `json:"keigenap_dasar"`
+	Keiganjil_dasar                   float32 `json:"keiganjil_dasar"`
+	Discbesar_dasar                   float32 `json:"discbesar_dasar"`
+	Disckecil_dasar                   float32 `json:"disckecil_dasar"`
+	Discgenap_dasar                   float32 `json:"discgenap_dasar"`
+	Discganjil_dasar                  float32 `json:"discganjil_dasar"`
+	Limitglobal_dasar                 float32 `json:"limitglobal_dasar"`
+	Limittotal_dasar                  float32 `json:"limittotal_dasar"`
+	Minbet_shio                       float32 `json:"minbet_shio"`
+	Maxbet_shio                       float32 `json:"maxbet_shio"`
+	Win_shio                          float32 `json:"win_shio"`
+	Disc_shio                         float32 `json:"disc_shio"`
+	Shioyear_shio                     string  `json:"shioyear_shio"`
+	Limitglobal_shio                  float32 `json:"limitglobal_shio"`
+	Limittotal_shio                   float32 `json:"limittotal_shio"`
+	Displaypasaran                    int     `json:"displaypasaran"`
+	StatusPasaranActive               string  `json:"statuspasaranactive"`
+	Create                            string  `json:"create"`
+	Createdate                        string  `json:"createdate"`
+	Update                            string  `json:"update"`
+	Updatedate                        string  `json:"updatedate"`
+}
+type responseredis_pasaranonline struct {
+	Idpasaranonline int    `json:"idpasaranonline`
+	Haripasaran     string `json:"haripasaran"`
+}
 
 func PasaranHome(c *fiber.Ctx) error {
 	user := c.Locals("jwt").(*jwt.Token)
@@ -320,10 +513,11 @@ func PasaranHome(c *fiber.Ctx) error {
 		obj.Statuspasaranactive_css = statuspasaranactive_css
 		arraobj = append(arraobj, obj)
 	})
+
 	if !flag {
 		result, err := models.Fetch_home(client_company)
 		helpers.SetRedis(field_redis, result, 0)
-		log.Println("MYSQL")
+		log.Println("PASARAN MYSQL")
 		if err != nil {
 			c.Status(fiber.StatusBadRequest)
 			return c.JSON(fiber.Map{
@@ -334,7 +528,7 @@ func PasaranHome(c *fiber.Ctx) error {
 		}
 		return c.JSON(result)
 	} else {
-		log.Println("cache")
+		log.Println("PASARAN CACHE")
 		return c.JSON(fiber.Map{
 			"status":  fiber.StatusOK,
 			"message": "Success",
@@ -358,16 +552,424 @@ func PasaranDetail(c *fiber.Ctx) error {
 	name := claims["name"].(string)
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
-	result, err := models.Fetch_detail(client_company, client.Idpasaran)
-	if err != nil {
-		c.Status(fiber.StatusBadRequest)
+	field_redis := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
+	var obj responseredis_pasarandetail
+	var arraobj []responseredis_pasarandetail
+	var obj2 responseredis_pasaranonline
+	var arraobj2 []responseredis_pasaranonline
+	render_page := time.Now()
+	resultredis, flag := helpers.GetRedis(field_redis)
+	jsonredis := []byte(resultredis)
+	record_RD, _, _, _ := jsonparser.Get(jsonredis, "record")
+	pasaranonline_RD, _, _, _ := jsonparser.Get(jsonredis, "pasaranonline")
+	jsonparser.ArrayEach(record_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
+		idpasarantogel, _ := jsonparser.GetString(value, "idpasarantogel")
+		nmpasarantogel, _ := jsonparser.GetString(value, "nmpasaran")
+		pasarandiundi, _ := jsonparser.GetString(value, "pasarandiundi")
+		pasaranurl, _ := jsonparser.GetString(value, "pasaranurl")
+		jamtutup, _ := jsonparser.GetString(value, "jamtutup")
+		jamjadwal, _ := jsonparser.GetString(value, "jamjadwal")
+		jamopen, _ := jsonparser.GetString(value, "jamopen")
+		limitline4d, _ := jsonparser.GetInt(value, "limitline_4d")
+		limitline3d, _ := jsonparser.GetInt(value, "limitline_3d")
+		limitline2d, _ := jsonparser.GetInt(value, "limitline_2d")
+		limitline2dd, _ := jsonparser.GetInt(value, "limitline_2dd")
+		limitline2dt, _ := jsonparser.GetInt(value, "limitline_2dt")
+		bbfs, _ := jsonparser.GetInt(value, "bbfs")
+		minbet_432d, _ := jsonparser.GetInt(value, "minbet_432d")
+		maxbet4d_432d, _ := jsonparser.GetInt(value, "maxbet4d_432d")
+		maxbet3d_432d, _ := jsonparser.GetInt(value, "maxbet3d_432d")
+		maxbet2d_432d, _ := jsonparser.GetInt(value, "maxbet2d_432d")
+		maxbet2dd_432d, _ := jsonparser.GetInt(value, "maxbet2dd_432d")
+		maxbet2dt_432d, _ := jsonparser.GetInt(value, "maxbet2dt_432d")
+		limitotal4d_432d, _ := jsonparser.GetInt(value, "limitotal4d_432d")
+		limitotal3d_432d, _ := jsonparser.GetInt(value, "limitotal3d_432d")
+		limitotal2d_432d, _ := jsonparser.GetInt(value, "limitotal2d_432d")
+		limitotal2dd_432d, _ := jsonparser.GetInt(value, "limitotal2dd_432d")
+		limitotal2dt_432d, _ := jsonparser.GetInt(value, "limitotal2dt_432d")
+		limitglobal4d_432d, _ := jsonparser.GetInt(value, "limitglobal4d_432d")
+		limitglobal3d_432d, _ := jsonparser.GetInt(value, "limitglobal3d_432d")
+		limitglobal2d_432d, _ := jsonparser.GetInt(value, "limitglobal2d_432d")
+		limitglobal2dd_432d, _ := jsonparser.GetInt(value, "limitglobal2dd_432d")
+		limitglobal2dt_432d, _ := jsonparser.GetInt(value, "limitglobal2dt_432d")
+		disc4d_432d, _ := jsonparser.GetFloat(value, "disc4d_432d")
+		disc3d_432d, _ := jsonparser.GetFloat(value, "disc3d_432d")
+		disc2d_432d, _ := jsonparser.GetFloat(value, "disc2d_432d")
+		disc2dd_432d, _ := jsonparser.GetFloat(value, "disc2dd_432d")
+		disc2dt_432d, _ := jsonparser.GetFloat(value, "disc2dt_432d")
+		win4d_432d, _ := jsonparser.GetFloat(value, "win4d_432d")
+		win3d_432d, _ := jsonparser.GetFloat(value, "win3d_432d")
+		win2d_432d, _ := jsonparser.GetFloat(value, "win2d_432d")
+		win2dd_432d, _ := jsonparser.GetFloat(value, "win2dd_432d")
+		win2dt_432d, _ := jsonparser.GetFloat(value, "win2dt_432d")
+		minbet_cbebas, _ := jsonparser.GetInt(value, "minbet_cbebas")
+		maxbet_cbebas, _ := jsonparser.GetInt(value, "maxbet_cbebas")
+		win_cbebas, _ := jsonparser.GetFloat(value, "win_cbebas")
+		disc_cbebas, _ := jsonparser.GetFloat(value, "disc_cbebas")
+		limitglobal_cbebas, _ := jsonparser.GetInt(value, "limitglobal_cbebas")
+		limittotal_cbebas, _ := jsonparser.GetInt(value, "limittotal_cbebas")
+		minbet_cmacau, _ := jsonparser.GetInt(value, "minbet_cmacau")
+		maxbet_cmacau, _ := jsonparser.GetInt(value, "maxbet_cmacau")
+		win2d_cmacau, _ := jsonparser.GetFloat(value, "win2d_cmacau")
+		win3d_cmacau, _ := jsonparser.GetFloat(value, "win3d_cmacau")
+		win4d_cmacau, _ := jsonparser.GetFloat(value, "win4d_cmacau")
+		disc_cmacau, _ := jsonparser.GetFloat(value, "disc_cmacau")
+		limitglobal_cmacau, _ := jsonparser.GetInt(value, "limitglobal_cmacau")
+		limitotal_cmacau, _ := jsonparser.GetInt(value, "limitotal_cmacau")
+		minbet_cnaga, _ := jsonparser.GetInt(value, "minbet_cnaga")
+		maxbet_cnaga, _ := jsonparser.GetInt(value, "maxbet_cnaga")
+		win3_cnaga, _ := jsonparser.GetFloat(value, "win3_cnaga")
+		win4_cnaga, _ := jsonparser.GetFloat(value, "win4_cnaga")
+		disc_cnaga, _ := jsonparser.GetFloat(value, "disc_cnaga")
+		limitglobal_cnaga, _ := jsonparser.GetInt(value, "limitglobal_cnaga")
+		limittotal_cnaga, _ := jsonparser.GetInt(value, "limittotal_cnaga")
+		minbet_cjitu, _ := jsonparser.GetInt(value, "minbet_cjitu")
+		maxbet_cjitu, _ := jsonparser.GetInt(value, "maxbet_cjitu")
+		winas_cjitu, _ := jsonparser.GetFloat(value, "winas_cjitu")
+		winkop_cjitu, _ := jsonparser.GetFloat(value, "winkop_cjitu")
+		winkepala_cjitu, _ := jsonparser.GetFloat(value, "winkepala_cjitu")
+		winekor_cjitu, _ := jsonparser.GetFloat(value, "winekor_cjitu")
+		desc_cjitu, _ := jsonparser.GetFloat(value, "desc_cjitu")
+		limitglobal_cjitu, _ := jsonparser.GetInt(value, "limitglobal_cjitu")
+		limittotal_cjitu, _ := jsonparser.GetInt(value, "limittotal_cjitu")
+		minbet_5050umum, _ := jsonparser.GetInt(value, "minbet_5050umum")
+		maxbet_5050umum, _ := jsonparser.GetInt(value, "maxbet_5050umum")
+		keibesar_5050umum, _ := jsonparser.GetFloat(value, "keibesar_5050umum")
+		keikecil_5050umum, _ := jsonparser.GetFloat(value, "keikecil_5050umum")
+		keigenap_5050umum, _ := jsonparser.GetFloat(value, "keigenap_5050umum")
+		keiganjil_5050umum, _ := jsonparser.GetFloat(value, "keiganjil_5050umum")
+		keitengah_5050umum, _ := jsonparser.GetFloat(value, "keitengah_5050umum")
+		keitepi_5050umum, _ := jsonparser.GetFloat(value, "keitepi_5050umum")
+		discbesar_5050umum, _ := jsonparser.GetFloat(value, "discbesar_5050umum")
+		disckecil_5050umum, _ := jsonparser.GetFloat(value, "disckecil_5050umum")
+		discgenap_5050umum, _ := jsonparser.GetFloat(value, "discgenap_5050umum")
+		discganjil_5050umum, _ := jsonparser.GetFloat(value, "discganjil_5050umum")
+		disctengah_5050umum, _ := jsonparser.GetFloat(value, "disctengah_5050umum")
+		disctepi_5050umum, _ := jsonparser.GetFloat(value, "disctepi_5050umum")
+		limitglobal_5050umum, _ := jsonparser.GetInt(value, "limitglobal_5050umum")
+		limittotal_5050umum, _ := jsonparser.GetInt(value, "limittotal_5050umum")
+		minbet_5050special, _ := jsonparser.GetInt(value, "minbet_5050special")
+		maxbet_5050special, _ := jsonparser.GetInt(value, "maxbet_5050special")
+		keiasganjil_5050special, _ := jsonparser.GetFloat(value, "keiasganjil_5050special")
+		keiasgenap_5050special, _ := jsonparser.GetFloat(value, "keiasgenap_5050special")
+		keiasbesar_5050special, _ := jsonparser.GetFloat(value, "keiasbesar_5050special")
+		keiaskecil_5050special, _ := jsonparser.GetFloat(value, "keiaskecil_5050special")
+		keikopganjil_5050special, _ := jsonparser.GetFloat(value, "keikopganjil_5050special")
+		keikopgenap_5050special, _ := jsonparser.GetFloat(value, "keikopgenap_5050special")
+		keikopbesar_5050special, _ := jsonparser.GetFloat(value, "keikopbesar_5050special")
+		keikopkecil_5050special, _ := jsonparser.GetFloat(value, "keikopkecil_5050special")
+		keikepalaganjil_5050special, _ := jsonparser.GetFloat(value, "keikepalaganjil_5050special")
+		keikepalagenap_5050special, _ := jsonparser.GetFloat(value, "keikepalagenap_5050special")
+		keikepalabesar_5050special, _ := jsonparser.GetFloat(value, "keikepalabesar_5050special")
+		keikepalakecil_5050special, _ := jsonparser.GetFloat(value, "keikepalakecil_5050special")
+		keiekorganjil_5050special, _ := jsonparser.GetFloat(value, "keiekorganjil_5050special")
+		keiekorgenap_5050special, _ := jsonparser.GetFloat(value, "keiekorgenap_5050special")
+		keiekorbesar_5050special, _ := jsonparser.GetFloat(value, "keiekorbesar_5050special")
+		keiekorkecil_5050special, _ := jsonparser.GetFloat(value, "keiekorkecil_5050special")
+		discasganjil_5050special, _ := jsonparser.GetFloat(value, "discasganjil_5050special")
+		discasgenap_5050special, _ := jsonparser.GetFloat(value, "discasgenap_5050special")
+		discasbesar_5050special, _ := jsonparser.GetFloat(value, "discasbesar_5050special")
+		discaskecil_5050special, _ := jsonparser.GetFloat(value, "discaskecil_5050special")
+		disckopganjil_5050special, _ := jsonparser.GetFloat(value, "disckopganjil_5050special")
+		disckopgenap_5050special, _ := jsonparser.GetFloat(value, "disckopgenap_5050special")
+		disckopbesar_5050special, _ := jsonparser.GetFloat(value, "disckopbesar_5050special")
+		disckopkecil_5050special, _ := jsonparser.GetFloat(value, "disckopkecil_5050special")
+		disckepalaganjil_5050special, _ := jsonparser.GetFloat(value, "disckepalaganjil_5050special")
+		disckepalagenap_5050special, _ := jsonparser.GetFloat(value, "disckepalagenap_5050special")
+		disckepalabesar_5050special, _ := jsonparser.GetFloat(value, "disckepalabesar_5050special")
+		disckepalakecil_5050special, _ := jsonparser.GetFloat(value, "disckepalakecil_5050special")
+		discekorganjil_5050special, _ := jsonparser.GetFloat(value, "discekorganjil_5050special")
+		discekorgenap_5050special, _ := jsonparser.GetFloat(value, "discekorgenap_5050special")
+		discekorbesar_5050special, _ := jsonparser.GetFloat(value, "discekorbesar_5050special")
+		discekorkecil_5050special, _ := jsonparser.GetFloat(value, "discekorkecil_5050special")
+		limitglobal_5050special, _ := jsonparser.GetInt(value, "limitglobal_5050special")
+		limittotal_5050special, _ := jsonparser.GetInt(value, "limittotal_5050special")
+		minbet_5050kombinasi, _ := jsonparser.GetInt(value, "minbet_5050kombinasi")
+		maxbet_5050kombinasi, _ := jsonparser.GetInt(value, "maxbet_5050kombinasi")
+		belakangkeimono_5050kombinasi, _ := jsonparser.GetFloat(value, "belakangkeimono_5050kombinasi")
+		belakangkeistereo_5050kombinasi, _ := jsonparser.GetFloat(value, "belakangkeistereo_5050kombinasi")
+		belakangkeikembang_5050kombinasi, _ := jsonparser.GetFloat(value, "belakangkeikembang_5050kombinasi")
+		belakangkeikempis_5050kombinasi, _ := jsonparser.GetFloat(value, "belakangkeikempis_5050kombinasi")
+		belakangkeikembar_5050kombinasi, _ := jsonparser.GetFloat(value, "belakangkeikembar_5050kombinasi")
+		tengahkeimono_5050kombinasi, _ := jsonparser.GetFloat(value, "tengahkeimono_5050kombinasi")
+		tengahkeistereo_5050kombinasi, _ := jsonparser.GetFloat(value, "tengahkeistereo_5050kombinasi")
+		tengahkeikembang_5050kombinasi, _ := jsonparser.GetFloat(value, "tengahkeikembang_5050kombinasi")
+		tengahkeikempis_5050kombinasi, _ := jsonparser.GetFloat(value, "tengahkeikempis_5050kombinasi")
+		tengahkeikembar_5050kombinasi, _ := jsonparser.GetFloat(value, "tengahkeikembar_5050kombinasi")
+		depankeimono_5050kombinasi, _ := jsonparser.GetFloat(value, "depankeimono_5050kombinasi")
+		depankeistereo_5050kombinasi, _ := jsonparser.GetFloat(value, "depankeistereo_5050kombinasi")
+		depankeikembang_5050kombinasi, _ := jsonparser.GetFloat(value, "depankeikembang_5050kombinasi")
+		depankeikempis_5050kombinasi, _ := jsonparser.GetFloat(value, "depankeikempis_5050kombinasi")
+		depankeikembar_5050kombinasi, _ := jsonparser.GetFloat(value, "depankeikembar_5050kombinasi")
+		belakangdiscmono_5050kombinasi, _ := jsonparser.GetFloat(value, "belakangdiscmono_5050kombinasi")
+		belakangdiscstereo_5050kombinasi, _ := jsonparser.GetFloat(value, "belakangdiscstereo_5050kombinasi")
+		belakangdisckembang_5050kombinasi, _ := jsonparser.GetFloat(value, "belakangdisckembang_5050kombinasi")
+		belakangdisckempis_5050kombinasi, _ := jsonparser.GetFloat(value, "belakangdisckempis_5050kombinasi")
+		belakangdisckembar_5050kombinasi, _ := jsonparser.GetFloat(value, "belakangdisckembar_5050kombinasi")
+		tengahdiscmono_5050kombinasi, _ := jsonparser.GetFloat(value, "tengahdiscmono_5050kombinasi")
+		tengahdiscstereo_5050kombinasi, _ := jsonparser.GetFloat(value, "tengahdiscstereo_5050kombinasi")
+		tengahdisckembang_5050kombinasi, _ := jsonparser.GetFloat(value, "tengahdisckembang_5050kombinasi")
+		tengahdisckempis_5050kombinasi, _ := jsonparser.GetFloat(value, "tengahdisckempis_5050kombinasi")
+		tengahdisckembar_5050kombinasi, _ := jsonparser.GetFloat(value, "tengahdisckembar_5050kombinasi")
+		depandiscmono_5050kombinasi, _ := jsonparser.GetFloat(value, "depandiscmono_5050kombinasi")
+		depandiscstereo_5050kombinasi, _ := jsonparser.GetFloat(value, "depandiscstereo_5050kombinasi")
+		depandisckembang_5050kombinasi, _ := jsonparser.GetFloat(value, "depandisckembang_5050kombinasi")
+		depandisckempis_5050kombinasi, _ := jsonparser.GetFloat(value, "depandisckempis_5050kombinasi")
+		depandisckembar_5050kombinasi, _ := jsonparser.GetFloat(value, "depandisckembar_5050kombinasi")
+		limitglobal_5050kombinasi, _ := jsonparser.GetInt(value, "limitglobal_5050kombinasi")
+		limittotal_5050kombinasi, _ := jsonparser.GetInt(value, "limittotal_5050kombinasi")
+		minbet_kombinasi, _ := jsonparser.GetInt(value, "minbet_kombinasi")
+		maxbet_kombinasi, _ := jsonparser.GetInt(value, "maxbet_kombinasi")
+		win_kombinasi, _ := jsonparser.GetFloat(value, "win_kombinasi")
+		disc_kombinasi, _ := jsonparser.GetFloat(value, "disc_kombinasi")
+		limitglobal_kombinasi, _ := jsonparser.GetInt(value, "limitglobal_kombinasi")
+		limittotal_kombinasi, _ := jsonparser.GetInt(value, "limittotal_kombinasi")
+		minbet_dasar, _ := jsonparser.GetInt(value, "minbet_dasar")
+		maxbet_dasar, _ := jsonparser.GetInt(value, "maxbet_dasar")
+		keibesar_dasar, _ := jsonparser.GetFloat(value, "keibesar_dasar")
+		keikecil_dasar, _ := jsonparser.GetFloat(value, "keikecil_dasar")
+		keigenap_dasar, _ := jsonparser.GetFloat(value, "keigenap_dasar")
+		keiganjil_dasar, _ := jsonparser.GetFloat(value, "keiganjil_dasar")
+		discbesar_dasar, _ := jsonparser.GetFloat(value, "discbesar_dasar")
+		disckecil_dasar, _ := jsonparser.GetFloat(value, "disckecil_dasar")
+		discgenap_dasar, _ := jsonparser.GetFloat(value, "discgenap_dasar")
+		discganjil_dasar, _ := jsonparser.GetFloat(value, "discganjil_dasar")
+		limitglobal_dasar, _ := jsonparser.GetInt(value, "limitglobal_dasar")
+		limittotal_dasar, _ := jsonparser.GetInt(value, "limittotal_dasar")
+		minbet_shio, _ := jsonparser.GetInt(value, "minbet_shio")
+		maxbet_shio, _ := jsonparser.GetInt(value, "maxbet_shio")
+		win_shio, _ := jsonparser.GetFloat(value, "win_shio")
+		disc_shio, _ := jsonparser.GetFloat(value, "disc_shio")
+		shioyear_shio, _ := jsonparser.GetString(value, "shioyear_shio")
+		limitglobal_shio, _ := jsonparser.GetInt(value, "limitglobal_shio")
+		limittotal_shio, _ := jsonparser.GetInt(value, "limittotal_shio")
+		displaypasaran, _ := jsonparser.GetInt(value, "displaypasaran")
+		statuspasaranactive, _ := jsonparser.GetString(value, "statuspasaranactive")
+		create, _ := jsonparser.GetString(value, "create")
+		createdate, _ := jsonparser.GetString(value, "createdate")
+		update, _ := jsonparser.GetString(value, "update")
+		updatedate, _ := jsonparser.GetString(value, "updatedate")
+
+		obj.Idpasarantogel = idpasarantogel
+		obj.Nmpasarantogel = nmpasarantogel
+		obj.PasaranDiundi = pasarandiundi
+		obj.PasaranURL = pasaranurl
+		obj.Jamtutup = jamtutup
+		obj.Jamjadwal = jamjadwal
+		obj.Jamopen = jamopen
+		obj.Limitline4d = int(limitline4d)
+		obj.Limitline3d = int(limitline3d)
+		obj.Limitline2d = int(limitline2d)
+		obj.Limitline2dd = int(limitline2dd)
+		obj.Limitline2dt = int(limitline2dt)
+		obj.Bbfs = int(bbfs)
+		obj.Minbet_432d = float32(minbet_432d)
+		obj.Maxbet4d_432d = float32(maxbet4d_432d)
+		obj.Maxbet3d_432d = float32(maxbet3d_432d)
+		obj.Maxbet2d_432d = float32(maxbet2d_432d)
+		obj.Maxbet2dd_432d = float32(maxbet2dd_432d)
+		obj.Maxbet2dt_432d = float32(maxbet2dt_432d)
+		obj.Limitotal4d_432d = float32(limitotal4d_432d)
+		obj.Limitotal3d_432d = float32(limitotal3d_432d)
+		obj.Limitotal2d_432d = float32(limitotal2d_432d)
+		obj.Limitotal2dd_432d = float32(limitotal2dd_432d)
+		obj.Limitotal2dt_432d = float32(limitotal2dt_432d)
+		obj.Limitglobal4d_432d = float32(limitglobal4d_432d)
+		obj.Limitglobal3d_432d = float32(limitglobal3d_432d)
+		obj.Limitglobal2d_432d = float32(limitglobal2d_432d)
+		obj.Limitglobal2dd_432d = float32(limitglobal2dd_432d)
+		obj.Limitglobal2dt_432d = float32(limitglobal2dt_432d)
+		obj.Disc4d_432d = float32(disc4d_432d)
+		obj.Disc3d_432d = float32(disc3d_432d)
+		obj.Disc2d_432d = float32(disc2d_432d)
+		obj.Disc2dd_432d = float32(disc2dd_432d)
+		obj.Disc2dt_432d = float32(disc2dt_432d)
+		obj.Win4d_432d = float32(win4d_432d)
+		obj.Win3d_432d = float32(win3d_432d)
+		obj.Win2d_432d = float32(win2d_432d)
+		obj.Win2dd_432d = float32(win2dd_432d)
+		obj.Win2dt_432d = float32(win2dt_432d)
+		obj.Minbet_cbebas = float32(minbet_cbebas)
+		obj.Maxbet_cbebas = float32(maxbet_cbebas)
+		obj.Win_cbebas = float32(win_cbebas)
+		obj.Disc_cbebas = float32(disc_cbebas)
+		obj.Limitglobal_cbebas = float32(limitglobal_cbebas)
+		obj.Limittotal_cbebas = float32(limittotal_cbebas)
+		obj.Minbet_cmacau = float32(minbet_cmacau)
+		obj.Maxbet_cmacau = float32(maxbet_cmacau)
+		obj.Win2d_cmacau = float32(win2d_cmacau)
+		obj.Win3d_cmacau = float32(win3d_cmacau)
+		obj.Win4d_cmacau = float32(win4d_cmacau)
+		obj.Disc_cmacau = float32(disc_cmacau)
+		obj.Limitglobal_cmacau = float32(limitglobal_cmacau)
+		obj.Limitotal_cmacau = float32(limitotal_cmacau)
+		obj.Minbet_cnaga = float32(minbet_cnaga)
+		obj.Maxbet_cnaga = float32(maxbet_cnaga)
+		obj.Win3_cnaga = float32(win3_cnaga)
+		obj.Win4_cnaga = float32(win4_cnaga)
+		obj.Disc_cnaga = float32(disc_cnaga)
+		obj.Limitglobal_cnaga = float32(limitglobal_cnaga)
+		obj.Limittotal_cnaga = float32(limittotal_cnaga)
+		obj.Minbet_cjitu = float32(minbet_cjitu)
+		obj.Maxbet_cjitu = float32(maxbet_cjitu)
+		obj.Winas_cjitu = float32(winas_cjitu)
+		obj.Winkop_cjitu = float32(winkop_cjitu)
+		obj.Winkepala_cjitu = float32(winkepala_cjitu)
+		obj.Winekor_cjitu = float32(winekor_cjitu)
+		obj.Desc_cjitu = float32(desc_cjitu)
+		obj.Limitglobal_cjitu = float32(limitglobal_cjitu)
+		obj.Limittotal_cjitu = float32(limittotal_cjitu)
+		obj.Minbet_5050umum = float32(minbet_5050umum)
+		obj.Maxbet_5050umum = float32(maxbet_5050umum)
+		obj.Keibesar_5050umum = float32(keibesar_5050umum)
+		obj.Keikecil_5050umum = float32(keikecil_5050umum)
+		obj.Keigenap_5050umum = float32(keigenap_5050umum)
+		obj.Keiganjil_5050umum = float32(keiganjil_5050umum)
+		obj.Keitengah_5050umum = float32(keitengah_5050umum)
+		obj.Keitepi_5050umum = float32(keitepi_5050umum)
+		obj.Discbesar_5050umum = float32(discbesar_5050umum)
+		obj.Disckecil_5050umum = float32(disckecil_5050umum)
+		obj.Discgenap_5050umum = float32(discgenap_5050umum)
+		obj.Discganjil_5050umum = float32(discganjil_5050umum)
+		obj.Disctengah_5050umum = float32(disctengah_5050umum)
+		obj.Disctepi_5050umum = float32(disctepi_5050umum)
+		obj.Limitglobal_5050umum = float32(limitglobal_5050umum)
+		obj.Limittotal_5050umum = float32(limittotal_5050umum)
+		obj.Minbet_5050special = float32(minbet_5050special)
+		obj.Maxbet_5050special = float32(maxbet_5050special)
+		obj.Keiasganjil_5050special = float32(keiasganjil_5050special)
+		obj.Keiasgenap_5050special = float32(keiasgenap_5050special)
+		obj.Keiasbesar_5050special = float32(keiasbesar_5050special)
+		obj.Keiaskecil_5050special = float32(keiaskecil_5050special)
+		obj.Keikopganjil_5050special = float32(keikopganjil_5050special)
+		obj.Keikopgenap_5050special = float32(keikopgenap_5050special)
+		obj.Keikopbesar_5050special = float32(keikopbesar_5050special)
+		obj.Keikopkecil_5050special = float32(keikopkecil_5050special)
+		obj.Keikepalaganjil_5050special = float32(keikepalaganjil_5050special)
+		obj.Keikepalagenap_5050special = float32(keikepalagenap_5050special)
+		obj.Keikepalabesar_5050special = float32(keikepalabesar_5050special)
+		obj.Keikepalakecil_5050special = float32(keikepalakecil_5050special)
+		obj.Keiekorganjil_5050special = float32(keiekorganjil_5050special)
+		obj.Keiekorgenap_5050special = float32(keiekorgenap_5050special)
+		obj.Keiekorbesar_5050special = float32(keiekorbesar_5050special)
+		obj.Keiekorkecil_5050special = float32(keiekorkecil_5050special)
+		obj.Discasganjil_5050special = float32(discasganjil_5050special)
+		obj.Discasgenap_5050special = float32(discasgenap_5050special)
+		obj.Discasbesar_5050special = float32(discasbesar_5050special)
+		obj.Discaskecil_5050special = float32(discaskecil_5050special)
+		obj.Disckopganjil_5050special = float32(disckopganjil_5050special)
+		obj.Disckopgenap_5050special = float32(disckopgenap_5050special)
+		obj.Disckopbesar_5050special = float32(disckopbesar_5050special)
+		obj.Disckopkecil_5050special = float32(disckopkecil_5050special)
+		obj.Disckepalaganjil_5050special = float32(disckepalaganjil_5050special)
+		obj.Disckepalagenap_5050special = float32(disckepalagenap_5050special)
+		obj.Disckepalabesar_5050special = float32(disckepalabesar_5050special)
+		obj.Disckepalakecil_5050special = float32(disckepalakecil_5050special)
+		obj.Discekorganjil_5050special = float32(discekorganjil_5050special)
+		obj.Discekorgenap_5050special = float32(discekorgenap_5050special)
+		obj.Discekorbesar_5050special = float32(discekorbesar_5050special)
+		obj.Discekorkecil_5050special = float32(discekorkecil_5050special)
+		obj.Limitglobal_5050special = float32(limitglobal_5050special)
+		obj.Limittotal_5050special = float32(limittotal_5050special)
+		obj.Minbet_5050kombinasi = float32(minbet_5050kombinasi)
+		obj.Maxbet_5050kombinasi = float32(maxbet_5050kombinasi)
+		obj.Belakangkeimono_5050kombinasi = float32(belakangkeimono_5050kombinasi)
+		obj.Belakangkeistereo_5050kombinasi = float32(belakangkeistereo_5050kombinasi)
+		obj.Belakangkeikembang_5050kombinasi = float32(belakangkeikembang_5050kombinasi)
+		obj.Belakangkeikempis_5050kombinasi = float32(belakangkeikempis_5050kombinasi)
+		obj.Belakangkeikembar_5050kombinasi = float32(belakangkeikembar_5050kombinasi)
+		obj.Tengahkeimono_5050kombinasi = float32(tengahkeimono_5050kombinasi)
+		obj.Tengahkeistereo_5050kombinasi = float32(tengahkeistereo_5050kombinasi)
+		obj.Tengahkeikembang_5050kombinasi = float32(tengahkeikembang_5050kombinasi)
+		obj.Tengahkeikempis_5050kombinasi = float32(tengahkeikempis_5050kombinasi)
+		obj.Tengahkeikembar_5050kombinasi = float32(tengahkeikembar_5050kombinasi)
+		obj.Depankeimono_5050kombinasi = float32(depankeimono_5050kombinasi)
+		obj.Depankeistereo_5050kombinasi = float32(depankeistereo_5050kombinasi)
+		obj.Depankeikembang_5050kombinasi = float32(depankeikembang_5050kombinasi)
+		obj.Depankeikempis_5050kombinasi = float32(depankeikempis_5050kombinasi)
+		obj.Depankeikembar_5050kombinasi = float32(depankeikembar_5050kombinasi)
+		obj.Belakangdiscmono_5050kombinasi = float32(belakangdiscmono_5050kombinasi)
+		obj.Belakangdiscstereo_5050kombinasi = float32(belakangdiscstereo_5050kombinasi)
+		obj.Belakangdisckembang_5050kombinasi = float32(belakangdisckembang_5050kombinasi)
+		obj.Belakangdisckempis_5050kombinasi = float32(belakangdisckempis_5050kombinasi)
+		obj.Belakangdisckembar_5050kombinasi = float32(belakangdisckembar_5050kombinasi)
+		obj.Tengahdiscmono_5050kombinasi = float32(tengahdiscmono_5050kombinasi)
+		obj.Tengahdiscstereo_5050kombinasi = float32(tengahdiscstereo_5050kombinasi)
+		obj.Tengahdisckembang_5050kombinasi = float32(tengahdisckembang_5050kombinasi)
+		obj.Tengahdisckempis_5050kombinasi = float32(tengahdisckempis_5050kombinasi)
+		obj.Tengahdisckembar_5050kombinasi = float32(tengahdisckembar_5050kombinasi)
+		obj.Depandiscmono_5050kombinasi = float32(depandiscmono_5050kombinasi)
+		obj.Depandiscstereo_5050kombinasi = float32(depandiscstereo_5050kombinasi)
+		obj.Depandisckembang_5050kombinasi = float32(depandisckembang_5050kombinasi)
+		obj.Depandisckempis_5050kombinasi = float32(depandisckempis_5050kombinasi)
+		obj.Depandisckembar_5050kombinasi = float32(depandisckembar_5050kombinasi)
+		obj.Limitglobal_5050kombinasi = float32(limitglobal_5050kombinasi)
+		obj.Limittotal_5050kombinasi = float32(limittotal_5050kombinasi)
+		obj.Minbet_kombinasi = float32(minbet_kombinasi)
+		obj.Maxbet_kombinasi = float32(maxbet_kombinasi)
+		obj.Win_kombinasi = float32(win_kombinasi)
+		obj.Disc_kombinasi = float32(disc_kombinasi)
+		obj.Limitglobal_kombinasi = float32(limitglobal_kombinasi)
+		obj.Limittotal_kombinasi = float32(limittotal_kombinasi)
+		obj.Minbet_dasar = float32(minbet_dasar)
+		obj.Maxbet_dasar = float32(maxbet_dasar)
+		obj.Keibesar_dasar = float32(keibesar_dasar)
+		obj.Keikecil_dasar = float32(keikecil_dasar)
+		obj.Keigenap_dasar = float32(keigenap_dasar)
+		obj.Keiganjil_dasar = float32(keiganjil_dasar)
+		obj.Discbesar_dasar = float32(discbesar_dasar)
+		obj.Disckecil_dasar = float32(disckecil_dasar)
+		obj.Discgenap_dasar = float32(discgenap_dasar)
+		obj.Discganjil_dasar = float32(discganjil_dasar)
+		obj.Limitglobal_dasar = float32(limitglobal_dasar)
+		obj.Limittotal_dasar = float32(limittotal_dasar)
+		obj.Minbet_shio = float32(minbet_shio)
+		obj.Maxbet_shio = float32(maxbet_shio)
+		obj.Win_shio = float32(win_shio)
+		obj.Disc_shio = float32(disc_shio)
+		obj.Shioyear_shio = shioyear_shio
+		obj.Limitglobal_shio = float32(limitglobal_shio)
+		obj.Limittotal_shio = float32(limittotal_shio)
+		obj.Displaypasaran = int(displaypasaran)
+		obj.StatusPasaranActive = statuspasaranactive
+		obj.Create = create
+		obj.Createdate = createdate
+		obj.Update = update
+		obj.Updatedate = updatedate
+		arraobj = append(arraobj, obj)
+	})
+	jsonparser.ArrayEach(pasaranonline_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
+		Idpasaranonline, _ := jsonparser.GetInt(value, "Idpasaranonline")
+		haripasaran, _ := jsonparser.GetString(value, "haripasaran")
+
+		obj2.Idpasaranonline = int(Idpasaranonline)
+		obj2.Haripasaran = haripasaran
+		arraobj2 = append(arraobj2, obj2)
+	})
+	if !flag {
+		result, err := models.Fetch_detail(client_company, client.Idpasaran)
+		if err != nil {
+			c.Status(fiber.StatusBadRequest)
+			return c.JSON(fiber.Map{
+				"status":  fiber.StatusBadRequest,
+				"message": err.Error(),
+				"record":  nil,
+			})
+		}
+		helpers.SetRedis(field_redis, result, 0)
+		log.Println("PASARAN DETAIL MYSQL")
+		return c.JSON(result)
+	} else {
+		log.Println("PASARAN DETAIL CACHE")
 		return c.JSON(fiber.Map{
-			"status":  fiber.StatusBadRequest,
-			"message": err.Error(),
-			"record":  nil,
+			"status":        fiber.StatusOK,
+			"message":       "Success",
+			"record":        arraobj,
+			"pasaranonline": arraobj2,
+			"time":          time.Since(render_page).String(),
 		})
 	}
-	return c.JSON(result)
+
 }
 func PasaranSave(c *fiber.Ctx) error {
 	client := new(pasaransave)
@@ -385,6 +987,7 @@ func PasaranSave(c *fiber.Ctx) error {
 	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 	field_redis := "LISTPASARAN_AGENT_" + client_company
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
 
@@ -409,8 +1012,10 @@ func PasaranSave(c *fiber.Ctx) error {
 			})
 		}
 		val_agent := helpers.DeleteRedis(field_redis)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
 		val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + client_company)
 		log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
 		return c.JSON(result)
 	} else {
@@ -442,8 +1047,10 @@ func PasaranSave(c *fiber.Ctx) error {
 				})
 			}
 			val_agent := helpers.DeleteRedis(field_redis)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
 			val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + client_company)
 			log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
 			return c.JSON(result)
 		}
@@ -485,6 +1092,7 @@ func PasaranSaveOnline(c *fiber.Ctx) error {
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
 	field_redis := "LISTPASARAN_AGENT_" + client_company
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranOnline(
 			client_username,
@@ -526,6 +1134,8 @@ func PasaranSaveOnline(c *fiber.Ctx) error {
 			}
 			val_agent := helpers.DeleteRedis(field_redis)
 			log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
@@ -566,6 +1176,7 @@ func PasaranDeleteOnline(c *fiber.Ctx) error {
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
 	field_redis := "LISTPASARAN_AGENT_" + client_company
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Delete_PasaranOnline(
 			client_company,
@@ -581,6 +1192,8 @@ func PasaranDeleteOnline(c *fiber.Ctx) error {
 		}
 		val_agent := helpers.DeleteRedis(field_redis)
 		log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -605,6 +1218,8 @@ func PasaranDeleteOnline(c *fiber.Ctx) error {
 			}
 			val_agent := helpers.DeleteRedis(field_redis)
 			log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
@@ -628,6 +1243,7 @@ func PasaranSaveLimit(c *fiber.Ctx) error {
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
 	field_redis := "LISTPASARAN_AGENT_" + client_company
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranLimitline(
 			client_username,
@@ -648,6 +1264,8 @@ func PasaranSaveLimit(c *fiber.Ctx) error {
 		}
 		val_agent := helpers.DeleteRedis(field_redis)
 		log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -677,6 +1295,8 @@ func PasaranSaveLimit(c *fiber.Ctx) error {
 			}
 			val_agent := helpers.DeleteRedis(field_redis)
 			log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
@@ -699,7 +1319,7 @@ func PasaranSaveConf432d(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConf432(
 			client_username, client_company, client.Idpasaran,
@@ -719,6 +1339,8 @@ func PasaranSaveConf432d(c *fiber.Ctx) error {
 		}
 		val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_4-3-2")
 		log.Printf("Redis Delete Client - CONF 432 status: %d", val)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -747,6 +1369,8 @@ func PasaranSaveConf432d(c *fiber.Ctx) error {
 			}
 			val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_4-3-2")
 			log.Printf("Redis Delete Client - CONF 432 status: %d", val)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
@@ -769,7 +1393,7 @@ func PasaranSaveConfColokBebas(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfColokBebas(
 			client_username,
@@ -791,6 +1415,8 @@ func PasaranSaveConfColokBebas(c *fiber.Ctx) error {
 		}
 		val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_colok")
 		log.Printf("Redis Delete Client - CONF COLOK status: %d", val)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -821,6 +1447,8 @@ func PasaranSaveConfColokBebas(c *fiber.Ctx) error {
 			}
 			val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_colok")
 			log.Printf("Redis Delete Client - CONF COLOK status: %d", val)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
@@ -843,7 +1471,7 @@ func PasaranSaveConfColokMacau(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfColokMacau(
 			client_username,
@@ -867,6 +1495,8 @@ func PasaranSaveConfColokMacau(c *fiber.Ctx) error {
 		}
 		val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_colok")
 		log.Printf("Redis Delete Client - CONF COLOK status: %d", val)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -899,6 +1529,8 @@ func PasaranSaveConfColokMacau(c *fiber.Ctx) error {
 			}
 			val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_colok")
 			log.Printf("Redis Delete Client - CONF COLOK status: %d", val)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
@@ -921,7 +1553,7 @@ func PasaranSaveConfColokNaga(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfColokNaga(
 			client_username,
@@ -944,6 +1576,8 @@ func PasaranSaveConfColokNaga(c *fiber.Ctx) error {
 		}
 		val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_colok")
 		log.Printf("Redis Delete Client - CONF COLOK status: %d", val)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -975,6 +1609,8 @@ func PasaranSaveConfColokNaga(c *fiber.Ctx) error {
 			}
 			val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_colok")
 			log.Printf("Redis Delete Client - CONF COLOK status: %d", val)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
@@ -997,7 +1633,7 @@ func PasaranSaveConfColokJitu(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfColokJitu(
 			client_username,
@@ -1022,6 +1658,8 @@ func PasaranSaveConfColokJitu(c *fiber.Ctx) error {
 		}
 		val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_colok")
 		log.Printf("Redis Delete Client - CONF COLOK status: %d", val)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1055,6 +1693,8 @@ func PasaranSaveConfColokJitu(c *fiber.Ctx) error {
 			}
 			val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_colok")
 			log.Printf("Redis Delete Client - CONF COLOK status: %d", val)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
@@ -1077,7 +1717,7 @@ func PasaranSaveConf5050Umum(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConf5050Umum(
 			client_username,
@@ -1109,6 +1749,8 @@ func PasaranSaveConf5050Umum(c *fiber.Ctx) error {
 		}
 		val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_5050")
 		log.Printf("Redis Delete Client - CONF 5050 status: %d", val)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1149,6 +1791,8 @@ func PasaranSaveConf5050Umum(c *fiber.Ctx) error {
 			}
 			val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_5050")
 			log.Printf("Redis Delete Client - CONF 5050 status: %d", val)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
@@ -1171,7 +1815,7 @@ func PasaranSaveConf5050Special(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConf5050Special(
 			client_username,
@@ -1223,6 +1867,8 @@ func PasaranSaveConf5050Special(c *fiber.Ctx) error {
 		}
 		val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_5050")
 		log.Printf("Redis Delete Client - CONF 5050 status: %d", val)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1283,6 +1929,8 @@ func PasaranSaveConf5050Special(c *fiber.Ctx) error {
 			}
 			val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_5050")
 			log.Printf("Redis Delete Client - CONF 5050 status: %d", val)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
@@ -1305,7 +1953,7 @@ func PasaranSaveConf5050Kombinasi(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConf5050Kombinasi(
 			client_username,
@@ -1355,6 +2003,8 @@ func PasaranSaveConf5050Kombinasi(c *fiber.Ctx) error {
 		}
 		val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_5050")
 		log.Printf("Redis Delete Client - CONF 5050 status: %d", val)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1413,6 +2063,8 @@ func PasaranSaveConf5050Kombinasi(c *fiber.Ctx) error {
 			}
 			val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_5050")
 			log.Printf("Redis Delete Client - CONF 5050 status: %d", val)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
@@ -1435,7 +2087,7 @@ func PasaranSaveConfMacauKombinasi(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfMacauKombinasi(
 			client_username,
@@ -1457,6 +2109,8 @@ func PasaranSaveConfMacauKombinasi(c *fiber.Ctx) error {
 		}
 		val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_macaukombinasi")
 		log.Printf("Redis Delete Client - CONF MACAUKOMBINASI status: %d", val)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1487,6 +2141,8 @@ func PasaranSaveConfMacauKombinasi(c *fiber.Ctx) error {
 			}
 			val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_macaukombinasi")
 			log.Printf("Redis Delete Client - CONF MACAUKOMBINASI status: %d", val)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
@@ -1509,7 +2165,7 @@ func PasaranSaveConfDasar(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfDasar(
 			client_username,
@@ -1537,6 +2193,8 @@ func PasaranSaveConfDasar(c *fiber.Ctx) error {
 		}
 		val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_dasar")
 		log.Printf("Redis Delete Client - CONF DASAR status: %d", val)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1573,6 +2231,8 @@ func PasaranSaveConfDasar(c *fiber.Ctx) error {
 			}
 			val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_dasar")
 			log.Printf("Redis Delete Client - CONF DASAR status: %d", val)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
@@ -1595,7 +2255,7 @@ func PasaranSaveConfShio(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-
+	field_redis2 := "LISTPASARAN_AGENT_" + client_company + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfShio(
 			client_username,
@@ -1618,6 +2278,8 @@ func PasaranSaveConfShio(c *fiber.Ctx) error {
 		}
 		val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_shio")
 		log.Printf("Redis Delete Client - CONF SHIO status: %d", val)
+		val_agent2 := helpers.DeleteRedis(field_redis2)
+		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1649,6 +2311,8 @@ func PasaranSaveConfShio(c *fiber.Ctx) error {
 			}
 			val := helpers.DeleteRedis("config_" + client_company + "_" + client.Idpasarantogel + "_shio")
 			log.Printf("Redis Delete Client - CONF SHIO status: %d", val)
+			val_agent2 := helpers.DeleteRedis(field_redis2)
+			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
 			return c.JSON(result)
 		}
 	}
