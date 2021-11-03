@@ -61,7 +61,7 @@ type periodeSavePrediksi struct {
 }
 type periodePrediksi struct {
 	Nomorkeluaran string `json:"nomorkeluaran" validate:"required,min=4,max=4"`
-	Idcomppasaran int    `json:"pasaran_code" validate:"required"`
+	Idcomppasaran int    `json:"Idcomppasaran" validate:"required"`
 }
 type responseredis_periodehome struct {
 	Pasaran_no               int    `json:"pasaran_no"`

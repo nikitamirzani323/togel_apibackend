@@ -849,6 +849,7 @@ func Fetch_listprediksi(company, nomorkeluaran string, idcomppasaran int) (helpe
 					AND B.keluarantogel = '' 
 					ORDER BY B.idtrxkeluaran DESC   
 				`
+
 	row, err := con.QueryContext(ctx, sql_listprediksi, company, idcomppasaran)
 	helpers.ErrorCheck(err)
 
