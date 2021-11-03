@@ -51,7 +51,7 @@ func DashboardHome(c *fiber.Ctx) error {
 	if !flag {
 		result, err := models.Fetch_dashboard(client_company)
 		helpers.SetRedis(field_redis, result, 0)
-		log.Println("MYSQL")
+		log.Println("DASHBOARD MYSQL")
 		if err != nil {
 			c.Status(fiber.StatusBadRequest)
 			return c.JSON(fiber.Map{
@@ -62,7 +62,7 @@ func DashboardHome(c *fiber.Ctx) error {
 		}
 		return c.JSON(result)
 	} else {
-		log.Println("cache")
+		log.Println("DASHBOARD CACHE")
 		return c.JSON(fiber.Map{
 			"status":  fiber.StatusOK,
 			"message": "Success",
