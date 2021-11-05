@@ -529,7 +529,7 @@ func PeriodeSaveNew(c *fiber.Ctx) error {
 			})
 		}
 		//FRONTEND
-		val_frontend := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel))
+		val_frontend := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company) + "_" + strings.ToLower(idpasarantogel))
 		val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
 		val_frontend_listresult := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company))
 		log.Printf("Redis Delete FRONTEND status: %d", val_frontend)
@@ -560,7 +560,7 @@ func PeriodeSaveNew(c *fiber.Ctx) error {
 				})
 			}
 			//FRONTEND
-			val_frontend := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel))
+			val_frontend := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company) + "_" + strings.ToLower(idpasarantogel))
 			val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
 			val_frontend_listresult := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company))
 			log.Printf("Redis Delete FRONTEND status: %d", val_frontend)
