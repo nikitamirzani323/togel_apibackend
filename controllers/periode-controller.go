@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"strconv"
+	"strings"
 	"time"
 
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
@@ -93,7 +94,7 @@ func PeriodeHome(c *fiber.Ctx) error {
 	name := claims["name"].(string)
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
-	field_redis := "LISTPERIODE_AGENT_" + client_company
+	field_redis := "LISTPERIODE_AGENT_" + strings.ToLower(client_company)
 	var obj responseredis_periodehome
 	var arraobj []responseredis_periodehome
 	var obj_pasaranonline responseredis_periodelistpasaranonline
@@ -152,8 +153,8 @@ func PeriodeHome(c *fiber.Ctx) error {
 	})
 	if !flag {
 		result, err := models.Fetch_periode(client_company)
-		helpers.SetRedis(field_redis, result, 0)
-		log.Println("MYSQL")
+		helpers.SetRedis(field_redis, result, time.Hour*24)
+		log.Println("PERIODE MYSQL")
 		if err != nil {
 			c.Status(fiber.StatusBadRequest)
 			return c.JSON(fiber.Map{
@@ -164,7 +165,7 @@ func PeriodeHome(c *fiber.Ctx) error {
 		}
 		return c.JSON(result)
 	} else {
-		log.Println("cache")
+		log.Println("PERIODE CACHE")
 		return c.JSON(fiber.Map{
 			"status":        fiber.StatusOK,
 			"message":       "Success",
@@ -430,16 +431,18 @@ func PeriodeSave(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		val := helpers.DeleteRedis("listresult_" + client_company + "_" + client.Idpasarantogel)
-		val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + client_company)
-		val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + client_company)
-		val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + client_company)
-		val_frontend_listresult := helpers.DeleteRedis("listresult_" + client_company)
-		log.Printf("Redis Delete status: %d", val)
-		log.Printf("Redis Delete Agent status: %d", val_agent)
-		log.Printf("Redis Delete Agent DASHBOARD status: %d", val_agent_dashboard)
+		//FRONTEND
+		val_frontend := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel))
+		val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
+		val_frontend_listresult := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company))
+		log.Printf("Redis Delete FRONTEND status: %d", val_frontend)
 		log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
 		log.Printf("Redis Delete FRONTEND LISTRESULT status: %d", val_frontend_listresult)
+		//AGEN
+		val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company))
+		val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + strings.ToLower(client_company))
+		log.Printf("Redis Delete AGENT status: %d", val_agent)
+		log.Printf("Redis Delete AGENT DASHBOARD status: %d", val_agent_dashboard)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -462,16 +465,18 @@ func PeriodeSave(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val := helpers.DeleteRedis("listresult_" + client_company + "_" + client.Idpasarantogel)
-			val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + client_company)
-			val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + client_company)
-			val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + client_company)
-			val_frontend_listresult := helpers.DeleteRedis("listresult_" + client_company)
-			log.Printf("Redis Delete status: %d", val)
-			log.Printf("Redis Delete Agent status: %d", val_agent)
-			log.Printf("Redis Delete Agent DASHBOARD status: %d", val_agent_dashboard)
+			//FRONTEND
+			val_frontend := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel))
+			val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
+			val_frontend_listresult := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company))
+			log.Printf("Redis Delete FRONTEND status: %d", val_frontend)
 			log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
 			log.Printf("Redis Delete FRONTEND LISTRESULT status: %d", val_frontend_listresult)
+			//AGEN
+			val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company))
+			val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + strings.ToLower(client_company))
+			log.Printf("Redis Delete AGENT status: %d", val_agent)
+			log.Printf("Redis Delete AGENT DASHBOARD status: %d", val_agent_dashboard)
 			return c.JSON(result)
 		}
 	}
@@ -523,16 +528,18 @@ func PeriodeSaveNew(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		val := helpers.DeleteRedis("listresult_" + client_company + "_" + idpasarantogel)
-		val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + client_company)
-		val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + client_company)
-		val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + client_company)
-		val_frontend_listresult := helpers.DeleteRedis("listresult_" + client_company)
-		log.Printf("Redis Delete status: %d", val)
-		log.Printf("Redis Delete Agent status: %d", val_agent)
-		log.Printf("Redis Delete Agent DASHBOARD status: %d", val_agent_dashboard)
+		//FRONTEND
+		val_frontend := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel))
+		val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
+		val_frontend_listresult := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company))
+		log.Printf("Redis Delete FRONTEND status: %d", val_frontend)
 		log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
 		log.Printf("Redis Delete FRONTEND LISTRESULT status: %d", val_frontend_listresult)
+		//AGEN
+		val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company))
+		val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + strings.ToLower(client_company))
+		log.Printf("Redis Delete AGENT status: %d", val_agent)
+		log.Printf("Redis Delete AGENT DASHBOARD status: %d", val_agent_dashboard)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -552,16 +559,18 @@ func PeriodeSaveNew(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val := helpers.DeleteRedis("listresult_" + client_company + "_" + idpasarantogel)
-			val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + client_company)
-			val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + client_company)
-			val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + client_company)
-			val_frontend_listresult := helpers.DeleteRedis("listresult_" + client_company)
-			log.Printf("Redis Delete status: %d", val)
-			log.Printf("Redis Delete Agent status: %d", val_agent)
-			log.Printf("Redis Delete Agent DASHBOARD status: %d", val_agent_dashboard)
+			//FRONTEND
+			val_frontend := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel))
+			val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
+			val_frontend_listresult := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company))
+			log.Printf("Redis Delete FRONTEND status: %d", val_frontend)
 			log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
 			log.Printf("Redis Delete FRONTEND LISTRESULT status: %d", val_frontend_listresult)
+			//AGEN
+			val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company))
+			val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + strings.ToLower(client_company))
+			log.Printf("Redis Delete AGENT status: %d", val_agent)
+			log.Printf("Redis Delete AGENT DASHBOARD status: %d", val_agent_dashboard)
 			return c.JSON(result)
 		}
 	}
@@ -615,12 +624,19 @@ func PeriodeSaveRevisi(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		val := helpers.DeleteRedis("listresult_" + client_company + "_" + idpasarantogel)
-		val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + client_company)
-		val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + client_company)
-		log.Printf("Redis Delete status: %d", val)
-		log.Printf("Redis Delete Agent status: %d", val_agent)
-		log.Printf("Redis Delete Agent DASHBOARD status: %d", val_agent_dashboard)
+
+		//FRONTEND
+		val_frontend := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company) + "_" + strings.ToLower(idpasarantogel))
+		val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
+		val_frontend_listresult := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company))
+		log.Printf("Redis Delete FRONTEND status: %d", val_frontend)
+		log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
+		log.Printf("Redis Delete FRONTEND LISTRESULT status: %d", val_frontend_listresult)
+		//AGEN
+		val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company))
+		val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + strings.ToLower(client_company))
+		log.Printf("Redis Delete AGENT status: %d", val_agent)
+		log.Printf("Redis Delete AGENT DASHBOARD status: %d", val_agent_dashboard)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -640,12 +656,18 @@ func PeriodeSaveRevisi(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val := helpers.DeleteRedis("listresult_" + client_company + "_" + idpasarantogel)
-			val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + client_company)
-			val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + client_company)
-			log.Printf("Redis Delete status: %d", val)
-			log.Printf("Redis Delete Agent status: %d", val_agent)
-			log.Printf("Redis Delete Agent DASHBOARD status: %d", val_agent_dashboard)
+			//FRONTEND
+			val_frontend := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company) + "_" + strings.ToLower(idpasarantogel))
+			val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
+			val_frontend_listresult := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company))
+			log.Printf("Redis Delete FRONTEND status: %d", val_frontend)
+			log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
+			log.Printf("Redis Delete FRONTEND LISTRESULT status: %d", val_frontend_listresult)
+			//AGEN
+			val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company))
+			val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + strings.ToLower(client_company))
+			log.Printf("Redis Delete AGENT status: %d", val_agent)
+			log.Printf("Redis Delete AGENT DASHBOARD status: %d", val_agent_dashboard)
 			return c.JSON(result)
 		}
 	}
@@ -699,12 +721,19 @@ func PeriodeCancelBet(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		val := helpers.DeleteRedis("listresult_" + client_company + "_" + idpasarantogel)
-		val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + client_company)
-		val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + client_company)
-		log.Printf("Redis Delete status: %d", val)
-		log.Printf("Redis Delete Agent status: %d", val_agent)
-		log.Printf("Redis Delete Agent DASHBOARD status: %d", val_agent_dashboard)
+		//FRONTEND
+		val_frontend := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company) + "_" + strings.ToLower(idpasarantogel))
+		val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
+		val_frontend_listresult := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company))
+		log.Printf("Redis Delete FRONTEND status: %d", val_frontend)
+		log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
+		log.Printf("Redis Delete FRONTEND LISTRESULT status: %d", val_frontend_listresult)
+		//AGEN
+		val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company))
+		val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + strings.ToLower(client_company))
+		log.Printf("Redis Delete AGENT status: %d", val_agent)
+		log.Printf("Redis Delete AGENT DASHBOARD status: %d", val_agent_dashboard)
+
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -724,12 +753,18 @@ func PeriodeCancelBet(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val := helpers.DeleteRedis("listresult_" + client_company + "_" + idpasarantogel)
-			val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + client_company)
-			val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + client_company)
-			log.Printf("Redis Delete status: %d", val)
-			log.Printf("Redis Delete Agent status: %d", val_agent)
-			log.Printf("Redis Delete Agent DASHBOARD status: %d", val_agent_dashboard)
+			//FRONTEND
+			val_frontend := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company) + "_" + strings.ToLower(idpasarantogel))
+			val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
+			val_frontend_listresult := helpers.DeleteRedis("listresult_" + strings.ToLower(client_company))
+			log.Printf("Redis Delete FRONTEND status: %d", val_frontend)
+			log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
+			log.Printf("Redis Delete FRONTEND LISTRESULT status: %d", val_frontend_listresult)
+			//AGEN
+			val_agent := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company))
+			val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + strings.ToLower(client_company))
+			log.Printf("Redis Delete AGENT status: %d", val_agent)
+			log.Printf("Redis Delete AGENT DASHBOARD status: %d", val_agent_dashboard)
 			return c.JSON(result)
 		}
 	}

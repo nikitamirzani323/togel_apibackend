@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"math"
+	"strings"
 	"time"
 
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
@@ -57,7 +58,7 @@ func Reportwinlose(c *fiber.Ctx) error {
 	name := claims["name"].(string)
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
-	field_redis := "REPORTWINLOSE_AGENT_" + client_company + "_" + client.Client_start + "_" + client.Client_end
+	field_redis := "REPORTWINLOSE_AGENT_" + strings.ToLower(client_company) + "_" + client.Client_start + "_" + client.Client_end
 	render_page := time.Now()
 	var obj responseredis_winlose
 	var arraobj []responseredis_winlose

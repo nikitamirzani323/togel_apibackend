@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"log"
+	"strings"
 	"time"
 
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
@@ -39,7 +40,7 @@ func AdminruleHome(c *fiber.Ctx) error {
 	name := claims["name"].(string)
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
-	field_redis := "LISTADMINRULE_AGENT_" + client_company
+	field_redis := "LISTADMINRULE_AGENT_" + strings.ToLower(client_company)
 	var obj responseredis_adminrulehome
 	var arraobj []responseredis_adminrulehome
 	render_page := time.Now()
@@ -170,6 +171,9 @@ func SaveAdminruleDetail(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
+		field_redis := "LISTADMINRULE_AGENT_" + strings.ToLower(client_company)
+		val_agent := helpers.DeleteRedis(field_redis)
+		log.Printf("Redis Delete AGEN - ADMINRULE status: %d", val_agent)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -189,6 +193,9 @@ func SaveAdminruleDetail(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
+			field_redis := "LISTADMINRULE_AGENT_" + strings.ToLower(client_company)
+			val_agent := helpers.DeleteRedis(field_redis)
+			log.Printf("Redis Delete AGEN - ADMINRULE status: %d", val_agent)
 			return c.JSON(result)
 		}
 	}
@@ -240,6 +247,9 @@ func SaveAdminruleConf(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
+		field_redis := "LISTADMINRULE_AGENT_" + strings.ToLower(client_company)
+		val_agent := helpers.DeleteRedis(field_redis)
+		log.Printf("Redis Delete AGEN - ADMINRULE status: %d", val_agent)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -259,6 +269,9 @@ func SaveAdminruleConf(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
+			field_redis := "LISTADMINRULE_AGENT_" + strings.ToLower(client_company)
+			val_agent := helpers.DeleteRedis(field_redis)
+			log.Printf("Redis Delete AGEN - ADMINRULE status: %d", val_agent)
 			return c.JSON(result)
 		}
 	}

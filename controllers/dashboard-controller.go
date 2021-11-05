@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"log"
+	"strings"
 	"time"
 
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
@@ -26,7 +27,7 @@ func DashboardHome(c *fiber.Ctx) error {
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 
-	field_redis := "DASHBOARD_CHART_AGENT_" + client_company
+	field_redis := "DASHBOARD_CHART_AGENT_" + strings.ToLower(client_company)
 	var obj responseredis_dashboardchart
 	var arraobj []responseredis_dashboardchart
 	render_page := time.Now()
@@ -50,7 +51,7 @@ func DashboardHome(c *fiber.Ctx) error {
 	})
 	if !flag {
 		result, err := models.Fetch_dashboard(client_company)
-		helpers.SetRedis(field_redis, result, 0)
+		helpers.SetRedis(field_redis, result, time.Hour*24)
 		log.Println("DASHBOARD MYSQL")
 		if err != nil {
 			c.Status(fiber.StatusBadRequest)
