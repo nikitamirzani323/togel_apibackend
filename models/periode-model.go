@@ -245,14 +245,14 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 	var arraobj []periodeEdit
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	msg := "Success"
+	msg := "Failed"
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-
+	flag := false
 	tbl_trx_keluarantogel, _, _ := Get_mappingdatabase(company)
 
-	sql := `SELECT 
+	sql_select := `SELECT 
 		A.idtrxkeluaran, A.idcomppasaran, A.keluaranperiode, A.datekeluaran, A.keluarantogel, 
 		A.createkeluaran, A.createdatekeluaran, A.updatekeluaran, COALESCE(A.updatedatekeluaran,''), 
 		B.idpasarantogel, B.jamtutup, B.jamjadwal, B.jamopen, A.revisi      
@@ -267,74 +267,91 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 		createkeluaran_db, createdatekeluaran_db, updatekeluaran_db, updatedatekeluaran_db, idpasarantogel_db string
 		jamtutup_db, jamjadwal_db, jamopen_db                                                                 string
 	)
-	err := con.QueryRowContext(ctx, sql, company, idtrxkeluaran).Scan(
-		&idtrxkeluaran_db, &idcomppasaran_db, &keluaranperiode_db, &datekeluaran_db, &keluarantogel_db,
+
+	row := con.QueryRowContext(ctx, sql_select, company, idtrxkeluaran)
+	switch e := row.Scan(&idtrxkeluaran_db, &idcomppasaran_db, &keluaranperiode_db, &datekeluaran_db, &keluarantogel_db,
 		&createkeluaran_db, &createdatekeluaran_db, &updatekeluaran_db, &updatedatekeluaran_db, &idpasarantogel_db,
-		&jamtutup_db, &jamjadwal_db, &jamopen_db, &revisi_db)
+		&jamtutup_db, &jamjadwal_db, &jamopen_db, &revisi_db); e {
+	case sql.ErrNoRows:
+		flag = false
+	case nil:
+		flag = true
+	default:
+		flag = false
+	}
 
-	helpers.ErrorCheck(err)
-
-	tglopen, _ := goment.New(datekeluaran_db)
-	tglskrg := tglnow.Format("YYYY-MM-DD HH:mm:ss")
-	tglskrgend := tglnow.Format("YYYY-MM-DD") + " 23:59:59"
-	jamtutup := tglnow.Format("YYYY-MM-DD") + " " + jamtutup_db
-	jamtutup2 := tglopen.Format("YYYY-MM-DD") + " " + jamtutup_db
-	jamopen := tglnow.Format("YYYY-MM-DD") + " " + jamopen_db
-	jamopen2 := tglopen.Format("YYYY-MM-DD") + " " + jamopen_db
-	statuspasaran := "OFFLINE"
-	statusrevisi := "LOCK"
-	if tglskrg > jamopen2 { //EXPIRE
-		statuspasaran = "OFFLINE"
-		statusrevisi = "LOCK"
-	} else {
-		if tglskrgend < jamtutup2 { // jikga tgl skrg end dibawah tgltuptup
-			statuspasaran = "ONLINE"
+	if flag {
+		tglopen, _ := goment.New(datekeluaran_db)
+		tglskrg := tglnow.Format("YYYY-MM-DD HH:mm:ss")
+		tglskrgend := tglnow.Format("YYYY-MM-DD") + " 23:59:59"
+		jamtutup := tglnow.Format("YYYY-MM-DD") + " " + jamtutup_db
+		jamtutup2 := tglopen.Format("YYYY-MM-DD") + " " + jamtutup_db
+		jamopen := tglnow.Format("YYYY-MM-DD") + " " + jamopen_db
+		jamopen2 := tglopen.Format("YYYY-MM-DD") + " " + jamopen_db
+		statuspasaran := "OFFLINE"
+		statusrevisi := "LOCK"
+		if tglskrg > jamopen2 { //EXPIRE
+			statuspasaran = "OFFLINE"
+			statusrevisi = "LOCK"
 		} else {
-			flag := _checkpasaranonline(idcomppasaran_db, company)
-			if flag {
-				if tglskrg >= jamtutup && tglskrg <= jamopen {
-					statuspasaran = "OFFLINE"
+			if tglskrgend < jamtutup2 { // jikga tgl skrg end dibawah tgltuptup
+				statuspasaran = "ONLINE"
+			} else {
+				flag := _checkpasaranonline(idcomppasaran_db, company)
+				if flag {
+					if tglskrg >= jamtutup && tglskrg <= jamopen {
+						statuspasaran = "OFFLINE"
+					} else {
+						statuspasaran = "ONLINE"
+					}
+
+					if keluarantogel_db != "" {
+						if revisi_db < 1 {
+							statusrevisi = "OPEN"
+						}
+					}
+
+					if updatedatekeluaran_db != "" {
+						tglupdate, _ := goment.New(updatedatekeluaran_db)
+						tglexpirerevisi := tglupdate.Add(30, "minutes").Format("YYYY-MM-DD HH:mm:ss")
+
+						if tglexpirerevisi < tglskrg {
+							statusrevisi = "LOCK"
+						}
+					}
 				} else {
 					statuspasaran = "ONLINE"
 				}
-
-				if keluarantogel_db != "" {
-					if revisi_db < 1 {
-						statusrevisi = "OPEN"
-					}
-				}
-
-				if updatedatekeluaran_db != "" {
-					tglupdate, _ := goment.New(updatedatekeluaran_db)
-					tglexpirerevisi := tglupdate.Add(30, "minutes").Format("YYYY-MM-DD HH:mm:ss")
-
-					if tglexpirerevisi < tglskrg {
-						statusrevisi = "LOCK"
-					}
-				}
-			} else {
-				statuspasaran = "ONLINE"
 			}
+
 		}
-
+		obj.Idinvoice = strconv.Itoa(idtrxkeluaran)
+		obj.TanggalPeriode = datekeluaran_db
+		obj.TanggalNext = Get_NextPasaran(company, datekeluaran_db, idcomppasaran_db)
+		obj.PeriodeKeluaran = keluaranperiode_db + "-" + idpasarantogel_db
+		obj.Keluaran = keluarantogel_db
+		obj.Statusrevisi = statusrevisi
+		obj.StatusOnlineOffice = statuspasaran
+		obj.Create = createkeluaran_db
+		obj.CreateDate = createdatekeluaran_db
+		obj.Update = updatekeluaran_db
+		obj.UpdateDate = updatedatekeluaran_db
+		arraobj = append(arraobj, obj)
+		msg = "Success"
 	}
-	obj.Idinvoice = strconv.Itoa(idtrxkeluaran)
-	obj.TanggalPeriode = datekeluaran_db
-	obj.TanggalNext = Get_NextPasaran(company, datekeluaran_db, idcomppasaran_db)
-	obj.PeriodeKeluaran = keluaranperiode_db + "-" + idpasarantogel_db
-	obj.Keluaran = keluarantogel_db
-	obj.Statusrevisi = statusrevisi
-	obj.StatusOnlineOffice = statuspasaran
-	obj.Create = createkeluaran_db
-	obj.CreateDate = createdatekeluaran_db
-	obj.Update = updatekeluaran_db
-	obj.UpdateDate = updatedatekeluaran_db
-	arraobj = append(arraobj, obj)
 
-	res.Status = fiber.StatusOK
-	res.Message = msg
-	res.Record = arraobj
-	res.Time = time.Since(render_page).String()
+	if flag {
+		res.Status = fiber.StatusOK
+		res.Message = msg
+		res.Record = arraobj
+		res.Time = time.Since(render_page).String()
+	} else {
+		res.Status = fiber.StatusBadRequest
+		res.Message = msg
+		res.Record = nil
+		res.Time = time.Since(render_page).String()
+	}
+
 	return res, nil
 }
 func Fetch_membergroupbynomor(company, typegame, nomortogel string, idtrxkeluaran int) (helpers.Response, error) {
@@ -406,7 +423,7 @@ func Fetch_membergroup(company string, idtrxkeluaran int) (helpers.Response, err
 	var obj listMember
 	var arraobj []listMember
 	var res helpers.Response
-	msg := "Success"
+	msg := "Failed"
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
