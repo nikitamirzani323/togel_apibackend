@@ -273,7 +273,7 @@ func PeriodeDetail(c *fiber.Ctx) error {
 	})
 	if !flag {
 		result, err := models.Fetch_periodedetail(client_company, client.Idtrxkeluaran)
-		helpers.SetRedis(field_redis, result, time.Minute*30)
+		helpers.SetRedis(field_redis, result, time.Minute*1)
 		log.Println("PERIODE DETAIL MYSQL")
 		if err != nil {
 			c.Status(fiber.StatusBadRequest)
