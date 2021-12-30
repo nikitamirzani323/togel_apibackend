@@ -763,36 +763,36 @@ func Delete_PasaranOnline(company string, idcomppasaran, idcomppasaranoff int) (
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.PrepareContext(ctx, `
+	msg := "Failed"
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.PrepareContext(ctx, `
 					DELETE FROM 
 					`+config.DB_tbl_mst_company_game_pasaran_offline+`  
 					WHERE idcomppasaranoff = ?
 					AND idcomppasaran = ? 
 					AND idcompany = ? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx,
-		idcomppasaranoff,
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx,
+			idcomppasaranoff,
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	delete, err_delete := rec.RowsAffected()
-	helpers.ErrorCheck(err_delete)
-	fmt.Printf("The last delete row id: %d\n", delete)
-	defer stmt.Close()
-	if delete > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		delete, err_delete := rec.RowsAffected()
+		helpers.ErrorCheck(err_delete)
+		fmt.Printf("The last delete row id: %d\n", delete)
+		defer stmt.Close()
+		if delete > 0 {
+			msg = "Success"
+		}
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Save_PasaranLimitline(agent string, company string, idcomppasaran int, limitline4d, limitline3d, limitline2d, limitline2dd, limitline2dt int) (helpers.Response, error) {
@@ -801,7 +801,11 @@ func Save_PasaranLimitline(agent string, company string, idcomppasaran int, limi
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.PrepareContext(ctx, `
+	msg := "Failed"
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+`  
 					SET limitline_4d=? , limitline_3d=?, 
@@ -809,28 +813,24 @@ func Save_PasaranLimitline(agent string, company string, idcomppasaran int, limi
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx, limitline4d, limitline3d, limitline2d, limitline2dd, limitline2dt,
-		agent,
-		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx, limitline4d, limitline3d, limitline2d, limitline2dd, limitline2dt,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	update, err_update := rec.RowsAffected()
-	helpers.ErrorCheck(err_update)
-	if update > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		update, err_update := rec.RowsAffected()
+		helpers.ErrorCheck(err_update)
+		if update > 0 {
+			msg = "Success"
+		}
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Save_PasaranConf432(
@@ -847,7 +847,12 @@ func Save_PasaranConf432(
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.PrepareContext(ctx, `
+
+	msg := "Failed"
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+` 
 					SET 1_minbet=? , 1_maxbet4d=?, 1_maxbet3d=?, 1_maxbet2d=?, 1_maxbet2dd=?, 1_maxbet2dt=?, 
@@ -858,33 +863,29 @@ func Save_PasaranConf432(
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx,
-		minbet, maxbet4d, maxbet3d, maxbet2d, maxbet2dd, maxbet2dt,
-		win4d, win3d, win2d, win2dd, win2dt,
-		disc4d, disc3d, disc2d, disc2dd, disc2dt,
-		limitglobal4d, limitglobal3d, limitglobal2d, limitglobal2dd, limitglobal2dt,
-		limittotal4d, limittotal3d, limittotal2d, limittotal2dd, limittotal2dt,
-		agent,
-		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx,
+			minbet, maxbet4d, maxbet3d, maxbet2d, maxbet2dd, maxbet2dt,
+			win4d, win3d, win2d, win2dd, win2dt,
+			disc4d, disc3d, disc2d, disc2dd, disc2dt,
+			limitglobal4d, limitglobal3d, limitglobal2d, limitglobal2dd, limitglobal2dt,
+			limittotal4d, limittotal3d, limittotal2d, limittotal2dd, limittotal2dt,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	update, err_update := rec.RowsAffected()
-	helpers.ErrorCheck(err_update)
-	if update > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		update, err_update := rec.RowsAffected()
+		helpers.ErrorCheck(err_update)
+		if update > 0 {
+			msg = "Success"
+		}
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Save_PasaranConfColokBebas(
@@ -899,7 +900,12 @@ func Save_PasaranConfColokBebas(
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.PrepareContext(ctx, `
+
+	msg := "Failed"
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+`  
 					SET 2_minbet=? , 2_maxbet=?, 2_win=?, 2_disc=?, 
@@ -907,31 +913,27 @@ func Save_PasaranConfColokBebas(
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx,
-		minbet, maxbet,
-		win, disc,
-		limitglobal, limittotal,
-		agent,
-		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx,
+			minbet, maxbet,
+			win, disc,
+			limitglobal, limittotal,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	update, err_update := rec.RowsAffected()
-	helpers.ErrorCheck(err_update)
-	if update > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		update, err_update := rec.RowsAffected()
+		helpers.ErrorCheck(err_update)
+		if update > 0 {
+			msg = "Success"
+		}
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Save_PasaranConfColokMacau(
@@ -946,7 +948,12 @@ func Save_PasaranConfColokMacau(
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.PrepareContext(ctx, `
+
+	msg := "Failed"
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+`  
 					SET 3_minbet=? , 3_maxbet=?, 3_win2digit=?, 3_win3digit=?, 3_win4digit=?, 
@@ -954,31 +961,27 @@ func Save_PasaranConfColokMacau(
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx,
-		minbet, maxbet,
-		win2, win3, win4, disc,
-		limitglobal, limittotal,
-		agent,
-		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx,
+			minbet, maxbet,
+			win2, win3, win4, disc,
+			limitglobal, limittotal,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	update, err_update := rec.RowsAffected()
-	helpers.ErrorCheck(err_update)
-	if update > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		update, err_update := rec.RowsAffected()
+		helpers.ErrorCheck(err_update)
+		if update > 0 {
+			msg = "Success"
+		}
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Save_PasaranConfColokNaga(
@@ -993,7 +996,12 @@ func Save_PasaranConfColokNaga(
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.PrepareContext(ctx, `
+
+	msg := "Failed"
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+`  
 					SET 4_minbet=? , 4_maxbet=?, 4_win3digit=?, 4_win4digit=?,  
@@ -1001,31 +1009,27 @@ func Save_PasaranConfColokNaga(
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx,
-		minbet, maxbet,
-		win3, win4, disc,
-		limitglobal, limittotal,
-		agent,
-		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx,
+			minbet, maxbet,
+			win3, win4, disc,
+			limitglobal, limittotal,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	update, err_update := rec.RowsAffected()
-	helpers.ErrorCheck(err_update)
-	if update > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		update, err_update := rec.RowsAffected()
+		helpers.ErrorCheck(err_update)
+		if update > 0 {
+			msg = "Success"
+		}
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Save_PasaranConfColokJitu(
@@ -1040,7 +1044,12 @@ func Save_PasaranConfColokJitu(
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.PrepareContext(ctx, `
+
+	msg := "Failed"
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+` 
 					SET 5_minbet=? , 5_maxbet=?, 
@@ -1049,32 +1058,28 @@ func Save_PasaranConfColokJitu(
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx,
-		minbet, maxbet,
-		winas, winkop, winkepala, winekor,
-		disc,
-		limitglobal, limittotal,
-		agent,
-		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx,
+			minbet, maxbet,
+			winas, winkop, winkepala, winekor,
+			disc,
+			limitglobal, limittotal,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	update, err_update := rec.RowsAffected()
-	helpers.ErrorCheck(err_update)
-	if update > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		update, err_update := rec.RowsAffected()
+		helpers.ErrorCheck(err_update)
+		if update > 0 {
+			msg = "Success"
+		}
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Save_PasaranConf5050Umum(
@@ -1090,7 +1095,12 @@ func Save_PasaranConf5050Umum(
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.PrepareContext(ctx, `
+
+	msg := "Failed"
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+`  
 					SET 6_minbet=? , 6_maxbet=?, 
@@ -1100,32 +1110,28 @@ func Save_PasaranConf5050Umum(
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx,
-		minbet, maxbet,
-		keibesar, keikecil, keigenap, keiganjil, keitengah, keitepi,
-		discbesar, disckecil, discgenap, discganjil, disctengah, disctepi,
-		limitglobal, limittotal,
-		agent,
-		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx,
+			minbet, maxbet,
+			keibesar, keikecil, keigenap, keiganjil, keitengah, keitepi,
+			discbesar, disckecil, discgenap, discganjil, disctengah, disctepi,
+			limitglobal, limittotal,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	update, err_update := rec.RowsAffected()
-	helpers.ErrorCheck(err_update)
-	if update > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		update, err_update := rec.RowsAffected()
+		helpers.ErrorCheck(err_update)
+		if update > 0 {
+			msg = "Success"
+		}
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Save_PasaranConf5050Special(
@@ -1147,7 +1153,12 @@ func Save_PasaranConf5050Special(
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.PrepareContext(ctx, `
+
+	msg := "Failed"
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+` 
 					SET 7_minbet=? , 7_maxbet=?, 
@@ -1163,39 +1174,35 @@ func Save_PasaranConf5050Special(
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx,
-		minbet, maxbet,
-		keiasganjil, keiasgenap, keiasbesar, keiaskecil,
-		keikopganjil, keikopgenap, keikopbesar, keikopkecil,
-		keikepalaganjil, keikepalagenap, keikepalabesar, keikepalakecil,
-		keiekorganjil, keiekorgenap, keiekorbesar, keiekorkecil,
-		discasganjil, discasgenap, discasbesar, discaskecil,
-		disckopganjil, disckopgenap, disckopbesar, disckopkecil,
-		disckepalaganjil, disckepalagenap, disckepalabesar, disckepalakecil,
-		discekorganjil, discekorgenap, discekorbesar, discekorkecil,
-		limitglobal,
-		limittotal,
-		agent,
-		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx,
+			minbet, maxbet,
+			keiasganjil, keiasgenap, keiasbesar, keiaskecil,
+			keikopganjil, keikopgenap, keikopbesar, keikopkecil,
+			keikepalaganjil, keikepalagenap, keikepalabesar, keikepalakecil,
+			keiekorganjil, keiekorgenap, keiekorbesar, keiekorkecil,
+			discasganjil, discasgenap, discasbesar, discaskecil,
+			disckopganjil, disckopgenap, disckopbesar, disckopkecil,
+			disckepalaganjil, disckepalagenap, disckepalabesar, disckepalakecil,
+			discekorganjil, discekorgenap, discekorbesar, discekorkecil,
+			limitglobal,
+			limittotal,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	update, err_update := rec.RowsAffected()
-	helpers.ErrorCheck(err_update)
-	if update > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		update, err_update := rec.RowsAffected()
+		helpers.ErrorCheck(err_update)
+		if update > 0 {
+			msg = "Success"
+		}
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Save_PasaranConf5050Kombinasi(
@@ -1215,7 +1222,12 @@ func Save_PasaranConf5050Kombinasi(
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.PrepareContext(ctx, `
+
+	msg := "Failed"
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+`  
 					SET 8_minbet=? , 8_maxbet=?, 
@@ -1229,37 +1241,33 @@ func Save_PasaranConf5050Kombinasi(
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx,
-		minbet, maxbet,
-		belakangkeimono, belakangkeistereo, belakangkeikembang, belakangkeikempis, belakangkeikembar,
-		tengahkeimono, tengahkeistereo, tengahkeikembang, tengahkeikempis, tengahkeikembar,
-		depankeimono, depankeistereo, depankeikembang, depankeikempis, depankeikembar,
-		belakangdiscmono, belakangdiscstereo, belakangdisckembang, belakangdisckempis, belakangdisckembar,
-		tengahdiscmono, tengahdiscstereo, tengahdisckembang, tengahdisckempis, tengahdisckembar,
-		depandiscmono, depandiscstereo, depandisckembang, depandisckempis, depandisckembar,
-		limitglobal,
-		limittotal,
-		agent,
-		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx,
+			minbet, maxbet,
+			belakangkeimono, belakangkeistereo, belakangkeikembang, belakangkeikempis, belakangkeikembar,
+			tengahkeimono, tengahkeistereo, tengahkeikembang, tengahkeikempis, tengahkeikembar,
+			depankeimono, depankeistereo, depankeikembang, depankeikempis, depankeikembar,
+			belakangdiscmono, belakangdiscstereo, belakangdisckembang, belakangdisckempis, belakangdisckembar,
+			tengahdiscmono, tengahdiscstereo, tengahdisckembang, tengahdisckempis, tengahdisckembar,
+			depandiscmono, depandiscstereo, depandisckembang, depandisckempis, depandisckembar,
+			limitglobal,
+			limittotal,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	update, err_update := rec.RowsAffected()
-	helpers.ErrorCheck(err_update)
-	if update > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		update, err_update := rec.RowsAffected()
+		helpers.ErrorCheck(err_update)
+		if update > 0 {
+			msg = "Success"
+		}
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Save_PasaranConfMacauKombinasi(
@@ -1274,7 +1282,12 @@ func Save_PasaranConfMacauKombinasi(
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.PrepareContext(ctx, `
+
+	msg := "Failed"
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+`  
 					SET 9_minbet=? , 9_maxbet=?, 9_win=?, 9_discount=?, 
@@ -1282,31 +1295,27 @@ func Save_PasaranConfMacauKombinasi(
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx,
-		minbet, maxbet,
-		win, disc,
-		limitglobal, limittotal,
-		agent,
-		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx,
+			minbet, maxbet,
+			win, disc,
+			limitglobal, limittotal,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	update, err_update := rec.RowsAffected()
-	helpers.ErrorCheck(err_update)
-	if update > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		update, err_update := rec.RowsAffected()
+		helpers.ErrorCheck(err_update)
+		if update > 0 {
+			msg = "Success"
+		}
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Save_PasaranConfDasar(
@@ -1322,7 +1331,12 @@ func Save_PasaranConfDasar(
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.PrepareContext(ctx, `
+
+	msg := "Failed"
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+`  
 					SET 10_minbet=? , 10_maxbet=?, 
@@ -1332,33 +1346,29 @@ func Save_PasaranConfDasar(
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx,
-		minbet, maxbet,
-		keibesar, keikecil, keigenap, keiganjil,
-		discbesar, disckecil, discigenap, discganjil,
-		limitglobal,
-		limittotal,
-		agent,
-		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx,
+			minbet, maxbet,
+			keibesar, keikecil, keigenap, keiganjil,
+			discbesar, disckecil, discigenap, discganjil,
+			limitglobal,
+			limittotal,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	update, err_update := rec.RowsAffected()
-	helpers.ErrorCheck(err_update)
-	if update > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		update, err_update := rec.RowsAffected()
+		helpers.ErrorCheck(err_update)
+		if update > 0 {
+			msg = "Success"
+		}
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Save_PasaranConfShio(
@@ -1374,7 +1384,12 @@ func Save_PasaranConfShio(
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.PrepareContext(ctx, `
+
+	msg := "Failed"
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+`  
 					SET 11_shiotahunini=? , 11_minbet=?, 11_maxbet=?, 
@@ -1383,31 +1398,27 @@ func Save_PasaranConfShio(
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx,
-		shiotahunini,
-		minbet, maxbet,
-		win, disc,
-		limitglobal, limittotal,
-		agent,
-		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx,
+			shiotahunini,
+			minbet, maxbet,
+			win, disc,
+			limitglobal, limittotal,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	update, err_udpate := rec.RowsAffected()
-	helpers.ErrorCheck(err_udpate)
-	if update > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		update, err_udpate := rec.RowsAffected()
+		helpers.ErrorCheck(err_udpate)
+		if update > 0 {
+			msg = "Success"
+		}
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
