@@ -3142,6 +3142,33 @@ func Pasaran_id(idcomppasaran int, company, tipecolumn string) (string, float32)
 	}
 	return result, result_number
 }
+func Pasaranmaster_id(pasarancode, tipecolumn string) string {
+	con := db.CreateCon()
+	ctx := context.Background()
+	var tipepasaran string = ""
+	sql_pasaran := `SELECT 
+		tipepasaran 
+		FROM ` + config.DB_tbl_mst_pasaran_togel + `  
+		WHERE idpasarantogel = ? 
+	`
+	var (
+		tipepasaran_db string
+	)
+	rows := con.QueryRowContext(ctx, sql_pasaran, pasarancode)
+	switch err := rows.Scan(&tipepasaran_db); err {
+	case sql.ErrNoRows:
+		tipepasaran = ""
+	case nil:
+		switch tipecolumn {
+		case "tipepasaran":
+			tipepasaran = tipepasaran_db
+
+		}
+	default:
+		helpers.ErrorCheck(err)
+	}
+	return tipepasaran
+}
 func _doJobUpdateTransaksi(fieldtable string, jobs <-chan datajobs, results chan<- dataresult, con *sql.DB, wg *sync.WaitGroup) {
 	ctx := context.Background()
 	for capture := range jobs {

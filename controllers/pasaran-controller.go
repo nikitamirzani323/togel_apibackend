@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"bitbucket.org/isbtotogroup/apibackend_go/entities"
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
 	"bitbucket.org/isbtotogroup/apibackend_go/models"
 	"github.com/buger/jsonparser"
@@ -269,19 +270,7 @@ type pasaranconfshio struct {
 	Pasaran_disc_shio        float32 `json:"pasaran_disc_shio"`
 	Pasaran_win_shio         float32 `json:"pasaran_win_shio"`
 }
-type responseredis_pasaranhome struct {
-	Idcomppasaran           int    `json:"idcomppasaran"`
-	Nmpasarantogel          string `json:"nmpasarantogel"`
-	Pasarandiundi           string `json:"pasarandiundi"`
-	Jamtutup                string `json:"jamtutup"`
-	Jamjadwal               string `json:"jamjadwal"`
-	Jamopen                 string `json:"jamopen"`
-	Displaypasaran          int    `json:"displaypasaran"`
-	Statuspasaran           string `json:"statuspasaran"`
-	Statuspasaranactive     string `json:"statuspasaranactive"`
-	Statuspasaran_css       string `json:"statuspasaran_css"`
-	Statuspasaranactive_css string `json:"statuspasaranactive_css"`
-}
+
 type responseredis_pasarandetail struct {
 	Idpasarantogel                    string  `json:"idpasarantogel"`
 	Nmpasarantogel                    string  `json:"nmpasaran"`
@@ -482,8 +471,8 @@ func PasaranHome(c *fiber.Ctx) error {
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	field_redis := "LISTPASARAN_AGENT_" + strings.ToLower(client_company)
-	var obj responseredis_pasaranhome
-	var arraobj []responseredis_pasaranhome
+	var obj entities.Model_pasaranHome
+	var arraobj []entities.Model_pasaranHome
 	render_page := time.Now()
 	resultredis, flag := helpers.GetRedis(field_redis)
 	jsonredis := []byte(resultredis)
@@ -491,6 +480,7 @@ func PasaranHome(c *fiber.Ctx) error {
 	jsonparser.ArrayEach(record_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
 		idcomppasaran, _ := jsonparser.GetInt(value, "idcomppasaran")
 		nmpasarantogel, _ := jsonparser.GetString(value, "nmpasarantogel")
+		tipepasaran, _ := jsonparser.GetString(value, "tipepasaran")
 		pasarandiundi, _ := jsonparser.GetString(value, "pasarandiundi")
 		jamtutup, _ := jsonparser.GetString(value, "jamtutup")
 		jamjadwal, _ := jsonparser.GetString(value, "jamjadwal")
@@ -503,15 +493,16 @@ func PasaranHome(c *fiber.Ctx) error {
 
 		obj.Idcomppasaran = int(idcomppasaran)
 		obj.Nmpasarantogel = nmpasarantogel
-		obj.Pasarandiundi = pasarandiundi
+		obj.Tipepasaran = tipepasaran
+		obj.PasaranDiundi = pasarandiundi
 		obj.Jamtutup = jamtutup
 		obj.Jamjadwal = jamjadwal
 		obj.Jamopen = jamopen
 		obj.Displaypasaran = int(displaypasaran)
-		obj.Statuspasaran = statuspasaran
-		obj.Statuspasaranactive = statuspasaranactive
-		obj.Statuspasaran_css = statuspasaran_css
-		obj.Statuspasaranactive_css = statuspasaranactive_css
+		obj.StatusPasaran = statuspasaran
+		obj.StatusPasaranActive = statuspasaranactive
+		obj.StatusPasarancss = statuspasaran_css
+		obj.StatusPasaranActivecss = statuspasaranactive_css
 		arraobj = append(arraobj, obj)
 	})
 

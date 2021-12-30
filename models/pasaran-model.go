@@ -8,24 +8,12 @@ import (
 
 	"bitbucket.org/isbtotogroup/apibackend_go/config"
 	"bitbucket.org/isbtotogroup/apibackend_go/db"
+	"bitbucket.org/isbtotogroup/apibackend_go/entities"
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/nleeper/goment"
 )
 
-type pasaranHome struct {
-	Idcomppasaran          int    `json:"idcomppasaran"`
-	Nmpasarantogel         string `json:"nmpasarantogel"`
-	PasaranDiundi          string `json:"pasarandiundi"`
-	Jamtutup               string `json:"jamtutup"`
-	Jamjadwal              string `json:"jamjadwal"`
-	Jamopen                string `json:"jamopen"`
-	Displaypasaran         int    `json:"displaypasaran"`
-	StatusPasaran          string `json:"statuspasaran"`
-	StatusPasaranActive    string `json:"statuspasaranactive"`
-	StatusPasarancss       string `json:"statuspasaran_css"`
-	StatusPasaranActivecss string `json:"statuspasaranactive_css"`
-}
 type pasaranEdit struct {
 	Idpasarantogel                    string  `json:"idpasarantogel"`
 	Nmpasarantogel                    string  `json:"nmpasaran"`
@@ -220,8 +208,8 @@ type pasaranEdit_Online struct {
 }
 
 func Fetch_home(company string) (helpers.Response, error) {
-	var obj pasaranHome
-	var arraobj []pasaranHome
+	var obj entities.Model_pasaranHome
+	var arraobj []entities.Model_pasaranHome
 	var res helpers.Response
 	msg := "Error"
 	con := db.CreateCon()
@@ -231,7 +219,7 @@ func Fetch_home(company string) (helpers.Response, error) {
 	sql_select := `SELECT 
 		A.idcomppasaran, A.pasarandiundi, A.jamtutup, A.jamjadwal, A.jamopen, 
 		A.displaypasaran, A.statuspasaran, A.statuspasaranactive, 
-		B.nmpasarantogel  
+		B.nmpasarantogel, B.tipepasaran   
 		FROM ` + config.DB_tbl_mst_company_game_pasaran + ` as A 
 		JOIN ` + config.DB_tbl_mst_pasaran_togel + ` as B ON B.idpasarantogel = A.idpasarantogel 
 		WHERE A.idcompany = ? 
@@ -249,19 +237,16 @@ func Fetch_home(company string) (helpers.Response, error) {
 		var (
 			idcomppasaran, displaypasaran                               int
 			pasarandiundi, jamtutup, jamjadwal, jamopen, nmpasarantogel string
-			statuspasaran, statuspasaranactive                          string
+			statuspasaran, statuspasaranactive, tipepasaran             string
 		)
 
 		err = row.Scan(
 			&idcomppasaran,
 			&pasarandiundi,
-			&jamtutup,
-			&jamjadwal,
-			&jamopen,
+			&jamtutup, &jamjadwal, &jamopen,
 			&displaypasaran,
-			&statuspasaran,
-			&statuspasaranactive,
-			&nmpasarantogel)
+			&statuspasaran, &statuspasaranactive,
+			&nmpasarantogel, &tipepasaran)
 
 		if err != nil {
 			return res, err
@@ -280,6 +265,7 @@ func Fetch_home(company string) (helpers.Response, error) {
 
 		obj.Idcomppasaran = idcomppasaran
 		obj.Nmpasarantogel = nmpasarantogel
+		obj.Tipepasaran = tipepasaran
 		obj.PasaranDiundi = pasarandiundi
 		obj.Jamtutup = jamtutup
 		obj.Jamjadwal = jamjadwal
@@ -679,7 +665,12 @@ func Save_Pasaran(agent string, company string, idcomppasaran int, pasarandiundi
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-	stmt, e := con.Prepare(`
+	msg := "Failed"
+
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		stmt, e := con.Prepare(`
 					UPDATE 
 					` + config.DB_tbl_mst_company_game_pasaran + `  
 					SET pasarandiundi=? , pasaranurl=?, 
@@ -687,34 +678,31 @@ func Save_Pasaran(agent string, company string, idcomppasaran int, pasarandiundi
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx,
-		pasarandiundi,
-		pasaranurl,
-		jamtutup,
-		jamjadwal,
-		jamopen,
-		statuspasaranactive,
-		displaypasaran,
-		agent,
-		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-		idcomppasaran,
-		company)
-	helpers.ErrorCheck(e)
+		helpers.ErrorCheck(e)
+		rec, e := stmt.ExecContext(ctx,
+			pasarandiundi,
+			pasaranurl,
+			jamtutup,
+			jamjadwal,
+			jamopen,
+			statuspasaranactive,
+			displaypasaran,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		helpers.ErrorCheck(e)
 
-	update, err_update := rec.RowsAffected()
-	helpers.ErrorCheck(err_update)
-	if update > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
+		update, err_update := rec.RowsAffected()
+		helpers.ErrorCheck(err_update)
+		if update > 0 {
+			msg = "Success"
+		}
 	}
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 
 	return res, nil
 }
@@ -725,52 +713,49 @@ func Save_PasaranOnline(agent, company string, idcomppasaran int, haripasaran st
 	ctx := context.Background()
 	render_page := time.Now()
 	flag := false
+	msg := "Failed"
 
-	flag = Get_OnlinePasaran(company, idcomppasaran, haripasaran, "hari")
-	if !flag {
-		field_col := "tbl_mst_company_game_pasaran_offline_" + tglnow.Format("YYYY")
-		idrecord_counter := Get_counter(field_col)
-		sql_insert := `
+	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
+	if tipepasaran != "WAJIB" {
+		flag = Get_OnlinePasaran(company, idcomppasaran, haripasaran, "hari")
+		if !flag {
+			field_col := "tbl_mst_company_game_pasaran_offline_" + tglnow.Format("YYYY")
+			idrecord_counter := Get_counter(field_col)
+			sql_insert := `
 			INSERT INTO 
 			` + config.DB_tbl_mst_company_game_pasaran_offline + `(
 				idcomppasaranoff , idcomppasaran, idcompany, haripasaran,
 				createcomppasaranoff, createdatecomppasaranoff)
 			VALUES(?,?,?,?,?,?)
 		`
-		stmt, e := con.PrepareContext(ctx, sql_insert)
-		helpers.ErrorCheck(e)
-		var idrecord string = tglnow.Format("YYYY") + strconv.Itoa(idrecord_counter)
-		rec, e := stmt.ExecContext(ctx,
-			idrecord,
-			idcomppasaran,
-			company,
-			haripasaran,
-			agent,
-			tglnow.Format("YYYY-MM-DD HH:mm:ss"))
-		helpers.ErrorCheck(e)
+			stmt, e := con.PrepareContext(ctx, sql_insert)
+			helpers.ErrorCheck(e)
+			var idrecord string = tglnow.Format("YYYY") + strconv.Itoa(idrecord_counter)
+			rec, e := stmt.ExecContext(ctx,
+				idrecord,
+				idcomppasaran,
+				company,
+				haripasaran,
+				agent,
+				tglnow.Format("YYYY-MM-DD HH:mm:ss"))
+			helpers.ErrorCheck(e)
 
-		insert, err_insert := rec.RowsAffected()
-		helpers.ErrorCheck(err_insert)
-		fmt.Printf("The last inserted row id: %d\n", insert)
-		defer stmt.Close()
-		if insert > 0 {
-			res.Status = fiber.StatusOK
-			res.Message = "Success"
-			res.Record = nil
-			res.Time = time.Since(render_page).String()
+			insert, err_insert := rec.RowsAffected()
+			helpers.ErrorCheck(err_insert)
+			fmt.Printf("The last inserted row id: %d\n", insert)
+			defer stmt.Close()
+			if insert > 0 {
+				msg = "Success"
+			}
 		} else {
-			res.Status = fiber.StatusBadRequest
-			res.Message = "Failed"
-			res.Record = nil
-			res.Time = time.Since(render_page).String()
+			msg = "Duplicate Entry"
 		}
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Duplicate Entry"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
 	}
-
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 	return res, nil
 }
 func Delete_PasaranOnline(company string, idcomppasaran, idcomppasaranoff int) (helpers.Response, error) {
