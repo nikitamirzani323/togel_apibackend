@@ -3021,79 +3021,232 @@ func _rumusTogel(angka, tipe, nomorkeluaran, company, simpandb string, idcomppas
 	return result, win
 }
 func _tableshio(shiodata string) string {
+	tglnow, _ := goment.New()
+	yearnow := tglnow.Format("YYYY")
+	log.Println(yearnow)
 	result := ""
-	kerbau := []string{"01", "13", "25", "37", "49", "61", "73", "85", "97"}
-	tikus := []string{"02", "14", "26", "38", "50", "62", "74", "86", "98"}
-	babi := []string{"03", "15", "27", "39", "51", "63", "75", "87", "99"}
-	anjing := []string{"04", "16", "28", "40", "52", "64", "76", "88", "00"}
-	ayam := []string{"05", "17", "29", "41", "53", "65", "77", "89", ""}
-	monyet := []string{"06", "18", "30", "42", "54", "66", "78", "90", ""}
-	kambing := []string{"07", "19", "31", "43", "55", "67", "79", "91", ""}
-	kuda := []string{"08", "20", "32", "44", "56", "68", "80", "92", ""}
-	ular := []string{"09", "21", "33", "45", "57", "69", "81", "93", ""}
-	naga := []string{"10", "22", "34", "46", "58", "70", "82", "94", ""}
-	kelinci := []string{"11", "23", "35", "47", "59", "71", "83", "95", ""}
-	harimau := []string{"12", "24", "36", "48", "60", "72", "84", "96", ""}
-	for i := 0; i < len(babi); i++ {
-		if shiodata == babi[i] {
-			result = "BABI"
+	switch yearnow {
+	case "2022":
+		harimau := []string{"01", "13", "25", "37", "49", "61", "73", "85", "97"}
+		kerbau := []string{"02", "14", "26", "38", "50", "62", "74", "86", "98"}
+		tikus := []string{"03", "15", "27", "39", "51", "63", "75", "87", "99"}
+		babi := []string{"04", "16", "28", "40", "52", "64", "76", "88", "00"}
+		anjing := []string{"05", "17", "29", "41", "53", "65", "77", "89", ""}
+		ayam := []string{"06", "18", "30", "42", "54", "66", "78", "90", ""}
+		monyet := []string{"07", "19", "31", "43", "55", "67", "79", "91", ""}
+		kambing := []string{"08", "20", "32", "44", "56", "68", "80", "92", ""}
+		kuda := []string{"09", "21", "33", "45", "57", "69", "81", "93", ""}
+		ular := []string{"10", "22", "34", "46", "58", "70", "82", "94", ""}
+		naga := []string{"11", "23", "35", "47", "59", "71", "83", "95", ""}
+		kelinci := []string{"12", "24", "36", "48", "60", "72", "84", "96", ""}
+		for i := 0; i < len(babi); i++ {
+			if shiodata == babi[i] {
+				result = "BABI"
+			}
+		}
+		for i := 0; i < len(ular); i++ {
+			if shiodata == ular[i] {
+				result = "ULAR"
+			}
+		}
+		for i := 0; i < len(anjing); i++ {
+			if shiodata == anjing[i] {
+				result = "ANJING"
+			}
+		}
+		for i := 0; i < len(ayam); i++ {
+			if shiodata == ayam[i] {
+				result = "AYAM"
+			}
+		}
+		for i := 0; i < len(monyet); i++ {
+			if shiodata == monyet[i] {
+				result = "MONYET"
+			}
+		}
+		for i := 0; i < len(kambing); i++ {
+			if shiodata == kambing[i] {
+				result = "KAMBING"
+			}
+		}
+		for i := 0; i < len(kuda); i++ {
+			if shiodata == kuda[i] {
+				result = "KUDA"
+			}
+		}
+		for i := 0; i < len(naga); i++ {
+			if shiodata == naga[i] {
+				result = "NAGA"
+			}
+		}
+		for i := 0; i < len(kelinci); i++ {
+			if shiodata == kelinci[i] {
+				result = "KELINCI"
+			}
+		}
+		for i := 0; i < len(harimau); i++ {
+			if shiodata == harimau[i] {
+				result = "HARIMAU"
+			}
+		}
+		for i := 0; i < len(kerbau); i++ {
+			if shiodata == kerbau[i] {
+				result = "KERBAU"
+			}
+		}
+		for i := 0; i < len(tikus); i++ {
+			if shiodata == tikus[i] {
+				result = "TIKUS"
+			}
+		}
+	case "2023":
+		kelinci := []string{"01", "13", "25", "37", "49", "61", "73", "85", "97"}
+		harimau := []string{"02", "14", "26", "38", "50", "62", "74", "86", "98"}
+		kerbau := []string{"03", "15", "27", "39", "51", "63", "75", "87", "99"}
+		tikus := []string{"04", "16", "28", "40", "52", "64", "76", "88", "00"}
+		babi := []string{"05", "17", "29", "41", "53", "65", "77", "89", ""}
+		anjing := []string{"06", "18", "30", "42", "54", "66", "78", "90", ""}
+		ayam := []string{"07", "19", "31", "43", "55", "67", "79", "91", ""}
+		monyet := []string{"08", "20", "32", "44", "56", "68", "80", "92", ""}
+		kambing := []string{"09", "21", "33", "45", "57", "69", "81", "93", ""}
+		kuda := []string{"10", "22", "34", "46", "58", "70", "82", "94", ""}
+		ular := []string{"11", "23", "35", "47", "59", "71", "83", "95", ""}
+		naga := []string{"12", "24", "36", "48", "60", "72", "84", "96", ""}
+		for i := 0; i < len(babi); i++ {
+			if shiodata == babi[i] {
+				result = "BABI"
+			}
+		}
+		for i := 0; i < len(ular); i++ {
+			if shiodata == ular[i] {
+				result = "ULAR"
+			}
+		}
+		for i := 0; i < len(anjing); i++ {
+			if shiodata == anjing[i] {
+				result = "ANJING"
+			}
+		}
+		for i := 0; i < len(ayam); i++ {
+			if shiodata == ayam[i] {
+				result = "AYAM"
+			}
+		}
+		for i := 0; i < len(monyet); i++ {
+			if shiodata == monyet[i] {
+				result = "MONYET"
+			}
+		}
+		for i := 0; i < len(kambing); i++ {
+			if shiodata == kambing[i] {
+				result = "KAMBING"
+			}
+		}
+		for i := 0; i < len(kuda); i++ {
+			if shiodata == kuda[i] {
+				result = "KUDA"
+			}
+		}
+		for i := 0; i < len(naga); i++ {
+			if shiodata == naga[i] {
+				result = "NAGA"
+			}
+		}
+		for i := 0; i < len(kelinci); i++ {
+			if shiodata == kelinci[i] {
+				result = "KELINCI"
+			}
+		}
+		for i := 0; i < len(harimau); i++ {
+			if shiodata == harimau[i] {
+				result = "HARIMAU"
+			}
+		}
+		for i := 0; i < len(kerbau); i++ {
+			if shiodata == kerbau[i] {
+				result = "KERBAU"
+			}
+		}
+		for i := 0; i < len(tikus); i++ {
+			if shiodata == tikus[i] {
+				result = "TIKUS"
+			}
+		}
+	case "2024":
+		naga := []string{"01", "13", "25", "37", "49", "61", "73", "85", "97"}
+		kelinci := []string{"02", "14", "26", "38", "50", "62", "74", "86", "98"}
+		harimau := []string{"03", "15", "27", "39", "51", "63", "75", "87", "99"}
+		kerbau := []string{"04", "16", "28", "40", "52", "64", "76", "88", "00"}
+		tikus := []string{"05", "17", "29", "41", "53", "65", "77", "89", ""}
+		babi := []string{"06", "18", "30", "42", "54", "66", "78", "90", ""}
+		anjing := []string{"07", "19", "31", "43", "55", "67", "79", "91", ""}
+		ayam := []string{"08", "20", "32", "44", "56", "68", "80", "92", ""}
+		monyet := []string{"09", "21", "33", "45", "57", "69", "81", "93", ""}
+		kambing := []string{"10", "22", "34", "46", "58", "70", "82", "94", ""}
+		kuda := []string{"11", "23", "35", "47", "59", "71", "83", "95", ""}
+		ular := []string{"12", "24", "36", "48", "60", "72", "84", "96", ""}
+		for i := 0; i < len(babi); i++ {
+			if shiodata == babi[i] {
+				result = "BABI"
+			}
+		}
+		for i := 0; i < len(ular); i++ {
+			if shiodata == ular[i] {
+				result = "ULAR"
+			}
+		}
+		for i := 0; i < len(anjing); i++ {
+			if shiodata == anjing[i] {
+				result = "ANJING"
+			}
+		}
+		for i := 0; i < len(ayam); i++ {
+			if shiodata == ayam[i] {
+				result = "AYAM"
+			}
+		}
+		for i := 0; i < len(monyet); i++ {
+			if shiodata == monyet[i] {
+				result = "MONYET"
+			}
+		}
+		for i := 0; i < len(kambing); i++ {
+			if shiodata == kambing[i] {
+				result = "KAMBING"
+			}
+		}
+		for i := 0; i < len(kuda); i++ {
+			if shiodata == kuda[i] {
+				result = "KUDA"
+			}
+		}
+		for i := 0; i < len(naga); i++ {
+			if shiodata == naga[i] {
+				result = "NAGA"
+			}
+		}
+		for i := 0; i < len(kelinci); i++ {
+			if shiodata == kelinci[i] {
+				result = "KELINCI"
+			}
+		}
+		for i := 0; i < len(harimau); i++ {
+			if shiodata == harimau[i] {
+				result = "HARIMAU"
+			}
+		}
+		for i := 0; i < len(kerbau); i++ {
+			if shiodata == kerbau[i] {
+				result = "KERBAU"
+			}
+		}
+		for i := 0; i < len(tikus); i++ {
+			if shiodata == tikus[i] {
+				result = "TIKUS"
+			}
 		}
 	}
-	for i := 0; i < len(ular); i++ {
-		if shiodata == ular[i] {
-			result = "ULAR"
-		}
-	}
-	for i := 0; i < len(anjing); i++ {
-		if shiodata == anjing[i] {
-			result = "ANJING"
-		}
-	}
-	for i := 0; i < len(ayam); i++ {
-		if shiodata == ayam[i] {
-			result = "AYAM"
-		}
-	}
-	for i := 0; i < len(monyet); i++ {
-		if shiodata == monyet[i] {
-			result = "MONYET"
-		}
-	}
-	for i := 0; i < len(kambing); i++ {
-		if shiodata == kambing[i] {
-			result = "KAMBING"
-		}
-	}
-	for i := 0; i < len(kuda); i++ {
-		if shiodata == kuda[i] {
-			result = "KUDA"
-		}
-	}
-	for i := 0; i < len(naga); i++ {
-		if shiodata == naga[i] {
-			result = "NAGA"
-		}
-	}
-	for i := 0; i < len(kelinci); i++ {
-		if shiodata == kelinci[i] {
-			result = "KELINCI"
-		}
-	}
-	for i := 0; i < len(harimau); i++ {
-		if shiodata == harimau[i] {
-			result = "HARIMAU"
-		}
-	}
-	for i := 0; i < len(kerbau); i++ {
-		if shiodata == kerbau[i] {
-			result = "KERBAU"
-		}
-	}
-	for i := 0; i < len(tikus); i++ {
-		if shiodata == tikus[i] {
-			result = "TIKUS"
-		}
-	}
+
 	return result
 }
 func Pasaran_id(idcomppasaran int, company, tipecolumn string) (string, float32) {
