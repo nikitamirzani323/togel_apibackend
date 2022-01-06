@@ -281,8 +281,6 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 		helpers.ErrorCheck(e)
 		flag = false
 	}
-	log.Println(sql_select)
-	log.Printf("COMPANY : %s - INVOICE:%d - FLAG SQL : %t", company, idtrxkeluaran, flag)
 	if flag {
 		tglopen, _ := goment.New(datekeluaran_db)
 		tglskrg := tglnow.Format("YYYY-MM-DD HH:mm:ss")
