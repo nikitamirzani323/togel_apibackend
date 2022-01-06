@@ -1,7 +1,18 @@
-FROM golang:alpine
+FROM golang:alpine AS agenapibuilds
 
-RUN apk update && apk add git
+WORKDIR /appbuilds
 
+COPY . .
+
+RUN go mod tidy
+RUN go build -o binary
+
+
+FROM alpine:latest as agenapirelease
+WORKDIR /app
+RUN apk add tzdata
+COPY --from=agenapibuilds /appbuilds/binary .
+COPY --from=agenapibuilds /appbuilds/.env /app/.env
 ENV PORT=7072
 ENV DB_USER="sperma"
 ENV DB_PASS="asdQWE123!@#"
@@ -14,12 +25,8 @@ ENV DB_REDIS_PASSWORD="asdQWE123!@#"
 ENV DB_REDIS_NAME="0"
 ENV JWT_SECRET_KEY="secrettotobackend"
 ENV JWT_SECRET_KEY_EXPIRE_MINUTES_COUNT=1440
+ENV TZ=Asia/Jakarta
 
-WORKDIR /app
-
-COPY . .
-
-RUN go mod tidy
-RUN go build -o binary
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ENTRYPOINT [ "./binary" ]

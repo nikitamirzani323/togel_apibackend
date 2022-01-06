@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"bitbucket.org/isbtotogroup/apibackend_go/db"
 	"bitbucket.org/isbtotogroup/apibackend_go/routes"
@@ -11,9 +13,27 @@ import (
 func main() {
 	db.Init()
 	app := routes.Init()
-	port := os.Getenv("PORT")
-	if port == "" {
-		log.Fatal("PORT env is required")
-	}
-	log.Fatal(app.Listen(":" + port))
+	go func() {
+		port := os.Getenv("PORT")
+		if port == "" {
+			port = "7072"
+		}
+
+		if err := app.Listen(":" + port); err != nil {
+			log.Panic(err)
+		}
+	}()
+	c := make(chan os.Signal, 1)                    // Create channel to signify a signal being sent
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM) // When an interrupt or termination signal is sent, notify the channel
+
+	_ = <-c // This blocks the main thread until an interrupt is received
+	log.Println("Gracefully shutting down...")
+	_ = app.Shutdown()
+
+	log.Println("Running cleanup tasks...")
+
+	// Your cleanup tasks go here
+	// db.Close()
+	// redisConn.Close()
+	log.Println("Fiber was successful shutdown.")
 }
