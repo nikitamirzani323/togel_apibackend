@@ -245,7 +245,7 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 	var arraobj []periodeEdit
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	msg := "Failed"
+	msg := "Data Not Found"
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
@@ -273,13 +273,16 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 		&createkeluaran_db, &createdatekeluaran_db, &updatekeluaran_db, &updatedatekeluaran_db, &idpasarantogel_db,
 		&jamtutup_db, &jamjadwal_db, &jamopen_db, &revisi_db); e {
 	case sql.ErrNoRows:
+		log.Println("Data not found in DB")
 		flag = false
 	case nil:
 		flag = true
 	default:
+		helpers.ErrorCheck(e)
 		flag = false
 	}
-
+	log.Println(sql_select)
+	log.Printf("COMPANY : %s - INVOICE:%d - FLAG SQL : %t", company, idtrxkeluaran, flag)
 	if flag {
 		tglopen, _ := goment.New(datekeluaran_db)
 		tglskrg := tglnow.Format("YYYY-MM-DD HH:mm:ss")
@@ -340,17 +343,10 @@ func Fetch_periodedetail(company string, idtrxkeluaran int) (helpers.Response, e
 		msg = "Success"
 	}
 
-	if flag {
-		res.Status = fiber.StatusOK
-		res.Message = msg
-		res.Record = arraobj
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = msg
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	}
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = arraobj
+	res.Time = time.Since(render_page).String()
 
 	return res, nil
 }
@@ -3021,6 +3017,8 @@ func _rumusTogel(angka, tipe, nomorkeluaran, company, simpandb string, idcomppas
 	return result, win
 }
 func _tableshio(shiodata string) string {
+	log.Printf("Shio : %s", shiodata)
+
 	tglnow, _ := goment.New()
 	yearnow := tglnow.Format("YYYY")
 	log.Println(yearnow)

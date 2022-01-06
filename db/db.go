@@ -24,10 +24,11 @@ func Init() {
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
+	dbDriver := os.Getenv("DB_DRIVER")
 
 	conString := dbUser + ":" + dbPass + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName
 
-	db, err = sql.Open("mysql", conString)
+	db, err = sql.Open(dbDriver, conString)
 	helpers.ErrorCheck(err)
 
 	db.SetMaxIdleConns(10)

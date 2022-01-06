@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"bitbucket.org/isbtotogroup/apibackend_go/db"
 	"bitbucket.org/isbtotogroup/apibackend_go/routes"
@@ -10,5 +11,9 @@ import (
 func main() {
 	db.Init()
 	app := routes.Init()
-	log.Fatal(app.Listen(":7072"))
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("PORT env is required")
+	}
+	log.Fatal(app.Listen(":" + port))
 }
