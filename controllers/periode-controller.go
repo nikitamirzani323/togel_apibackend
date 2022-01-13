@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"bitbucket.org/isbtotogroup/apibackend_go/entities"
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
 	"bitbucket.org/isbtotogroup/apibackend_go/models"
 	"github.com/buger/jsonparser"
@@ -49,12 +50,7 @@ type periodesaverevisi struct {
 	Idinvoice int    `json:"idinvoice" validate:"required"`
 	Msgrevisi string `json:"msgrevisi" validate:"required"`
 }
-type periodecancelbet struct {
-	Sdata           string `json:"sData" validate:"required"`
-	Page            string `json:"page"`
-	Idinvoice       int    `json:"idinvoice" validate:"required"`
-	Idinvoicedetail int    `json:"idinvoicedetail" validate:"required"`
-}
+
 type periodeSavePrediksi struct {
 	Sdata     string `json:"sData" validate:"required"`
 	Page      string `json:"page"`
@@ -1142,7 +1138,7 @@ func PeriodeSaveRevisi(c *fiber.Ctx) error {
 }
 func PeriodeCancelBet(c *fiber.Ctx) error {
 	var errors []*helpers.ErrorResponse
-	client := new(periodecancelbet)
+	client := new(entities.Controller_periodecancelbet)
 	validate := validator.New()
 	if err := c.BodyParser(client); err != nil {
 		c.Status(fiber.StatusBadRequest)
@@ -1201,11 +1197,13 @@ func PeriodeCancelBet(c *fiber.Ctx) error {
 		val_agent2 := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company) + "_INVOICE_" + strconv.Itoa(client.Idinvoice))
 		val_agent3 := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company) + "_INVOICE_" + strconv.Itoa(client.Idinvoice) + "_LISTMEMBER")
 		val_agent4 := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company) + "_INVOICE_" + strconv.Itoa(client.Idinvoice) + "_LISTBETTABLE")
+		val_agent5 := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company) + "_INVOICE_" + strconv.Itoa(client.Idinvoice) + "_LISTPERMAINAN_" + client.Permainan)
 		val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + strings.ToLower(client_company))
 		log.Printf("Redis Delete AGENT PERIODE : %d", val_agent)
 		log.Printf("Redis Delete AGENT PERIODE DETAIL: %d", val_agent2)
 		log.Printf("Redis Delete AGENT PERIODE DETAIL LISTMEMBER: %d", val_agent3)
 		log.Printf("Redis Delete AGENT PERIODE DETAIL LISTBETTABLE: %d", val_agent4)
+		log.Printf("Redis Delete AGENT PERIODE DETAIL LISTPERMAINAN: %d", val_agent5)
 		log.Printf("Redis Delete AGENT DASHBOARD status: %d", val_agent_dashboard)
 		val_agent4d := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company) + "_INVOICE_" + strconv.Itoa(client.Idinvoice) + "_LISTPERMAINAN_4D")
 		val_agent3d := helpers.DeleteRedis("LISTPERIODE_AGENT_" + strings.ToLower(client_company) + "_INVOICE_" + strconv.Itoa(client.Idinvoice) + "_LISTPERMAINAN_3D")
