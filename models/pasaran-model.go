@@ -14,194 +14,6 @@ import (
 	"github.com/nleeper/goment"
 )
 
-type pasaranEdit struct {
-	Idpasarantogel                    string  `json:"idpasarantogel"`
-	Nmpasarantogel                    string  `json:"nmpasaran"`
-	PasaranDiundi                     string  `json:"pasarandiundi"`
-	PasaranURL                        string  `json:"pasaranurl"`
-	Jamtutup                          string  `json:"jamtutup"`
-	Jamjadwal                         string  `json:"jamjadwal"`
-	Jamopen                           string  `json:"jamopen"`
-	Limitline4d                       int     `json:"limitline_4d"`
-	Limitline3d                       int     `json:"limitline_3d"`
-	Limitline2d                       int     `json:"limitline_2d"`
-	Limitline2dd                      int     `json:"limitline_2dd"`
-	Limitline2dt                      int     `json:"limitline_2dt"`
-	Bbfs                              int     `json:"bbfs"`
-	Minbet_432d                       float32 `json:"minbet_432d"`
-	Maxbet4d_432d                     float32 `json:"maxbet4d_432d"`
-	Maxbet3d_432d                     float32 `json:"maxbet3d_432d"`
-	Maxbet2d_432d                     float32 `json:"maxbet2d_432d"`
-	Maxbet2dd_432d                    float32 `json:"maxbet2dd_432d"`
-	Maxbet2dt_432d                    float32 `json:"maxbet2dt_432d"`
-	Limitotal4d_432d                  float32 `json:"limitotal4d_432d"`
-	Limitotal3d_432d                  float32 `json:"limitotal3d_432d"`
-	Limitotal2d_432d                  float32 `json:"limitotal2d_432d"`
-	Limitotal2dd_432d                 float32 `json:"limitotal2dd_432d"`
-	Limitotal2dt_432d                 float32 `json:"limitotal2dt_432d"`
-	Limitglobal4d_432d                float32 `json:"limitglobal4d_432d"`
-	Limitglobal3d_432d                float32 `json:"limitglobal3d_432d"`
-	Limitglobal2d_432d                float32 `json:"limitglobal2d_432d"`
-	Limitglobal2dd_432d               float32 `json:"limitglobal2dd_432d"`
-	Limitglobal2dt_432d               float32 `json:"limitglobal2dt_432d"`
-	Disc4d_432d                       float32 `json:"disc4d_432d"`
-	Disc3d_432d                       float32 `json:"disc3d_432d"`
-	Disc2d_432d                       float32 `json:"disc2d_432d"`
-	Disc2dd_432d                      float32 `json:"disc2dd_432d"`
-	Disc2dt_432d                      float32 `json:"disc2dt_432d"`
-	Win4d_432d                        float32 `json:"win4d_432d"`
-	Win3d_432d                        float32 `json:"win3d_432d"`
-	Win2d_432d                        float32 `json:"win2d_432d"`
-	Win2dd_432d                       float32 `json:"win2dd_432d"`
-	Win2dt_432d                       float32 `json:"win2dt_432d"`
-	Minbet_cbebas                     float32 `json:"minbet_cbebas"`
-	Maxbet_cbebas                     float32 `json:"maxbet_cbebas"`
-	Win_cbebas                        float32 `json:"win_cbebas"`
-	Disc_cbebas                       float32 `json:"disc_cbebas"`
-	Limitglobal_cbebas                float32 `json:"limitglobal_cbebas"`
-	Limittotal_cbebas                 float32 `json:"limittotal_cbebas"`
-	Minbet_cmacau                     float32 `json:"minbet_cmacau"`
-	Maxbet_cmacau                     float32 `json:"maxbet_cmacau"`
-	Win2d_cmacau                      float32 `json:"win2d_cmacau"`
-	Win3d_cmacau                      float32 `json:"win3d_cmacau"`
-	Win4d_cmacau                      float32 `json:"win4d_cmacau"`
-	Disc_cmacau                       float32 `json:"disc_cmacau"`
-	Limitglobal_cmacau                float32 `json:"limitglobal_cmacau"`
-	Limitotal_cmacau                  float32 `json:"limitotal_cmacau"`
-	Minbet_cnaga                      float32 `json:"minbet_cnaga"`
-	Maxbet_cnaga                      float32 `json:"maxbet_cnaga"`
-	Win3_cnaga                        float32 `json:"win3_cnaga"`
-	Win4_cnaga                        float32 `json:"win4_cnaga"`
-	Disc_cnaga                        float32 `json:"disc_cnaga"`
-	Limitglobal_cnaga                 float32 `json:"limitglobal_cnaga"`
-	Limittotal_cnaga                  float32 `json:"limittotal_cnaga"`
-	Minbet_cjitu                      float32 `json:"minbet_cjitu"`
-	Maxbet_cjitu                      float32 `json:"maxbet_cjitu"`
-	Winas_cjitu                       float32 `json:"winas_cjitu"`
-	Winkop_cjitu                      float32 `json:"winkop_cjitu"`
-	Winkepala_cjitu                   float32 `json:"winkepala_cjitu"`
-	Winekor_cjitu                     float32 `json:"winekor_cjitu"`
-	Desc_cjitu                        float32 `json:"desc_cjitu"`
-	Limitglobal_cjitu                 float32 `json:"limitglobal_cjitu"`
-	Limittotal_cjitu                  float32 `json:"limittotal_cjitu"`
-	Minbet_5050umum                   float32 `json:"minbet_5050umum"`
-	Maxbet_5050umum                   float32 `json:"maxbet_5050umum"`
-	Keibesar_5050umum                 float32 `json:"keibesar_5050umum"`
-	Keikecil_5050umum                 float32 `json:"keikecil_5050umum"`
-	Keigenap_5050umum                 float32 `json:"keigenap_5050umum"`
-	Keiganjil_5050umum                float32 `json:"keiganjil_5050umum"`
-	Keitengah_5050umum                float32 `json:"keitengah_5050umum"`
-	Keitepi_5050umum                  float32 `json:"keitepi_5050umum"`
-	Discbesar_5050umum                float32 `json:"discbesar_5050umum"`
-	Disckecil_5050umum                float32 `json:"disckecil_5050umum"`
-	Discgenap_5050umum                float32 `json:"discgenap_5050umum"`
-	Discganjil_5050umum               float32 `json:"discganjil_5050umum"`
-	Disctengah_5050umum               float32 `json:"disctengah_5050umum"`
-	Disctepi_5050umum                 float32 `json:"disctepi_5050umum"`
-	Limitglobal_5050umum              float32 `json:"limitglobal_5050umum"`
-	Limittotal_5050umum               float32 `json:"limittotal_5050umum"`
-	Minbet_5050special                float32 `json:"minbet_5050special"`
-	Maxbet_5050special                float32 `json:"maxbet_5050special"`
-	Keiasganjil_5050special           float32 `json:"keiasganjil_5050special"`
-	Keiasgenap_5050special            float32 `json:"keiasgenap_5050special"`
-	Keiasbesar_5050special            float32 `json:"keiasbesar_5050special"`
-	Keiaskecil_5050special            float32 `json:"keiaskecil_5050special"`
-	Keikopganjil_5050special          float32 `json:"keikopganjil_5050special"`
-	Keikopgenap_5050special           float32 `json:"keikopgenap_5050special"`
-	Keikopbesar_5050special           float32 `json:"keikopbesar_5050special"`
-	Keikopkecil_5050special           float32 `json:"keikopkecil_5050special"`
-	Keikepalaganjil_5050special       float32 `json:"keikepalaganjil_5050special"`
-	Keikepalagenap_5050special        float32 `json:"keikepalagenap_5050special"`
-	Keikepalabesar_5050special        float32 `json:"keikepalabesar_5050special"`
-	Keikepalakecil_5050special        float32 `json:"keikepalakecil_5050special"`
-	Keiekorganjil_5050special         float32 `json:"keiekorganjil_5050special"`
-	Keiekorgenap_5050special          float32 `json:"keiekorgenap_5050special"`
-	Keiekorbesar_5050special          float32 `json:"keiekorbesar_5050special"`
-	Keiekorkecil_5050special          float32 `json:"keiekorkecil_5050special"`
-	Discasganjil_5050special          float32 `json:"discasganjil_5050special"`
-	Discasgenap_5050special           float32 `json:"discasgenap_5050special"`
-	Discasbesar_5050special           float32 `json:"discasbesar_5050special"`
-	Discaskecil_5050special           float32 `json:"discaskecil_5050special"`
-	Disckopganjil_5050special         float32 `json:"disckopganjil_5050special"`
-	Disckopgenap_5050special          float32 `json:"disckopgenap_5050special"`
-	Disckopbesar_5050special          float32 `json:"disckopbesar_5050special"`
-	Disckopkecil_5050special          float32 `json:"disckopkecil_5050special"`
-	Disckepalaganjil_5050special      float32 `json:"disckepalaganjil_5050special"`
-	Disckepalagenap_5050special       float32 `json:"disckepalagenap_5050special"`
-	Disckepalabesar_5050special       float32 `json:"disckepalabesar_5050special"`
-	Disckepalakecil_5050special       float32 `json:"disckepalakecil_5050special"`
-	Discekorganjil_5050special        float32 `json:"discekorganjil_5050special"`
-	Discekorgenap_5050special         float32 `json:"discekorgenap_5050special"`
-	Discekorbesar_5050special         float32 `json:"discekorbesar_5050special"`
-	Discekorkecil_5050special         float32 `json:"discekorkecil_5050special"`
-	Limitglobal_5050special           float32 `json:"limitglobal_5050special"`
-	Limittotal_5050special            float32 `json:"limittotal_5050special"`
-	Minbet_5050kombinasi              float32 `json:"minbet_5050kombinasi"`
-	Maxbet_5050kombinasi              float32 `json:"maxbet_5050kombinasi"`
-	Belakangkeimono_5050kombinasi     float32 `json:"belakangkeimono_5050kombinasi"`
-	Belakangkeistereo_5050kombinasi   float32 `json:"belakangkeistereo_5050kombinasi"`
-	Belakangkeikembang_5050kombinasi  float32 `json:"belakangkeikembang_5050kombinasi"`
-	Belakangkeikempis_5050kombinasi   float32 `json:"belakangkeikempis_5050kombinasi"`
-	Belakangkeikembar_5050kombinasi   float32 `json:"belakangkeikembar_5050kombinasi"`
-	Tengahkeimono_5050kombinasi       float32 `json:"tengahkeimono_5050kombinasi"`
-	Tengahkeistereo_5050kombinasi     float32 `json:"tengahkeistereo_5050kombinasi"`
-	Tengahkeikembang_5050kombinasi    float32 `json:"tengahkeikembang_5050kombinasi"`
-	Tengahkeikempis_5050kombinasi     float32 `json:"tengahkeikempis_5050kombinasi"`
-	Tengahkeikembar_5050kombinasi     float32 `json:"tengahkeikembar_5050kombinasi"`
-	Depankeimono_5050kombinasi        float32 `json:"depankeimono_5050kombinasi"`
-	Depankeistereo_5050kombinasi      float32 `json:"depankeistereo_5050kombinasi"`
-	Depankeikembang_5050kombinasi     float32 `json:"depankeikembang_5050kombinasi"`
-	Depankeikempis_5050kombinasi      float32 `json:"depankeikempis_5050kombinasi"`
-	Depankeikembar_5050kombinasi      float32 `json:"depankeikembar_5050kombinasi"`
-	Belakangdiscmono_5050kombinasi    float32 `json:"belakangdiscmono_5050kombinasi"`
-	Belakangdiscstereo_5050kombinasi  float32 `json:"belakangdiscstereo_5050kombinasi"`
-	Belakangdisckembang_5050kombinasi float32 `json:"belakangdisckembang_5050kombinasi"`
-	Belakangdisckempis_5050kombinasi  float32 `json:"belakangdisckempis_5050kombinasi"`
-	Belakangdisckembar_5050kombinasi  float32 `json:"belakangdisckembar_5050kombinasi"`
-	Tengahdiscmono_5050kombinasi      float32 `json:"tengahdiscmono_5050kombinasi"`
-	Tengahdiscstereo_5050kombinasi    float32 `json:"tengahdiscstereo_5050kombinasi"`
-	Tengahdisckembang_5050kombinasi   float32 `json:"tengahdisckembang_5050kombinasi"`
-	Tengahdisckempis_5050kombinasi    float32 `json:"tengahdisckempis_5050kombinasi"`
-	Tengahdisckembar_5050kombinasi    float32 `json:"tengahdisckembar_5050kombinasi"`
-	Depandiscmono_5050kombinasi       float32 `json:"depandiscmono_5050kombinasi"`
-	Depandiscstereo_5050kombinasi     float32 `json:"depandiscstereo_5050kombinasi"`
-	Depandisckembang_5050kombinasi    float32 `json:"depandisckembang_5050kombinasi"`
-	Depandisckempis_5050kombinasi     float32 `json:"depandisckempis_5050kombinasi"`
-	Depandisckembar_5050kombinasi     float32 `json:"depandisckembar_5050kombinasi"`
-	Limitglobal_5050kombinasi         float32 `json:"limitglobal_5050kombinasi"`
-	Limittotal_5050kombinasi          float32 `json:"limittotal_5050kombinasi"`
-	Minbet_kombinasi                  float32 `json:"minbet_kombinasi"`
-	Maxbet_kombinasi                  float32 `json:"maxbet_kombinasi"`
-	Win_kombinasi                     float32 `json:"win_kombinasi"`
-	Disc_kombinasi                    float32 `json:"disc_kombinasi"`
-	Limitglobal_kombinasi             float32 `json:"limitglobal_kombinasi"`
-	Limittotal_kombinasi              float32 `json:"limittotal_kombinasi"`
-	Minbet_dasar                      float32 `json:"minbet_dasar"`
-	Maxbet_dasar                      float32 `json:"maxbet_dasar"`
-	Keibesar_dasar                    float32 `json:"keibesar_dasar"`
-	Keikecil_dasar                    float32 `json:"keikecil_dasar"`
-	Keigenap_dasar                    float32 `json:"keigenap_dasar"`
-	Keiganjil_dasar                   float32 `json:"keiganjil_dasar"`
-	Discbesar_dasar                   float32 `json:"discbesar_dasar"`
-	Disckecil_dasar                   float32 `json:"disckecil_dasar"`
-	Discgenap_dasar                   float32 `json:"discgenap_dasar"`
-	Discganjil_dasar                  float32 `json:"discganjil_dasar"`
-	Limitglobal_dasar                 float32 `json:"limitglobal_dasar"`
-	Limittotal_dasar                  float32 `json:"limittotal_dasar"`
-	Minbet_shio                       float32 `json:"minbet_shio"`
-	Maxbet_shio                       float32 `json:"maxbet_shio"`
-	Win_shio                          float32 `json:"win_shio"`
-	Disc_shio                         float32 `json:"disc_shio"`
-	Shioyear_shio                     string  `json:"shioyear_shio"`
-	Limitglobal_shio                  float32 `json:"limitglobal_shio"`
-	Limittotal_shio                   float32 `json:"limittotal_shio"`
-	Displaypasaran                    int     `json:"displaypasaran"`
-	StatusPasaranActive               string  `json:"statuspasaranactive"`
-	Create                            string  `json:"create"`
-	Createdate                        string  `json:"createdate"`
-	Update                            string  `json:"update"`
-	Updatedate                        string  `json:"updatedate"`
-}
 type pasaranEdit_Online struct {
 	Idpasaranonline int    `json:"idpasaranonline`
 	Haripasaran     string `json:"haripasaran"`
@@ -288,8 +100,8 @@ func Fetch_home(company string) (helpers.Response, error) {
 }
 
 func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, error) {
-	var obj pasaranEdit
-	var arraobj []pasaranEdit
+	var obj entities.Model_pasaranEdit
+	var arraobj []entities.Model_pasaranEdit
 	var res helpers.ResponsePasaran
 	msg := "Success"
 	con := db.CreateCon()
@@ -299,15 +111,17 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	sql_select := `SELECT 
 		A.idpasarantogel, A.pasarandiundi, A.pasaranurl, A.jamtutup, A.jamjadwal, A.jamopen, 
 		A.statuspasaranactive, A.displaypasaran, B.nmpasarantogel, 
-		A.limitline_4d, A.limitline_3d, A.limitline_2d, A.limitline_2dd, A.limitline_2dt, A.bbfs, 
-		A.1_minbet as minbet_432d, A.1_maxbet4d as maxbet4d_432d, A.1_maxbet3d as maxbet3d_432d,
+		A.limitline_4d, A.limitline_3d, A.limitline_3dd, A.limitline_2d, A.limitline_2dd, A.limitline_2dt, A.bbfs, 
+		A.1_minbet as minbet_432d, A.1_maxbet4d as maxbet4d_432d, A.1_maxbet3d as maxbet3d_432d, A.1_maxbet3dd as maxbet3dd_432d, 
 		A.1_maxbet2d as maxbet2d_432d, A.1_maxbet2dd as maxbet2dd_432d, A.1_maxbet2dt as maxbet2dt_432d, 
-		A.1_limittotal4d as limitotal4d_432d, A.1_limittotal3d as limitotal3d_432d, A.1_limittotal2d as limitotal2d_432d, 
-		A.1_limittotal2dd as limitotal2dd_432d, A.1_limittotal2dt as limitotal2dt_432d, 
-		A.1_limitbuang4d as limitglobal4d_432d, A.1_limitbuang3d as limitglobal3d_432d, A.1_limitbuang2d as limitglobal2d_432d, 
-		A.1_limitbuang2dd as limitglobal2dd_432d, A.1_limitbuang2dt as limitglobal2dt_432d, 
-		A.1_disc4d as disc4d_432d, A.1_disc3d as disc3d_432d, A.1_disc2d as disc2d_432d, A.1_disc2dd as disc2dd_432d, A.1_disc2dt as disc2dt_432d, 
-		A.1_win4d as win4d_432d, A.1_win3d as win3d_432d, A.1_win2d as win2d_432d, A.1_win2dd as win2dd_432d, A.1_win2dt as win2dt_432d, 
+		A.1_limittotal4d as limitotal4d_432d, A.1_limittotal3d as limitotal3d_432d, A.1_limittotal3dd as limitotal3dd_432d, 
+		A.1_limittotal2d as limitotal2d_432d, A.1_limittotal2dd as limitotal2dd_432d, A.1_limittotal2dt as limitotal2dt_432d, 
+		A.1_limitbuang4d as limitglobal4d_432d, A.1_limitbuang3d as limitglobal3d_432d, A.1_limitbuang3dd as limitglobal3dd_432d, 
+		A.1_limitbuang2d as limitglobal2d_432d, A.1_limitbuang2dd as limitglobal2dd_432d, A.1_limitbuang2dt as limitglobal2dt_432d, 
+		A.1_disc4d as disc4d_432d, A.1_disc3d as disc3d_432d, A.1_disc3dd as disc3dd_432d, 
+		A.1_disc2d as disc2d_432d, A.1_disc2dd as disc2dd_432d, A.1_disc2dt as disc2dt_432d, 
+		A.1_win4d as win4d_432d, A.1_win3d as win3d_432d, A.1_win3dd as win3dd_432d, 
+		A.1_win2d as win2d_432d, A.1_win2dd as win2dd_432d, A.1_win2dt as win2dt_432d, 
 		A.2_minbet as minbet_cbebas, A.2_maxbet as maxbet_cbebas, 
 		A.2_win as win_cbebas, A.2_disc as disc_cbebas, 
 		A.2_limitbuang as limitglobal_cbebas, A.2_limitotal as limittotal_cbebas, 
@@ -364,12 +178,12 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	var (
 		idpasarantogel_db, pasarandiundi_db, pasaranurl_db, jamtutup_db, jamjadwal_db, jamopen_db, statuspasaranactive_db, nmpasarantogel_db                                                                                                                                                                     string
 		createcomppas_db, createdatecomppas_db, updatecomppas_db, updatedatecompas_db                                                                                                                                                                                                                            string
-		displaypasaran_db, limitline_4d_db, limitline_3d_db, limitline_2d_db, limitline_2dd_db, limitline_2dt_db, bbfs_db                                                                                                                                                                                        int
-		minbet_432d_db, maxbet4d_432d_db, maxbet3d_432d_db, maxbet2d_432d_db, maxbet2dd_432d_db, maxbet2dt_432d_db                                                                                                                                                                                               float32
-		limitotal4d_432d_db, limitotal3d_432d_db, limitotal2d_432d_db, limitotal2dd_432d_db, limitotal2dt_432d_db                                                                                                                                                                                                float32
-		limitglobal4d_432d_db, limitglobal3d_432d_db, limitglobal2d_432d_db, limitglobal2dd_432d_db, limitglobal2dt_432d_db                                                                                                                                                                                      float32
-		disc4d_432d_db, disc3d_432d_db, disc2d_432d_db, disc2dd_432d_db, disc2dt_432d_db                                                                                                                                                                                                                         float32
-		win4d_432d_db, win3d_432d_db, win2d_432d_db, win2dd_432d_db, win2dt_432d_db                                                                                                                                                                                                                              float32
+		displaypasaran_db, limitline_4d_db, limitline_3d_db, limitline_3dd_db, limitline_2d_db, limitline_2dd_db, limitline_2dt_db, bbfs_db                                                                                                                                                                      int
+		minbet_432d_db, maxbet4d_432d_db, maxbet3d_432d_db, maxbet3dd_432d_db, maxbet2d_432d_db, maxbet2dd_432d_db, maxbet2dt_432d_db                                                                                                                                                                            float32
+		limitotal4d_432d_db, limitotal3d_432d_db, limitotal3dd_432d_db, limitotal2d_432d_db, limitotal2dd_432d_db, limitotal2dt_432d_db                                                                                                                                                                          float32
+		limitglobal4d_432d_db, limitglobal3d_432d_db, limitglobal3dd_432d_db, limitglobal2d_432d_db, limitglobal2dd_432d_db, limitglobal2dt_432d_db                                                                                                                                                              float32
+		disc4d_432d_db, disc3d_432d_db, disc3dd_432d_db, disc2d_432d_db, disc2dd_432d_db, disc2dt_432d_db                                                                                                                                                                                                        float32
+		win4d_432d_db, win3d_432d_db, win3dd_432d_db, win2d_432d_db, win2dd_432d_db, win2dt_432d_db                                                                                                                                                                                                              float32
 		minbet_cbebas_db, maxbet_cbebas_db, win_cbebas_db, disc_cbebas_db, limitglobal_cbebas_db, limittotal_cbebas_db                                                                                                                                                                                           float32
 		minbet_cmacau_db, maxbet_cmacau_db, win2d_cmacau_db, win3d_cmacau_db, win4d_cmacau_db, disc_cmacau_db, limitglobal_cmacau_db, limitotal_cmacau_db                                                                                                                                                        float32
 		minbet_cnaga_db, maxbet_cnaga_db, win3_cnaga_db, win4_cnaga_db, disc_cnaga_db, limitglobal_cnaga_db, limittotal_cnaga_db                                                                                                                                                                                 float32
@@ -397,12 +211,12 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	err := con.QueryRowContext(ctx, sql_select, company, idcomppasaran).Scan(
 		&idpasarantogel_db, &pasarandiundi_db, &pasaranurl_db, &jamtutup_db,
 		&jamjadwal_db, &jamopen_db, &statuspasaranactive_db, &displaypasaran_db, &nmpasarantogel_db,
-		&limitline_4d_db, &limitline_3d_db, &limitline_2d_db, &limitline_2dd_db, &limitline_2dt_db, &bbfs_db,
-		&minbet_432d_db, &maxbet4d_432d_db, &maxbet3d_432d_db, &maxbet2d_432d_db, &maxbet2dd_432d_db, &maxbet2dt_432d_db,
-		&limitotal4d_432d_db, &limitotal3d_432d_db, &limitotal2d_432d_db, &limitotal2dd_432d_db, &limitotal2dt_432d_db,
-		&limitglobal4d_432d_db, &limitglobal3d_432d_db, &limitglobal2d_432d_db, &limitglobal2dd_432d_db, &limitglobal2dt_432d_db,
-		&disc4d_432d_db, &disc3d_432d_db, &disc2d_432d_db, &disc2dd_432d_db, &disc2dt_432d_db,
-		&win4d_432d_db, &win3d_432d_db, &win2d_432d_db, &win2dd_432d_db, &win2dt_432d_db,
+		&limitline_4d_db, &limitline_3d_db, &limitline_3dd_db, &limitline_2d_db, &limitline_2dd_db, &limitline_2dt_db, &bbfs_db,
+		&minbet_432d_db, &maxbet4d_432d_db, &maxbet3d_432d_db, &maxbet3dd_432d_db, &maxbet2d_432d_db, &maxbet2dd_432d_db, &maxbet2dt_432d_db,
+		&limitotal4d_432d_db, &limitotal3d_432d_db, &limitotal3dd_432d_db, &limitotal2d_432d_db, &limitotal2dd_432d_db, &limitotal2dt_432d_db,
+		&limitglobal4d_432d_db, &limitglobal3d_432d_db, &limitglobal3dd_432d_db, &limitglobal2d_432d_db, &limitglobal2dd_432d_db, &limitglobal2dt_432d_db,
+		&disc4d_432d_db, &disc3d_432d_db, &disc3dd_432d_db, &disc2d_432d_db, &disc2dd_432d_db, &disc2dt_432d_db,
+		&win4d_432d_db, &win3d_432d_db, &win3dd_432d_db, &win2d_432d_db, &win2dd_432d_db, &win2dt_432d_db,
 		&minbet_cbebas_db, &maxbet_cbebas_db, &win_cbebas_db, &disc_cbebas_db, &limitglobal_cbebas_db, &limittotal_cbebas_db,
 		&minbet_cmacau_db, &maxbet_cmacau_db, &win2d_cmacau_db, &win3d_cmacau_db, &win4d_cmacau_db, &disc_cmacau_db, &limitglobal_cmacau_db, &limitotal_cmacau_db,
 		&minbet_cnaga_db, &maxbet_cnaga_db, &win3_cnaga_db, &win4_cnaga_db, &disc_cnaga_db, &limitglobal_cnaga_db, &limittotal_cnaga_db,
@@ -442,6 +256,7 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	obj.Jamopen = jamopen_db
 	obj.Limitline4d = limitline_4d_db
 	obj.Limitline3d = limitline_3d_db
+	obj.Limitline3dd = limitline_3dd_db
 	obj.Limitline2d = limitline_2d_db
 	obj.Limitline2dd = limitline_2dd_db
 	obj.Limitline2dt = limitline_2dt_db
@@ -449,26 +264,31 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	obj.Minbet_432d = minbet_432d_db
 	obj.Maxbet4d_432d = maxbet4d_432d_db
 	obj.Maxbet3d_432d = maxbet3d_432d_db
+	obj.Maxbet3dd_432d = maxbet3dd_432d_db
 	obj.Maxbet2d_432d = maxbet2d_432d_db
 	obj.Maxbet2dd_432d = maxbet2dd_432d_db
 	obj.Maxbet2dt_432d = maxbet2dt_432d_db
 	obj.Limitotal4d_432d = limitotal4d_432d_db
 	obj.Limitotal3d_432d = limitotal3d_432d_db
+	obj.Limitotal3dd_432d = limitotal3dd_432d_db
 	obj.Limitotal2d_432d = limitotal2d_432d_db
 	obj.Limitotal2dd_432d = limitotal2dd_432d_db
 	obj.Limitotal2dt_432d = limitotal2dt_432d_db
 	obj.Limitglobal4d_432d = limitglobal4d_432d_db
 	obj.Limitglobal3d_432d = limitglobal3d_432d_db
+	obj.Limitglobal3dd_432d = limitglobal3dd_432d_db
 	obj.Limitglobal2d_432d = limitglobal2d_432d_db
 	obj.Limitglobal2dd_432d = limitglobal2dd_432d_db
 	obj.Limitglobal2dt_432d = limitglobal2dt_432d_db
 	obj.Disc4d_432d = disc4d_432d_db
 	obj.Disc3d_432d = disc3d_432d_db
+	obj.Disc3dd_432d = disc3dd_432d_db
 	obj.Disc2d_432d = disc2d_432d_db
 	obj.Disc2dd_432d = disc2dd_432d_db
 	obj.Disc2dt_432d = disc2dt_432d_db
 	obj.Win4d_432d = win4d_432d_db
 	obj.Win3d_432d = win3d_432d_db
+	obj.Win3dd_432d = win3dd_432d_db
 	obj.Win2d_432d = win2d_432d_db
 	obj.Win2dd_432d = win2dd_432d_db
 	obj.Win2dt_432d = win2dt_432d_db
@@ -795,7 +615,7 @@ func Delete_PasaranOnline(company string, idcomppasaran, idcomppasaranoff int) (
 	res.Time = time.Since(render_page).String()
 	return res, nil
 }
-func Save_PasaranLimitline(agent string, company string, idcomppasaran int, limitline4d, limitline3d, limitline2d, limitline2dd, limitline2dt int) (helpers.Response, error) {
+func Save_PasaranLimitline(agent string, company string, idcomppasaran int, limitline4d, limitline3d, limitline3dd, limitline2d, limitline2dd, limitline2dt int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
 	con := db.CreateCon()
@@ -808,13 +628,13 @@ func Save_PasaranLimitline(agent string, company string, idcomppasaran int, limi
 		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+`  
-					SET limitline_4d=? , limitline_3d=?, 
+					SET limitline_4d=? , limitline_3d=?, limitline_3dd=?, 
 					limitline_2d=?, limitline_2dd=?, limitline_2dt=?,   
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
 		helpers.ErrorCheck(e)
-		rec, e := stmt.ExecContext(ctx, limitline4d, limitline3d, limitline2d, limitline2dd, limitline2dt,
+		rec, e := stmt.ExecContext(ctx, limitline4d, limitline3d, limitline3dd, limitline2d, limitline2dd, limitline2dt,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
@@ -837,11 +657,11 @@ func Save_PasaranConf432(
 	agent string,
 	company string,
 	idcomppasaran int,
-	minbet, maxbet4d, maxbet3d, maxbet2d, maxbet2dd, maxbet2dt int,
-	win4d, win3d, win2d, win2dd, win2dt int,
-	disc4d, disc3d, disc2d, disc2dd, disc2dt float32,
-	limitglobal4d, limitglobal3d, limitglobal2d, limitglobal2dd, limitglobal2dt int,
-	limittotal4d, limittotal3d, limittotal2d, limittotal2dd, limittotal2dt int) (helpers.Response, error) {
+	minbet, maxbet4d, maxbet3d, maxbet3dd, maxbet2d, maxbet2dd, maxbet2dt int,
+	win4d, win3d, win3dd, win2d, win2dd, win2dt int,
+	disc4d, disc3d, disc3dd, disc2d, disc2dd, disc2dt float32,
+	limitglobal4d, limitglobal3d, limitglobal3dd, limitglobal2d, limitglobal2dd, limitglobal2dt int,
+	limittotal4d, limittotal3d, limittotal3dd, limittotal2d, limittotal2dd, limittotal2dt int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
 	con := db.CreateCon()
@@ -855,21 +675,21 @@ func Save_PasaranConf432(
 		stmt, e := con.PrepareContext(ctx, `
 					UPDATE 
 					`+config.DB_tbl_mst_company_game_pasaran+` 
-					SET 1_minbet=? , 1_maxbet4d=?, 1_maxbet3d=?, 1_maxbet2d=?, 1_maxbet2dd=?, 1_maxbet2dt=?, 
-					1_win4d=?, 1_win3d=?, 1_win2d=?, 1_win2dd=?, 1_win2dt=?, 
-					1_disc4d=?, 1_disc3d=?, 1_disc2d=?, 1_disc2dd=?, 1_disc2dt=?, 
-					1_limitbuang4d=?, 1_limitbuang3d=?, 1_limitbuang2d=?, 1_limitbuang2dd=?, 1_limitbuang2dt=?,  
-					1_limittotal4d=?, 1_limittotal3d=?, 1_limittotal2d=?, 1_limittotal2dd=?, 1_limittotal2dt=?,    
+					SET 1_minbet=? , 1_maxbet4d=?, 1_maxbet3d=?, 1_maxbet3dd=?, 1_maxbet2d=?, 1_maxbet2dd=?, 1_maxbet2dt=?, 
+					1_win4d=?, 1_win3d=?, 1_win3dd=?, 1_win2d=?, 1_win2dd=?, 1_win2dt=?, 
+					1_disc4d=?, 1_disc3d=?, 1_disc3dd=?, 1_disc2d=?, 1_disc2dd=?, 1_disc2dt=?, 
+					1_limitbuang4d=?, 1_limitbuang3d=?, 1_limitbuang3dd=?, 1_limitbuang2d=?, 1_limitbuang2dd=?, 1_limitbuang2dt=?,  
+					1_limittotal4d=?, 1_limittotal3d=?, 1_limittotal3dd=?, 1_limittotal2d=?, 1_limittotal2dd=?, 1_limittotal2dt=?,    
 					updatecomppas=?, updatedatecompas=? 
 					WHERE idcomppasaran=? AND idcompany=? 
 				`)
 		helpers.ErrorCheck(e)
 		rec, e := stmt.ExecContext(ctx,
-			minbet, maxbet4d, maxbet3d, maxbet2d, maxbet2dd, maxbet2dt,
-			win4d, win3d, win2d, win2dd, win2dt,
-			disc4d, disc3d, disc2d, disc2dd, disc2dt,
-			limitglobal4d, limitglobal3d, limitglobal2d, limitglobal2dd, limitglobal2dt,
-			limittotal4d, limittotal3d, limittotal2d, limittotal2dd, limittotal2dt,
+			minbet, maxbet4d, maxbet3d, maxbet3dd, maxbet2d, maxbet2dd, maxbet2dt,
+			win4d, win3d, win3dd, win2d, win2dd, win2dt,
+			disc4d, disc3d, disc3dd, disc2d, disc2dd, disc2dt,
+			limitglobal4d, limitglobal3d, limitglobal3dd, limitglobal2d, limitglobal2dd, limitglobal2dt,
+			limittotal4d, limittotal3d, limittotal3dd, limittotal2d, limittotal2dd, limittotal2dt,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
