@@ -2443,6 +2443,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, company, simpandb string, idcomppas
 	temp := angka
 	temp4d := string([]byte(temp)[0]) + string([]byte(temp)[1]) + string([]byte(temp)[2]) + string([]byte(temp)[3])
 	temp3d := string([]byte(temp)[1]) + string([]byte(temp)[2]) + string([]byte(temp)[3])
+	temp3dd := string([]byte(temp)[0]) + string([]byte(temp)[1]) + string([]byte(temp)[2])
 	temp2d := string([]byte(temp)[2]) + string([]byte(temp)[3])
 	temp2dd := string([]byte(temp)[0]) + string([]byte(temp)[1])
 	temp2dt := string([]byte(temp)[1]) + string([]byte(temp)[2])
@@ -2454,6 +2455,10 @@ func _rumusTogel(angka, tipe, nomorkeluaran, company, simpandb string, idcomppas
 		}
 	case "3D":
 		if temp3d == nomorkeluaran {
+			result = "WINNER"
+		}
+	case "3DD":
+		if temp3dd == nomorkeluaran {
 			result = "WINNER"
 		}
 	case "2D":
