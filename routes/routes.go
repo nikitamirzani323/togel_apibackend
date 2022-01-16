@@ -66,5 +66,7 @@ func Init() *fiber.App {
 
 	app.Post("/api/dashboardwinlose", middleware.JWTProtected(), controllers.DashboardHome)
 	app.Post("/api/reportwinlose", middleware.JWTProtected(), controllers.Reportwinlose)
+
+	app.Post("/api/log", middleware.JWTProtected(), controllers.LogHome)
 	return app
 }
