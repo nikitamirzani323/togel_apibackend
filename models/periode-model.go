@@ -1520,8 +1520,8 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 			idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 			nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
 			noteafter := ""
-			noteafter += "INVOICE - " + strconv.Itoa(idtrxkeluaran) + " \n"
-			noteafter += "PASARAN : " + nmpasarantogel + " \n"
+			noteafter += "INVOICE - " + strconv.Itoa(idtrxkeluaran) + "<br />"
+			noteafter += "PASARAN : " + nmpasarantogel + "<br />"
 			noteafter += "KELUARAN : " + keluarantogel
 			Insert_log(company, agent, "PERIODE", "UPDATE KELUARAN", "", noteafter)
 		} else {
@@ -2012,7 +2012,7 @@ func Save_PeriodeNew(agent, company string, idcomppasaran int) (helpers.Response
 			nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
 
 			noteafter := ""
-			noteafter += "INVOICE - " + idkeluaran + " \n"
+			noteafter += "INVOICE - " + idkeluaran + "<br />"
 			noteafter += "PASARAN : " + nmpasarantogel
 			Insert_log(company, agent, "PERIODE", "NEW PASARAN MANUAL", "", noteafter)
 		}
@@ -2141,7 +2141,7 @@ func Save_PeriodeRevisi(agent, company, msgrevisi string, idtrxkeluaran int) (he
 				idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 				nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
 				noteafter := ""
-				noteafter += "INVOICE - " + strconv.Itoa(idtrxkeluaran) + " \n"
+				noteafter += "INVOICE - " + strconv.Itoa(idtrxkeluaran) + "<br />"
 				noteafter += "PASARAN : " + nmpasarantogel
 				Insert_log(company, agent, "PERIODE", "REVISI INVOICE", "", noteafter)
 			} else {
@@ -2273,8 +2273,8 @@ func Cancelbet_Periode(agent, company string, idtrxkeluaran, idtrxkeluarandetail
 			idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 			nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
 			noteafter := ""
-			noteafter += "INVOICE - " + strconv.Itoa(idtrxkeluaran) + " \n"
-			noteafter += "INVOICE BET - " + strconv.Itoa(idtrxkeluarandetail) + " \n"
+			noteafter += "INVOICE - " + strconv.Itoa(idtrxkeluaran) + "<br />"
+			noteafter += "INVOICE BET - " + strconv.Itoa(idtrxkeluarandetail) + "<br />"
 			noteafter += "PASARAN : " + nmpasarantogel
 			Insert_log(company, agent, "PERIODE", "CANCEL BET", "", noteafter)
 		} else {

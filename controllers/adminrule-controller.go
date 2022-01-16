@@ -174,6 +174,9 @@ func SaveAdminruleDetail(c *fiber.Ctx) error {
 		field_redis := "LISTADMINRULE_AGENT_" + strings.ToLower(client_company)
 		val_agent := helpers.DeleteRedis(field_redis)
 		log.Printf("Redis Delete AGEN - ADMINRULE status: %d", val_agent)
+		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+		val_agent_redis := helpers.DeleteRedis(log_redis)
+		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -196,6 +199,9 @@ func SaveAdminruleDetail(c *fiber.Ctx) error {
 			field_redis := "LISTADMINRULE_AGENT_" + strings.ToLower(client_company)
 			val_agent := helpers.DeleteRedis(field_redis)
 			log.Printf("Redis Delete AGEN - ADMINRULE status: %d", val_agent)
+			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+			val_agent_redis := helpers.DeleteRedis(log_redis)
+			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 			return c.JSON(result)
 		}
 	}
@@ -250,6 +256,9 @@ func SaveAdminruleConf(c *fiber.Ctx) error {
 		field_redis := "LISTADMINRULE_AGENT_" + strings.ToLower(client_company)
 		val_agent := helpers.DeleteRedis(field_redis)
 		log.Printf("Redis Delete AGEN - ADMINRULE status: %d", val_agent)
+		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+		val_agent_redis := helpers.DeleteRedis(log_redis)
+		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -272,6 +281,9 @@ func SaveAdminruleConf(c *fiber.Ctx) error {
 			field_redis := "LISTADMINRULE_AGENT_" + strings.ToLower(client_company)
 			val_agent := helpers.DeleteRedis(field_redis)
 			log.Printf("Redis Delete AGEN - ADMINRULE status: %d", val_agent)
+			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+			val_agent_redis := helpers.DeleteRedis(log_redis)
+			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 			return c.JSON(result)
 		}
 	}

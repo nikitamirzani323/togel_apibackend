@@ -103,7 +103,7 @@ func AdminHome(c *fiber.Ctx) error {
 	})
 	if !flag {
 		result, err := models.Fetch_adminHome(client_company)
-		helpers.SetRedis(field_redis, result, 5*time.Minute)
+		helpers.SetRedis(field_redis, result, 30*time.Minute)
 		log.Println("MYSQL")
 		if err != nil {
 			c.Status(fiber.StatusBadRequest)
@@ -225,6 +225,9 @@ func AdminSave(c *fiber.Ctx) error {
 		field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
 		val_agent := helpers.DeleteRedis(field_redis)
 		log.Printf("Redis Delete AGEN - ADMIN status: %d", val_agent)
+		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+		val_agent_redis := helpers.DeleteRedis(log_redis)
+		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -253,6 +256,9 @@ func AdminSave(c *fiber.Ctx) error {
 			field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
 			val_agent := helpers.DeleteRedis(field_redis)
 			log.Printf("Redis Delete AGEN - ADMIN status: %d", val_agent)
+			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+			val_agent_redis := helpers.DeleteRedis(log_redis)
+			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 			return c.JSON(result)
 		}
 	}
@@ -312,6 +318,9 @@ func AdminSaveIplist(c *fiber.Ctx) error {
 		field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
 		val_agent := helpers.DeleteRedis(field_redis)
 		log.Printf("Redis Delete AGEN - ADMIN status: %d", val_agent)
+		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+		val_agent_redis := helpers.DeleteRedis(log_redis)
+		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -339,6 +348,9 @@ func AdminSaveIplist(c *fiber.Ctx) error {
 			field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
 			val_agent := helpers.DeleteRedis(field_redis)
 			log.Printf("Redis Delete AGEN - ADMIN status: %d", val_agent)
+			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+			val_agent_redis := helpers.DeleteRedis(log_redis)
+			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 			return c.JSON(result)
 		}
 	}
@@ -394,6 +406,9 @@ func AdminDeleteIplist(c *fiber.Ctx) error {
 		field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
 		val_agent := helpers.DeleteRedis(field_redis)
 		log.Printf("Redis Delete AGEN - ADMIN status: %d", val_agent)
+		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+		val_agent_redis := helpers.DeleteRedis(log_redis)
+		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -416,6 +431,9 @@ func AdminDeleteIplist(c *fiber.Ctx) error {
 			field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
 			val_agent := helpers.DeleteRedis(field_redis)
 			log.Printf("Redis Delete AGEN - ADMIN status: %d", val_agent)
+			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+			val_agent_redis := helpers.DeleteRedis(log_redis)
+			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 			return c.JSON(result)
 		}
 	}

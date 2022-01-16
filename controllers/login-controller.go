@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"log"
 	"strconv"
+	"strings"
 
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
 	"bitbucket.org/isbtotogroup/apibackend_go/models"
@@ -77,7 +79,12 @@ func CheckLogin(c *fiber.Ctx) error {
 		if err != nil {
 			return c.SendStatus(fiber.StatusInternalServerError)
 		}
-
+		log_admin := "LISTADMIN_AGENT_" + strings.ToLower(idcomp)
+		val_agent_admin := helpers.DeleteRedis(log_admin)
+		log.Printf("Redis Delete ADMIN status: %d", val_agent_admin)
+		log_redis := "LISTLOG_AGENT_" + strings.ToLower(idcomp)
+		val_agent_redis := helpers.DeleteRedis(log_redis)
+		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 		return c.JSON(fiber.Map{
 			"status": fiber.StatusOK,
 			"token":  t,

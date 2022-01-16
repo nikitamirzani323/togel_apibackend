@@ -781,6 +781,9 @@ func PeriodeSave(c *fiber.Ctx) error {
 		log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS ALL: %d", val_agentall)
 		log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS WINNER: %d", val_agentwinner)
 		log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS CANCEL: %d", val_agentcancel)
+		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+		val_agent_redis := helpers.DeleteRedis(log_redis)
+		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -857,6 +860,9 @@ func PeriodeSave(c *fiber.Ctx) error {
 			log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS ALL: %d", val_agentall)
 			log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS WINNER: %d", val_agentwinner)
 			log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS CANCEL: %d", val_agentcancel)
+			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+			val_agent_redis := helpers.DeleteRedis(log_redis)
+			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 			return c.JSON(result)
 		}
 	}
@@ -920,6 +926,9 @@ func PeriodeSaveNew(c *fiber.Ctx) error {
 		val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + strings.ToLower(client_company))
 		log.Printf("Redis Delete AGENT status: %d", val_agent)
 		log.Printf("Redis Delete AGENT DASHBOARD status: %d", val_agent_dashboard)
+		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+		val_agent_redis := helpers.DeleteRedis(log_redis)
+		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -951,6 +960,9 @@ func PeriodeSaveNew(c *fiber.Ctx) error {
 			val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + strings.ToLower(client_company))
 			log.Printf("Redis Delete AGENT status: %d", val_agent)
 			log.Printf("Redis Delete AGENT DASHBOARD status: %d", val_agent_dashboard)
+			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+			val_agent_redis := helpers.DeleteRedis(log_redis)
+			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 			return c.JSON(result)
 		}
 	}
@@ -1059,6 +1071,9 @@ func PeriodeSaveRevisi(c *fiber.Ctx) error {
 		log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS ALL: %d", val_agentall)
 		log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS WINNER: %d", val_agentwinner)
 		log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS CANCEL: %d", val_agentcancel)
+		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+		val_agent_redis := helpers.DeleteRedis(log_redis)
+		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1132,6 +1147,9 @@ func PeriodeSaveRevisi(c *fiber.Ctx) error {
 			log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS ALL: %d", val_agentall)
 			log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS WINNER: %d", val_agentwinner)
 			log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS CANCEL: %d", val_agentcancel)
+			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+			val_agent_redis := helpers.DeleteRedis(log_redis)
+			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 			return c.JSON(result)
 		}
 	}
@@ -1241,6 +1259,9 @@ func PeriodeCancelBet(c *fiber.Ctx) error {
 		log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS ALL: %d", val_agentall)
 		log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS WINNER: %d", val_agentwinner)
 		log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS CANCEL: %d", val_agentcancel)
+		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+		val_agent_redis := helpers.DeleteRedis(log_redis)
+		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1314,6 +1335,9 @@ func PeriodeCancelBet(c *fiber.Ctx) error {
 			log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS ALL: %d", val_agentall)
 			log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS WINNER: %d", val_agentwinner)
 			log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS CANCEL: %d", val_agentcancel)
+			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
+			val_agent_redis := helpers.DeleteRedis(log_redis)
+			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 			return c.JSON(result)
 		}
 	}
