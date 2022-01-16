@@ -40,6 +40,7 @@ type responseredis_adminhome struct {
 	Admin_no           int    `json:"admin_no"`
 	Admin_username     string `json:"admin_username"`
 	Admin_nama         string `json:"admin_nama"`
+	Admin_tipe         string `json:"admin_tipe"`
 	Admin_rule         string `json:"admin_rule"`
 	Admin_joindate     string `json:"admin_joindate"`
 	Admin_timezone     string `json:"admin_timezone"`
@@ -72,6 +73,7 @@ func AdminHome(c *fiber.Ctx) error {
 		admin_no, _ := jsonparser.GetInt(value, "admin_no")
 		admin_username, _ := jsonparser.GetString(value, "admin_username")
 		admin_nama, _ := jsonparser.GetString(value, "admin_nama")
+		admin_tipe, _ := jsonparser.GetString(value, "admin_tipe")
 		admin_rule, _ := jsonparser.GetString(value, "admin_rule")
 		admin_joindate, _ := jsonparser.GetString(value, "admin_joindate")
 		admin_timezone, _ := jsonparser.GetString(value, "admin_timezone")
@@ -82,6 +84,7 @@ func AdminHome(c *fiber.Ctx) error {
 		obj.Admin_no = int(admin_no)
 		obj.Admin_username = admin_username
 		obj.Admin_nama = admin_nama
+		obj.Admin_tipe = admin_tipe
 		obj.Admin_rule = admin_rule
 		obj.Admin_joindate = admin_joindate
 		obj.Admin_timezone = admin_timezone

@@ -18,6 +18,7 @@ type adminHome struct {
 	No            int    `json:"admin_no"`
 	Username      string `json:"admin_username"`
 	Nama          string `json:"admin_nama"`
+	Tipeadmin     string `json:"admin_tipe"`
 	Rule          string `json:"admin_rule"`
 	Joindate      string `json:"admin_joindate"`
 	Timezone      string `json:"admin_timezone"`
@@ -52,7 +53,7 @@ func Fetch_adminHome(company string) (helpers.ResponseAdminManagement, error) {
 	start := time.Now()
 
 	sql := `SELECT 
-			idruleadmin, username_comp, nama_comp,  
+			idruleadmin, username_comp, nama_comp, typeadmin,  
 			status_comp, lasttimezone_comp, lastlogin_comp, lastipaddres_comp, createdatecomp_admin  
 			FROM ` + config.DB_tbl_mst_company_admin + ` 
 			WHERE idcompany = ? 
@@ -67,7 +68,7 @@ func Fetch_adminHome(company string) (helpers.ResponseAdminManagement, error) {
 		no += 1
 		var (
 			idruleadmin_db                                                                                         int
-			username_comp_db, nama_comp_db                                                                         string
+			username_comp_db, nama_comp_db, typeadmin_db                                                           string
 			status_comp_db, lasttimezone_comp_db, lastlogin_comp_db, lastipaddres_comp_db, createdatecomp_admin_db string
 		)
 
@@ -75,6 +76,7 @@ func Fetch_adminHome(company string) (helpers.ResponseAdminManagement, error) {
 			&idruleadmin_db,
 			&username_comp_db,
 			&nama_comp_db,
+			&typeadmin_db,
 			&status_comp_db,
 			&lasttimezone_comp_db,
 			&lastlogin_comp_db,
@@ -86,6 +88,7 @@ func Fetch_adminHome(company string) (helpers.ResponseAdminManagement, error) {
 		obj.No = no
 		obj.Username = username_comp_db
 		obj.Nama = nama_comp_db
+		obj.Tipeadmin = typeadmin_db
 		obj.Rule = Get_AdminRule(company, "nmruleadmin", idruleadmin_db)
 		obj.Joindate = createdatecomp_admin_db
 		obj.Timezone = lasttimezone_comp_db
