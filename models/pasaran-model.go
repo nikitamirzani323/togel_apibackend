@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"strconv"
 	"time"
@@ -517,6 +518,19 @@ func Save_Pasaran(agent string, company string, idcomppasaran int, pasarandiundi
 		helpers.ErrorCheck(err_update)
 		if update > 0 {
 			msg = "Success"
+
+			idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+			nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "PASARAN DI UNDI - " + pasarandiundi + "\n"
+			noteafter += "PASARAN URL - " + pasaranurl + "\n"
+			noteafter += "PASARAN JAM TUTUP - " + jamtutup + "\n"
+			noteafter += "PASARAN JAM JADWAL - " + jamjadwal + "\n"
+			noteafter += "PASARAN JAM OPEN - " + jamopen + "\n"
+			noteafter += "PASARAN STATUS - " + statuspasaranactive + "\n"
+			noteafter += "PASARAN DISPLAY - " + strconv.Itoa(displaypasaran)
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -567,6 +581,13 @@ func Save_PasaranOnline(agent, company string, idcomppasaran int, haripasaran st
 			defer stmt.Close()
 			if insert > 0 {
 				msg = "Success"
+				idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+				nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
+
+				noteafter := ""
+				noteafter += "PASARAN - " + nmpasarantogel + "\n"
+				noteafter += "HARI PASARAN - " + haripasaran
+				Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - NEW ONLINE", "", noteafter)
 			}
 		} else {
 			msg = "Duplicate Entry"
@@ -607,6 +628,12 @@ func Delete_PasaranOnline(company string, idcomppasaran, idcomppasaranoff int) (
 		defer stmt.Close()
 		if delete > 0 {
 			msg = "Success"
+			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
+			haripasaran := _pasaran_online(idcomppasaran, company, "haripasaran")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "HARI PASARAN - " + haripasaran
+			Insert_log(company, "", "PASARAN", "UPDATE PASARAN - DELETE ONLINE", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -645,6 +672,17 @@ func Save_PasaranLimitline(agent string, company string, idcomppasaran int, limi
 		helpers.ErrorCheck(err_update)
 		if update > 0 {
 			msg = "Success"
+
+			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "LIMITLINE 4D - " + strconv.Itoa(limitline4d) + "\n"
+			noteafter += "LIMITLINE 3D - " + strconv.Itoa(limitline3d) + "\n"
+			noteafter += "LIMITLINE 3DD - " + strconv.Itoa(limitline3dd) + "\n"
+			noteafter += "LIMITLINE 2D - " + strconv.Itoa(limitline2d) + "\n"
+			noteafter += "LIMITLINE 2DD - " + strconv.Itoa(limitline2dd) + "\n"
+			noteafter += "LIMITLINE 2DT - " + strconv.Itoa(limitline2dt)
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - LIMITLINE", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -700,6 +738,42 @@ func Save_PasaranConf432(
 		helpers.ErrorCheck(err_update)
 		if update > 0 {
 			msg = "Success"
+
+			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "\n"
+			noteafter += "MAXIMAL BET4D - " + strconv.Itoa(maxbet4d) + "\n"
+			noteafter += "MAXIMAL BET3D - " + strconv.Itoa(maxbet3d) + "\n"
+			noteafter += "MAXIMAL BET3DD - " + strconv.Itoa(maxbet3dd) + "\n"
+			noteafter += "MAXIMAL BET2D - " + strconv.Itoa(maxbet2d) + "\n"
+			noteafter += "MAXIMAL BET2DD - " + strconv.Itoa(maxbet2dd) + "\n"
+			noteafter += "MAXIMAL BET2DT - " + strconv.Itoa(maxbet2dt) + "\n"
+			noteafter += "WIN4D - " + strconv.Itoa(win4d) + "\n"
+			noteafter += "WIN3D - " + strconv.Itoa(win3d) + "\n"
+			noteafter += "WIN3DD - " + strconv.Itoa(win3dd) + "\n"
+			noteafter += "WIN2D - " + strconv.Itoa(win2d) + "\n"
+			noteafter += "WIN2DD - " + strconv.Itoa(win2dd) + "\n"
+			noteafter += "WIN2DT - " + strconv.Itoa(win2dt) + "\n"
+			noteafter += "DISC4D - " + fmt.Sprintf("%f", disc4d) + "\n"
+			noteafter += "DISC3D - " + fmt.Sprintf("%f", disc3d) + "\n"
+			noteafter += "DISC3DD - " + fmt.Sprintf("%f", disc3dd) + "\n"
+			noteafter += "DISC2D - " + fmt.Sprintf("%f", disc2d) + "\n"
+			noteafter += "DISC2DD - " + fmt.Sprintf("%f", disc2dd) + "\n"
+			noteafter += "DISC2DT - " + fmt.Sprintf("%f", disc2dt) + "\n"
+			noteafter += "LIMIT GLOBAL 4D - " + strconv.Itoa(limitglobal4d) + "\n"
+			noteafter += "LIMIT GLOBAL 3D - " + strconv.Itoa(limitglobal3d) + "\n"
+			noteafter += "LIMIT GLOBAL 3DD - " + strconv.Itoa(limitglobal3dd) + "\n"
+			noteafter += "LIMIT GLOBAL 2D - " + strconv.Itoa(limitglobal2d) + "\n"
+			noteafter += "LIMIT GLOBAL 2DD - " + strconv.Itoa(limitglobal2dd) + "\n"
+			noteafter += "LIMIT GLOBAL 2DT - " + strconv.Itoa(limitglobal2dt) + "\n"
+			noteafter += "LIMIT TOTAL 4D - " + strconv.Itoa(limittotal4d) + "\n"
+			noteafter += "LIMIT TOTAL 3D - " + strconv.Itoa(limittotal3d) + "\n"
+			noteafter += "LIMIT TOTAL 3DD - " + strconv.Itoa(limittotal3dd) + "\n"
+			noteafter += "LIMIT TOTAL 2D - " + strconv.Itoa(limittotal2d) + "\n"
+			noteafter += "LIMIT TOTAL 2DD - " + strconv.Itoa(limittotal2dd) + "\n"
+			noteafter += "LIMIT TOTAL 2DT - " + strconv.Itoa(limittotal2dt) + "\n"
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - 4-3-2", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -748,6 +822,17 @@ func Save_PasaranConfColokBebas(
 		helpers.ErrorCheck(err_update)
 		if update > 0 {
 			msg = "Success"
+
+			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "\n"
+			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "\n"
+			noteafter += "WIN - " + fmt.Sprintf("%f", win) + "\n"
+			noteafter += "DISC - " + fmt.Sprintf("%f", disc) + "\n"
+			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "\n"
+			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - COLOK BEBAS", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -796,6 +881,19 @@ func Save_PasaranConfColokMacau(
 		helpers.ErrorCheck(err_update)
 		if update > 0 {
 			msg = "Success"
+
+			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "\n"
+			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "\n"
+			noteafter += "DISC - " + fmt.Sprintf("%f", disc) + "\n"
+			noteafter += "WIN2 - " + fmt.Sprintf("%f", win2) + "\n"
+			noteafter += "WIN3 - " + fmt.Sprintf("%f", win3) + "\n"
+			noteafter += "WIN4 - " + fmt.Sprintf("%f", win4) + "\n"
+			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "\n"
+			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - COLOK MACAU", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -844,6 +942,18 @@ func Save_PasaranConfColokNaga(
 		helpers.ErrorCheck(err_update)
 		if update > 0 {
 			msg = "Success"
+
+			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "\n"
+			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "\n"
+			noteafter += "DISC - " + fmt.Sprintf("%f", disc) + "\n"
+			noteafter += "WIN3 - " + fmt.Sprintf("%f", win3) + "\n"
+			noteafter += "WIN4 - " + fmt.Sprintf("%f", win4) + "\n"
+			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "\n"
+			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - COLOK NAGA", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -894,6 +1004,20 @@ func Save_PasaranConfColokJitu(
 		helpers.ErrorCheck(err_update)
 		if update > 0 {
 			msg = "Success"
+
+			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "\n"
+			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "\n"
+			noteafter += "DISC - " + fmt.Sprintf("%f", disc) + "\n"
+			noteafter += "WIN_AS - " + fmt.Sprintf("%f", winas) + "\n"
+			noteafter += "WIN_KOP - " + fmt.Sprintf("%f", winkop) + "\n"
+			noteafter += "WIN_KEPALA - " + fmt.Sprintf("%f", winkepala) + "\n"
+			noteafter += "WIN_EKOR - " + fmt.Sprintf("%f", winekor) + "\n"
+			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "\n"
+			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - COLOK JITU", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -946,6 +1070,27 @@ func Save_PasaranConf5050Umum(
 		helpers.ErrorCheck(err_update)
 		if update > 0 {
 			msg = "Success"
+
+			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "\n"
+			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "\n"
+			noteafter += "DISC BESAR - " + fmt.Sprintf("%f", discbesar) + "\n"
+			noteafter += "DISC KECIL - " + fmt.Sprintf("%f", disckecil) + "\n"
+			noteafter += "DISC GENAP - " + fmt.Sprintf("%f", discgenap) + "\n"
+			noteafter += "DISC GANJIL - " + fmt.Sprintf("%f", discganjil) + "\n"
+			noteafter += "DISC TENGAH - " + fmt.Sprintf("%f", disctengah) + "\n"
+			noteafter += "DISC TEPI - " + fmt.Sprintf("%f", disctepi) + "\n"
+			noteafter += "KEI BESAR - " + fmt.Sprintf("%f", keibesar) + "\n"
+			noteafter += "KEI KECIL - " + fmt.Sprintf("%f", keikecil) + "\n"
+			noteafter += "KEI GENAP - " + fmt.Sprintf("%f", keigenap) + "\n"
+			noteafter += "KEI GANJIL - " + fmt.Sprintf("%f", keiganjil) + "\n"
+			noteafter += "KEI TENGAH - " + fmt.Sprintf("%f", keitengah) + "\n"
+			noteafter += "KEI TEPI - " + fmt.Sprintf("%f", keitepi) + "\n"
+			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "\n"
+			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - 5050 UMUM", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -1017,6 +1162,47 @@ func Save_PasaranConf5050Special(
 		helpers.ErrorCheck(err_update)
 		if update > 0 {
 			msg = "Success"
+
+			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "\n"
+			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "\n"
+			noteafter += "DISC AS GANJIL - " + fmt.Sprintf("%f", discasganjil) + "\n"
+			noteafter += "DISC AS GENAP - " + fmt.Sprintf("%f", discasgenap) + "\n"
+			noteafter += "DISC AS BESAR - " + fmt.Sprintf("%f", discasbesar) + "\n"
+			noteafter += "DISC AS KECIL - " + fmt.Sprintf("%f", discaskecil) + "\n"
+			noteafter += "DISC KOP GANJIL - " + fmt.Sprintf("%f", disckopganjil) + "\n"
+			noteafter += "DISC KOP GENAP - " + fmt.Sprintf("%f", disckopgenap) + "\n"
+			noteafter += "DISC KOP BESAR - " + fmt.Sprintf("%f", disckopbesar) + "\n"
+			noteafter += "DISC KOP KECIL - " + fmt.Sprintf("%f", disckopkecil) + "\n"
+			noteafter += "DISC KEPALA GANJIL - " + fmt.Sprintf("%f", disckepalaganjil) + "\n"
+			noteafter += "DISC KEPALA GENAP - " + fmt.Sprintf("%f", disckepalagenap) + "\n"
+			noteafter += "DISC KEPALA BESAR - " + fmt.Sprintf("%f", disckepalabesar) + "\n"
+			noteafter += "DISC KEPALA KECIL - " + fmt.Sprintf("%f", disckepalakecil) + "\n"
+			noteafter += "DISC EKOR GANJIL - " + fmt.Sprintf("%f", discekorganjil) + "\n"
+			noteafter += "DISC EKOR GENAP - " + fmt.Sprintf("%f", discekorgenap) + "\n"
+			noteafter += "DISC EKOR BESAR - " + fmt.Sprintf("%f", discekorbesar) + "\n"
+			noteafter += "DISC EKOR KECIL - " + fmt.Sprintf("%f", discekorkecil) + "\n"
+			noteafter += "KEI AS GANJIL - " + fmt.Sprintf("%f", keiasganjil) + "\n"
+			noteafter += "KEI AS GENAP - " + fmt.Sprintf("%f", keiasgenap) + "\n"
+			noteafter += "KEI AS BESAR - " + fmt.Sprintf("%f", keiasbesar) + "\n"
+			noteafter += "KEI AS KECIL - " + fmt.Sprintf("%f", keiaskecil) + "\n"
+			noteafter += "KEI KOP GANJIL - " + fmt.Sprintf("%f", keikopganjil) + "\n"
+			noteafter += "KEI KOP GENAP - " + fmt.Sprintf("%f", keikopgenap) + "\n"
+			noteafter += "KEI KOP BESAR - " + fmt.Sprintf("%f", keikopbesar) + "\n"
+			noteafter += "KEI KOP KECIL - " + fmt.Sprintf("%f", keikopkecil) + "\n"
+			noteafter += "KEI KEPALA GANJIL - " + fmt.Sprintf("%f", keikepalaganjil) + "\n"
+			noteafter += "KEI KEPALA GENAP - " + fmt.Sprintf("%f", keikepalagenap) + "\n"
+			noteafter += "KEI KEPALA BESAR - " + fmt.Sprintf("%f", keikepalabesar) + "\n"
+			noteafter += "KEI KEPALA KECIL - " + fmt.Sprintf("%f", keikepalakecil) + "\n"
+			noteafter += "KEI EKOR GANJIL - " + fmt.Sprintf("%f", keiekorganjil) + "\n"
+			noteafter += "KEI EKOR GENAP - " + fmt.Sprintf("%f", keiekorgenap) + "\n"
+			noteafter += "KEI EKOR BESAR - " + fmt.Sprintf("%f", keiekorbesar) + "\n"
+			noteafter += "KEI EKOR KECIL - " + fmt.Sprintf("%f", keiekorkecil) + "\n"
+			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "\n"
+			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - 5050 SPECIAL", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -1082,6 +1268,45 @@ func Save_PasaranConf5050Kombinasi(
 		helpers.ErrorCheck(err_update)
 		if update > 0 {
 			msg = "Success"
+
+			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "\n"
+			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "\n"
+			noteafter += "DEPAN KEI MONO - " + fmt.Sprintf("%f", depankeimono) + "\n"
+			noteafter += "DEPAN KEI STEREO - " + fmt.Sprintf("%f", depankeistereo) + "\n"
+			noteafter += "DEPAN KEI KEMBANG - " + fmt.Sprintf("%f", depankeikembang) + "\n"
+			noteafter += "DEPAN KEI KEMPIS - " + fmt.Sprintf("%f", depankeikempis) + "\n"
+			noteafter += "DEPAN KEI KEMBAR - " + fmt.Sprintf("%f", depankeikembar) + "\n"
+			noteafter += "TENGAH KEI MONO - " + fmt.Sprintf("%f", tengahkeimono) + "\n"
+			noteafter += "TENGAH KEI STEREO - " + fmt.Sprintf("%f", tengahkeistereo) + "\n"
+			noteafter += "TENGAH KEI KEMBANG - " + fmt.Sprintf("%f", tengahkeikembang) + "\n"
+			noteafter += "TENGAH KEI KEMPIS - " + fmt.Sprintf("%f", tengahkeikempis) + "\n"
+			noteafter += "TENGAH KEI KEMBAR - " + fmt.Sprintf("%f", tengahkeikembar) + "\n"
+			noteafter += "BELAKANG KEI MONO - " + fmt.Sprintf("%f", belakangkeimono) + "\n"
+			noteafter += "BELAKANG KEI STEREO - " + fmt.Sprintf("%f", belakangkeistereo) + "\n"
+			noteafter += "BELAKANG KEI KEMBANG - " + fmt.Sprintf("%f", belakangkeikembang) + "\n"
+			noteafter += "BELAKANG KEI KEMPIS - " + fmt.Sprintf("%f", belakangkeikempis) + "\n"
+			noteafter += "BELAKANG KEI KEMBAR - " + fmt.Sprintf("%f", belakangkeikembar) + "\n"
+			noteafter += "DEPAN DISC MONO - " + fmt.Sprintf("%f", depandiscmono) + "\n"
+			noteafter += "DEPAN DISC STEREO - " + fmt.Sprintf("%f", depandiscstereo) + "\n"
+			noteafter += "DEPAN DISC KEMBANG - " + fmt.Sprintf("%f", depandisckembang) + "\n"
+			noteafter += "DEPAN DISC KEMPIS - " + fmt.Sprintf("%f", depandisckempis) + "\n"
+			noteafter += "DEPAN DISC KEMBAR - " + fmt.Sprintf("%f", depandisckembar) + "\n"
+			noteafter += "TENGAH DISC MONO - " + fmt.Sprintf("%f", tengahdiscmono) + "\n"
+			noteafter += "TENGAH DISC STEREO - " + fmt.Sprintf("%f", tengahdiscstereo) + "\n"
+			noteafter += "TENGAH DISC KEMBANG - " + fmt.Sprintf("%f", tengahdisckembang) + "\n"
+			noteafter += "TENGAH DISC KEMPIS - " + fmt.Sprintf("%f", tengahdisckempis) + "\n"
+			noteafter += "TENGAH DISC KEMBAR - " + fmt.Sprintf("%f", tengahdisckembar) + "\n"
+			noteafter += "BELAKANG DISC MONO - " + fmt.Sprintf("%f", belakangdiscmono) + "\n"
+			noteafter += "BELAKANG DISC STEREO - " + fmt.Sprintf("%f", belakangdiscstereo) + "\n"
+			noteafter += "BELAKANG DISC KEMBANG - " + fmt.Sprintf("%f", belakangdisckembang) + "\n"
+			noteafter += "BELAKANG DISC KEMPIS - " + fmt.Sprintf("%f", belakangdisckempis) + "\n"
+			noteafter += "BELAKANG DISC KEMBAR - " + fmt.Sprintf("%f", belakangdisckembar) + "\n"
+			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "\n"
+			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - 5050 KOMBINASI", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -1130,6 +1355,17 @@ func Save_PasaranConfMacauKombinasi(
 		helpers.ErrorCheck(err_update)
 		if update > 0 {
 			msg = "Success"
+
+			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "\n"
+			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "\n"
+			noteafter += "WIN - " + fmt.Sprintf("%f", win) + "\n"
+			noteafter += "DISC - " + fmt.Sprintf("%f", disc) + "\n"
+			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "\n"
+			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - MACAU", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -1183,6 +1419,19 @@ func Save_PasaranConfDasar(
 		helpers.ErrorCheck(err_update)
 		if update > 0 {
 			msg = "Success"
+
+			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "\n"
+			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "\n"
+			noteafter += "DISC BESAR - " + fmt.Sprintf("%f", discbesar) + "\n"
+			noteafter += "DISC KECIL - " + fmt.Sprintf("%f", disckecil) + "\n"
+			noteafter += "DISC GENAP - " + fmt.Sprintf("%f", discigenap) + "\n"
+			noteafter += "DISC GANJIL - " + fmt.Sprintf("%f", discganjil) + "\n"
+			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "\n"
+			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - DASAR", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -1234,6 +1483,17 @@ func Save_PasaranConfShio(
 		helpers.ErrorCheck(err_udpate)
 		if update > 0 {
 			msg = "Success"
+
+			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "\n"
+			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "\n"
+			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "\n"
+			noteafter += "WIN - " + fmt.Sprintf("%f", win) + "\n"
+			noteafter += "DISC - " + fmt.Sprintf("%f", disc) + "\n"
+			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "\n"
+			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - SHIO", "", noteafter)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -1241,4 +1501,31 @@ func Save_PasaranConfShio(
 	res.Record = nil
 	res.Time = time.Since(render_page).String()
 	return res, nil
+}
+func _pasaran_online(idcomppasaran int, company, tipecolumn string) string {
+	con := db.CreateCon()
+	ctx := context.Background()
+	var result string = ""
+	sql_pasaran := `SELECT 
+		haripasaran 
+		FROM ` + config.DB_tbl_mst_company_game_pasaran_offline + `  
+		WHERE idcomppasaran  = ? 
+		AND idcompany = ? 
+	`
+	var (
+		haripasaran_db string
+	)
+	rows := con.QueryRowContext(ctx, sql_pasaran, idcomppasaran, company)
+	switch err := rows.Scan(&haripasaran_db); err {
+	case sql.ErrNoRows:
+		result = ""
+	case nil:
+		switch tipecolumn {
+		case "haripasaran":
+			result = haripasaran_db
+		}
+	default:
+		helpers.ErrorCheck(err)
+	}
+	return result
 }

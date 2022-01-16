@@ -164,6 +164,11 @@ func Save_Adminrule(agent, company, sData, nama string, idruleadmin int) (helper
 		if insert > 0 {
 			flag = true
 			log.Println("Data Berhasil di save")
+
+			noteafter := ""
+			noteafter += "NAME RULE - " + nama
+			Insert_log(company, agent, "ADMIN RULE", "NEW RULE", "", noteafter)
+
 		}
 	} else {
 		sql_update := `
@@ -191,6 +196,10 @@ func Save_Adminrule(agent, company, sData, nama string, idruleadmin int) (helper
 		if update_admin > 0 {
 			flag = true
 			log.Printf("Update tbl_mst_company_admin_rule Success : %d\n", idruleadmin)
+
+			noteafter := ""
+			noteafter += "NAME RULE - " + nama
+			Insert_log(company, agent, "ADMIN RULE", "UPDATE RULE", "", noteafter)
 		} else {
 			log.Println("Update tbl_mst_company_admin_rule failed")
 		}

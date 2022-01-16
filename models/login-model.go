@@ -62,8 +62,9 @@ func Login_Model(username, password, ipaddress, timezone string) (bool, string, 
 		`
 		rows_update, err_update := con.PrepareContext(ctx, sql_update)
 		helpers.ErrorCheck(err_update)
+		lastlogin := tglnow.Format("YYYY-MM-DD HH:mm:ss")
 		res_update, err_update := rows_update.ExecContext(ctx,
-			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			lastlogin,
 			ipaddress,
 			timezone,
 			username,
@@ -75,6 +76,11 @@ func Login_Model(username, password, ipaddress, timezone string) (bool, string, 
 		if update > 0 {
 			flag = true
 			log.Println("Data Berhasil di save")
+
+			noteafter := ""
+			noteafter += "DATE : " + lastlogin + " \n"
+			noteafter += "IP : " + ipaddress
+			Insert_log(idcompanyDB, username, "LOGIN", "UPDATE", "", noteafter)
 		}
 	}
 

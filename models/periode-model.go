@@ -1517,6 +1517,13 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 		if a_keluarantogel > 0 {
 			flag = true
 			log.Printf("Update Parent tbl_trx_keluarantogel : %d\n", idtrxkeluaran)
+			idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+			nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "INVOICE - " + strconv.Itoa(idtrxkeluaran) + " \n"
+			noteafter += "PASARAN : " + nmpasarantogel + " \n"
+			noteafter += "KELUARAN : " + keluarantogel
+			Insert_log(company, agent, "PERIODE", "UPDATE KELUARAN", "", noteafter)
 		} else {
 			log.Println("Update tbl_trx_keluarantogel failed")
 		}
@@ -2001,6 +2008,13 @@ func Save_PeriodeNew(agent, company string, idcomppasaran int) (helpers.Response
 			flag = true
 			msg = "Success"
 			log.Println("Data Berhasil di save", idkeluaran)
+
+			nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
+
+			noteafter := ""
+			noteafter += "INVOICE - " + idkeluaran + " \n"
+			noteafter += "PASARAN : " + nmpasarantogel
+			Insert_log(company, agent, "PERIODE", "NEW PASARAN MANUAL", "", noteafter)
 		}
 		//UPDATE COMPANY PASARAN - ONLINE
 		sql_update := `
@@ -2124,6 +2138,12 @@ func Save_PeriodeRevisi(agent, company, msgrevisi string, idtrxkeluaran int) (he
 			if a_keluarantogel > 0 {
 				flag = true
 				log.Printf("Update Parent tbl_trx_keluarantogel : %d\n", idtrxkeluaran)
+				idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+				nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
+				noteafter := ""
+				noteafter += "INVOICE - " + strconv.Itoa(idtrxkeluaran) + " \n"
+				noteafter += "PASARAN : " + nmpasarantogel
+				Insert_log(company, agent, "PERIODE", "REVISI INVOICE", "", noteafter)
 			} else {
 				flag = false
 				log.Println("Update tbl_trx_keluarantogel failed")
@@ -2136,7 +2156,7 @@ func Save_PeriodeRevisi(agent, company, msgrevisi string, idtrxkeluaran int) (he
 					SET statuskeluarandetail=?, winhasil=?, cancelbet=?,  
 					updatekeluarandetail=?, updatedatekeluarandetail=? 
 					WHERE idtrxkeluaran=? AND idcompany=? 
-			`)
+				`)
 
 				helpers.ErrorCheck(e_detail)
 				rec_keluarantogeldetail, e_keluarantogeldetail := stmt_keluarantogeldetail.ExecContext(ctx,
@@ -2163,7 +2183,7 @@ func Save_PeriodeRevisi(agent, company, msgrevisi string, idtrxkeluaran int) (he
 					DELETE FROM  
 					`+tbl_trx_keluarantogel_member+`   
 					WHERE idtrxkeluaran=? AND idcompany=? 
-			`)
+				`)
 
 				helpers.ErrorCheck(e_member)
 				rec_keluarantogelmember, e_keluarantogelmember := stmt_keluarantogelmember.ExecContext(ctx, idtrxkeluaran, company)
@@ -2249,6 +2269,14 @@ func Cancelbet_Periode(agent, company string, idtrxkeluaran, idtrxkeluarandetail
 		if a_keluarantogeldetail > 0 {
 			flag = true
 			log.Printf("Update Detail tbl_trx_keluarantogel_detail : %d\n", idtrxkeluaran)
+
+			idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+			nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "INVOICE - " + strconv.Itoa(idtrxkeluaran) + " \n"
+			noteafter += "INVOICE BET - " + strconv.Itoa(idtrxkeluarandetail) + " \n"
+			noteafter += "PASARAN : " + nmpasarantogel
+			Insert_log(company, agent, "PERIODE", "CANCEL BET", "", noteafter)
 		} else {
 			flag = false
 			log.Println("Update tbl_trx_keluarantogel_detail failed")
@@ -3299,29 +3327,30 @@ func Pasaran_id(idcomppasaran int, company, tipecolumn string) (string, float32)
 func Pasaranmaster_id(pasarancode, tipecolumn string) string {
 	con := db.CreateCon()
 	ctx := context.Background()
-	var tipepasaran string = ""
+	result := ""
 	sql_pasaran := `SELECT 
-		tipepasaran 
+		tipepasaran,nmpasarantogel 
 		FROM ` + config.DB_tbl_mst_pasaran_togel + `  
 		WHERE idpasarantogel = ? 
 	`
 	var (
-		tipepasaran_db string
+		tipepasaran_db, nmpasarantogel_db string
 	)
 	rows := con.QueryRowContext(ctx, sql_pasaran, pasarancode)
-	switch err := rows.Scan(&tipepasaran_db); err {
+	switch err := rows.Scan(&tipepasaran_db, &nmpasarantogel_db); err {
 	case sql.ErrNoRows:
-		tipepasaran = ""
+
 	case nil:
 		switch tipecolumn {
 		case "tipepasaran":
-			tipepasaran = tipepasaran_db
-
+			result = tipepasaran_db
+		case "nmpasarantogel":
+			result = nmpasarantogel_db
 		}
 	default:
 		helpers.ErrorCheck(err)
 	}
-	return tipepasaran
+	return result
 }
 func _doJobUpdateTransaksi(fieldtable string, jobs <-chan datajobs, results chan<- dataresult, con *sql.DB, wg *sync.WaitGroup) {
 	ctx := context.Background()

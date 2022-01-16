@@ -265,6 +265,11 @@ func Save_Admin(agent, company, sData, username, password, nama, status string, 
 		if insert > 0 {
 			flag = true
 			log.Println("Data Berhasil di save")
+
+			noteafter := ""
+			noteafter += "USERNAME - " + username + " \n"
+			noteafter += "NAME - " + nama
+			Insert_log(company, agent, "ADMIN", "NEW ADMIN", "", noteafter)
 		}
 	} else {
 		if password == "" {
@@ -295,6 +300,11 @@ func Save_Admin(agent, company, sData, username, password, nama, status string, 
 			if update_admin > 0 {
 				flag = true
 				log.Printf("Update tbl_mst_company_admin Success : %s\n", username)
+
+				noteafter := ""
+				noteafter += "USERNAME - " + username + " \n"
+				noteafter += "NAME - " + nama
+				Insert_log(company, agent, "ADMIN", "UPDATE ADMIN", "", noteafter)
 			} else {
 				log.Println("Update tbl_mst_company_admin failed")
 			}
@@ -328,6 +338,11 @@ func Save_Admin(agent, company, sData, username, password, nama, status string, 
 			if update_admin > 0 {
 				flag = true
 				log.Printf("Update tbl_mst_company_admin Success : %s\n", username)
+
+				noteafter := ""
+				noteafter += "USERNAME - " + username + " \n"
+				noteafter += "NAME - " + nama
+				Insert_log(company, agent, "ADMIN", "UPDATE ADMIN", "", noteafter)
 			} else {
 				log.Println("Update tbl_mst_company_admin failed")
 			}
@@ -383,6 +398,11 @@ func Save_AdminIplist(agent, company, sData, username, ipaddress string) (helper
 		if insert > 0 {
 			flag = true
 			log.Println("Data Berhasil di save")
+
+			noteafter := ""
+			noteafter += "USERNAME - " + username + " \n"
+			noteafter += "IPADDRESS - " + ipaddress
+			Insert_log(company, agent, "ADMIN", "NEW IP LIST", "", noteafter)
 		}
 	}
 
