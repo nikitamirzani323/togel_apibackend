@@ -2,13 +2,13 @@ package models
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"strconv"
 	"time"
 
 	"bitbucket.org/isbtotogroup/apibackend_go/config"
 	"bitbucket.org/isbtotogroup/apibackend_go/db"
+	"bitbucket.org/isbtotogroup/apibackend_go/entities"
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/nleeper/goment"
@@ -44,10 +44,10 @@ type adminDetail_iplist struct {
 }
 
 func Fetch_adminHome(company string) (helpers.ResponseAdminManagement, error) {
-	var obj adminHome
-	var arraobj []adminHome
+	var obj entities.Model_admin
+	var arraobj []entities.Model_admin
 	var res helpers.ResponseAdminManagement
-	msg := "Error"
+	msg := "Data Not Found"
 	con := db.CreateCon()
 	ctx := context.Background()
 	start := time.Now()
@@ -65,7 +65,7 @@ func Fetch_adminHome(company string) (helpers.ResponseAdminManagement, error) {
 	var no int = 0
 	helpers.ErrorCheck(err)
 	for row.Next() {
-		no += 1
+		no = no + 1
 		var (
 			idruleadmin_db                                                                                         int
 			username_comp_db, nama_comp_db, typeadmin_db                                                           string
@@ -100,8 +100,8 @@ func Fetch_adminHome(company string) (helpers.ResponseAdminManagement, error) {
 	}
 	defer row.Close()
 
-	var objRule adminDetail_rule
-	var arraobjRule []adminDetail_rule
+	var objRule entities.Model_adminrule
+	var arraobjRule []entities.Model_adminrule
 	sql_listrule := `SELECT 
 		idruleadmin , nmruleadmin	
 		FROM ` + config.DB_tbl_mst_company_admin_rule + ` 
@@ -230,10 +230,7 @@ func Fetch_adminDetail(company, username string) (helpers.ResponseAdminManagemen
 func Save_Admin(agent, company, sData, username, password, nama, status string, idruleadmin int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	ctx := context.Background()
-	con := db.CreateCon()
-	flag := false
-
+	msg := "Failed"
 	if sData == "New" {
 		sql_insert := `
 			insert into
@@ -245,31 +242,27 @@ func Save_Admin(agent, company, sData, username, password, nama, status string, 
 				?, ?
 			)
 		`
-		stmt_newpasaran, e_newpasaran := con.PrepareContext(ctx, sql_insert)
-		helpers.ErrorCheck(e_newpasaran)
-		defer stmt_newpasaran.Close()
 		hashpass := helpers.HashPasswordMD5(password)
-		res_newpasaran, e_newpasaran := stmt_newpasaran.ExecContext(
-			ctx,
-			username,
-			hashpass,
-			company,
-			nama,
-			"ACTIVE",
-			idruleadmin,
-			agent,
-			tglnow.Format("YYYY-MM-DD HH:mm:ss"))
-		helpers.ErrorCheck(e_newpasaran)
-		insert, e := res_newpasaran.RowsAffected()
-		helpers.ErrorCheck(e)
-		if insert > 0 {
-			flag = true
-			log.Println("Data Berhasil di save")
+		flag_insert, msg_insert := Exec_SQL(sql_insert, config.DB_tbl_mst_company_admin, "INSERT",
+			username, hashpass,
+			company, nama,
+			"ACTIVE", idruleadmin,
+			agent, tglnow.Format("YYYY-MM-DD HH:mm:ss"))
+
+		if flag_insert {
+			msg = "Succes"
+			log.Println(msg_insert)
+
+			nmrule := _adminrule(idruleadmin, company, "nmruleadmin")
 
 			noteafter := ""
 			noteafter += "USERNAME - " + username + "<br />"
-			noteafter += "NAME - " + nama
+			noteafter += "NAME - " + nama + "<br />"
+			noteafter += "RULE - " + nmrule + "<br />"
+			noteafter += "STATUS - ACTIVE"
 			Insert_log(company, agent, "ADMIN", "NEW ADMIN", "", noteafter)
+		} else {
+			log.Println(msg_insert)
 		}
 	} else {
 		if password == "" {
@@ -280,10 +273,7 @@ func Save_Admin(agent, company, sData, username, password, nama, status string, 
 				updatecomp_admin=?, updatedatecomp_admin=? 
 				WHERE username_comp=? AND idcompany=? 
 			`
-			stmt_admin, e := con.PrepareContext(ctx, sql_update)
-			helpers.ErrorCheck(e)
-			rec_admin, e_admin := stmt_admin.ExecContext(
-				ctx,
+			flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_admin, "UPDATE",
 				nama,
 				status,
 				idruleadmin,
@@ -291,22 +281,20 @@ func Save_Admin(agent, company, sData, username, password, nama, status string, 
 				tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 				username,
 				company)
-			helpers.ErrorCheck(e_admin)
 
-			update_admin, e_admin := rec_admin.RowsAffected()
-			helpers.ErrorCheck(e_admin)
+			if flag_update {
+				msg = "Succes"
+				log.Println(msg_update)
 
-			defer stmt_admin.Close()
-			if update_admin > 0 {
-				flag = true
-				log.Printf("Update tbl_mst_company_admin Success : %s\n", username)
-
+				nmrule := _adminrule(idruleadmin, company, "nmruleadmin")
 				noteafter := ""
 				noteafter += "USERNAME - " + username + "<br />"
-				noteafter += "NAME - " + nama
+				noteafter += "NAME - " + nama + "<br />"
+				noteafter += "RULE - " + nmrule + "<br />"
+				noteafter += "STATUS - " + status
 				Insert_log(company, agent, "ADMIN", "UPDATE ADMIN", "", noteafter)
 			} else {
-				log.Println("Update tbl_mst_company_admin failed")
+				log.Println(msg_update)
 			}
 		} else {
 			hashpass := helpers.HashPasswordMD5(password)
@@ -317,10 +305,7 @@ func Save_Admin(agent, company, sData, username, password, nama, status string, 
 				updatecomp_admin=?, updatedatecomp_admin=? 
 				WHERE username_comp=? AND idcompany=? 
 			`
-			stmt_admin, e := con.PrepareContext(ctx, sql_update2)
-			helpers.ErrorCheck(e)
-			rec_admin, e_admin := stmt_admin.ExecContext(
-				ctx,
+			flag_update, msg_update := Exec_SQL(sql_update2, config.DB_tbl_mst_company_admin, "UPDATE",
 				nama,
 				hashpass,
 				status,
@@ -329,47 +314,35 @@ func Save_Admin(agent, company, sData, username, password, nama, status string, 
 				tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 				username,
 				company)
-			helpers.ErrorCheck(e_admin)
 
-			update_admin, e_admin := rec_admin.RowsAffected()
-			helpers.ErrorCheck(e_admin)
+			if flag_update {
+				msg = "Succes"
+				log.Println(msg_update)
 
-			defer stmt_admin.Close()
-			if update_admin > 0 {
-				flag = true
-				log.Printf("Update tbl_mst_company_admin Success : %s\n", username)
-
+				nmrule := _adminrule(idruleadmin, company, "nmruleadmin")
 				noteafter := ""
 				noteafter += "USERNAME - " + username + "<br />"
-				noteafter += "NAME - " + nama
-				Insert_log(company, agent, "ADMIN", "UPDATE ADMIN", "", noteafter)
+				noteafter += "NAME - " + nama + "<br />"
+				noteafter += "RULE - " + nmrule + "<br />"
+				noteafter += "STATUS - " + status
+				Insert_log(company, agent, "ADMIN", "UPDATE ADMIN - CHANGE PASSWORD", "", noteafter)
 			} else {
-				log.Println("Update tbl_mst_company_admin failed")
+				log.Println(msg_update)
 			}
 		}
 	}
 
-	if flag {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = tglnow.Format("YYYY-MM-DD HH:mm:ss")
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = tglnow.Format("YYYY-MM-DD HH:mm:ss")
-	}
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = tglnow.Format("YYYY-MM-DD HH:mm:ss")
 
 	return res, nil
 }
 func Save_AdminIplist(agent, company, sData, username, ipaddress string) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	ctx := context.Background()
-	con := db.CreateCon()
-	flag := false
-
+	msg := "Failed"
 	if sData == "New" {
 		sql_insert := `
 			insert into
@@ -381,76 +354,58 @@ func Save_AdminIplist(agent, company, sData, username, ipaddress string) (helper
 				?, ?
 			)
 		`
-		stmt_insert, e_insert := con.PrepareContext(ctx, sql_insert)
-		helpers.ErrorCheck(e_insert)
-		defer stmt_insert.Close()
 		idrecord := Get_counter("tbl_mst_company_admin_list" + tglnow.Format("YYYY"))
-		res_newpasaran, e_newpasaran := stmt_insert.ExecContext(
-			ctx,
+		flag_insert, msg_insert := Exec_SQL(sql_insert, config.DB_tbl_mst_company_admin_iplist, "INSERT",
 			tglnow.Format("YY")+strconv.Itoa(idrecord),
 			username,
 			ipaddress,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"))
-		helpers.ErrorCheck(e_newpasaran)
-		insert, e := res_newpasaran.RowsAffected()
-		helpers.ErrorCheck(e)
-		if insert > 0 {
-			flag = true
-			log.Println("Data Berhasil di save")
+
+		if flag_insert {
+			msg = "Succes"
+			log.Println(msg_insert)
 
 			noteafter := ""
 			noteafter += "USERNAME - " + username + "<br />"
 			noteafter += "IPADDRESS - " + ipaddress
 			Insert_log(company, agent, "ADMIN", "NEW IP LIST", "", noteafter)
+		} else {
+			log.Println(msg_insert)
 		}
+
 	}
 
-	if flag {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = tglnow.Format("YYYY-MM-DD HH:mm:ss")
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = tglnow.Format("YYYY-MM-DD HH:mm:ss")
-	}
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = tglnow.Format("YYYY-MM-DD HH:mm:ss")
 
 	return res, nil
 }
 func Delete_AdminIplist(username string, idcompiplist int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	ctx := context.Background()
-	con := db.CreateCon()
-
+	msg := "Succes"
 	sql_delete := `
 		DELETE FROM
 		` + config.DB_tbl_mst_company_admin_iplist + ` 
 		WHERE idcompiplist = ? 
 		AND username_comp = ?
 	`
-	stmt, e := con.PrepareContext(ctx, sql_delete)
-	helpers.ErrorCheck(e)
-	rec, e := stmt.ExecContext(ctx, idcompiplist, username)
-	helpers.ErrorCheck(e)
-	delete, err_delete := rec.RowsAffected()
-	helpers.ErrorCheck(err_delete)
-	fmt.Printf("The last delete row id: %d\n", delete)
-	defer stmt.Close()
-	if delete > 0 {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = tglnow.Format("YYYY-MM-DD HH:mm:ss")
+	flag_delete, msg_delete := Exec_SQL(sql_delete, config.DB_tbl_mst_company_admin_iplist, "DELETE",
+		idcompiplist, username)
+
+	if flag_delete {
+		msg = "Succes"
+		log.Println(msg_delete)
 	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = tglnow.Format("YYYY-MM-DD HH:mm:ss")
+		log.Println(msg_delete)
 	}
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = tglnow.Format("YYYY-MM-DD HH:mm:ss")
 
 	return res, nil
 }

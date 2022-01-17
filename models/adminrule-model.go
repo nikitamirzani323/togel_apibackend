@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"database/sql"
 	"log"
 	"strconv"
 	"time"
@@ -268,4 +269,31 @@ func Save_Adminruleconf(agent, company, sData, ruleadmin string, idruleadmin int
 	}
 
 	return res, nil
+}
+func _adminrule(idruleadmin int, company, tipecolumn string) string {
+	con := db.CreateCon()
+	ctx := context.Background()
+	var result string = ""
+	sql_select := `SELECT 
+		nmruleadmin 
+		FROM ` + config.DB_tbl_mst_company_admin_rule + `  
+		WHERE idruleadmin  = ? 
+		AND idcompany = ? 
+	`
+	var (
+		nmruleadmin_db string
+	)
+	rows := con.QueryRowContext(ctx, sql_select, idruleadmin, company)
+	switch err := rows.Scan(&nmruleadmin_db); err {
+	case sql.ErrNoRows:
+		result = ""
+	case nil:
+		switch tipecolumn {
+		case "nmruleadmin":
+			result = nmruleadmin_db
+		}
+	default:
+		helpers.ErrorCheck(err)
+	}
+	return result
 }

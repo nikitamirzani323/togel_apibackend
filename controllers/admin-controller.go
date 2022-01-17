@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"bitbucket.org/isbtotogroup/apibackend_go/entities"
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
 	"bitbucket.org/isbtotogroup/apibackend_go/models"
 	"github.com/buger/jsonparser"
@@ -13,29 +14,6 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-type admindetail struct {
-	Username string `json:"username" validate:"required"`
-}
-type adminsave struct {
-	Sdata       string `json:"sdata" validate:"required"`
-	Page        string `json:"page"`
-	Idruleadmin int    `json:"idruleadmin" `
-	Username    string `json:"username" validate:"required,alphanum,max=20"`
-	Password    string `json:"password" `
-	Name        string `json:"nama" validate:"required,alphanum,max=70"`
-	Status      string `json:"status" validate:"required,alpha"`
-}
-type adminsaveiplist struct {
-	Sdata     string `json:"sdata" validate:"required"`
-	Page      string `json:"page"`
-	Username  string `json:"username" validate:"required,alphanum,max=20"`
-	Ipaddress string `json:"ipaddress" validate:"required,max=20"`
-}
-type admindeleteiplist struct {
-	Idcompiplist int    `json:"idcompiplist" validate:"required"`
-	Username     string `json:"username" validate:"required,alphanum,max=20"`
-	Page         string `json:"page"`
-}
 type responseredis_adminhome struct {
 	Admin_no           int    `json:"admin_no"`
 	Admin_username     string `json:"admin_username"`
@@ -60,8 +38,8 @@ func AdminHome(c *fiber.Ctx) error {
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 	field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
-	var obj responseredis_adminhome
-	var arraobj []responseredis_adminhome
+	var obj entities.Model_admin
+	var arraobj []entities.Model_admin
 	var obj_listruleadmin responseredis_adminhome_listruleadmin
 	var arraobj_listruleadmin []responseredis_adminhome_listruleadmin
 	render_page := time.Now()
@@ -81,16 +59,16 @@ func AdminHome(c *fiber.Ctx) error {
 		admin_lastipaddres, _ := jsonparser.GetString(value, "admin_lastipaddres")
 		admin_status, _ := jsonparser.GetString(value, "admin_status")
 
-		obj.Admin_no = int(admin_no)
-		obj.Admin_username = admin_username
-		obj.Admin_nama = admin_nama
-		obj.Admin_tipe = admin_tipe
-		obj.Admin_rule = admin_rule
-		obj.Admin_joindate = admin_joindate
-		obj.Admin_timezone = admin_timezone
-		obj.Admin_lastlogin = admin_lastlogin
-		obj.Admin_lastipaddres = admin_lastipaddres
-		obj.Admin_status = admin_status
+		obj.No = int(admin_no)
+		obj.Username = admin_username
+		obj.Nama = admin_nama
+		obj.Tipeadmin = admin_tipe
+		obj.Rule = admin_rule
+		obj.Joindate = admin_joindate
+		obj.Timezone = admin_timezone
+		obj.Lastlogin = admin_lastlogin
+		obj.LastIpaddress = admin_lastipaddres
+		obj.Status = admin_status
 		arraobj = append(arraobj, obj)
 	})
 	jsonparser.ArrayEach(listruleadmin_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
@@ -126,6 +104,9 @@ func AdminHome(c *fiber.Ctx) error {
 	}
 }
 func AdminDetail(c *fiber.Ctx) error {
+	type admindetail struct {
+		Username string `json:"username" validate:"required"`
+	}
 	var errors []*helpers.ErrorResponse
 	client := new(admindetail)
 	validate := validator.New()
@@ -170,6 +151,15 @@ func AdminDetail(c *fiber.Ctx) error {
 	return c.JSON(result)
 }
 func AdminSave(c *fiber.Ctx) error {
+	type adminsave struct {
+		Sdata       string `json:"sdata" validate:"required"`
+		Page        string `json:"page"`
+		Idruleadmin int    `json:"idruleadmin" `
+		Username    string `json:"username" validate:"required,alphanum,max=20"`
+		Password    string `json:"password" `
+		Name        string `json:"nama" validate:"required,alphanum,max=70"`
+		Status      string `json:"status" validate:"required,alpha"`
+	}
 	var errors []*helpers.ErrorResponse
 	client := new(adminsave)
 	validate := validator.New()
@@ -264,6 +254,12 @@ func AdminSave(c *fiber.Ctx) error {
 	}
 }
 func AdminSaveIplist(c *fiber.Ctx) error {
+	type adminsaveiplist struct {
+		Sdata     string `json:"sdata" validate:"required"`
+		Page      string `json:"page"`
+		Username  string `json:"username" validate:"required,alphanum,max=20"`
+		Ipaddress string `json:"ipaddress" validate:"required,max=20"`
+	}
 	var errors []*helpers.ErrorResponse
 	client := new(adminsaveiplist)
 	validate := validator.New()
@@ -356,6 +352,11 @@ func AdminSaveIplist(c *fiber.Ctx) error {
 	}
 }
 func AdminDeleteIplist(c *fiber.Ctx) error {
+	type admindeleteiplist struct {
+		Idcompiplist int    `json:"idcompiplist" validate:"required"`
+		Username     string `json:"username" validate:"required,alphanum,max=20"`
+		Page         string `json:"page"`
+	}
 	var errors []*helpers.ErrorResponse
 	client := new(admindeleteiplist)
 	validate := validator.New()
