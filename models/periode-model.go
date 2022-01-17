@@ -2142,7 +2142,8 @@ func Save_PeriodeRevisi(agent, company, msgrevisi string, idtrxkeluaran int) (he
 				nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
 				noteafter := ""
 				noteafter += "INVOICE - " + strconv.Itoa(idtrxkeluaran) + "<br />"
-				noteafter += "PASARAN : " + nmpasarantogel
+				noteafter += "PASARAN : " + nmpasarantogel + "<br />"
+				noteafter += "REASON : " + msgrevisi
 				Insert_log(company, agent, "PERIODE", "REVISI INVOICE", "", noteafter)
 			} else {
 				flag = false
