@@ -60,6 +60,12 @@ type Model_pasaranEdit struct {
 	Win2d_432d                        float32 `json:"win2d_432d"`
 	Win2dd_432d                       float32 `json:"win2dd_432d"`
 	Win2dt_432d                       float32 `json:"win2dt_432d"`
+	Win4dnodisc_432d                  float32 `json:"win4dnodisc_432d"`
+	Win3dnodisc_432d                  float32 `json:"win3dnodisc_432d"`
+	Win3ddnodisc_432d                 float32 `json:"win3ddnodisc_432d"`
+	Win2dnodisc_432d                  float32 `json:"win2dnodisc_432d"`
+	Win2ddnodisc_432d                 float32 `json:"win2ddnodisc_432d"`
+	Win2dtnodisc_432d                 float32 `json:"win2dtnodisc_432d"`
 	Minbet_cbebas                     float32 `json:"minbet_cbebas"`
 	Maxbet_cbebas                     float32 `json:"maxbet_cbebas"`
 	Win_cbebas                        float32 `json:"win_cbebas"`
