@@ -97,17 +97,18 @@ type listMember struct {
 	Totalwin       int    `json:"totalwin"`
 }
 type listMemberByNomor struct {
-	Member     string  `json:"member"`
-	Permainan  string  `json:"member_permainan"`
-	Nomor      string  `json:"member_nomor"`
-	Bet        int     `json:"member_bet"`
-	Disc       int     `json:"member_disc"`
-	Discpercen int     `json:"member_discpercen"`
-	Kei        int     `json:"member_kei"`
-	Keipercen  int     `json:"member_keipercen"`
-	Bayar      int     `json:"member_bayar"`
-	Win        float32 `json:"member_win"`
-	Winhasil   int     `json:"member_winhasil"`
+	Member      string  `json:"member"`
+	Permainan   string  `json:"member_permainan"`
+	Nomor       string  `json:"member_nomor"`
+	Posisitogel string  `json:"member_posisitogel"`
+	Bet         int     `json:"member_bet"`
+	Disc        int     `json:"member_disc"`
+	Discpercen  int     `json:"member_discpercen"`
+	Kei         int     `json:"member_kei"`
+	Keipercen   int     `json:"member_keipercen"`
+	Bayar       int     `json:"member_bayar"`
+	Win         float32 `json:"member_win"`
+	Winhasil    int     `json:"member_winhasil"`
 }
 type listPasaran struct {
 	Pasaran_idcomp int    `json:"pasaran_idcomp"`
@@ -362,7 +363,7 @@ func Fetch_membergroupbynomor(company, typegame, nomortogel string, idtrxkeluara
 
 	sql := `SELECT 
 		username, 
-		nomortogel, typegame, 
+		nomortogel, typegame, posisitogel, 
 		bet, diskon, kei, win 
 		FROM ` + tbl_trx_keluarantogel_detail + `  
 		WHERE idcompany = ? 
@@ -376,12 +377,12 @@ func Fetch_membergroupbynomor(company, typegame, nomortogel string, idtrxkeluara
 	helpers.ErrorCheck(err)
 	for row.Next() {
 		var (
-			bet_db                                  int
-			diskon_db, kei_db, win_db               float32
-			username_db, nomortogel_db, typegame_db string
+			bet_db                                                  int
+			diskon_db, kei_db, win_db                               float32
+			username_db, nomortogel_db, typegame_db, posisitogel_db string
 		)
 
-		err = row.Scan(&username_db, &nomortogel_db, &typegame_db, &bet_db, &diskon_db, &kei_db, &win_db)
+		err = row.Scan(&username_db, &nomortogel_db, &typegame_db, &posisitogel_db, &bet_db, &diskon_db, &kei_db, &win_db)
 
 		helpers.ErrorCheck(err)
 
@@ -395,6 +396,7 @@ func Fetch_membergroupbynomor(company, typegame, nomortogel string, idtrxkeluara
 		obj.Member = username_db
 		obj.Nomor = nomortogel_db
 		obj.Permainan = typegame_db
+		obj.Posisitogel = posisitogel_db
 		obj.Bet = bet_db
 		obj.Disc = disc
 		obj.Discpercen = int(discpercen)
@@ -951,11 +953,12 @@ func Fetch_listbettable(company string, idtrxkeluaran int) (helpers.Response, er
 	_, tbl_trx_keluarantogel_detail, _ := Get_mappingdatabase(company)
 
 	sql := `SELECT 
-		typegame 
-		FROM ` + tbl_trx_keluarantogel_detail + `  
-		WHERE idcompany = ? 
-		AND idtrxkeluaran = ? 
-		GROUP BY typegame 
+		A.typegame 
+		FROM ` + tbl_trx_keluarantogel_detail + ` AS A 
+		JOIN ` + config.DB_tbl_mst_permainan + ` AS B ON B.idpermainan = A.typegame 
+		WHERE A.idcompany = ? 
+		AND A.idtrxkeluaran = ? 
+		GROUP BY A.typegame ORDER BY B.display ASC 
 	`
 	row, err := con.QueryContext(ctx, sql, company, idtrxkeluaran)
 	helpers.ErrorCheck(err)
