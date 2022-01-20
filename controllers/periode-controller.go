@@ -111,6 +111,7 @@ type responseredis_periodelistbet struct {
 	Bet_username     string  `json:"bet_username"`
 	Bet_typegame     string  `json:"bet_typegame"`
 	Bet_nomortogel   string  `json:"bet_nomortogel"`
+	Bet_posisitogel  string  `json:"bet_posisitogel"`
 	Bet_bet          int     `json:"bet_bet"`
 	Bet_diskon       int     `json:"bet_diskon"`
 	Bet_diskonpercen int     `json:"bet_diskonpercen"`
@@ -385,6 +386,7 @@ func PeriodeListBet(c *fiber.Ctx) error {
 		bet_username, _ := jsonparser.GetString(value, "bet_username")
 		bet_typegame, _ := jsonparser.GetString(value, "bet_typegame")
 		bet_nomortogel, _ := jsonparser.GetString(value, "bet_nomortogel")
+		bet_posisitogel, _ := jsonparser.GetString(value, "bet_posisitogel")
 		bet_bet, _ := jsonparser.GetInt(value, "bet_bet")
 		bet_diskon, _ := jsonparser.GetInt(value, "bet_diskon")
 		bet_diskonpercen, _ := jsonparser.GetInt(value, "bet_diskonpercen")
@@ -408,6 +410,7 @@ func PeriodeListBet(c *fiber.Ctx) error {
 		obj.Bet_username = bet_username
 		obj.Bet_typegame = bet_typegame
 		obj.Bet_nomortogel = bet_nomortogel
+		obj.Bet_posisitogel = bet_posisitogel
 		obj.Bet_bet = int(bet_bet)
 		obj.Bet_diskon = int(bet_diskon)
 		obj.Bet_diskonpercen = int(bet_diskonpercen)
@@ -426,8 +429,6 @@ func PeriodeListBet(c *fiber.Ctx) error {
 	})
 	if !flag {
 		result, err := models.Fetch_listbet(client_company, client.Permainan, client.Idtrxkeluaran)
-		helpers.SetRedis(field_redis, result, time.Minute*30)
-		log.Println("PERIODE DETAIL LIST BET MYSQL " + client.Permainan)
 		if err != nil {
 			c.Status(fiber.StatusBadRequest)
 			return c.JSON(fiber.Map{
@@ -436,6 +437,8 @@ func PeriodeListBet(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
+		helpers.SetRedis(field_redis, result, time.Minute*30)
+		log.Println("PERIODE DETAIL LIST BET MYSQL " + client.Permainan)
 		return c.JSON(result)
 	} else {
 		log.Println("PERIODE DETAIL LIST BET CACHE " + client.Permainan)

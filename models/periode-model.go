@@ -64,6 +64,7 @@ type periodeBet struct {
 	Bet_username     string  `json:"bet_username"`
 	Bet_typegame     string  `json:"bet_typegame"`
 	Bet_nomortogel   string  `json:"bet_nomortogel"`
+	Bet_posisitogel  string  `json:"bet_posisitogel"`
 	Bet_bet          int     `json:"bet_bet"`
 	Bet_diskon       int     `json:"bet_diskon"`
 	Bet_diskonpercen int     `json:"bet_diskonpercen"`
@@ -486,7 +487,7 @@ func Fetch_listbet(company, permainan string, idtrxkeluaran int) (helpers.Respon
 
 	sqldetail := `SELECT
 					idtrxkeluarandetail , datetimedetail, ipaddress, browsertogel, devicetogel,  username, typegame, nomortogel, 
-					bet, diskon, win, kei, statuskeluarandetail , createkeluarandetail, 
+					bet, diskon, win, kei, statuskeluarandetail,posisitogel, createkeluarandetail, 
 					createdatekeluarandetail, updatekeluarandetail, updatedatekeluarandetail 
 					FROM ` + tbl_trx_keluarantogel_detail + ` 
 					WHERE idcompany = ? 
@@ -501,16 +502,16 @@ func Fetch_listbet(company, permainan string, idtrxkeluaran int) (helpers.Respon
 	for row.Next() {
 		totalbet += 1
 		var (
-			idtrxkeluarandetail_db, bet_db                                                                                                      int
-			datetimedetail_db, ipaddresss_db, username_db, typegame_db, nomortogel_db, browsertogel_db, devicetogel_db                          string
-			statuskeluarandetail_db, createkeluarandetail_db, createdatekeluarandetail_db, updatekeluarandetail_db, updatedatekeluarandetail_db string
-			diskon_db, win_db, kei_db                                                                                                           float32
+			idtrxkeluarandetail_db, bet_db                                                                                                                      int
+			datetimedetail_db, ipaddresss_db, username_db, typegame_db, nomortogel_db, browsertogel_db, devicetogel_db                                          string
+			statuskeluarandetail_db, posisitogel_db, createkeluarandetail_db, createdatekeluarandetail_db, updatekeluarandetail_db, updatedatekeluarandetail_db string
+			diskon_db, win_db, kei_db                                                                                                                           float32
 		)
 
 		err = row.Scan(
 			&idtrxkeluarandetail_db,
 			&datetimedetail_db, &ipaddresss_db, &browsertogel_db, &devicetogel_db, &username_db, &typegame_db, &nomortogel_db,
-			&bet_db, &diskon_db, &win_db, &kei_db, &statuskeluarandetail_db, &createkeluarandetail_db,
+			&bet_db, &diskon_db, &win_db, &kei_db, &statuskeluarandetail_db, &posisitogel_db, &createkeluarandetail_db,
 			&createdatekeluarandetail_db, &updatekeluarandetail_db, &updatedatekeluarandetail_db)
 
 		helpers.ErrorCheck(err)
@@ -549,6 +550,7 @@ func Fetch_listbet(company, permainan string, idtrxkeluaran int) (helpers.Respon
 		obj.Bet_username = username_db
 		obj.Bet_typegame = typegame_db
 		obj.Bet_nomortogel = nomortogel_db
+		obj.Bet_posisitogel = posisitogel_db
 		obj.Bet_bet = bet_db
 		obj.Bet_diskon = diskonbet
 		obj.Bet_diskonpercen = int(diskonpercen)
