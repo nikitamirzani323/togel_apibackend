@@ -119,6 +119,7 @@ type listPrediksi struct {
 	Prediksi_username     string  `json:"prediksi_username"`
 	Prediksi_permainan    string  `json:"prediksi_permainan"`
 	Prediksi_nomor        string  `json:"prediksi_nomor"`
+	Prediksi_posisitogel  string  `json:"prediksi_posisitogel"`
 	Prediksi_bet          int     `json:"prediksi_bet"`
 	Prediksi_diskon       int     `json:"prediksi_diskon"`
 	Prediksi_diskonpercen float32 `json:"prediksi_diskonpercen"`
@@ -594,7 +595,7 @@ func Fetch_listbetbystatus(company, status string, idtrxkeluaran int) (helpers.R
 
 	sqldetail := `SELECT
 					idtrxkeluarandetail , datetimedetail, ipaddress, browsertogel, devicetogel,  username, typegame, nomortogel, 
-					bet, diskon, win, kei, statuskeluarandetail , createkeluarandetail, 
+					bet, diskon, win, kei, statuskeluarandetail,posisitogel ,createkeluarandetail, 
 					createdatekeluarandetail, updatekeluarandetail, updatedatekeluarandetail 
 					FROM ` + tbl_trx_keluarantogel_detail + ` 
 					WHERE idcompany = ? 
@@ -609,16 +610,16 @@ func Fetch_listbetbystatus(company, status string, idtrxkeluaran int) (helpers.R
 	for row.Next() {
 		totalbet += 1
 		var (
-			idtrxkeluarandetail_db, bet_db                                                                                                      int
-			datetimedetail_db, ipaddresss_db, username_db, typegame_db, nomortogel_db, browsertogel_db, devicetogel_db                          string
-			statuskeluarandetail_db, createkeluarandetail_db, createdatekeluarandetail_db, updatekeluarandetail_db, updatedatekeluarandetail_db string
-			diskon_db, win_db, kei_db                                                                                                           float32
+			idtrxkeluarandetail_db, bet_db                                                                                                                      int
+			datetimedetail_db, ipaddresss_db, username_db, typegame_db, nomortogel_db, browsertogel_db, devicetogel_db                                          string
+			statuskeluarandetail_db, posisitogel_db, createkeluarandetail_db, createdatekeluarandetail_db, updatekeluarandetail_db, updatedatekeluarandetail_db string
+			diskon_db, win_db, kei_db                                                                                                                           float32
 		)
 
 		err = row.Scan(
 			&idtrxkeluarandetail_db,
 			&datetimedetail_db, &ipaddresss_db, &browsertogel_db, &devicetogel_db, &username_db, &typegame_db, &nomortogel_db,
-			&bet_db, &diskon_db, &win_db, &kei_db, &statuskeluarandetail_db, &createkeluarandetail_db,
+			&bet_db, &diskon_db, &win_db, &kei_db, &statuskeluarandetail_db, &posisitogel_db, &createkeluarandetail_db,
 			&createdatekeluarandetail_db, &updatekeluarandetail_db, &updatedatekeluarandetail_db)
 
 		helpers.ErrorCheck(err)
@@ -657,6 +658,7 @@ func Fetch_listbetbystatus(company, status string, idtrxkeluaran int) (helpers.R
 		obj.Bet_username = username_db
 		obj.Bet_typegame = typegame_db
 		obj.Bet_nomortogel = nomortogel_db
+		obj.Bet_posisitogel = posisitogel_db
 		obj.Bet_bet = bet_db
 		obj.Bet_diskon = diskonbet
 		obj.Bet_diskonpercen = int(diskonpercen)
@@ -700,7 +702,7 @@ func Fetch_listbetbyusername(company, username string, idtrxkeluaran int) (helpe
 
 	sqldetail := `SELECT
 					idtrxkeluarandetail , datetimedetail, ipaddress, browsertogel, devicetogel,  username, typegame, nomortogel, 
-					bet, diskon, win, kei, statuskeluarandetail , createkeluarandetail, 
+					bet, diskon, win, kei, statuskeluarandetail, posisitogel, createkeluarandetail, 
 					createdatekeluarandetail, updatekeluarandetail, updatedatekeluarandetail 
 					FROM ` + tbl_trx_keluarantogel_detail + ` 
 					WHERE idcompany = ? 
@@ -715,16 +717,16 @@ func Fetch_listbetbyusername(company, username string, idtrxkeluaran int) (helpe
 	for row.Next() {
 		totalbet += 1
 		var (
-			idtrxkeluarandetail_db, bet_db                                                                                                      int
-			datetimedetail_db, ipaddresss_db, username_db, typegame_db, nomortogel_db, browsertogel_db, devicetogel_db                          string
-			statuskeluarandetail_db, createkeluarandetail_db, createdatekeluarandetail_db, updatekeluarandetail_db, updatedatekeluarandetail_db string
-			diskon_db, win_db, kei_db                                                                                                           float32
+			idtrxkeluarandetail_db, bet_db                                                                                                                      int
+			datetimedetail_db, ipaddresss_db, username_db, typegame_db, nomortogel_db, browsertogel_db, devicetogel_db                                          string
+			statuskeluarandetail_db, posisitogel_db, createkeluarandetail_db, createdatekeluarandetail_db, updatekeluarandetail_db, updatedatekeluarandetail_db string
+			diskon_db, win_db, kei_db                                                                                                                           float32
 		)
 
 		err = row.Scan(
 			&idtrxkeluarandetail_db,
 			&datetimedetail_db, &ipaddresss_db, &browsertogel_db, &devicetogel_db, &username_db, &typegame_db, &nomortogel_db,
-			&bet_db, &diskon_db, &win_db, &kei_db, &statuskeluarandetail_db, &createkeluarandetail_db,
+			&bet_db, &diskon_db, &win_db, &kei_db, &statuskeluarandetail_db, &posisitogel_db, &createkeluarandetail_db,
 			&createdatekeluarandetail_db, &updatekeluarandetail_db, &updatedatekeluarandetail_db)
 
 		helpers.ErrorCheck(err)
@@ -763,6 +765,7 @@ func Fetch_listbetbyusername(company, username string, idtrxkeluaran int) (helpe
 		obj.Bet_username = username_db
 		obj.Bet_typegame = typegame_db
 		obj.Bet_nomortogel = nomortogel_db
+		obj.Bet_posisitogel = posisitogel_db
 		obj.Bet_bet = bet_db
 		obj.Bet_diskon = diskonbet
 		obj.Bet_diskonpercen = int(diskonpercen)
@@ -853,7 +856,7 @@ func Fetch_listprediksi(company, nomorkeluaran string, idcomppasaran int) (helpe
 	tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, _ := Get_mappingdatabase(company)
 
 	sql_listprediksi := `SELECT
-					A.datetimedetail , A.username , A.typegame, A.nomortogel, 
+					A.datetimedetail , A.username , A.typegame, A.nomortogel, A.posisitogel, 
 					A.bet, A.diskon, A.kei, A.win  
 					FROM ` + tbl_trx_keluarantogel_detail + ` as A  
 					JOIN ` + tbl_trx_keluarantogel + ` as B ON B.idtrxkeluaran = A.idtrxkeluaran  
@@ -868,13 +871,13 @@ func Fetch_listprediksi(company, nomorkeluaran string, idcomppasaran int) (helpe
 
 	for row.Next() {
 		var (
-			bet_db                                                     int
-			diskon_db, kei_db, win_db                                  float32
-			datetimedetail_db, username_db, typegame_db, nomortogel_db string
+			bet_db                                                                     int
+			diskon_db, kei_db, win_db                                                  float32
+			datetimedetail_db, username_db, typegame_db, nomortogel_db, posisitogel_db string
 		)
 
 		err = row.Scan(
-			&datetimedetail_db, &username_db, &typegame_db, &nomortogel_db,
+			&datetimedetail_db, &username_db, &typegame_db, &nomortogel_db, &posisitogel_db,
 			&bet_db, &diskon_db, &kei_db, &win_db)
 
 		helpers.ErrorCheck(err)
@@ -910,6 +913,7 @@ func Fetch_listprediksi(company, nomorkeluaran string, idcomppasaran int) (helpe
 			obj.Prediksi_username = username_db
 			obj.Prediksi_permainan = typegame_db
 			obj.Prediksi_nomor = nomortogel_db
+			obj.Prediksi_posisitogel = posisitogel_db
 			obj.Prediksi_bet = bet_db
 			obj.Prediksi_diskon = diskonbet
 			obj.Prediksi_diskonpercen = diskonpercen
