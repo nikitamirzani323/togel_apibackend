@@ -1567,7 +1567,7 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 		defer stmt_companypasaran.Close()
 		if flag {
 			sql_detailbet := `SELECT 
-					idtrxkeluarandetail, typegame, bet, diskon, kei, nomortogel   
+					idtrxkeluarandetail, typegame, bet, diskon, kei, nomortogel, posisitogel    
 					FROM ` + tbl_trx_keluarantogel_detail + `  
 					WHERE idtrxkeluaran = ? 
 					AND idcompany = ? 
@@ -1594,9 +1594,9 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 			for row_detailbet.Next() {
 				mutex.Lock()
 				var (
-					idtrxkeluarandetail_db, bet_db int
-					typegame_db, nomortogel_db     string
-					diskon_db, kei_db              float32
+					idtrxkeluarandetail_db, bet_db             int
+					typegame_db, nomortogel_db, posisitogel_db string
+					diskon_db, kei_db                          float32
 				)
 
 				err_detailbet = row_detailbet.Scan(
@@ -1605,10 +1605,10 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 					&bet_db,
 					&diskon_db,
 					&kei_db,
-					&nomortogel_db)
+					&nomortogel_db, &posisitogel_db)
 
 				helpers.ErrorCheck(err_detailbet)
-				statuskeluarandetail, _ := _rumusTogel(keluarantogel, typegame_db, nomortogel_db, company, "Y", idcomppasaran, idtrxkeluarandetail_db)
+				statuskeluarandetail, _ := _rumusTogel(keluarantogel, typegame_db, nomortogel_db, posisitogel_db, company, "Y", idcomppasaran, idtrxkeluarandetail_db)
 				jobs_bet <- datajobs{
 					Idtrxkeluarandetail:      strconv.Itoa(idtrxkeluarandetail_db),
 					Idtrxkeluaran:            strconv.Itoa(idtrxkeluaran),
@@ -2469,7 +2469,7 @@ func _rumuswinhasil(permainan string, bayar int, bet int, win float32) int {
 	}
 	return winhasil
 }
-func _rumusTogel(angka, tipe, nomorkeluaran, company, simpandb string, idcomppasaran, idtrxkeluarandetail int) (string, float32) {
+func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb string, idcomppasaran, idtrxkeluarandetail int) (string, float32) {
 	con := db.CreateCon()
 	ctx := context.Background()
 	tglnow, _ := goment.New()
@@ -2486,30 +2486,301 @@ func _rumusTogel(angka, tipe, nomorkeluaran, company, simpandb string, idcomppas
 	temp2dd := string([]byte(temp)[0]) + string([]byte(temp)[1])
 	temp2dt := string([]byte(temp)[1]) + string([]byte(temp)[2])
 
+	var temp4d_arr []string
+	var temp3d_arr []string
+	var temp3dd_arr []string
+	var temp2d_arr []string
+	var temp2dd_arr []string
+	var temp2dt_arr []string
+
 	switch tipe {
 	case "4D":
 		if temp4d == nomorkeluaran {
 			result = "WINNER"
+		} else {
+			if posisitogel == "BB" {
+				flag_bb_4D := false
+				for a, _ := range temp4d {
+					for b, _ := range temp4d {
+						for c, _ := range temp4d {
+							for d, _ := range temp4d {
+								if string([]byte(temp4d)[a]) != string([]byte(temp4d)[b]) && string([]byte(temp4d)[a]) != string([]byte(temp4d)[c]) && string([]byte(temp4d)[a]) != string([]byte(temp4d)[d]) {
+									if string([]byte(temp4d)[b]) != string([]byte(temp4d)[c]) && string([]byte(temp4d)[b]) != string([]byte(temp4d)[d]) {
+										if string([]byte(temp4d)[c]) != string([]byte(temp4d)[d]) {
+											temp_loop := string([]byte(temp4d)[a]) + string([]byte(temp4d)[b]) + string([]byte(temp4d)[c]) + string([]byte(temp4d)[d])
+											if temp4d != temp_loop {
+												temp4d_arr = append(temp4d_arr, temp_loop)
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				for a, _ := range temp4d_arr {
+					if temp4d_arr[a] == nomorkeluaran {
+						result = "WINNER"
+						flag_bb_4D = true
+					}
+
+				}
+				if flag_bb_4D {
+					_, win_db := Pasaran_id(idcomppasaran, company, "1_win4dbb")
+					sql_update := `
+					UPDATE 
+					` + tbl_trx_keluarantogel_detail + `     
+					SET win=?, 
+					updatekeluarandetail=?, updatedatekeluarandetail=? 
+					WHERE idtrxkeluarandetail=? 
+				`
+					flag_update, msg_update := Exec_SQL(sql_update, tbl_trx_keluarantogel_detail, "UPDATE",
+						win_db,
+						"SYSTEM",
+						tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+						idtrxkeluarandetail)
+					if flag_update {
+						log.Println(msg_update)
+					} else {
+						log.Println(msg_update)
+					}
+				}
+			}
 		}
 	case "3D":
 		if temp3d == nomorkeluaran {
 			result = "WINNER"
+		} else {
+			if posisitogel == "BB" {
+				flag_bb_3D := false
+				for a, _ := range temp3d {
+					for b, _ := range temp3d {
+						for c, _ := range temp3d {
+							if string([]byte(temp3d)[a]) != string([]byte(temp3d)[b]) && string([]byte(temp3d)[a]) != string([]byte(temp3d)[c]) {
+								if string([]byte(temp3d)[b]) != string([]byte(temp3d)[c]) {
+									temp_loop := string([]byte(temp3d)[a]) + string([]byte(temp3d)[b]) + string([]byte(temp3d)[c])
+									if temp3d != temp_loop {
+										temp3d_arr = append(temp3d_arr, temp_loop)
+									}
+								}
+							}
+
+						}
+					}
+				}
+				for a, _ := range temp3d_arr {
+					if temp3d_arr[a] == nomorkeluaran {
+						result = "WINNER"
+						flag_bb_3D = true
+					}
+
+				}
+				if flag_bb_3D {
+					_, win_db := Pasaran_id(idcomppasaran, company, "1_win3dbb")
+					sql_update := `
+					UPDATE 
+					` + tbl_trx_keluarantogel_detail + `     
+					SET win=?, 
+					updatekeluarandetail=?, updatedatekeluarandetail=? 
+					WHERE idtrxkeluarandetail=? 
+				`
+					flag_update, msg_update := Exec_SQL(sql_update, tbl_trx_keluarantogel_detail, "UPDATE",
+						win_db,
+						"SYSTEM",
+						tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+						idtrxkeluarandetail)
+					if flag_update {
+						log.Println(msg_update)
+					} else {
+						log.Println(msg_update)
+					}
+				}
+			}
 		}
 	case "3DD":
 		if temp3dd == nomorkeluaran {
 			result = "WINNER"
+		} else {
+			if posisitogel == "BB" {
+				flag_bb_3DD := false
+				for a, _ := range temp3dd {
+					for b, _ := range temp3dd {
+						for c, _ := range temp3dd {
+							if string([]byte(temp3dd)[a]) != string([]byte(temp3dd)[b]) && string([]byte(temp3dd)[a]) != string([]byte(temp3dd)[c]) {
+								if string([]byte(temp3dd)[b]) != string([]byte(temp3dd)[c]) {
+									temp_loop := string([]byte(temp3dd)[a]) + string([]byte(temp3dd)[b]) + string([]byte(temp3dd)[c])
+									if temp3dd != temp_loop {
+										temp3dd_arr = append(temp3dd_arr, temp_loop)
+									}
+								}
+							}
+
+						}
+					}
+				}
+				for a, _ := range temp3dd_arr {
+					if temp3dd_arr[a] == nomorkeluaran {
+						result = "WINNER"
+						flag_bb_3DD = true
+					}
+
+				}
+				if flag_bb_3DD {
+					_, win_db := Pasaran_id(idcomppasaran, company, "1_win3ddbb")
+					sql_update := `
+						UPDATE 
+						` + tbl_trx_keluarantogel_detail + `     
+						SET win=?, 
+						updatekeluarandetail=?, updatedatekeluarandetail=? 
+						WHERE idtrxkeluarandetail=? 
+					`
+					flag_update, msg_update := Exec_SQL(sql_update, tbl_trx_keluarantogel_detail, "UPDATE",
+						win_db,
+						"SYSTEM",
+						tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+						idtrxkeluarandetail)
+					if flag_update {
+						log.Println(msg_update)
+					} else {
+						log.Println(msg_update)
+					}
+				}
+			}
 		}
 	case "2D":
 		if temp2d == nomorkeluaran {
 			result = "WINNER"
+		} else {
+			if posisitogel == "BB" {
+				flag_bb_2D := false
+				for a, _ := range temp2d {
+					for b, _ := range temp2d {
+						if string([]byte(temp2d)[a]) != string([]byte(temp2d)[b]) {
+							temp_loop := string([]byte(temp2d)[a]) + string([]byte(temp2d)[b])
+							if temp2d != temp_loop {
+								temp2d_arr = append(temp2d_arr, temp_loop)
+							}
+						}
+					}
+				}
+				for a, _ := range temp2d_arr {
+					if temp2d_arr[a] == nomorkeluaran {
+						result = "WINNER"
+						flag_bb_2D = true
+					}
+
+				}
+				if flag_bb_2D {
+					_, win_db := Pasaran_id(idcomppasaran, company, "1_win2dbb")
+					sql_update := `
+						UPDATE 
+						` + tbl_trx_keluarantogel_detail + `     
+						SET win=?, 
+						updatekeluarandetail=?, updatedatekeluarandetail=? 
+						WHERE idtrxkeluarandetail=? 
+					`
+					flag_update, msg_update := Exec_SQL(sql_update, tbl_trx_keluarantogel_detail, "UPDATE",
+						win_db,
+						"SYSTEM",
+						tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+						idtrxkeluarandetail)
+					if flag_update {
+						log.Println(msg_update)
+					} else {
+						log.Println(msg_update)
+					}
+				}
+			}
 		}
 	case "2DD":
 		if temp2dd == nomorkeluaran {
 			result = "WINNER"
+		} else {
+			if posisitogel == "BB" {
+				flag_bb_2DD := false
+				for a, _ := range temp2dd {
+					for b, _ := range temp2dd {
+						if string([]byte(temp2dd)[a]) != string([]byte(temp2dd)[b]) {
+							temp_loop := string([]byte(temp2dd)[a]) + string([]byte(temp2dd)[b])
+							if temp2dd != temp_loop {
+								temp2dd_arr = append(temp2dd_arr, temp_loop)
+							}
+						}
+					}
+				}
+				for a, _ := range temp2dd_arr {
+					if temp2dd_arr[a] == nomorkeluaran {
+						result = "WINNER"
+						flag_bb_2DD = true
+					}
+
+				}
+				if flag_bb_2DD {
+					_, win_db := Pasaran_id(idcomppasaran, company, "1_win2ddbb")
+					sql_update := `
+						UPDATE 
+						` + tbl_trx_keluarantogel_detail + `     
+						SET win=?, 
+						updatekeluarandetail=?, updatedatekeluarandetail=? 
+						WHERE idtrxkeluarandetail=? 
+					`
+					flag_update, msg_update := Exec_SQL(sql_update, tbl_trx_keluarantogel_detail, "UPDATE",
+						win_db,
+						"SYSTEM",
+						tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+						idtrxkeluarandetail)
+					if flag_update {
+						log.Println(msg_update)
+					} else {
+						log.Println(msg_update)
+					}
+				}
+			}
 		}
 	case "2DT":
 		if temp2dt == nomorkeluaran {
 			result = "WINNER"
+		} else {
+			if posisitogel == "BB" {
+				flag_bb_2DT := false
+				for a, _ := range temp2dt {
+					for b, _ := range temp2dt {
+						if string([]byte(temp2dt)[a]) != string([]byte(temp2dt)[b]) {
+							temp_loop := string([]byte(temp2dt)[a]) + string([]byte(temp2dt)[b])
+							if temp2dt != temp_loop {
+								temp2dt_arr = append(temp2dt_arr, temp_loop)
+							}
+						}
+					}
+				}
+				for a, _ := range temp2dt_arr {
+					if temp2dt_arr[a] == nomorkeluaran {
+						result = "WINNER"
+						flag_bb_2DT = true
+					}
+
+				}
+				if flag_bb_2DT {
+					_, win_db := Pasaran_id(idcomppasaran, company, "1_win2dtbb")
+					sql_update := `
+						UPDATE 
+						` + tbl_trx_keluarantogel_detail + `     
+						SET win=?, 
+						updatekeluarandetail=?, updatedatekeluarandetail=? 
+						WHERE idtrxkeluarandetail=? 
+					`
+					flag_update, msg_update := Exec_SQL(sql_update, tbl_trx_keluarantogel_detail, "UPDATE",
+						win_db,
+						"SYSTEM",
+						tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+						idtrxkeluarandetail)
+					if flag_update {
+						log.Println(msg_update)
+					} else {
+						log.Println(msg_update)
+					}
+				}
+			}
 		}
 	case "COLOK_BEBAS":
 		flag := false
@@ -3295,6 +3566,7 @@ func Pasaran_id(idcomppasaran int, company, tipecolumn string) (string, float32)
 	var result_number float32 = 0
 	sql_pasaran := `SELECT 
 		idpasarantogel , 
+		1_win4dbb, 1_win3dbb, 1_win3ddbb, 1_win2dbb, 1_win2ddbb, 1_win2dtbb, 
 		2_win as win_cbebas, 3_win2digit as win2_cmacau, 
 		3_win3digit as win3_cmacau, 3_win4digit as win4_cmacau, 
 		4_win3digit as win3_cnaga, 4_win4digit as win4_cnaga 
@@ -3303,13 +3575,15 @@ func Pasaran_id(idcomppasaran int, company, tipecolumn string) (string, float32)
 		AND idcompany = ? 
 	`
 	var (
-		idpasarantogel_db                                             string
-		win_cbebas_db, win2_cmacau_db, win3_cmacau_db, win4_cmacau_db float32
-		win3_cnaga_db, win4_cnaga_db                                  float32
+		idpasarantogel_db                                                         string
+		win4dbb_db, win3dbb_db, win3ddbb_db, win2dbb_db, win2ddbb_db, win2dtbb_db float32
+		win_cbebas_db, win2_cmacau_db, win3_cmacau_db, win4_cmacau_db             float32
+		win3_cnaga_db, win4_cnaga_db                                              float32
 	)
 	rows := con.QueryRowContext(ctx, sql_pasaran, idcomppasaran, company)
 	switch err := rows.Scan(
 		&idpasarantogel_db,
+		&win4dbb_db, &win3dbb_db, &win3ddbb_db, &win2dbb_db, &win2ddbb_db, &win2dtbb_db,
 		&win_cbebas_db, &win2_cmacau_db, &win3_cmacau_db, &win4_cmacau_db,
 		&win3_cnaga_db, &win4_cnaga_db); err {
 	case sql.ErrNoRows:
@@ -3318,6 +3592,18 @@ func Pasaran_id(idcomppasaran int, company, tipecolumn string) (string, float32)
 		switch tipecolumn {
 		case "idpasarantogel":
 			result = idpasarantogel_db
+		case "1_win4dbb":
+			result_number = win4dbb_db
+		case "1_win3dbb":
+			result_number = win3dbb_db
+		case "1_win3ddbb":
+			result_number = win3ddbb_db
+		case "1_win2dbb":
+			result_number = win2dbb_db
+		case "1_win2ddbb":
+			result_number = win2ddbb_db
+		case "1_win2dtbb":
+			result_number = win2dtbb_db
 		case "2_win":
 			result_number = win_cbebas_db
 		case "3_win2digit":
