@@ -66,6 +66,18 @@ type Model_pasaranEdit struct {
 	Win2dnodisc_432d                  float32 `json:"win2dnodisc_432d"`
 	Win2ddnodisc_432d                 float32 `json:"win2ddnodisc_432d"`
 	Win2dtnodisc_432d                 float32 `json:"win2dtnodisc_432d"`
+	Win4dbb_kena_432d                 float32 `json:"win4dbb_kena_432d"`
+	Win3dbb_kena_432d                 float32 `json:"win3dbb_kena_432d"`
+	Win3ddbb_kena_432d                float32 `json:"win3ddbb_kena_432d"`
+	Win2dbb_kena_432d                 float32 `json:"win2dbb_kena_432d"`
+	Win2ddbb_kena_432d                float32 `json:"win2ddbb_kena_432d"`
+	Win2dtbb_kena_432d                float32 `json:"win2dtbb_kena_432d"`
+	Win4dbb_432d                      float32 `json:"win4dbb_432d"`
+	Win3dbb_432d                      float32 `json:"win3dbb_432d"`
+	Win3ddbb_432d                     float32 `json:"win3ddbb_432d"`
+	Win2dbb_432d                      float32 `json:"win2dbb_432d"`
+	Win2ddbb_432d                     float32 `json:"win2ddbb_432d"`
+	Win2dtbb_432d                     float32 `json:"win2dtbb_432d"`
 	Minbet_cbebas                     float32 `json:"minbet_cbebas"`
 	Maxbet_cbebas                     float32 `json:"maxbet_cbebas"`
 	Win_cbebas                        float32 `json:"win_cbebas"`

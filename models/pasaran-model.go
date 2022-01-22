@@ -125,6 +125,10 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 		A.1_win2d as win2d_432d, A.1_win2dd as win2dd_432d, A.1_win2dt as win2dt_432d, 
 		A.1_win4dnodisc as win4dnodisc_432d, A.1_win3dnodisc as win3dnodisc_432d, A.1_win3ddnodisc as win3ddnodisc_432d, 
 		A.1_win2dnodisc as win2dnodisc_432d, A.1_win2ddnodisc as win2ddnodisc_432d, A.1_win2dtnodisc as win2dtnodisc_432d,
+		A.1_win4dbb_kena as win4dbb_kena_432d, A.1_win3dbb_kena as win3dbb_kena_432d, A.1_win3ddbb_kena as win3dbb_kena_432d, 
+		A.1_win2dbb_kena as win2dbb_kena_432d, A.1_win2ddbb_kena as win2ddbb_kena_432d, A.1_win2dtbb_kena as win2dtbb_kena_432d,
+		A.1_win4dbb as win4dbb_432d, A.1_win3dbb as win3dbb_432d, A.1_win3ddbb as win3dbb_432d, 
+		A.1_win2dbb as win2dbb_432d, A.1_win2ddbb as win2ddbb_432d, A.1_win2dtbb as win2dtbb_432d,
 		A.2_minbet as minbet_cbebas, A.2_maxbet as maxbet_cbebas, 
 		A.2_win as win_cbebas, A.2_disc as disc_cbebas, 
 		A.2_limitbuang as limitglobal_cbebas, A.2_limitotal as limittotal_cbebas, 
@@ -188,6 +192,8 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 		disc4d_432d_db, disc3d_432d_db, disc3dd_432d_db, disc2d_432d_db, disc2dd_432d_db, disc2dt_432d_db                                                                                                                                                                                                        float32
 		win4d_432d_db, win3d_432d_db, win3dd_432d_db, win2d_432d_db, win2dd_432d_db, win2dt_432d_db                                                                                                                                                                                                              float32
 		win4dnodisc_432d_db, win3dnodisc_432d_db, win3ddnodisc_432d_db, win2dnodisc_432d_db, win2ddnodisc_432d_db, win2dtnodisc_432d_db                                                                                                                                                                          float32
+		win4dbb_kena_432d_db, win3dbb_kena_432d_db, win3ddbb_kena_432d_db, win2dbb_kena_432d_db, win2ddbb_kena_432d_db, win2dtbb_kena_432d_db                                                                                                                                                                    float32
+		win4dbb_432d_db, win3dbb_432d_db, win3ddbb_432d_db, win2dbb_432d_db, win2ddbb_432d_db, win2dtbb_432d_db                                                                                                                                                                                                  float32
 		minbet_cbebas_db, maxbet_cbebas_db, win_cbebas_db, disc_cbebas_db, limitglobal_cbebas_db, limittotal_cbebas_db                                                                                                                                                                                           float32
 		minbet_cmacau_db, maxbet_cmacau_db, win2d_cmacau_db, win3d_cmacau_db, win4d_cmacau_db, disc_cmacau_db, limitglobal_cmacau_db, limitotal_cmacau_db                                                                                                                                                        float32
 		minbet_cnaga_db, maxbet_cnaga_db, win3_cnaga_db, win4_cnaga_db, disc_cnaga_db, limitglobal_cnaga_db, limittotal_cnaga_db                                                                                                                                                                                 float32
@@ -222,6 +228,8 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 		&disc4d_432d_db, &disc3d_432d_db, &disc3dd_432d_db, &disc2d_432d_db, &disc2dd_432d_db, &disc2dt_432d_db,
 		&win4d_432d_db, &win3d_432d_db, &win3dd_432d_db, &win2d_432d_db, &win2dd_432d_db, &win2dt_432d_db,
 		&win4dnodisc_432d_db, &win3dnodisc_432d_db, &win3ddnodisc_432d_db, &win2dnodisc_432d_db, &win2ddnodisc_432d_db, &win2dtnodisc_432d_db,
+		&win4dbb_kena_432d_db, &win3dbb_kena_432d_db, &win3ddbb_kena_432d_db, &win2dbb_kena_432d_db, &win2ddbb_kena_432d_db, &win2dtbb_kena_432d_db,
+		&win4dbb_432d_db, &win3dbb_432d_db, &win3ddbb_432d_db, &win2dbb_432d_db, &win2ddbb_432d_db, &win2dtbb_432d_db,
 		&minbet_cbebas_db, &maxbet_cbebas_db, &win_cbebas_db, &disc_cbebas_db, &limitglobal_cbebas_db, &limittotal_cbebas_db,
 		&minbet_cmacau_db, &maxbet_cmacau_db, &win2d_cmacau_db, &win3d_cmacau_db, &win4d_cmacau_db, &disc_cmacau_db, &limitglobal_cmacau_db, &limitotal_cmacau_db,
 		&minbet_cnaga_db, &maxbet_cnaga_db, &win3_cnaga_db, &win4_cnaga_db, &disc_cnaga_db, &limitglobal_cnaga_db, &limittotal_cnaga_db,
@@ -303,6 +311,18 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	obj.Win2dnodisc_432d = win2dnodisc_432d_db
 	obj.Win2ddnodisc_432d = win2ddnodisc_432d_db
 	obj.Win2dtnodisc_432d = win2dtnodisc_432d_db
+	obj.Win4dbb_kena_432d = win4dbb_kena_432d_db
+	obj.Win3dbb_kena_432d = win3dbb_kena_432d_db
+	obj.Win3ddbb_kena_432d = win3ddbb_kena_432d_db
+	obj.Win2dbb_kena_432d = win2dbb_kena_432d_db
+	obj.Win2ddbb_kena_432d = win2ddbb_kena_432d_db
+	obj.Win2dtbb_kena_432d = win2dtbb_kena_432d_db
+	obj.Win4dbb_432d = win4dbb_432d_db
+	obj.Win3dbb_432d = win3dbb_432d_db
+	obj.Win3ddbb_432d = win3ddbb_432d_db
+	obj.Win2dbb_432d = win2dbb_432d_db
+	obj.Win2ddbb_432d = win2ddbb_432d_db
+	obj.Win2dtbb_432d = win2dtbb_432d_db
 	obj.Minbet_cbebas = minbet_cbebas_db
 	obj.Maxbet_cbebas = maxbet_cbebas_db
 	obj.Win_cbebas = win_cbebas_db
@@ -708,6 +728,8 @@ func Save_PasaranConf432(
 	minbet, maxbet4d, maxbet3d, maxbet3dd, maxbet2d, maxbet2dd, maxbet2dt int,
 	win4d, win3d, win3dd, win2d, win2dd, win2dt int,
 	win4dnodisc, win3dnodisc, win3ddnodisc, win2dnodisc, win2ddnodisc, win2dtnodisc int,
+	win4dbb_kena, win3dbb_kena, win3ddbb_kena, win2dbb_kena, win2ddbb_kena, win2dtbb_kena int,
+	win4dbb, win3dbb, win3ddbb, win2dbb, win2ddbb, win2dtbb int,
 	disc4d, disc3d, disc3dd, disc2d, disc2dd, disc2dt float32,
 	limitglobal4d, limitglobal3d, limitglobal3dd, limitglobal2d, limitglobal2dd, limitglobal2dt int,
 	limittotal4d, limittotal3d, limittotal3dd, limittotal2d, limittotal2dd, limittotal2dt int) (helpers.Response, error) {
@@ -727,6 +749,8 @@ func Save_PasaranConf432(
 					SET 1_minbet=? , 1_maxbet4d=?, 1_maxbet3d=?, 1_maxbet3dd=?, 1_maxbet2d=?, 1_maxbet2dd=?, 1_maxbet2dt=?, 
 					1_win4d=?, 1_win3d=?, 1_win3dd=?, 1_win2d=?, 1_win2dd=?, 1_win2dt=?, 
 					1_win4dnodisc=?, 1_win3dnodisc=?, 1_win3ddnodisc=?, 1_win2dnodisc=?, 1_win2ddnodisc=?, 1_win2dtnodisc=?, 
+					1_win4dbb_kena=?, 1_win3dbb_kena=?, 1_win3ddbb_kena=?, 1_win2dbb_kena=?, 1_win2ddbb_kena=?, 1_win2dtbb_kena=?, 
+					1_win4dbb=?, 1_win3dbb=?, 1_win3ddbb=?, 1_win2dbb=?, 1_win2ddbb=?, 1_win2dtbb=?, 
 					1_disc4d=?, 1_disc3d=?, 1_disc3dd=?, 1_disc2d=?, 1_disc2dd=?, 1_disc2dt=?, 
 					1_limitbuang4d=?, 1_limitbuang3d=?, 1_limitbuang3dd=?, 1_limitbuang2d=?, 1_limitbuang2dd=?, 1_limitbuang2dt=?,  
 					1_limittotal4d=?, 1_limittotal3d=?, 1_limittotal3dd=?, 1_limittotal2d=?, 1_limittotal2dd=?, 1_limittotal2dt=?,    
@@ -738,6 +762,8 @@ func Save_PasaranConf432(
 			minbet, maxbet4d, maxbet3d, maxbet3dd, maxbet2d, maxbet2dd, maxbet2dt,
 			win4d, win3d, win3dd, win2d, win2dd, win2dt,
 			win4dnodisc, win3dnodisc, win3ddnodisc, win2dnodisc, win2ddnodisc, win2dtnodisc,
+			win4dbb_kena, win3dbb_kena, win3ddbb_kena, win2dbb_kena, win2ddbb_kena, win2dtbb_kena,
+			win4dbb, win3dbb, win3ddbb, win2dbb, win2ddbb, win2dtbb,
 			disc4d, disc3d, disc3dd, disc2d, disc2dd, disc2dt,
 			limitglobal4d, limitglobal3d, limitglobal3dd, limitglobal2d, limitglobal2dd, limitglobal2dt,
 			limittotal4d, limittotal3d, limittotal3dd, limittotal2d, limittotal2dd, limittotal2dt,
@@ -774,6 +800,18 @@ func Save_PasaranConf432(
 			noteafter += "WIN2D NO DISKON - " + strconv.Itoa(win2dnodisc) + "<br />"
 			noteafter += "WIN2DD NO DISKON - " + strconv.Itoa(win2ddnodisc) + "<br />"
 			noteafter += "WIN2DT NO DISKON - " + strconv.Itoa(win2dtnodisc) + "<br />"
+			noteafter += "WIN4D BB KENA - " + strconv.Itoa(win4dbb_kena) + "<br />"
+			noteafter += "WIN3D BB KENA - " + strconv.Itoa(win3dbb_kena) + "<br />"
+			noteafter += "WIN3DD BB KENA - " + strconv.Itoa(win3ddbb_kena) + "<br />"
+			noteafter += "WIN2D BB KENA - " + strconv.Itoa(win2dbb_kena) + "<br />"
+			noteafter += "WIN2DD BB KENA - " + strconv.Itoa(win2dbb_kena) + "<br />"
+			noteafter += "WIN2DT BB KENA - " + strconv.Itoa(win2dtbb_kena) + "<br />"
+			noteafter += "WIN4D BB  - " + strconv.Itoa(win4dbb) + "<br />"
+			noteafter += "WIN3D BB  - " + strconv.Itoa(win3dbb) + "<br />"
+			noteafter += "WIN3DD BB  - " + strconv.Itoa(win3ddbb) + "<br />"
+			noteafter += "WIN2D BB  - " + strconv.Itoa(win2dbb) + "<br />"
+			noteafter += "WIN2DD BB  - " + strconv.Itoa(win2ddbb) + "<br />"
+			noteafter += "WIN2DT BB  - " + strconv.Itoa(win2dtbb) + "<br />"
 			noteafter += "DISC4D - " + fmt.Sprintf("%.2f", disc4d) + "<br />"
 			noteafter += "DISC3D - " + fmt.Sprintf("%.2f", disc3d) + "<br />"
 			noteafter += "DISC3DD - " + fmt.Sprintf("%.2f", disc3dd) + "<br />"

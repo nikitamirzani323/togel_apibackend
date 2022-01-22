@@ -78,12 +78,24 @@ type pasaranconf432 struct {
 	Pasaran_win2d_432d          int     `json:"pasaran_win2d_432d"`
 	Pasaran_win2dd_432d         int     `json:"pasaran_win2dd_432d"`
 	Pasaran_win2dt_432d         int     `json:"pasaran_win2dt_432d"`
-	Pasaran_win4dnodisc_432d    int     `json:"pasaran_win4dnodisc_432d"`
-	Pasaran_win3dnodisc_432d    int     `json:"pasaran_win3dnodisc_432d"`
+	Pasaran_win4dnodisc_432d    int     `json:"pasaran_Win4dnodisc_432d"`
+	Pasaran_win3dnodisc_432d    int     `json:"pasaran_Win3dnodisc_432d"`
 	Pasaran_win3ddnodisc_432d   int     `json:"pasaran_win3ddnodisc_432d"`
 	Pasaran_win2dnodisc_432d    int     `json:"pasaran_win2dnodisc_432d"`
 	Pasaran_win2ddnodisc_432d   int     `json:"pasaran_win2ddnodisc_432d"`
 	Pasaran_win2dtnodisc_432d   int     `json:"pasaran_win2dtnodisc_432d"`
+	Pasaran_win4dbb_kena_432d   int     `json:"pasaran_Win4dbb_kena_432d"`
+	Pasaran_win3dbb_kena_432d   int     `json:"pasaran_Win3dbb_kena_432d"`
+	Pasaran_win3ddbb_kena_432d  int     `json:"pasaran_win3ddbb_kena_432d"`
+	Pasaran_win2dbb_kena_432d   int     `json:"pasaran_win2dbb_kena_432d"`
+	Pasaran_win2ddbb_kena_432d  int     `json:"pasaran_win2ddbb_kena_432d"`
+	Pasaran_win2dtbb_kena_432d  int     `json:"pasaran_win2dtbb_kena_432d"`
+	Pasaran_win4dbb_432d        int     `json:"pasaran_win4dbb_432d"`
+	Pasaran_win3dbb_432d        int     `json:"pasaran_win3dbb_432d"`
+	Pasaran_win3ddbb_432d       int     `json:"pasaran_win3ddbb_432d"`
+	Pasaran_win2dbb_432d        int     `json:"pasaran_win2dbb_432d"`
+	Pasaran_win2ddbb_432d       int     `json:"pasaran_win2ddbb_432d"`
+	Pasaran_win2dtbb_432d       int     `json:"pasaran_win2dtbb_432d"`
 	Pasaran_disc4d_432d         float32 `json:"pasaran_disc4d_432d"`
 	Pasaran_disc3d_432d         float32 `json:"pasaran_disc3d_432d"`
 	Pasaran_disc3dd_432d        float32 `json:"pasaran_disc3dd_432d"`
@@ -335,6 +347,18 @@ type responseredis_pasarandetail struct {
 	Win2dnodisc_432d                  float32 `json:"win2dnodisc_432d"`
 	Win2ddnodisc_432d                 float32 `json:"win2ddnodisc_432d"`
 	Win2dtnodisc_432d                 float32 `json:"win2dtnodisc_432d"`
+	Win4dbb_kena_432d                 float32 `json:"win4dbb_kena_432d"`
+	Win3dbb_kena_432d                 float32 `json:"win3dbb_kena_432d"`
+	Win3ddbb_kena_432d                float32 `json:"win3ddbb_kena_432d"`
+	Win2dbb_kena_432d                 float32 `json:"win2dbb_kena_432d"`
+	Win2ddbb_kena_432d                float32 `json:"win2ddbb_kena_432d"`
+	Win2dtbb_kena_432d                float32 `json:"win2dtbb_kena_432d"`
+	Win4dbb_432d                      float32 `json:"win4dbb_432d"`
+	Win3dbb_432d                      float32 `json:"win3dbb_432d"`
+	Win3ddbb_432d                     float32 `json:"win3ddbb_432d"`
+	Win2dbb_432d                      float32 `json:"win2dbb_432d"`
+	Win2ddbb_432d                     float32 `json:"win2ddbb_432d"`
+	Win2dtbb_432d                     float32 `json:"win2dtbb_432d"`
 	Minbet_cbebas                     float32 `json:"minbet_cbebas"`
 	Maxbet_cbebas                     float32 `json:"maxbet_cbebas"`
 	Win_cbebas                        float32 `json:"win_cbebas"`
@@ -630,6 +654,18 @@ func PasaranDetail(c *fiber.Ctx) error {
 		win2dnodisc_432d, _ := jsonparser.GetFloat(value, "win2dnodisc_432d")
 		win2ddnodisc_432d, _ := jsonparser.GetFloat(value, "win2ddnodisc_432d")
 		win2dtnodisc_432d, _ := jsonparser.GetFloat(value, "win2dtnodisc_432d")
+		win4dbb_kena_432d, _ := jsonparser.GetFloat(value, "win4dbb_kena_432d")
+		win3dbb_kena_432d, _ := jsonparser.GetFloat(value, "win3dbb_kena_432d")
+		win3ddbb_kena_432d, _ := jsonparser.GetFloat(value, "win3ddbb_kena_432d")
+		win2dbb_kena_432d, _ := jsonparser.GetFloat(value, "win2dbb_kena_432d")
+		win2ddbb_kena_432d, _ := jsonparser.GetFloat(value, "win2ddbb_kena_432d")
+		win2dtbb_kena_432d, _ := jsonparser.GetFloat(value, "win2dtbb_kena_432d")
+		win4dbb_432d, _ := jsonparser.GetFloat(value, "win4dbb_432d")
+		win3dbb_432d, _ := jsonparser.GetFloat(value, "win3dbb_432d")
+		win3ddbb_432d, _ := jsonparser.GetFloat(value, "win3ddbb_432d")
+		win2dbb_432d, _ := jsonparser.GetFloat(value, "win2dbb_432d")
+		win2ddbb_432d, _ := jsonparser.GetFloat(value, "win2ddbb_432d")
+		win2dtbb_432d, _ := jsonparser.GetFloat(value, "win2dtbb_432d")
 		minbet_cbebas, _ := jsonparser.GetInt(value, "minbet_cbebas")
 		maxbet_cbebas, _ := jsonparser.GetInt(value, "maxbet_cbebas")
 		win_cbebas, _ := jsonparser.GetFloat(value, "win_cbebas")
@@ -829,6 +865,18 @@ func PasaranDetail(c *fiber.Ctx) error {
 		obj.Win2dnodisc_432d = float32(win2dnodisc_432d)
 		obj.Win2ddnodisc_432d = float32(win2ddnodisc_432d)
 		obj.Win2dtnodisc_432d = float32(win2dtnodisc_432d)
+		obj.Win4dbb_kena_432d = float32(win4dbb_kena_432d)
+		obj.Win3dbb_kena_432d = float32(win3dbb_kena_432d)
+		obj.Win3ddbb_kena_432d = float32(win3ddbb_kena_432d)
+		obj.Win2dbb_kena_432d = float32(win2dbb_kena_432d)
+		obj.Win2ddbb_kena_432d = float32(win2ddbb_kena_432d)
+		obj.Win2dtbb_kena_432d = float32(win2dtbb_kena_432d)
+		obj.Win4dbb_432d = float32(win4dbb_432d)
+		obj.Win3dbb_432d = float32(win3dbb_432d)
+		obj.Win3ddbb_432d = float32(win3ddbb_432d)
+		obj.Win2dbb_432d = float32(win2dbb_432d)
+		obj.Win2ddbb_432d = float32(win2ddbb_432d)
+		obj.Win2dtbb_432d = float32(win2dtbb_432d)
 		obj.Minbet_cbebas = float32(minbet_cbebas)
 		obj.Maxbet_cbebas = float32(maxbet_cbebas)
 		obj.Win_cbebas = float32(win_cbebas)
@@ -1423,6 +1471,8 @@ func PasaranSaveConf432d(c *fiber.Ctx) error {
 			client.Pasaran_maxbet4d_432d, client.Pasaran_maxbet3d_432d, client.Pasaran_maxbet3dd_432d, client.Pasaran_maxbet2d_432d, client.Pasaran_maxbet2dd_432d, client.Pasaran_maxbet2dt_432d,
 			client.Pasaran_win4d_432d, client.Pasaran_win3d_432d, client.Pasaran_win3dd_432d, client.Pasaran_win2d_432d, client.Pasaran_win2dd_432d, client.Pasaran_win2dt_432d,
 			client.Pasaran_win4dnodisc_432d, client.Pasaran_win3dnodisc_432d, client.Pasaran_win3ddnodisc_432d, client.Pasaran_win2dnodisc_432d, client.Pasaran_win2ddnodisc_432d, client.Pasaran_win2dtnodisc_432d,
+			client.Pasaran_win4dbb_kena_432d, client.Pasaran_win3dbb_kena_432d, client.Pasaran_win3ddbb_kena_432d, client.Pasaran_win2dbb_kena_432d, client.Pasaran_win2ddbb_kena_432d, client.Pasaran_win2dtbb_kena_432d,
+			client.Pasaran_win4dbb_432d, client.Pasaran_win3dbb_432d, client.Pasaran_win3ddbb_432d, client.Pasaran_win2dbb_432d, client.Pasaran_win2ddbb_432d, client.Pasaran_win2dtbb_432d,
 			client.Pasaran_disc4d_432d, client.Pasaran_disc3d_432d, client.Pasaran_disc3dd_432d, client.Pasaran_disc2d_432d, client.Pasaran_disc2dd_432d, client.Pasaran_disc2dt_432d,
 			client.Pasaran_limitglobal4d_432d, client.Pasaran_limitglobal3d_432d, client.Pasaran_limitglobal3dd_432d, client.Pasaran_limitglobal2d_432d, client.Pasaran_limitglobal2dd_432d, client.Pasaran_limitglobal2dt_432d,
 			client.Pasaran_limitotal4d_432d, client.Pasaran_limitotal3d_432d, client.Pasaran_limitotal3dd_432d, client.Pasaran_limitotal2d_432d, client.Pasaran_limitotal2dd_432d, client.Pasaran_limitotal2dt_432d)
@@ -1457,6 +1507,8 @@ func PasaranSaveConf432d(c *fiber.Ctx) error {
 				client.Pasaran_maxbet4d_432d, client.Pasaran_maxbet3d_432d, client.Pasaran_maxbet3dd_432d, client.Pasaran_maxbet2d_432d, client.Pasaran_maxbet2dd_432d, client.Pasaran_maxbet2dt_432d,
 				client.Pasaran_win4d_432d, client.Pasaran_win3d_432d, client.Pasaran_win3dd_432d, client.Pasaran_win2d_432d, client.Pasaran_win2dd_432d, client.Pasaran_win2dt_432d,
 				client.Pasaran_win4dnodisc_432d, client.Pasaran_win3dnodisc_432d, client.Pasaran_win3ddnodisc_432d, client.Pasaran_win2dnodisc_432d, client.Pasaran_win2ddnodisc_432d, client.Pasaran_win2dtnodisc_432d,
+				client.Pasaran_win4dbb_kena_432d, client.Pasaran_win3dbb_kena_432d, client.Pasaran_win3ddbb_kena_432d, client.Pasaran_win2dbb_kena_432d, client.Pasaran_win2ddbb_kena_432d, client.Pasaran_win2dtbb_kena_432d,
+				client.Pasaran_win4dbb_432d, client.Pasaran_win3dbb_432d, client.Pasaran_win3ddbb_432d, client.Pasaran_win2dbb_432d, client.Pasaran_win2ddbb_432d, client.Pasaran_win2dtbb_432d,
 				client.Pasaran_disc4d_432d, client.Pasaran_disc3d_432d, client.Pasaran_disc3dd_432d, client.Pasaran_disc2d_432d, client.Pasaran_disc2dd_432d, client.Pasaran_disc2dt_432d,
 				client.Pasaran_limitglobal4d_432d, client.Pasaran_limitglobal3d_432d, client.Pasaran_limitglobal3dd_432d, client.Pasaran_limitglobal2d_432d, client.Pasaran_limitglobal2dd_432d, client.Pasaran_limitglobal2dt_432d,
 				client.Pasaran_limitotal4d_432d, client.Pasaran_limitotal3d_432d, client.Pasaran_limitotal3dd_432d, client.Pasaran_limitotal2d_432d, client.Pasaran_limitotal2dd_432d, client.Pasaran_limitotal2dt_432d)
