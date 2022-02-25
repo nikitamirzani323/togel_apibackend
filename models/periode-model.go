@@ -116,6 +116,7 @@ type listPasaran struct {
 	Pasaran_name   string `json:"pasaran_name"`
 }
 type listPrediksi struct {
+	Prediksi_code         string  `json:"prediksi_code"`
 	Prediksi_tanggal      string  `json:"prediksi_tanggal"`
 	Prediksi_username     string  `json:"prediksi_username"`
 	Prediksi_permainan    string  `json:"prediksi_permainan"`
@@ -858,7 +859,7 @@ func Fetch_listprediksi(company, nomorkeluaran string, idcomppasaran int) (helpe
 	tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, _ := Get_mappingdatabase(company)
 
 	sql_listprediksi := `SELECT
-					A.datetimedetail , A.username , A.typegame, A.nomortogel, A.posisitogel, 
+					A.idtrxkeluarandetail, A.datetimedetail , A.username , A.typegame, A.nomortogel, A.posisitogel, 
 					A.bet, A.diskon, A.kei, A.win  
 					FROM ` + tbl_trx_keluarantogel_detail + ` as A  
 					JOIN ` + tbl_trx_keluarantogel + ` as B ON B.idtrxkeluaran = A.idtrxkeluaran  
@@ -873,13 +874,13 @@ func Fetch_listprediksi(company, nomorkeluaran string, idcomppasaran int) (helpe
 
 	for row.Next() {
 		var (
-			bet_db                                                                     int
-			diskon_db, kei_db, win_db                                                  float32
-			datetimedetail_db, username_db, typegame_db, nomortogel_db, posisitogel_db string
+			bet_db                                                                                             int
+			diskon_db, kei_db, win_db                                                                          float32
+			idtrxkeluarandetail_db, datetimedetail_db, username_db, typegame_db, nomortogel_db, posisitogel_db string
 		)
 
 		err = row.Scan(
-			&datetimedetail_db, &username_db, &typegame_db, &nomortogel_db, &posisitogel_db,
+			&idtrxkeluarandetail_db, &datetimedetail_db, &username_db, &typegame_db, &nomortogel_db, &posisitogel_db,
 			&bet_db, &diskon_db, &kei_db, &win_db)
 
 		helpers.ErrorCheck(err)
@@ -915,6 +916,7 @@ func Fetch_listprediksi(company, nomorkeluaran string, idcomppasaran int) (helpe
 			status_css = "background:#E91E63;font-size:12px;font-weight:bold;color:white;"
 		}
 		if statuskeluarandetail == "WINNER" {
+			obj.Prediksi_code = idtrxkeluarandetail_db
 			obj.Prediksi_tanggal = datetimedetail_db
 			obj.Prediksi_username = username_db
 			obj.Prediksi_permainan = typegame_db
