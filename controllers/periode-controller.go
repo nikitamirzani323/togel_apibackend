@@ -487,6 +487,7 @@ func PeriodeListBetstatus(c *fiber.Ctx) error {
 		bet_username, _ := jsonparser.GetString(value, "bet_username")
 		bet_typegame, _ := jsonparser.GetString(value, "bet_typegame")
 		bet_nomortogel, _ := jsonparser.GetString(value, "bet_nomortogel")
+		bet_posisitogel, _ := jsonparser.GetString(value, "bet_posisitogel")
 		bet_bet, _ := jsonparser.GetInt(value, "bet_bet")
 		bet_diskon, _ := jsonparser.GetInt(value, "bet_diskon")
 		bet_diskonpercen, _ := jsonparser.GetInt(value, "bet_diskonpercen")
@@ -510,6 +511,7 @@ func PeriodeListBetstatus(c *fiber.Ctx) error {
 		obj.Bet_username = bet_username
 		obj.Bet_typegame = bet_typegame
 		obj.Bet_nomortogel = bet_nomortogel
+		obj.Bet_posisitogel = bet_posisitogel
 		obj.Bet_bet = int(bet_bet)
 		obj.Bet_diskon = int(bet_diskon)
 		obj.Bet_diskonpercen = int(bet_diskonpercen)

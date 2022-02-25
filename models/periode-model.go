@@ -891,6 +891,7 @@ func Fetch_listprediksi(company, nomorkeluaran string, idcomppasaran int) (helpe
 		bayar := bet_db - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
 		subtotal = subtotal + bayar
 		statuskeluarandetail, winrumus := _rumusTogel(nomorkeluaran, typegame_db, nomortogel_db, posisitogel_db, company, "N", idcomppasaran, 0)
+
 		var winfixed float32 = 0
 		winhasil := 0
 		if typegame_db == "COLOK_BEBAS" || typegame_db == "COLOK_MACAU" || typegame_db == "COLOK_NAGA" {
@@ -2082,12 +2083,12 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 				if flag_bb_4D {
 					_, win_db := Pasaran_id(idcomppasaran, company, "1_win4dbb")
 					sql_update := `
-					UPDATE 
-					` + tbl_trx_keluarantogel_detail + `     
-					SET win=?, 
-					updatekeluarandetail=?, updatedatekeluarandetail=? 
-					WHERE idtrxkeluarandetail=? 
-				`
+						UPDATE 
+						` + tbl_trx_keluarantogel_detail + `     
+						SET win=?, 
+						updatekeluarandetail=?, updatedatekeluarandetail=? 
+						WHERE idtrxkeluarandetail=? 
+					`
 					flag_update, msg_update := Exec_SQL(sql_update, tbl_trx_keluarantogel_detail, "UPDATE",
 						win_db,
 						"SYSTEM",
