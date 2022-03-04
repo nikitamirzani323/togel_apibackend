@@ -67,9 +67,9 @@ type periodeBet struct {
 	Bet_posisitogel  string  `json:"bet_posisitogel"`
 	Bet_bet          int     `json:"bet_bet"`
 	Bet_diskon       int     `json:"bet_diskon"`
-	Bet_diskonpercen int     `json:"bet_diskonpercen"`
+	Bet_diskonpercen float32 `json:"bet_diskonpercen"`
 	Bet_kei          int     `json:"bet_kei"`
-	Bet_keipercen    int     `json:"bet_keipercen"`
+	Bet_keipercen    float32 `json:"bet_keipercen"`
 	Bet_win          float32 `json:"bet_win"`
 	Bet_totalwin     int     `json:"bet_totalwin"`
 	Bet_bayar        int     `json:"bet_bayar"`
@@ -558,9 +558,9 @@ func Fetch_listbet(company, permainan string, idtrxkeluaran int) (helpers.Respon
 		obj.Bet_posisitogel = posisitogel_db
 		obj.Bet_bet = bet_db
 		obj.Bet_diskon = diskonbet
-		obj.Bet_diskonpercen = int(diskonpercen)
+		obj.Bet_diskonpercen = diskonpercen
 		obj.Bet_kei = keibet
-		obj.Bet_keipercen = int(keipercen)
+		obj.Bet_keipercen = keipercen
 		obj.Bet_bayar = bayar
 		obj.Bet_win = win_db
 		obj.Bet_totalwin = totalwin
@@ -665,9 +665,9 @@ func Fetch_listbetbystatus(company, status string, idtrxkeluaran int) (helpers.R
 		obj.Bet_posisitogel = posisitogel_db
 		obj.Bet_bet = bet_db
 		obj.Bet_diskon = diskonbet
-		obj.Bet_diskonpercen = int(diskonpercen)
+		obj.Bet_diskonpercen = diskonpercen
 		obj.Bet_kei = keibet
-		obj.Bet_keipercen = int(keipercen)
+		obj.Bet_keipercen = keipercen
 		obj.Bet_bayar = bayar
 		obj.Bet_win = win_db
 		obj.Bet_totalwin = totalwin
@@ -772,9 +772,9 @@ func Fetch_listbetbyusername(company, username string, idtrxkeluaran int) (helpe
 		obj.Bet_posisitogel = posisitogel_db
 		obj.Bet_bet = bet_db
 		obj.Bet_diskon = diskonbet
-		obj.Bet_diskonpercen = int(diskonpercen)
+		obj.Bet_diskonpercen = diskonpercen
 		obj.Bet_kei = keibet
-		obj.Bet_keipercen = int(keipercen)
+		obj.Bet_keipercen = keipercen
 		obj.Bet_bayar = bayar
 		obj.Bet_win = win_db
 		obj.Bet_totalwin = totalwin

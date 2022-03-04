@@ -114,9 +114,9 @@ type responseredis_periodelistbet struct {
 	Bet_posisitogel  string  `json:"bet_posisitogel"`
 	Bet_bet          int     `json:"bet_bet"`
 	Bet_diskon       int     `json:"bet_diskon"`
-	Bet_diskonpercen int     `json:"bet_diskonpercen"`
+	Bet_diskonpercen float32 `json:"bet_diskonpercen"`
 	Bet_kei          int     `json:"bet_kei"`
-	Bet_keipercen    int     `json:"bet_keipercen"`
+	Bet_keipercen    float32 `json:"bet_keipercen"`
 	Bet_win          float32 `json:"bet_win"`
 	Bet_totalwin     int     `json:"bet_totalwin"`
 	Bet_bayar        int     `json:"bet_bayar"`
@@ -389,9 +389,9 @@ func PeriodeListBet(c *fiber.Ctx) error {
 		bet_posisitogel, _ := jsonparser.GetString(value, "bet_posisitogel")
 		bet_bet, _ := jsonparser.GetInt(value, "bet_bet")
 		bet_diskon, _ := jsonparser.GetInt(value, "bet_diskon")
-		bet_diskonpercen, _ := jsonparser.GetInt(value, "bet_diskonpercen")
+		bet_diskonpercen, _ := jsonparser.GetFloat(value, "bet_diskonpercen")
 		bet_kei, _ := jsonparser.GetInt(value, "bet_kei")
-		bet_keipercen, _ := jsonparser.GetInt(value, "bet_keipercen")
+		bet_keipercen, _ := jsonparser.GetFloat(value, "bet_keipercen")
 		bet_win, _ := jsonparser.GetFloat(value, "bet_win")
 		bet_totalwin, _ := jsonparser.GetInt(value, "bet_totalwin")
 		bet_bayar, _ := jsonparser.GetInt(value, "bet_bayar")
@@ -413,9 +413,9 @@ func PeriodeListBet(c *fiber.Ctx) error {
 		obj.Bet_posisitogel = bet_posisitogel
 		obj.Bet_bet = int(bet_bet)
 		obj.Bet_diskon = int(bet_diskon)
-		obj.Bet_diskonpercen = int(bet_diskonpercen)
+		obj.Bet_diskonpercen = float32(bet_diskonpercen)
 		obj.Bet_kei = int(bet_kei)
-		obj.Bet_keipercen = int(bet_keipercen)
+		obj.Bet_keipercen = float32(bet_keipercen)
 		obj.Bet_win = float32(bet_win)
 		obj.Bet_totalwin = int(bet_totalwin)
 		obj.Bet_bayar = int(bet_bayar)
@@ -490,9 +490,9 @@ func PeriodeListBetstatus(c *fiber.Ctx) error {
 		bet_posisitogel, _ := jsonparser.GetString(value, "bet_posisitogel")
 		bet_bet, _ := jsonparser.GetInt(value, "bet_bet")
 		bet_diskon, _ := jsonparser.GetInt(value, "bet_diskon")
-		bet_diskonpercen, _ := jsonparser.GetInt(value, "bet_diskonpercen")
+		bet_diskonpercen, _ := jsonparser.GetFloat(value, "bet_diskonpercen")
 		bet_kei, _ := jsonparser.GetInt(value, "bet_kei")
-		bet_keipercen, _ := jsonparser.GetInt(value, "bet_keipercen")
+		bet_keipercen, _ := jsonparser.GetFloat(value, "bet_keipercen")
 		bet_win, _ := jsonparser.GetFloat(value, "bet_win")
 		bet_totalwin, _ := jsonparser.GetInt(value, "bet_totalwin")
 		bet_bayar, _ := jsonparser.GetInt(value, "bet_bayar")
@@ -514,9 +514,9 @@ func PeriodeListBetstatus(c *fiber.Ctx) error {
 		obj.Bet_posisitogel = bet_posisitogel
 		obj.Bet_bet = int(bet_bet)
 		obj.Bet_diskon = int(bet_diskon)
-		obj.Bet_diskonpercen = int(bet_diskonpercen)
+		obj.Bet_diskonpercen = float32(bet_diskonpercen)
 		obj.Bet_kei = int(bet_kei)
-		obj.Bet_keipercen = int(bet_keipercen)
+		obj.Bet_keipercen = float32(bet_keipercen)
 		obj.Bet_win = float32(bet_win)
 		obj.Bet_totalwin = int(bet_totalwin)
 		obj.Bet_bayar = int(bet_bayar)
