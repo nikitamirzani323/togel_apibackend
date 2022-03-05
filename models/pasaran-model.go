@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
 	"strconv"
 	"time"
 
@@ -735,48 +736,50 @@ func Save_PasaranConf432(
 	limittotal4d, limittotal3d, limittotal3dd, limittotal2d, limittotal2dd, limittotal2dt int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	con := db.CreateCon()
-	ctx := context.Background()
 	render_page := time.Now()
 
 	msg := "Failed"
 	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
 	if tipepasaran != "WAJIB" {
-		stmt, e := con.PrepareContext(ctx, `
-					UPDATE 
-					`+config.DB_tbl_mst_company_game_pasaran+` 
-					SET 1_minbet=? , 1_maxbet4d=?, 1_maxbet3d=?, 1_maxbet3dd=?, 1_maxbet2d=?, 1_maxbet2dd=?, 1_maxbet2dt=?, 
-					1_win4d=?, 1_win3d=?, 1_win3dd=?, 1_win2d=?, 1_win2dd=?, 1_win2dt=?, 
-					1_win4dnodisc=?, 1_win3dnodisc=?, 1_win3ddnodisc=?, 1_win2dnodisc=?, 1_win2ddnodisc=?, 1_win2dtnodisc=?, 
-					1_win4dbb_kena=?, 1_win3dbb_kena=?, 1_win3ddbb_kena=?, 1_win2dbb_kena=?, 1_win2ddbb_kena=?, 1_win2dtbb_kena=?, 
-					1_win4dbb=?, 1_win3dbb=?, 1_win3ddbb=?, 1_win2dbb=?, 1_win2ddbb=?, 1_win2dtbb=?, 
-					1_disc4d=?, 1_disc3d=?, 1_disc3dd=?, 1_disc2d=?, 1_disc2dd=?, 1_disc2dt=?, 
-					1_limitbuang4d=?, 1_limitbuang3d=?, 1_limitbuang3dd=?, 1_limitbuang2d=?, 1_limitbuang2dd=?, 1_limitbuang2dt=?,  
-					1_limittotal4d=?, 1_limittotal3d=?, 1_limittotal3dd=?, 1_limittotal2d=?, 1_limittotal2dd=?, 1_limittotal2dt=?,    
-					updatecomppas=?, updatedatecompas=? 
-					WHERE idcomppasaran=? AND idcompany=? 
-				`)
-		helpers.ErrorCheck(e)
-		rec, e := stmt.ExecContext(ctx,
+		sql_update := `
+			UPDATE 
+			` + config.DB_tbl_mst_company_game_pasaran + ` 
+			SET 1_minbet=? , 1_maxbet4d=?, 1_maxbet3d=?, 1_maxbet3dd=?, 1_maxbet2d=?, 1_maxbet2dd=?, 1_maxbet2dt=?, 
+			1_win4d=?, 1_win3d=?, 1_win3dd=?, 1_win2d=?, 1_win2dd=?, 1_win2dt=?, 
+			1_win4dnodisc=?, 1_win3dnodisc=?, 1_win3ddnodisc=?, 1_win2dnodisc=?, 1_win2ddnodisc=?, 1_win2dtnodisc=?, 
+			1_win4dbb_kena=?, 1_win3dbb_kena=?, 1_win3ddbb_kena=?, 1_win2dbb_kena=?, 1_win2ddbb_kena=?, 1_win2dtbb_kena=?, 
+			1_win4dbb=?, 1_win3dbb=?, 1_win3ddbb=?, 1_win2dbb=?, 1_win2ddbb=?, 1_win2dtbb=?, 
+			1_disc4d=?, 1_disc3d=?, 1_disc3dd=?, 1_disc2d=?, 1_disc2dd=?, 1_disc2dt=?, 
+			1_limitbuang4d=?, 1_limitbuang3d=?, 1_limitbuang3dd=?, 1_limitbuang2d=?, 1_limitbuang2dd=?, 1_limitbuang2dt=?,  
+			1_limittotal4d=?, 1_limittotal3d=?, 1_limittotal3dd=?, 1_limittotal2d=?, 1_limittotal2dd=?, 1_limittotal2dt=?,    
+			updatecomppas=?, updatedatecompas=? 
+			WHERE idcomppasaran=? AND idcompany=? 
+		`
+		log.Println("432D")
+		log.Printf("DISC 4D : %s", fmt.Sprintf("%.3f", disc4d))
+		log.Printf("DISC 3D : %s", fmt.Sprintf("%.3f", disc3d))
+		log.Printf("DISC 3DD : %s", fmt.Sprintf("%.3f", disc3dd))
+		log.Printf("DISC 2D : %s", fmt.Sprintf("%.3f", disc2d))
+		log.Printf("DISC 2DD : %s", fmt.Sprintf("%.3f", disc2dd))
+		log.Printf("DISC 2DT : %s", fmt.Sprintf("%.3f", disc2dt))
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			minbet, maxbet4d, maxbet3d, maxbet3dd, maxbet2d, maxbet2dd, maxbet2dt,
 			win4d, win3d, win3dd, win2d, win2dd, win2dt,
 			win4dnodisc, win3dnodisc, win3ddnodisc, win2dnodisc, win2ddnodisc, win2dtnodisc,
 			win4dbb_kena, win3dbb_kena, win3ddbb_kena, win2dbb_kena, win2ddbb_kena, win2dtbb_kena,
 			win4dbb, win3dbb, win3ddbb, win2dbb, win2ddbb, win2dtbb,
-			disc4d, disc3d, disc3dd, disc2d, disc2dd, disc2dt,
+			fmt.Sprintf("%.3f", disc4d), fmt.Sprintf("%.3f", disc3d), fmt.Sprintf("%.3f", disc3dd), fmt.Sprintf("%.3f", disc2d), fmt.Sprintf("%.3f", disc2dd), fmt.Sprintf("%.3f", disc2dt),
 			limitglobal4d, limitglobal3d, limitglobal3dd, limitglobal2d, limitglobal2dd, limitglobal2dt,
 			limittotal4d, limittotal3d, limittotal3dd, limittotal2d, limittotal2dd, limittotal2dt,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
 			company)
-		helpers.ErrorCheck(e)
 
-		update, err_update := rec.RowsAffected()
-		helpers.ErrorCheck(err_update)
-		if update > 0 {
+		if flag_update {
 			msg = "Success"
+			log.Println(msg_update)
 
 			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
 			noteafter := ""
@@ -812,12 +815,12 @@ func Save_PasaranConf432(
 			noteafter += "WIN2D BB  - " + strconv.Itoa(win2dbb) + "<br />"
 			noteafter += "WIN2DD BB  - " + strconv.Itoa(win2ddbb) + "<br />"
 			noteafter += "WIN2DT BB  - " + strconv.Itoa(win2dtbb) + "<br />"
-			noteafter += "DISC4D - " + fmt.Sprintf("%.2f", disc4d) + "<br />"
-			noteafter += "DISC3D - " + fmt.Sprintf("%.2f", disc3d) + "<br />"
-			noteafter += "DISC3DD - " + fmt.Sprintf("%.2f", disc3dd) + "<br />"
-			noteafter += "DISC2D - " + fmt.Sprintf("%.2f", disc2d) + "<br />"
-			noteafter += "DISC2DD - " + fmt.Sprintf("%.2f", disc2dd) + "<br />"
-			noteafter += "DISC2DT - " + fmt.Sprintf("%.2f", disc2dt) + "<br />"
+			noteafter += "DISC4D - " + fmt.Sprintf("%.3f", disc4d) + "<br />"
+			noteafter += "DISC3D - " + fmt.Sprintf("%.3f", disc3d) + "<br />"
+			noteafter += "DISC3DD - " + fmt.Sprintf("%.3f", disc3dd) + "<br />"
+			noteafter += "DISC2D - " + fmt.Sprintf("%.3f", disc2d) + "<br />"
+			noteafter += "DISC2DD - " + fmt.Sprintf("%.3f", disc2dd) + "<br />"
+			noteafter += "DISC2DT - " + fmt.Sprintf("%.3f", disc2dt) + "<br />"
 			noteafter += "LIMIT GLOBAL 4D - " + strconv.Itoa(limitglobal4d) + "<br />"
 			noteafter += "LIMIT GLOBAL 3D - " + strconv.Itoa(limitglobal3d) + "<br />"
 			noteafter += "LIMIT GLOBAL 3DD - " + strconv.Itoa(limitglobal3dd) + "<br />"
@@ -830,6 +833,8 @@ func Save_PasaranConf432(
 			noteafter += "LIMIT TOTAL 2D - " + strconv.Itoa(limittotal2d) + "<br />"
 			noteafter += "LIMIT TOTAL 2DD - " + strconv.Itoa(limittotal2dd) + "<br />"
 			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - 4-3-2", "", noteafter)
+		} else {
+			log.Println(msg_update)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -847,48 +852,48 @@ func Save_PasaranConfColokBebas(
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	con := db.CreateCon()
-	ctx := context.Background()
 	render_page := time.Now()
 
 	msg := "Failed"
 	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
 	if tipepasaran != "WAJIB" {
-		stmt, e := con.PrepareContext(ctx, `
-					UPDATE 
-					`+config.DB_tbl_mst_company_game_pasaran+`  
-					SET 2_minbet=? , 2_maxbet=?, 2_win=?, 2_disc=?, 
-					2_limitbuang=?, 2_limitotal=?, 
-					updatecomppas=?, updatedatecompas=? 
-					WHERE idcomppasaran=? AND idcompany=? 
-				`)
-		helpers.ErrorCheck(e)
-		rec, e := stmt.ExecContext(ctx,
+		sql_update := `
+			UPDATE 
+			` + config.DB_tbl_mst_company_game_pasaran + `  
+			SET 2_minbet=? , 2_maxbet=?, 2_win=?, 2_disc=?, 
+			2_limitbuang=?, 2_limitotal=?, 
+			updatecomppas=?, updatedatecompas=? 
+			WHERE idcomppasaran=? AND idcompany=? 
+		`
+		log.Println("COLOK BEBAS")
+		log.Printf("WIN : %s", fmt.Sprintf("%.3f", win))
+		log.Printf("DISC : %s", fmt.Sprintf("%.3f", disc))
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			minbet, maxbet,
-			win, disc,
+			fmt.Sprintf("%.3f", win), fmt.Sprintf("%.3f", disc),
 			limitglobal, limittotal,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
 			company)
-		helpers.ErrorCheck(e)
 
-		update, err_update := rec.RowsAffected()
-		helpers.ErrorCheck(err_update)
-		if update > 0 {
-			msg = "Success"
+		if flag_update {
+			msg = "Succes"
+			log.Println(msg_update)
 
 			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
 			noteafter := ""
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
-			noteafter += "WIN - " + fmt.Sprintf("%.2f", win) + "<br />"
-			noteafter += "DISC - " + fmt.Sprintf("%.2f", disc) + "<br />"
+			noteafter += "WIN - " + fmt.Sprintf("%.3f", win) + "<br />"
+			noteafter += "DISC - " + fmt.Sprintf("%.3f", disc) + "<br />"
 			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "<br />"
 			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
 			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - COLOK BEBAS", "", noteafter)
+		} else {
+			log.Println(msg_update)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -906,37 +911,37 @@ func Save_PasaranConfColokMacau(
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	con := db.CreateCon()
-	ctx := context.Background()
 	render_page := time.Now()
 
 	msg := "Failed"
 	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
 	if tipepasaran != "WAJIB" {
-		stmt, e := con.PrepareContext(ctx, `
-					UPDATE 
-					`+config.DB_tbl_mst_company_game_pasaran+`  
-					SET 3_minbet=? , 3_maxbet=?, 3_win2digit=?, 3_win3digit=?, 3_win4digit=?, 
-					3_disc=?, 3_limitbuang=?, 3_limittotal=?,  
-					updatecomppas=?, updatedatecompas=? 
-					WHERE idcomppasaran=? AND idcompany=? 
-				`)
-		helpers.ErrorCheck(e)
-		rec, e := stmt.ExecContext(ctx,
+		sql_update := `
+			UPDATE 
+			` + config.DB_tbl_mst_company_game_pasaran + `  
+			SET 3_minbet=? , 3_maxbet=?, 3_win2digit=?, 3_win3digit=?, 3_win4digit=?, 
+			3_disc=?, 3_limitbuang=?, 3_limittotal=?,  
+			updatecomppas=?, updatedatecompas=? 
+			WHERE idcomppasaran=? AND idcompany=? 
+		`
+		log.Println("COLOK MACAU")
+		log.Printf("WIN 2 : %s", fmt.Sprintf("%.3f", win2))
+		log.Printf("WIN 3 : %s", fmt.Sprintf("%.3f", win3))
+		log.Printf("WIN 4 : %s", fmt.Sprintf("%.3f", win4))
+		log.Printf("DISC : %s", fmt.Sprintf("%.3f", disc))
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			minbet, maxbet,
-			win2, win3, win4, disc,
+			fmt.Sprintf("%.3f", win2), fmt.Sprintf("%.3f", win3), fmt.Sprintf("%.3f", win4), fmt.Sprintf("%.3f", disc),
 			limitglobal, limittotal,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
 			company)
-		helpers.ErrorCheck(e)
 
-		update, err_update := rec.RowsAffected()
-		helpers.ErrorCheck(err_update)
-		if update > 0 {
-			msg = "Success"
+		if flag_update {
+			msg = "Succes"
+			log.Println(msg_update)
 
 			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
 			noteafter := ""
@@ -950,6 +955,8 @@ func Save_PasaranConfColokMacau(
 			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "<br />"
 			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
 			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - COLOK MACAU", "", noteafter)
+		} else {
+			log.Println(msg_update)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -967,37 +974,36 @@ func Save_PasaranConfColokNaga(
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	con := db.CreateCon()
-	ctx := context.Background()
 	render_page := time.Now()
 
 	msg := "Failed"
 	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
 	if tipepasaran != "WAJIB" {
-		stmt, e := con.PrepareContext(ctx, `
-					UPDATE 
-					`+config.DB_tbl_mst_company_game_pasaran+`  
-					SET 4_minbet=? , 4_maxbet=?, 4_win3digit=?, 4_win4digit=?,  
-					4_disc=?, 4_limitbuang=?, 4_limittotal=?,  
-					updatecomppas=?, updatedatecompas=? 
-					WHERE idcomppasaran=? AND idcompany=? 
-				`)
-		helpers.ErrorCheck(e)
-		rec, e := stmt.ExecContext(ctx,
+		sql_update := `
+			UPDATE 
+			` + config.DB_tbl_mst_company_game_pasaran + `  
+			SET 4_minbet=? , 4_maxbet=?, 4_win3digit=?, 4_win4digit=?,  
+			4_disc=?, 4_limitbuang=?, 4_limittotal=?,  
+			updatecomppas=?, updatedatecompas=? 
+			WHERE idcomppasaran=? AND idcompany=? 
+		`
+		log.Println("COLOK NAGA")
+		log.Printf("WIN 3 : %s", fmt.Sprintf("%.3f", win3))
+		log.Printf("WIN 4 : %s", fmt.Sprintf("%.3f", win4))
+		log.Printf("DISC : %s", fmt.Sprintf("%.3f", disc))
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			minbet, maxbet,
-			win3, win4, disc,
+			fmt.Sprintf("%.3f", win3), fmt.Sprintf("%.3f", win4), fmt.Sprintf("%.3f", disc),
 			limitglobal, limittotal,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
 			company)
-		helpers.ErrorCheck(e)
 
-		update, err_update := rec.RowsAffected()
-		helpers.ErrorCheck(err_update)
-		if update > 0 {
-			msg = "Success"
+		if flag_update {
+			msg = "Succes"
+			log.Println(msg_update)
 
 			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
 			noteafter := ""
@@ -1010,6 +1016,8 @@ func Save_PasaranConfColokNaga(
 			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "<br />"
 			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
 			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - COLOK NAGA", "", noteafter)
+		} else {
+			log.Println(msg_update)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -1027,39 +1035,40 @@ func Save_PasaranConfColokJitu(
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	con := db.CreateCon()
-	ctx := context.Background()
 	render_page := time.Now()
 
 	msg := "Failed"
 	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
 	if tipepasaran != "WAJIB" {
-		stmt, e := con.PrepareContext(ctx, `
-					UPDATE 
-					`+config.DB_tbl_mst_company_game_pasaran+` 
-					SET 5_minbet=? , 5_maxbet=?, 
-					5_winas=?, 5_winkop=?, 5_winkepala=?, 5_winekor=?,
-					5_desic=?, 5_limitbuang=?, 5_limitotal=?,  
-					updatecomppas=?, updatedatecompas=? 
-					WHERE idcomppasaran=? AND idcompany=? 
-				`)
-		helpers.ErrorCheck(e)
-		rec, e := stmt.ExecContext(ctx,
+		sql_update := `
+			UPDATE 
+			` + config.DB_tbl_mst_company_game_pasaran + ` 
+			SET 5_minbet=? , 5_maxbet=?, 
+			5_winas=?, 5_winkop=?, 5_winkepala=?, 5_winekor=?,
+			5_desic=?, 5_limitbuang=?, 5_limitotal=?,  
+			updatecomppas=?, updatedatecompas=? 
+			WHERE idcomppasaran=? AND idcompany=? 
+		`
+		log.Println("COLOK JITU")
+		log.Printf("WIN AS : %s", fmt.Sprintf("%.3f", winas))
+		log.Printf("WIN KOP : %s", fmt.Sprintf("%.3f", winkop))
+		log.Printf("WIN KEPALA : %s", fmt.Sprintf("%.3f", winkepala))
+		log.Printf("WIN EKOR : %s", fmt.Sprintf("%.3f", winekor))
+		log.Printf("DISC : %s", fmt.Sprintf("%.3f", disc))
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			minbet, maxbet,
-			winas, winkop, winkepala, winekor,
+			fmt.Sprintf("%.3f", winas), fmt.Sprintf("%.3f", winkop), fmt.Sprintf("%.3f", winkepala), fmt.Sprintf("%.3f", winekor),
 			disc,
 			limitglobal, limittotal,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
 			company)
-		helpers.ErrorCheck(e)
 
-		update, err_update := rec.RowsAffected()
-		helpers.ErrorCheck(err_update)
-		if update > 0 {
-			msg = "Success"
+		if flag_update {
+			msg = "Succes"
+			log.Println(msg_update)
 
 			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
 			noteafter := ""
@@ -1074,6 +1083,8 @@ func Save_PasaranConfColokJitu(
 			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "<br />"
 			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
 			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - COLOK JITU", "", noteafter)
+		} else {
+			log.Println(msg_update)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -1092,61 +1103,73 @@ func Save_PasaranConf5050Umum(
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	con := db.CreateCon()
-	ctx := context.Background()
 	render_page := time.Now()
 
 	msg := "Failed"
 	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
 	if tipepasaran != "WAJIB" {
-		stmt, e := con.PrepareContext(ctx, `
-					UPDATE 
-					`+config.DB_tbl_mst_company_game_pasaran+`  
-					SET 6_minbet=? , 6_maxbet=?, 
-					6_keibesar=?, 6_keikecil=?, 6_keigenap=?, 6_keiganjil=?, 6_keitengah=?, 6_keitepi=?, 
-					6_discbesar=?, 6_disckecil=?, 6_discgenap=?, 6_discganjil=?, 6_disctengah=?, 6_disctepi=?,  
-					6_limitbuang=?, 6_limittotal=?,  
-					updatecomppas=?, updatedatecompas=? 
-					WHERE idcomppasaran=? AND idcompany=? 
-				`)
-		helpers.ErrorCheck(e)
-		rec, e := stmt.ExecContext(ctx,
+		sql_update := `
+			UPDATE 
+			` + config.DB_tbl_mst_company_game_pasaran + `  
+			SET 6_minbet=? , 6_maxbet=?, 
+			6_keibesar=?, 6_keikecil=?, 6_keigenap=?, 6_keiganjil=?, 6_keitengah=?, 6_keitepi=?, 
+			6_discbesar=?, 6_disckecil=?, 6_discgenap=?, 6_discganjil=?, 6_disctengah=?, 6_disctepi=?,  
+			6_limitbuang=?, 6_limittotal=?,  
+			updatecomppas=?, updatedatecompas=? 
+			WHERE idcomppasaran=? AND idcompany=? 
+		`
+		log.Println("5050 UMUM")
+		log.Printf("KEI BESAR : %s", fmt.Sprintf("%.3f", keibesar))
+		log.Printf("KEI KECIL : %s", fmt.Sprintf("%.3f", keikecil))
+		log.Printf("KEI GENAP : %s", fmt.Sprintf("%.3f", keigenap))
+		log.Printf("KEI GANJIL : %s", fmt.Sprintf("%.3f", keiganjil))
+		log.Printf("KEI TENGAH : %s", fmt.Sprintf("%.3f", keitengah))
+		log.Printf("KEI TEPI : %s", fmt.Sprintf("%.3f", keitepi))
+		log.Printf("DISC BESAR : %s", fmt.Sprintf("%.3f", discbesar))
+		log.Printf("DISC KECIL : %s", fmt.Sprintf("%.3f", disckecil))
+		log.Printf("DISC GENAP : %s", fmt.Sprintf("%.3f", discgenap))
+		log.Printf("DISC GANJIL : %s", fmt.Sprintf("%.3f", discganjil))
+		log.Printf("DISC TENGAH : %s", fmt.Sprintf("%.3f", disctengah))
+		log.Printf("DISC TEPI : %s", fmt.Sprintf("%.3f", disctepi))
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			minbet, maxbet,
-			keibesar, keikecil, keigenap, keiganjil, keitengah, keitepi,
-			discbesar, disckecil, discgenap, discganjil, disctengah, disctepi,
+			fmt.Sprintf("%.3f", keibesar), fmt.Sprintf("%.3f", keikecil), fmt.Sprintf("%.3f", keigenap), fmt.Sprintf("%.3f", keiganjil),
+			fmt.Sprintf("%.3f", keitengah), fmt.Sprintf("%.3f", keitepi),
+			fmt.Sprintf("%.3f", discbesar), fmt.Sprintf("%.3f", disckecil), fmt.Sprintf("%.3f", discgenap), fmt.Sprintf("%.3f", discganjil),
+			fmt.Sprintf("%.3f", disctengah), fmt.Sprintf("%.3f", disctepi),
 			limitglobal, limittotal,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
 			company)
-		helpers.ErrorCheck(e)
 
-		update, err_update := rec.RowsAffected()
-		helpers.ErrorCheck(err_update)
-		if update > 0 {
+		if flag_update {
 			msg = "Success"
+			log.Println(msg_update)
 
 			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
 			noteafter := ""
 			noteafter += "PASARAN - " + nmpasarantogel + "\n"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "\n"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "\n"
-			noteafter += "DISC BESAR - " + fmt.Sprintf("%.2f", discbesar) + "\n"
-			noteafter += "DISC KECIL - " + fmt.Sprintf("%.2f", disckecil) + "\n"
-			noteafter += "DISC GENAP - " + fmt.Sprintf("%.2f", discgenap) + "\n"
-			noteafter += "DISC GANJIL - " + fmt.Sprintf("%.2f", discganjil) + "\n"
-			noteafter += "DISC TENGAH - " + fmt.Sprintf("%.2f", disctengah) + "\n"
-			noteafter += "DISC TEPI - " + fmt.Sprintf("%.2f", disctepi) + "\n"
-			noteafter += "KEI BESAR - " + fmt.Sprintf("%.2f", keibesar) + "\n"
-			noteafter += "KEI KECIL - " + fmt.Sprintf("%.2f", keikecil) + "\n"
-			noteafter += "KEI GENAP - " + fmt.Sprintf("%.2f", keigenap) + "\n"
-			noteafter += "KEI GANJIL - " + fmt.Sprintf("%.2f", keiganjil) + "\n"
-			noteafter += "KEI TENGAH - " + fmt.Sprintf("%.2f", keitengah) + "\n"
+			noteafter += "DISC BESAR - " + fmt.Sprintf("%.3f", discbesar) + "\n"
+			noteafter += "DISC KECIL - " + fmt.Sprintf("%.3f", disckecil) + "\n"
+			noteafter += "DISC GENAP - " + fmt.Sprintf("%.3f", discgenap) + "\n"
+			noteafter += "DISC GANJIL - " + fmt.Sprintf("%.3f", discganjil) + "\n"
+			noteafter += "DISC TENGAH - " + fmt.Sprintf("%.3f", disctengah) + "\n"
+			noteafter += "DISC TEPI - " + fmt.Sprintf("%.3f", disctepi) + "\n"
+			noteafter += "KEI BESAR - " + fmt.Sprintf("%.3f", keibesar) + "\n"
+			noteafter += "KEI KECIL - " + fmt.Sprintf("%.3f", keikecil) + "\n"
+			noteafter += "KEI GENAP - " + fmt.Sprintf("%.3f", keigenap) + "\n"
+			noteafter += "KEI GANJIL - " + fmt.Sprintf("%.3f", keiganjil) + "\n"
+			noteafter += "KEI TENGAH - " + fmt.Sprintf("%.3f", keitengah) + "\n"
 			noteafter += "KEI TEPI - " + fmt.Sprintf("%f", keitepi) + "\n"
 			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "\n"
 			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
 			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - 5050 UMUM", "", noteafter)
+		} else {
+			log.Println(msg_update)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -1171,37 +1194,68 @@ func Save_PasaranConf5050Special(
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	con := db.CreateCon()
-	ctx := context.Background()
 	render_page := time.Now()
 
 	msg := "Failed"
 	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
 	if tipepasaran != "WAJIB" {
-		stmt, e := con.PrepareContext(ctx, `
-					UPDATE 
-					`+config.DB_tbl_mst_company_game_pasaran+` 
-					SET 7_minbet=? , 7_maxbet=?, 
-					7_keiasganjil=?, 7_keiasgenap=?, 7_keiasbesar=?, 7_keiaskecil=?, 
-					7_keikopganjil=?, 7_keikopgenap=?, 7_keikopbesar=?, 7_keikopkecil=?, 
-					7_keikepalaganjil=?, 7_keikepalagenap=?, 7_keikepalabesar=?, 7_keikepalakecil=?,  
-					7_keiekorganjil=?, 7_keiekorgenap=?, 7_keiekorbesar=?, 7_keiekorkecil=?, 
-					7_discasganjil=?, 7_discasgenap=?, 7_discasbesar=?, 7_discaskecil=?, 
-					7_disckopganjil=?, 7_disckopgenap=?, 7_disckopbesar=?, 7_disckopkecil=?, 
-					7_disckepalaganjil=?, 7_disckepalagenap=?, 7_disckepalabesar=?, 7_disckepalakecil=?, 
-					7_discekorganjil=?, 7_discekorgenap=?, 7_discekorbesar=?, 7_discekorkecil=?, 
-					7_limitbuang=?, 7_limittotal=?,  
-					updatecomppas=?, updatedatecompas=? 
-					WHERE idcomppasaran=? AND idcompany=? 
-				`)
-		helpers.ErrorCheck(e)
-		rec, e := stmt.ExecContext(ctx,
+		sql_update := `
+			UPDATE 
+			` + config.DB_tbl_mst_company_game_pasaran + ` 
+			SET 7_minbet=? , 7_maxbet=?, 
+			7_keiasganjil=?, 7_keiasgenap=?, 7_keiasbesar=?, 7_keiaskecil=?, 
+			7_keikopganjil=?, 7_keikopgenap=?, 7_keikopbesar=?, 7_keikopkecil=?, 
+			7_keikepalaganjil=?, 7_keikepalagenap=?, 7_keikepalabesar=?, 7_keikepalakecil=?,  
+			7_keiekorganjil=?, 7_keiekorgenap=?, 7_keiekorbesar=?, 7_keiekorkecil=?, 
+			7_discasganjil=?, 7_discasgenap=?, 7_discasbesar=?, 7_discaskecil=?, 
+			7_disckopganjil=?, 7_disckopgenap=?, 7_disckopbesar=?, 7_disckopkecil=?, 
+			7_disckepalaganjil=?, 7_disckepalagenap=?, 7_disckepalabesar=?, 7_disckepalakecil=?, 
+			7_discekorganjil=?, 7_discekorgenap=?, 7_discekorbesar=?, 7_discekorkecil=?, 
+			7_limitbuang=?, 7_limittotal=?,  
+			updatecomppas=?, updatedatecompas=? 
+			WHERE idcomppasaran=? AND idcompany=? 
+		`
+		log.Println("5050 SPECIAL")
+		log.Printf("KEI AS GANJIL : %s", fmt.Sprintf("%.3f", keiasganjil))
+		log.Printf("KEI AS GENAP : %s", fmt.Sprintf("%.3f", keiasgenap))
+		log.Printf("KEI AS BESAR : %s", fmt.Sprintf("%.3f", keiasbesar))
+		log.Printf("KEI AS KECIL : %s", fmt.Sprintf("%.3f", keiaskecil))
+		log.Printf("KEI KOP GANJIL : %s", fmt.Sprintf("%.3f", keikopganjil))
+		log.Printf("KEI KOP GENAP : %s", fmt.Sprintf("%.3f", keikopgenap))
+		log.Printf("KEI KOP BESAR : %s", fmt.Sprintf("%.3f", keikopbesar))
+		log.Printf("KEI KOP KECIL : %s", fmt.Sprintf("%.3f", keikopkecil))
+		log.Printf("KEI KEPALA GANJIL : %s", fmt.Sprintf("%.3f", keikepalaganjil))
+		log.Printf("KEI KEPALA GENAP : %s", fmt.Sprintf("%.3f", keikepalagenap))
+		log.Printf("KEI KEPALA BESAR : %s", fmt.Sprintf("%.3f", keikepalabesar))
+		log.Printf("KEI KEPALA KECIL : %s", fmt.Sprintf("%.3f", keikepalakecil))
+		log.Printf("KEI EKOR GANJIL : %s", fmt.Sprintf("%.3f", keiekorganjil))
+		log.Printf("KEI EKOR GENAP : %s", fmt.Sprintf("%.3f", keiekorgenap))
+		log.Printf("KEI EKOR BESAR : %s", fmt.Sprintf("%.3f", keiekorbesar))
+		log.Printf("KEI EKOR KECIL : %s", fmt.Sprintf("%.3f", keiekorkecil))
+
+		log.Printf("DISC AS GANJIL : %s", fmt.Sprintf("%.3f", discasganjil))
+		log.Printf("DISC AS GENAP : %s", fmt.Sprintf("%.3f", discasgenap))
+		log.Printf("DISC AS BESAR : %s", fmt.Sprintf("%.3f", discasbesar))
+		log.Printf("DISC AS KECIL : %s", fmt.Sprintf("%.3f", discaskecil))
+		log.Printf("DISC KOP GANJIL : %s", fmt.Sprintf("%.3f", disckopganjil))
+		log.Printf("DISC KOP GENAP : %s", fmt.Sprintf("%.3f", disckopgenap))
+		log.Printf("DISC KOP BESAR : %s", fmt.Sprintf("%.3f", disckopbesar))
+		log.Printf("DISC KOP KECIL : %s", fmt.Sprintf("%.3f", disckopkecil))
+		log.Printf("DISC KEPALA GANJIL : %s", fmt.Sprintf("%.3f", disckepalaganjil))
+		log.Printf("DISC KEPALA GENAP : %s", fmt.Sprintf("%.3f", disckepalagenap))
+		log.Printf("DISC KEPALA BESAR : %s", fmt.Sprintf("%.3f", disckepalabesar))
+		log.Printf("DISC KEPALA KECIL : %s", fmt.Sprintf("%.3f", disckepalakecil))
+		log.Printf("DISC EKOR GANJIL : %s", fmt.Sprintf("%.3f", discekorganjil))
+		log.Printf("DISC EKOR GENAP : %s", fmt.Sprintf("%.3f", discekorgenap))
+		log.Printf("DISC EKOR BESAR : %s", fmt.Sprintf("%.3f", discekorbesar))
+		log.Printf("DISC EKOR KECIL : %s", fmt.Sprintf("%.3f", discekorkecil))
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			minbet, maxbet,
-			keiasganjil, keiasgenap, keiasbesar, keiaskecil,
-			keikopganjil, keikopgenap, keikopbesar, keikopkecil,
-			keikepalaganjil, keikepalagenap, keikepalabesar, keikepalakecil,
-			keiekorganjil, keiekorgenap, keiekorbesar, keiekorkecil,
+			fmt.Sprintf("%.3f", keiasganjil), fmt.Sprintf("%.3f", keiasgenap), fmt.Sprintf("%.3f", keiasbesar), fmt.Sprintf("%.3f", keiaskecil),
+			fmt.Sprintf("%.3f", keikopganjil), fmt.Sprintf("%.3f", keikopgenap), fmt.Sprintf("%.3f", keikopbesar), fmt.Sprintf("%.3f", keikopkecil),
+			fmt.Sprintf("%.3f", keikepalaganjil), fmt.Sprintf("%.3f", keikepalagenap), fmt.Sprintf("%.3f", keikepalabesar), fmt.Sprintf("%.3f", keikepalakecil),
+			fmt.Sprintf("%.3f", keiekorganjil), fmt.Sprintf("%.3f", keiekorgenap), fmt.Sprintf("%.3f", keiekorbesar), fmt.Sprintf("%.3f", keiekorkecil),
 			discasganjil, discasgenap, discasbesar, discaskecil,
 			disckopganjil, disckopgenap, disckopbesar, disckopkecil,
 			disckepalaganjil, disckepalagenap, disckepalabesar, disckepalakecil,
@@ -1212,53 +1266,53 @@ func Save_PasaranConf5050Special(
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
 			company)
-		helpers.ErrorCheck(e)
 
-		update, err_update := rec.RowsAffected()
-		helpers.ErrorCheck(err_update)
-		if update > 0 {
+		if flag_update {
 			msg = "Success"
+			log.Println(msg_update)
 
 			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
 			noteafter := ""
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
-			noteafter += "DISC AS GANJIL - " + fmt.Sprintf("%.2f", discasganjil) + "<br />"
-			noteafter += "DISC AS GENAP - " + fmt.Sprintf("%.2f", discasgenap) + "<br />"
-			noteafter += "DISC AS BESAR - " + fmt.Sprintf("%.2f", discasbesar) + "<br />"
-			noteafter += "DISC AS KECIL - " + fmt.Sprintf("%.2f", discaskecil) + "<br />"
-			noteafter += "DISC KOP GANJIL - " + fmt.Sprintf("%.2f", disckopganjil) + "<br />"
-			noteafter += "DISC KOP GENAP - " + fmt.Sprintf("%.2f", disckopgenap) + "<br />"
-			noteafter += "DISC KOP BESAR - " + fmt.Sprintf("%.2f", disckopbesar) + "<br />"
-			noteafter += "DISC KOP KECIL - " + fmt.Sprintf("%.2f", disckopkecil) + "<br />"
-			noteafter += "DISC KEPALA GANJIL - " + fmt.Sprintf("%.2f", disckepalaganjil) + "<br />"
-			noteafter += "DISC KEPALA GENAP - " + fmt.Sprintf("%.2f", disckepalagenap) + "<br />"
-			noteafter += "DISC KEPALA BESAR - " + fmt.Sprintf("%.2f", disckepalabesar) + "<br />"
-			noteafter += "DISC KEPALA KECIL - " + fmt.Sprintf("%.2f", disckepalakecil) + "<br />"
-			noteafter += "DISC EKOR GANJIL - " + fmt.Sprintf("%.2f", discekorganjil) + "<br />"
-			noteafter += "DISC EKOR GENAP - " + fmt.Sprintf("%.2f", discekorgenap) + "<br />"
-			noteafter += "DISC EKOR BESAR - " + fmt.Sprintf("%.2f", discekorbesar) + "<br />"
-			noteafter += "DISC EKOR KECIL - " + fmt.Sprintf("%.2f", discekorkecil) + "<br />"
-			noteafter += "KEI AS GANJIL - " + fmt.Sprintf("%.2f", keiasganjil) + "<br />"
-			noteafter += "KEI AS GENAP - " + fmt.Sprintf("%.2f", keiasgenap) + "<br />"
-			noteafter += "KEI AS BESAR - " + fmt.Sprintf("%.2f", keiasbesar) + "<br />"
-			noteafter += "KEI AS KECIL - " + fmt.Sprintf("%.2f", keiaskecil) + "<br />"
-			noteafter += "KEI KOP GANJIL - " + fmt.Sprintf("%.2f", keikopganjil) + "<br />"
-			noteafter += "KEI KOP GENAP - " + fmt.Sprintf("%.2f", keikopgenap) + "<br />"
-			noteafter += "KEI KOP BESAR - " + fmt.Sprintf("%.2f", keikopbesar) + "<br />"
-			noteafter += "KEI KOP KECIL - " + fmt.Sprintf("%.2f", keikopkecil) + "<br />"
-			noteafter += "KEI KEPALA GANJIL - " + fmt.Sprintf("%.2f", keikepalaganjil) + "<br />"
-			noteafter += "KEI KEPALA GENAP - " + fmt.Sprintf("%.2f", keikepalagenap) + "<br />"
-			noteafter += "KEI KEPALA BESAR - " + fmt.Sprintf("%.2f", keikepalabesar) + "<br />"
-			noteafter += "KEI KEPALA KECIL - " + fmt.Sprintf("%.2f", keikepalakecil) + "<br />"
-			noteafter += "KEI EKOR GANJIL - " + fmt.Sprintf("%.2f", keiekorganjil) + "<br />"
-			noteafter += "KEI EKOR GENAP - " + fmt.Sprintf("%.2f", keiekorgenap) + "<br />"
-			noteafter += "KEI EKOR BESAR - " + fmt.Sprintf("%.2f", keiekorbesar) + "<br />"
-			noteafter += "KEI EKOR KECIL - " + fmt.Sprintf("%.2f", keiekorkecil) + "<br />"
+			noteafter += "DISC AS GANJIL - " + fmt.Sprintf("%.3f", discasganjil) + "<br />"
+			noteafter += "DISC AS GENAP - " + fmt.Sprintf("%.3f", discasgenap) + "<br />"
+			noteafter += "DISC AS BESAR - " + fmt.Sprintf("%.3f", discasbesar) + "<br />"
+			noteafter += "DISC AS KECIL - " + fmt.Sprintf("%.3f", discaskecil) + "<br />"
+			noteafter += "DISC KOP GANJIL - " + fmt.Sprintf("%.3f", disckopganjil) + "<br />"
+			noteafter += "DISC KOP GENAP - " + fmt.Sprintf("%.3f", disckopgenap) + "<br />"
+			noteafter += "DISC KOP BESAR - " + fmt.Sprintf("%.3f", disckopbesar) + "<br />"
+			noteafter += "DISC KOP KECIL - " + fmt.Sprintf("%.3f", disckopkecil) + "<br />"
+			noteafter += "DISC KEPALA GANJIL - " + fmt.Sprintf("%.3f", disckepalaganjil) + "<br />"
+			noteafter += "DISC KEPALA GENAP - " + fmt.Sprintf("%.3f", disckepalagenap) + "<br />"
+			noteafter += "DISC KEPALA BESAR - " + fmt.Sprintf("%.3f", disckepalabesar) + "<br />"
+			noteafter += "DISC KEPALA KECIL - " + fmt.Sprintf("%.3f", disckepalakecil) + "<br />"
+			noteafter += "DISC EKOR GANJIL - " + fmt.Sprintf("%.3f", discekorganjil) + "<br />"
+			noteafter += "DISC EKOR GENAP - " + fmt.Sprintf("%.3f", discekorgenap) + "<br />"
+			noteafter += "DISC EKOR BESAR - " + fmt.Sprintf("%.3f", discekorbesar) + "<br />"
+			noteafter += "DISC EKOR KECIL - " + fmt.Sprintf("%.3f", discekorkecil) + "<br />"
+			noteafter += "KEI AS GANJIL - " + fmt.Sprintf("%.3f", keiasganjil) + "<br />"
+			noteafter += "KEI AS GENAP - " + fmt.Sprintf("%.3f", keiasgenap) + "<br />"
+			noteafter += "KEI AS BESAR - " + fmt.Sprintf("%.3f", keiasbesar) + "<br />"
+			noteafter += "KEI AS KECIL - " + fmt.Sprintf("%.3f", keiaskecil) + "<br />"
+			noteafter += "KEI KOP GANJIL - " + fmt.Sprintf("%.3f", keikopganjil) + "<br />"
+			noteafter += "KEI KOP GENAP - " + fmt.Sprintf("%.3f", keikopgenap) + "<br />"
+			noteafter += "KEI KOP BESAR - " + fmt.Sprintf("%.3f", keikopbesar) + "<br />"
+			noteafter += "KEI KOP KECIL - " + fmt.Sprintf("%.3f", keikopkecil) + "<br />"
+			noteafter += "KEI KEPALA GANJIL - " + fmt.Sprintf("%.3f", keikepalaganjil) + "<br />"
+			noteafter += "KEI KEPALA GENAP - " + fmt.Sprintf("%.3f", keikepalagenap) + "<br />"
+			noteafter += "KEI KEPALA BESAR - " + fmt.Sprintf("%.3f", keikepalabesar) + "<br />"
+			noteafter += "KEI KEPALA KECIL - " + fmt.Sprintf("%.3f", keikepalakecil) + "<br />"
+			noteafter += "KEI EKOR GANJIL - " + fmt.Sprintf("%.3f", keiekorganjil) + "<br />"
+			noteafter += "KEI EKOR GENAP - " + fmt.Sprintf("%.3f", keiekorgenap) + "<br />"
+			noteafter += "KEI EKOR BESAR - " + fmt.Sprintf("%.3f", keiekorbesar) + "<br />"
+			noteafter += "KEI EKOR KECIL - " + fmt.Sprintf("%.3f", keiekorkecil) + "<br />"
 			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "<br />"
 			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
 			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - 5050 SPECIAL", "", noteafter)
+		} else {
+			log.Println(msg_update)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -1281,88 +1335,124 @@ func Save_PasaranConf5050Kombinasi(
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	con := db.CreateCon()
-	ctx := context.Background()
 	render_page := time.Now()
 
 	msg := "Failed"
 	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
 	if tipepasaran != "WAJIB" {
-		stmt, e := con.PrepareContext(ctx, `
-					UPDATE 
-					`+config.DB_tbl_mst_company_game_pasaran+`  
-					SET 8_minbet=? , 8_maxbet=?, 
-					8_belakangkeimono=?, 8_belakangkeistereo=?, 8_belakangkeikembang=?, 8_belakangkeikempis=?, 8_belakangkeikembar=?, 
-					8_tengahkeimono=?, 8_tengahkeistereo=?, 8_tengahkeikembang=?, 8_tengahkeikempis=?, 8_tengahkeikembar=?, 
-					8_depankeimono=?, 8_depankeistereo=?, 8_depankeikembang=?, 8_depankeikempis=?, 8_depankeikembar=?, 
-					8_belakangdiscmono=?, 8_belakangdiscstereo=?, 8_belakangdisckembang=?, 8_belakangdisckempis=?, 8_belakangdisckembar=?, 
-					8_tengahdiscmono=?, 8_tengahdiscstereo=?, 8_tengahdisckembang=?, 8_tengahdisckempis=?, 8_tengahdisckembar=?, 
-					8_depandiscmono=?, 8_depandiscstereo=?, 8_depandisckembang=?, 8_depandisckempis=?, 8_depandisckembar=?, 
-					8_limitbuang=?, 8_limittotal=?,  
-					updatecomppas=?, updatedatecompas=? 
-					WHERE idcomppasaran=? AND idcompany=? 
-				`)
-		helpers.ErrorCheck(e)
-		rec, e := stmt.ExecContext(ctx,
+		sql_update := `
+			UPDATE 
+			` + config.DB_tbl_mst_company_game_pasaran + `  
+			SET 8_minbet=? , 8_maxbet=?, 
+			8_belakangkeimono=?, 8_belakangkeistereo=?, 8_belakangkeikembang=?, 8_belakangkeikempis=?, 8_belakangkeikembar=?, 
+			8_tengahkeimono=?, 8_tengahkeistereo=?, 8_tengahkeikembang=?, 8_tengahkeikempis=?, 8_tengahkeikembar=?, 
+			8_depankeimono=?, 8_depankeistereo=?, 8_depankeikembang=?, 8_depankeikempis=?, 8_depankeikembar=?, 
+			8_belakangdiscmono=?, 8_belakangdiscstereo=?, 8_belakangdisckembang=?, 8_belakangdisckempis=?, 8_belakangdisckembar=?, 
+			8_tengahdiscmono=?, 8_tengahdiscstereo=?, 8_tengahdisckembang=?, 8_tengahdisckempis=?, 8_tengahdisckembar=?, 
+			8_depandiscmono=?, 8_depandiscstereo=?, 8_depandisckembang=?, 8_depandisckempis=?, 8_depandisckembar=?, 
+			8_limitbuang=?, 8_limittotal=?,  
+			updatecomppas=?, updatedatecompas=? 
+			WHERE idcomppasaran=? AND idcompany=? 
+		`
+		log.Println("5050 KOMBINASI")
+		log.Printf("BELAKANG KEI MONO : %s", fmt.Sprintf("%.3f", belakangkeimono))
+		log.Printf("BELAKANG KEI STEREO : %s", fmt.Sprintf("%.3f", belakangkeistereo))
+		log.Printf("BELAKANG KEI KEMBANG : %s", fmt.Sprintf("%.3f", belakangkeikembang))
+		log.Printf("BELAKANG KEI KEMPIS : %s", fmt.Sprintf("%.3f", belakangkeikempis))
+		log.Printf("BELAKANG KEI KEMBAR : %s", fmt.Sprintf("%.3f", belakangkeikembar))
+		log.Printf("TENGAH KEI MONO : %s", fmt.Sprintf("%.3f", tengahkeimono))
+		log.Printf("TENGAH KEI STEREO : %s", fmt.Sprintf("%.3f", tengahkeistereo))
+		log.Printf("TENGAH KEI KEMBANG : %s", fmt.Sprintf("%.3f", tengahkeikembang))
+		log.Printf("TENGAH KEI KEMPIS : %s", fmt.Sprintf("%.3f", tengahkeikempis))
+		log.Printf("TENGAH KEI KEMBAR : %s", fmt.Sprintf("%.3f", tengahkeikembar))
+		log.Printf("DEPAN KEI MONO : %s", fmt.Sprintf("%.3f", depankeimono))
+		log.Printf("DEPAN KEI STEREO : %s", fmt.Sprintf("%.3f", depankeistereo))
+		log.Printf("DEPAN KEI KEMBANG : %s", fmt.Sprintf("%.3f", depankeikembang))
+		log.Printf("DEPAN KEI KEMPIS : %s", fmt.Sprintf("%.3f", depankeikempis))
+		log.Printf("DEPAN KEI KEMBAR : %s", fmt.Sprintf("%.3f", depankeikembar))
+
+		log.Printf("BELAKANG DISC MONO : %s", fmt.Sprintf("%.3f", belakangdiscmono))
+		log.Printf("BELAKANG DISC STEREO : %s", fmt.Sprintf("%.3f", belakangdiscstereo))
+		log.Printf("BELAKANG DISC KEMBANG : %s", fmt.Sprintf("%.3f", belakangdisckembang))
+		log.Printf("BELAKANG DISC KEMPIS : %s", fmt.Sprintf("%.3f", belakangdisckempis))
+		log.Printf("BELAKANG DISC KEMBAR : %s", fmt.Sprintf("%.3f", belakangdisckembar))
+		log.Printf("TENGAH DISC MONO : %s", fmt.Sprintf("%.3f", tengahdiscmono))
+		log.Printf("TENGAH DISC STEREO : %s", fmt.Sprintf("%.3f", tengahdiscstereo))
+		log.Printf("TENGAH DISC KEMBANG : %s", fmt.Sprintf("%.3f", tengahdisckembang))
+		log.Printf("TENGAH DISC KEMPIS : %s", fmt.Sprintf("%.3f", tengahdisckempis))
+		log.Printf("TENGAH DISC KEMBAR : %s", fmt.Sprintf("%.3f", tengahdisckembar))
+		log.Printf("DEPAN DISC MONO : %s", fmt.Sprintf("%.3f", depandiscmono))
+		log.Printf("DEPAN DISC STEREO : %s", fmt.Sprintf("%.3f", depandiscstereo))
+		log.Printf("DEPAN DISC KEMBANG : %s", fmt.Sprintf("%.3f", depandisckembang))
+		log.Printf("DEPAN DISC KEMPIS : %s", fmt.Sprintf("%.3f", depandisckempis))
+		log.Printf("DEPAN DISC KEMBAR : %s", fmt.Sprintf("%.3f", depandisckembar))
+
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			minbet, maxbet,
-			belakangkeimono, belakangkeistereo, belakangkeikembang, belakangkeikempis, belakangkeikembar,
-			tengahkeimono, tengahkeistereo, tengahkeikembang, tengahkeikempis, tengahkeikembar,
-			depankeimono, depankeistereo, depankeikembang, depankeikempis, depankeikembar,
-			belakangdiscmono, belakangdiscstereo, belakangdisckembang, belakangdisckempis, belakangdisckembar,
-			tengahdiscmono, tengahdiscstereo, tengahdisckembang, tengahdisckempis, tengahdisckembar,
-			depandiscmono, depandiscstereo, depandisckembang, depandisckempis, depandisckembar,
+			fmt.Sprintf("%.3f", belakangkeimono), fmt.Sprintf("%.3f", belakangkeistereo), fmt.Sprintf("%.3f", belakangkeikembang),
+			fmt.Sprintf("%.3f", belakangkeikempis), fmt.Sprintf("%.3f", belakangkeikembar),
+			fmt.Sprintf("%.3f", tengahkeimono), fmt.Sprintf("%.3f", tengahkeistereo), fmt.Sprintf("%.3f", tengahkeikembang),
+			fmt.Sprintf("%.3f", tengahkeikempis), fmt.Sprintf("%.3f", tengahkeikembar),
+			fmt.Sprintf("%.3f", depankeimono), fmt.Sprintf("%.3f", depankeistereo), fmt.Sprintf("%.3f", depankeikembang),
+			fmt.Sprintf("%.3f", depankeikempis), fmt.Sprintf("%.3f", depankeikembar),
+			fmt.Sprintf("%.3f", belakangdiscmono), fmt.Sprintf("%.3f", belakangdiscstereo), fmt.Sprintf("%.3f", belakangdisckembang),
+			fmt.Sprintf("%.3f", belakangdisckempis), fmt.Sprintf("%.3f", belakangdisckembar),
+			fmt.Sprintf("%.3f", tengahdiscmono), fmt.Sprintf("%.3f", tengahdiscstereo), fmt.Sprintf("%.3f", tengahdisckembang),
+			fmt.Sprintf("%.3f", tengahdisckempis), fmt.Sprintf("%.3f", tengahdisckembar),
+			fmt.Sprintf("%.3f", depandiscmono), fmt.Sprintf("%.3f", depandiscstereo), fmt.Sprintf("%.3f", depandisckembang),
+			fmt.Sprintf("%.3f", depandisckempis), fmt.Sprintf("%.3f", depandisckembar),
 			limitglobal,
 			limittotal,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
 			company)
-		helpers.ErrorCheck(e)
 
-		update, err_update := rec.RowsAffected()
-		helpers.ErrorCheck(err_update)
-		if update > 0 {
+		if flag_update {
 			msg = "Success"
+			log.Println(msg_update)
 
 			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
 			noteafter := ""
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
-			noteafter += "DEPAN KEI MONO - " + fmt.Sprintf("%.2f", depankeimono) + "<br />"
-			noteafter += "DEPAN KEI STEREO - " + fmt.Sprintf("%.2f", depankeistereo) + "<br />"
-			noteafter += "DEPAN KEI KEMBANG - " + fmt.Sprintf("%.2f", depankeikembang) + "<br />"
-			noteafter += "DEPAN KEI KEMPIS - " + fmt.Sprintf("%.2f", depankeikempis) + "<br />"
-			noteafter += "DEPAN KEI KEMBAR - " + fmt.Sprintf("%.2f", depankeikembar) + "<br />"
-			noteafter += "TENGAH KEI MONO - " + fmt.Sprintf("%.2f", tengahkeimono) + "<br />"
-			noteafter += "TENGAH KEI STEREO - " + fmt.Sprintf("%.2f", tengahkeistereo) + "<br />"
-			noteafter += "TENGAH KEI KEMBANG - " + fmt.Sprintf("%.2f", tengahkeikembang) + "<br />"
-			noteafter += "TENGAH KEI KEMPIS - " + fmt.Sprintf("%.2f", tengahkeikempis) + "<br />"
-			noteafter += "TENGAH KEI KEMBAR - " + fmt.Sprintf("%.2f", tengahkeikembar) + "<br />"
-			noteafter += "BELAKANG KEI MONO - " + fmt.Sprintf("%.2f", belakangkeimono) + "<br />"
-			noteafter += "BELAKANG KEI STEREO - " + fmt.Sprintf("%.2f", belakangkeistereo) + "<br />"
-			noteafter += "BELAKANG KEI KEMBANG - " + fmt.Sprintf("%.2f", belakangkeikembang) + "<br />"
-			noteafter += "BELAKANG KEI KEMPIS - " + fmt.Sprintf("%.2f", belakangkeikempis) + "<br />"
-			noteafter += "BELAKANG KEI KEMBAR - " + fmt.Sprintf("%.2f", belakangkeikembar) + "<br />"
-			noteafter += "DEPAN DISC MONO - " + fmt.Sprintf("%.2f", depandiscmono) + "<br />"
-			noteafter += "DEPAN DISC STEREO - " + fmt.Sprintf("%.2f", depandiscstereo) + "<br />"
-			noteafter += "DEPAN DISC KEMBANG - " + fmt.Sprintf("%.2f", depandisckembang) + "<br />"
-			noteafter += "DEPAN DISC KEMPIS - " + fmt.Sprintf("%.2f", depandisckempis) + "<br />"
-			noteafter += "DEPAN DISC KEMBAR - " + fmt.Sprintf("%.2f", depandisckembar) + "<br />"
-			noteafter += "TENGAH DISC MONO - " + fmt.Sprintf("%.2f", tengahdiscmono) + "<br />"
-			noteafter += "TENGAH DISC STEREO - " + fmt.Sprintf("%.2f", tengahdiscstereo) + "<br />"
-			noteafter += "TENGAH DISC KEMBANG - " + fmt.Sprintf("%.2f", tengahdisckembang) + "<br />"
-			noteafter += "TENGAH DISC KEMPIS - " + fmt.Sprintf("%.2f", tengahdisckempis) + "<br />"
-			noteafter += "TENGAH DISC KEMBAR - " + fmt.Sprintf("%.2f", tengahdisckembar) + "<br />"
-			noteafter += "BELAKANG DISC MONO - " + fmt.Sprintf("%.2f", belakangdiscmono) + "<br />"
-			noteafter += "BELAKANG DISC STEREO - " + fmt.Sprintf("%.2f", belakangdiscstereo) + "<br />"
-			noteafter += "BELAKANG DISC KEMBANG - " + fmt.Sprintf("%.2f", belakangdisckembang) + "<br />"
-			noteafter += "BELAKANG DISC KEMPIS - " + fmt.Sprintf("%.2f", belakangdisckempis) + "<br />"
-			noteafter += "BELAKANG DISC KEMBAR - " + fmt.Sprintf("%.2f", belakangdisckembar) + "<br />"
+			noteafter += "DEPAN KEI MONO - " + fmt.Sprintf("%.3f", depankeimono) + "<br />"
+			noteafter += "DEPAN KEI STEREO - " + fmt.Sprintf("%.3f", depankeistereo) + "<br />"
+			noteafter += "DEPAN KEI KEMBANG - " + fmt.Sprintf("%.3f", depankeikembang) + "<br />"
+			noteafter += "DEPAN KEI KEMPIS - " + fmt.Sprintf("%.3f", depankeikempis) + "<br />"
+			noteafter += "DEPAN KEI KEMBAR - " + fmt.Sprintf("%.3f", depankeikembar) + "<br />"
+			noteafter += "TENGAH KEI MONO - " + fmt.Sprintf("%.3f", tengahkeimono) + "<br />"
+			noteafter += "TENGAH KEI STEREO - " + fmt.Sprintf("%.3f", tengahkeistereo) + "<br />"
+			noteafter += "TENGAH KEI KEMBANG - " + fmt.Sprintf("%.3f", tengahkeikembang) + "<br />"
+			noteafter += "TENGAH KEI KEMPIS - " + fmt.Sprintf("%.3f", tengahkeikempis) + "<br />"
+			noteafter += "TENGAH KEI KEMBAR - " + fmt.Sprintf("%.3f", tengahkeikembar) + "<br />"
+			noteafter += "BELAKANG KEI MONO - " + fmt.Sprintf("%.3f", belakangkeimono) + "<br />"
+			noteafter += "BELAKANG KEI STEREO - " + fmt.Sprintf("%.3f", belakangkeistereo) + "<br />"
+			noteafter += "BELAKANG KEI KEMBANG - " + fmt.Sprintf("%.3f", belakangkeikembang) + "<br />"
+			noteafter += "BELAKANG KEI KEMPIS - " + fmt.Sprintf("%.3f", belakangkeikempis) + "<br />"
+			noteafter += "BELAKANG KEI KEMBAR - " + fmt.Sprintf("%.3f", belakangkeikembar) + "<br />"
+			noteafter += "DEPAN DISC MONO - " + fmt.Sprintf("%.3f", depandiscmono) + "<br />"
+			noteafter += "DEPAN DISC STEREO - " + fmt.Sprintf("%.3f", depandiscstereo) + "<br />"
+			noteafter += "DEPAN DISC KEMBANG - " + fmt.Sprintf("%.3f", depandisckembang) + "<br />"
+			noteafter += "DEPAN DISC KEMPIS - " + fmt.Sprintf("%.3f", depandisckempis) + "<br />"
+			noteafter += "DEPAN DISC KEMBAR - " + fmt.Sprintf("%.3f", depandisckembar) + "<br />"
+			noteafter += "TENGAH DISC MONO - " + fmt.Sprintf("%.3f", tengahdiscmono) + "<br />"
+			noteafter += "TENGAH DISC STEREO - " + fmt.Sprintf("%.3f", tengahdiscstereo) + "<br />"
+			noteafter += "TENGAH DISC KEMBANG - " + fmt.Sprintf("%.3f", tengahdisckembang) + "<br />"
+			noteafter += "TENGAH DISC KEMPIS - " + fmt.Sprintf("%.3f", tengahdisckempis) + "<br />"
+			noteafter += "TENGAH DISC KEMBAR - " + fmt.Sprintf("%.3f", tengahdisckembar) + "<br />"
+			noteafter += "BELAKANG DISC MONO - " + fmt.Sprintf("%.3f", belakangdiscmono) + "<br />"
+			noteafter += "BELAKANG DISC STEREO - " + fmt.Sprintf("%.3f", belakangdiscstereo) + "<br />"
+			noteafter += "BELAKANG DISC KEMBANG - " + fmt.Sprintf("%.3f", belakangdisckembang) + "<br />"
+			noteafter += "BELAKANG DISC KEMPIS - " + fmt.Sprintf("%.3f", belakangdisckempis) + "<br />"
+			noteafter += "BELAKANG DISC KEMBAR - " + fmt.Sprintf("%.3f", belakangdisckembar) + "<br />"
 			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "<br />"
 			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
 			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - 5050 KOMBINASI", "", noteafter)
+		} else {
+			log.Println(msg_update)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -1380,48 +1470,48 @@ func Save_PasaranConfMacauKombinasi(
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	con := db.CreateCon()
-	ctx := context.Background()
 	render_page := time.Now()
 
 	msg := "Failed"
 	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
 	if tipepasaran != "WAJIB" {
-		stmt, e := con.PrepareContext(ctx, `
-					UPDATE 
-					`+config.DB_tbl_mst_company_game_pasaran+`  
-					SET 9_minbet=? , 9_maxbet=?, 9_win=?, 9_discount=?, 
-					9_limitbuang=?, 9_limittotal=?, 
-					updatecomppas=?, updatedatecompas=? 
-					WHERE idcomppasaran=? AND idcompany=? 
-				`)
-		helpers.ErrorCheck(e)
-		rec, e := stmt.ExecContext(ctx,
+		sql_update := `
+			UPDATE 
+			` + config.DB_tbl_mst_company_game_pasaran + `  
+			SET 9_minbet=? , 9_maxbet=?, 9_win=?, 9_discount=?, 
+			9_limitbuang=?, 9_limittotal=?, 
+			updatecomppas=?, updatedatecompas=? 
+			WHERE idcomppasaran=? AND idcompany=? 
+		`
+		log.Println("MACAU KOMBINASI")
+		log.Printf("WIN : %s", fmt.Sprintf("%.3f", win))
+		log.Printf("DISC : %s", fmt.Sprintf("%.3f", disc))
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			minbet, maxbet,
-			win, disc,
+			fmt.Sprintf("%.3f", win), fmt.Sprintf("%.3f", disc),
 			limitglobal, limittotal,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
 			company)
-		helpers.ErrorCheck(e)
 
-		update, err_update := rec.RowsAffected()
-		helpers.ErrorCheck(err_update)
-		if update > 0 {
+		if flag_update {
 			msg = "Success"
+			log.Println(msg_update)
 
 			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
 			noteafter := ""
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
-			noteafter += "WIN - " + fmt.Sprintf("%.2f", win) + "<br />"
-			noteafter += "DISC - " + fmt.Sprintf("%.2f", disc) + "<br />"
+			noteafter += "WIN - " + fmt.Sprintf("%.3f", win) + "<br />"
+			noteafter += "DISC - " + fmt.Sprintf("%.3f", disc) + "<br />"
 			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "<br />"
 			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
 			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - MACAU", "", noteafter)
+		} else {
+			log.Println(msg_update)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -1440,54 +1530,60 @@ func Save_PasaranConfDasar(
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	con := db.CreateCon()
-	ctx := context.Background()
 	render_page := time.Now()
 
 	msg := "Failed"
 	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
 	if tipepasaran != "WAJIB" {
-		stmt, e := con.PrepareContext(ctx, `
-					UPDATE 
-					`+config.DB_tbl_mst_company_game_pasaran+`  
-					SET 10_minbet=? , 10_maxbet=?, 
-					10_keibesar=?, 10_keikecil=?, 10_keigenap=?, 10_keiganjil=?, 
-					10_discbesar=?, 10_disckecil=?, 10_discigenap=?, 10_discganjil=?, 
-					10_limitbuang=?, 10_limittotal=?, 
-					updatecomppas=?, updatedatecompas=? 
-					WHERE idcomppasaran=? AND idcompany=? 
-				`)
-		helpers.ErrorCheck(e)
-		rec, e := stmt.ExecContext(ctx,
+		sql_update := `
+			UPDATE 
+			` + config.DB_tbl_mst_company_game_pasaran + `  
+			SET 10_minbet=? , 10_maxbet=?, 
+			10_keibesar=?, 10_keikecil=?, 10_keigenap=?, 10_keiganjil=?, 
+			10_discbesar=?, 10_disckecil=?, 10_discigenap=?, 10_discganjil=?, 
+			10_limitbuang=?, 10_limittotal=?, 
+			updatecomppas=?, updatedatecompas=? 
+			WHERE idcomppasaran=? AND idcompany=? 
+		`
+		log.Println("DASAR")
+		log.Printf("KEI BESAR : %s", fmt.Sprintf("%.3f", keibesar))
+		log.Printf("KEI KECIL : %s", fmt.Sprintf("%.3f", keikecil))
+		log.Printf("KEI GENAP : %s", fmt.Sprintf("%.3f", keigenap))
+		log.Printf("KEI GANJIL : %s", fmt.Sprintf("%.3f", keiganjil))
+		log.Printf("DISC BESAR : %s", fmt.Sprintf("%.3f", discbesar))
+		log.Printf("DISC KECIL : %s", fmt.Sprintf("%.3f", disckecil))
+		log.Printf("DISC GENAP : %s", fmt.Sprintf("%.3f", discigenap))
+		log.Printf("DISC GANJIL : %s", fmt.Sprintf("%.3f", discganjil))
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			minbet, maxbet,
-			keibesar, keikecil, keigenap, keiganjil,
-			discbesar, disckecil, discigenap, discganjil,
+			fmt.Sprintf("%.3f", keibesar), fmt.Sprintf("%.3f", keikecil), fmt.Sprintf("%.3f", keigenap), fmt.Sprintf("%.3f", keiganjil),
+			fmt.Sprintf("%.3f", discbesar), fmt.Sprintf("%.3f", disckecil), fmt.Sprintf("%.3f", discigenap), fmt.Sprintf("%.3f", discganjil),
 			limitglobal,
 			limittotal,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
 			company)
-		helpers.ErrorCheck(e)
 
-		update, err_update := rec.RowsAffected()
-		helpers.ErrorCheck(err_update)
-		if update > 0 {
+		if flag_update {
 			msg = "Success"
+			log.Println(msg_update)
 
 			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
 			noteafter := ""
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
-			noteafter += "DISC BESAR - " + fmt.Sprintf("%.2f", discbesar) + "<br />"
-			noteafter += "DISC KECIL - " + fmt.Sprintf("%.2f", disckecil) + "<br />"
-			noteafter += "DISC GENAP - " + fmt.Sprintf("%.2f", discigenap) + "<br />"
-			noteafter += "DISC GANJIL - " + fmt.Sprintf("%.2f", discganjil) + "<br />"
+			noteafter += "DISC BESAR - " + fmt.Sprintf("%.3f", discbesar) + "<br />"
+			noteafter += "DISC KECIL - " + fmt.Sprintf("%.3f", disckecil) + "<br />"
+			noteafter += "DISC GENAP - " + fmt.Sprintf("%.3f", discigenap) + "<br />"
+			noteafter += "DISC GANJIL - " + fmt.Sprintf("%.3f", discganjil) + "<br />"
 			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "<br />"
 			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
 			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - DASAR", "", noteafter)
+		} else {
+			log.Println(msg_update)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -1506,50 +1602,50 @@ func Save_PasaranConfShio(
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	con := db.CreateCon()
-	ctx := context.Background()
 	render_page := time.Now()
 
 	msg := "Failed"
 	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
 	if tipepasaran != "WAJIB" {
-		stmt, e := con.PrepareContext(ctx, `
-					UPDATE 
-					`+config.DB_tbl_mst_company_game_pasaran+`  
-					SET 11_shiotahunini=? , 11_minbet=?, 11_maxbet=?, 
-					11_win=?, 11_disc=?, 
-					11_limitbuang=?, 11_limittotal=?, 
-					updatecomppas=?, updatedatecompas=? 
-					WHERE idcomppasaran=? AND idcompany=? 
-				`)
-		helpers.ErrorCheck(e)
-		rec, e := stmt.ExecContext(ctx,
+		sql_update := `
+			UPDATE 
+			` + config.DB_tbl_mst_company_game_pasaran + `  
+			SET 11_shiotahunini=? , 11_minbet=?, 11_maxbet=?, 
+			11_win=?, 11_disc=?, 
+			11_limitbuang=?, 11_limittotal=?, 
+			updatecomppas=?, updatedatecompas=? 
+			WHERE idcomppasaran=? AND idcompany=? 
+		`
+		log.Println("SHIO")
+		log.Printf("WIN : %s", fmt.Sprintf("%.3f", win))
+		log.Printf("DISC : %s", fmt.Sprintf("%.3f", disc))
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			shiotahunini,
 			minbet, maxbet,
-			win, disc,
+			fmt.Sprintf("%.3f", win), fmt.Sprintf("%.3f", disc),
 			limitglobal, limittotal,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
 			company)
-		helpers.ErrorCheck(e)
-
-		update, err_udpate := rec.RowsAffected()
-		helpers.ErrorCheck(err_udpate)
-		if update > 0 {
+		log.Printf("%d-%d", minbet, maxbet)
+		if flag_update {
 			msg = "Success"
+			log.Println(msg_update)
 
 			nmpasarantogel := Pasaranmaster_id(pasarancode, "nmpasarantogel")
 			noteafter := ""
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
-			noteafter += "WIN - " + fmt.Sprintf("%.2f", win) + "<br />"
-			noteafter += "DISC - " + fmt.Sprintf("%.2f", disc) + "<br />"
+			noteafter += "WIN - " + fmt.Sprintf("%.3f", win) + "<br />"
+			noteafter += "DISC - " + fmt.Sprintf("%.3f", disc) + "<br />"
 			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "<br />"
 			noteafter += "LIMIT TOTAL - " + strconv.Itoa(limittotal)
 			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - SHIO", "", noteafter)
+		} else {
+			log.Println(msg_update)
 		}
 	}
 	res.Status = fiber.StatusOK
