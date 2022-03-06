@@ -53,246 +53,246 @@ type pasaranconf432 struct {
 	Idpasaran                   int     `json:"idpasaran"`
 	Idpasarantogel              string  `json:"idpasarantogel"`
 	Page                        string  `json:"page"`
-	Pasaran_minbet_432d         int     `json:"pasaran_minbet_432d"`
-	Pasaran_maxbet4d_432d       int     `json:"pasaran_maxbet4d_432d"`
-	Pasaran_maxbet3d_432d       int     `json:"pasaran_maxbet3d_432d"`
-	Pasaran_maxbet3dd_432d      int     `json:"pasaran_maxbet3dd_432d"`
-	Pasaran_maxbet2d_432d       int     `json:"pasaran_maxbet2d_432d"`
-	Pasaran_maxbet2dd_432d      int     `json:"pasaran_maxbet2dd_432d"`
-	Pasaran_maxbet2dt_432d      int     `json:"pasaran_maxbet2dt_432d"`
-	Pasaran_limitotal4d_432d    int     `json:"pasaran_limitotal4d_432d"`
-	Pasaran_limitotal3d_432d    int     `json:"pasaran_limitotal3d_432d"`
-	Pasaran_limitotal3dd_432d   int     `json:"pasaran_limitotal3dd_432d"`
-	Pasaran_limitotal2d_432d    int     `json:"pasaran_limitotal2d_432d"`
-	Pasaran_limitotal2dd_432d   int     `json:"pasaran_limitotal2dd_432d"`
-	Pasaran_limitotal2dt_432d   int     `json:"pasaran_limitotal2dt_432d"`
-	Pasaran_limitglobal4d_432d  int     `json:"pasaran_limitglobal4d_432d"`
-	Pasaran_limitglobal3d_432d  int     `json:"pasaran_limitglobal3d_432d"`
-	Pasaran_limitglobal3dd_432d int     `json:"pasaran_limitglobal3dd_432d"`
-	Pasaran_limitglobal2d_432d  int     `json:"pasaran_limitglobal2d_432d"`
-	Pasaran_limitglobal2dd_432d int     `json:"pasaran_limitglobal2dd_432d"`
-	Pasaran_limitglobal2dt_432d int     `json:"pasaran_limitglobal2dt_432d"`
-	Pasaran_win4d_432d          int     `json:"pasaran_win4d_432d"`
-	Pasaran_win3d_432d          int     `json:"pasaran_win3d_432d"`
-	Pasaran_win3dd_432d         int     `json:"pasaran_win3dd_432d"`
-	Pasaran_win2d_432d          int     `json:"pasaran_win2d_432d"`
-	Pasaran_win2dd_432d         int     `json:"pasaran_win2dd_432d"`
-	Pasaran_win2dt_432d         int     `json:"pasaran_win2dt_432d"`
-	Pasaran_win4dnodisc_432d    int     `json:"pasaran_Win4dnodisc_432d"`
-	Pasaran_win3dnodisc_432d    int     `json:"pasaran_Win3dnodisc_432d"`
-	Pasaran_win3ddnodisc_432d   int     `json:"pasaran_win3ddnodisc_432d"`
-	Pasaran_win2dnodisc_432d    int     `json:"pasaran_win2dnodisc_432d"`
-	Pasaran_win2ddnodisc_432d   int     `json:"pasaran_win2ddnodisc_432d"`
-	Pasaran_win2dtnodisc_432d   int     `json:"pasaran_win2dtnodisc_432d"`
-	Pasaran_win4dbb_kena_432d   int     `json:"pasaran_Win4dbb_kena_432d"`
-	Pasaran_win3dbb_kena_432d   int     `json:"pasaran_Win3dbb_kena_432d"`
-	Pasaran_win3ddbb_kena_432d  int     `json:"pasaran_win3ddbb_kena_432d"`
-	Pasaran_win2dbb_kena_432d   int     `json:"pasaran_win2dbb_kena_432d"`
-	Pasaran_win2ddbb_kena_432d  int     `json:"pasaran_win2ddbb_kena_432d"`
-	Pasaran_win2dtbb_kena_432d  int     `json:"pasaran_win2dtbb_kena_432d"`
-	Pasaran_win4dbb_432d        int     `json:"pasaran_win4dbb_432d"`
-	Pasaran_win3dbb_432d        int     `json:"pasaran_win3dbb_432d"`
-	Pasaran_win3ddbb_432d       int     `json:"pasaran_win3ddbb_432d"`
-	Pasaran_win2dbb_432d        int     `json:"pasaran_win2dbb_432d"`
-	Pasaran_win2ddbb_432d       int     `json:"pasaran_win2ddbb_432d"`
-	Pasaran_win2dtbb_432d       int     `json:"pasaran_win2dtbb_432d"`
-	Pasaran_disc4d_432d         float32 `json:"pasaran_disc4d_432d"`
-	Pasaran_disc3d_432d         float32 `json:"pasaran_disc3d_432d"`
-	Pasaran_disc3dd_432d        float32 `json:"pasaran_disc3dd_432d"`
-	Pasaran_disc2d_432d         float32 `json:"pasaran_disc2d_432d"`
-	Pasaran_disc2dd_432d        float32 `json:"pasaran_disc2dd_432d"`
-	Pasaran_disc2dt_432d        float32 `json:"pasaran_disc2dt_432d"`
+	Pasaran_minbet_432d         int     `json:"pasaran_minbet_432d" validate:"required,numeric"`
+	Pasaran_maxbet4d_432d       int     `json:"pasaran_maxbet4d_432d" validate:"required,numeric"`
+	Pasaran_maxbet3d_432d       int     `json:"pasaran_maxbet3d_432d" validate:"required,numeric"`
+	Pasaran_maxbet3dd_432d      int     `json:"pasaran_maxbet3dd_432d" validate:"required,numeric"`
+	Pasaran_maxbet2d_432d       int     `json:"pasaran_maxbet2d_432d" validate:"required,numeric"`
+	Pasaran_maxbet2dd_432d      int     `json:"pasaran_maxbet2dd_432d" validate:"required,numeric"`
+	Pasaran_maxbet2dt_432d      int     `json:"pasaran_maxbet2dt_432d" validate:"required,numeric"`
+	Pasaran_limitotal4d_432d    int     `json:"pasaran_limitotal4d_432d" validate:"required,numeric"`
+	Pasaran_limitotal3d_432d    int     `json:"pasaran_limitotal3d_432d" validate:"required,numeric"`
+	Pasaran_limitotal3dd_432d   int     `json:"pasaran_limitotal3dd_432d" validate:"required,numeric"`
+	Pasaran_limitotal2d_432d    int     `json:"pasaran_limitotal2d_432d" validate:"required,numeric"`
+	Pasaran_limitotal2dd_432d   int     `json:"pasaran_limitotal2dd_432d" validate:"required,numeric"`
+	Pasaran_limitotal2dt_432d   int     `json:"pasaran_limitotal2dt_432d" validate:"required,numeric"`
+	Pasaran_limitglobal4d_432d  int     `json:"pasaran_limitglobal4d_432d" validate:"required,numeric"`
+	Pasaran_limitglobal3d_432d  int     `json:"pasaran_limitglobal3d_432d" validate:"required,numeric"`
+	Pasaran_limitglobal3dd_432d int     `json:"pasaran_limitglobal3dd_432d" validate:"required,numeric"`
+	Pasaran_limitglobal2d_432d  int     `json:"pasaran_limitglobal2d_432d" validate:"required,numeric"`
+	Pasaran_limitglobal2dd_432d int     `json:"pasaran_limitglobal2dd_432d" validate:"required,numeric"`
+	Pasaran_limitglobal2dt_432d int     `json:"pasaran_limitglobal2dt_432d" validate:"required,numeric"`
+	Pasaran_win4d_432d          int     `json:"pasaran_win4d_432d" validate:"required,numeric"`
+	Pasaran_win3d_432d          int     `json:"pasaran_win3d_432d" validate:"required,numeric"`
+	Pasaran_win3dd_432d         int     `json:"pasaran_win3dd_432d" validate:"required,numeric"`
+	Pasaran_win2d_432d          int     `json:"pasaran_win2d_432d" validate:"required,numeric"`
+	Pasaran_win2dd_432d         int     `json:"pasaran_win2dd_432d" validate:"required,numeric"`
+	Pasaran_win2dt_432d         int     `json:"pasaran_win2dt_432d" validate:"required,numeric"`
+	Pasaran_win4dnodisc_432d    int     `json:"pasaran_Win4dnodisc_432d" validate:"required,numeric"`
+	Pasaran_win3dnodisc_432d    int     `json:"pasaran_Win3dnodisc_432d" validate:"required,numeric"`
+	Pasaran_win3ddnodisc_432d   int     `json:"pasaran_win3ddnodisc_432d" validate:"required,numeric"`
+	Pasaran_win2dnodisc_432d    int     `json:"pasaran_win2dnodisc_432d" validate:"required,numeric"`
+	Pasaran_win2ddnodisc_432d   int     `json:"pasaran_win2ddnodisc_432d" validate:"required,numeric"`
+	Pasaran_win2dtnodisc_432d   int     `json:"pasaran_win2dtnodisc_432d" validate:"required,numeric"`
+	Pasaran_win4dbb_kena_432d   int     `json:"pasaran_Win4dbb_kena_432d" validate:"required,numeric"`
+	Pasaran_win3dbb_kena_432d   int     `json:"pasaran_Win3dbb_kena_432d" validate:"required,numeric"`
+	Pasaran_win3ddbb_kena_432d  int     `json:"pasaran_win3ddbb_kena_432d" validate:"required,numeric"`
+	Pasaran_win2dbb_kena_432d   int     `json:"pasaran_win2dbb_kena_432d" validate:"required,numeric"`
+	Pasaran_win2ddbb_kena_432d  int     `json:"pasaran_win2ddbb_kena_432d" validate:"required,numeric"`
+	Pasaran_win2dtbb_kena_432d  int     `json:"pasaran_win2dtbb_kena_432d" validate:"required,numeric"`
+	Pasaran_win4dbb_432d        int     `json:"pasaran_win4dbb_432d" validate:"required,numeric"`
+	Pasaran_win3dbb_432d        int     `json:"pasaran_win3dbb_432d" validate:"required,numeric"`
+	Pasaran_win3ddbb_432d       int     `json:"pasaran_win3ddbb_432d" validate:"required,numeric"`
+	Pasaran_win2dbb_432d        int     `json:"pasaran_win2dbb_432d" validate:"required,numeric"`
+	Pasaran_win2ddbb_432d       int     `json:"pasaran_win2ddbb_432d" validate:"required,numeric"`
+	Pasaran_win2dtbb_432d       int     `json:"pasaran_win2dtbb_432d" validate:"required,numeric"`
+	Pasaran_disc4d_432d         float32 `json:"pasaran_disc4d_432d" validate:"required,numeric"`
+	Pasaran_disc3d_432d         float32 `json:"pasaran_disc3d_432d" validate:"required,numeric"`
+	Pasaran_disc3dd_432d        float32 `json:"pasaran_disc3dd_432d" validate:"required,numeric"`
+	Pasaran_disc2d_432d         float32 `json:"pasaran_disc2d_432d" validate:"required,numeric"`
+	Pasaran_disc2dd_432d        float32 `json:"pasaran_disc2dd_432d" validate:"required,numeric"`
+	Pasaran_disc2dt_432d        float32 `json:"pasaran_disc2dt_432d" validate:"required,numeric"`
 }
 type pasaranconfcbebas struct {
 	Idpasaran                  int     `json:"idpasaran"`
 	Idpasarantogel             string  `json:"idpasarantogel"`
 	Page                       string  `json:"page"`
-	Pasaran_minbet_cbebas      int     `json:"pasaran_minbet_cbebas"`
-	Pasaran_maxbet_cbebas      int     `json:"pasaran_maxbet_cbebas"`
-	Pasaran_limitotal_cbebas   int     `json:"pasaran_limitotal_cbebas"`
-	Pasaran_limitglobal_cbebas int     `json:"pasaran_limitglobal_cbebas"`
-	Pasaran_win_cbebas         float32 `json:"pasaran_win_cbebas"`
-	Pasaran_disc_cbebas        float32 `json:"pasaran_disc_cbebas"`
+	Pasaran_minbet_cbebas      int     `json:"pasaran_minbet_cbebas" validate:"required,numeric"`
+	Pasaran_maxbet_cbebas      int     `json:"pasaran_maxbet_cbebas" validate:"required,numeric"`
+	Pasaran_limitotal_cbebas   int     `json:"pasaran_limitotal_cbebas" validate:"required,numeric"`
+	Pasaran_limitglobal_cbebas int     `json:"pasaran_limitglobal_cbebas" validate:"required,numeric"`
+	Pasaran_win_cbebas         float32 `json:"pasaran_win_cbebas" validate:"required,numeric"`
+	Pasaran_disc_cbebas        float32 `json:"pasaran_disc_cbebas" validate:"required,numeric"`
 }
 type pasaranconfcmacau struct {
 	Idpasaran                  int     `json:"idpasaran"`
 	Idpasarantogel             string  `json:"idpasarantogel"`
 	Page                       string  `json:"page"`
-	Pasaran_minbet_cmacau      int     `json:"pasaran_minbet_cmacau"`
-	Pasaran_maxbet_cmacau      int     `json:"pasaran_maxbet_cmacau"`
-	Pasaran_limitotal_cmacau   int     `json:"pasaran_limitotal_cmacau"`
-	Pasaran_limitglobal_cmacau int     `json:"pasaran_limitglobal_cmacau"`
-	Pasaran_win2_cmacau        float32 `json:"pasaran_win2_cmacau"`
-	Pasaran_win3_cmacau        float32 `json:"pasaran_win3_cmacau"`
-	Pasaran_win4_cmacau        float32 `json:"pasaran_win4_cmacau"`
-	Pasaran_disc_cmacau        float32 `json:"pasaran_disc_cmacau"`
+	Pasaran_minbet_cmacau      int     `json:"pasaran_minbet_cmacau" validate:"required,numeric"`
+	Pasaran_maxbet_cmacau      int     `json:"pasaran_maxbet_cmacau" validate:"required,numeric"`
+	Pasaran_limitotal_cmacau   int     `json:"pasaran_limitotal_cmacau" validate:"required,numeric"`
+	Pasaran_limitglobal_cmacau int     `json:"pasaran_limitglobal_cmacau" validate:"required,numeric"`
+	Pasaran_win2_cmacau        float32 `json:"pasaran_win2_cmacau" validate:"required,numeric"`
+	Pasaran_win3_cmacau        float32 `json:"pasaran_win3_cmacau" validate:"required,numeric"`
+	Pasaran_win4_cmacau        float32 `json:"pasaran_win4_cmacau" validate:"required,numeric"`
+	Pasaran_disc_cmacau        float32 `json:"pasaran_disc_cmacau" validate:"required,numeric"`
 }
 type pasaranconfcnaga struct {
 	Idpasaran                 int     `json:"idpasaran"`
 	Idpasarantogel            string  `json:"idpasarantogel"`
 	Page                      string  `json:"page"`
-	Pasaran_minbet_cnaga      int     `json:"pasaran_minbet_cnaga"`
-	Pasaran_maxbet_cnaga      int     `json:"pasaran_maxbet_cnaga"`
-	Pasaran_limittotal_cnaga  int     `json:"pasaran_limittotal_cnaga"`
-	Pasaran_limitglobal_cnaga int     `json:"pasaran_limitglobal_cnaga"`
-	Pasaran_win3_cnaga        float32 `json:"pasaran_win3_cnaga"`
-	Pasaran_win4_cnaga        float32 `json:"pasaran_win4_cnaga"`
-	Pasaran_disc_cnaga        float32 `json:"pasaran_disc_cnaga"`
+	Pasaran_minbet_cnaga      int     `json:"pasaran_minbet_cnaga" validate:"required,numeric"`
+	Pasaran_maxbet_cnaga      int     `json:"pasaran_maxbet_cnaga" validate:"required,numeric"`
+	Pasaran_limittotal_cnaga  int     `json:"pasaran_limittotal_cnaga" validate:"required,numeric"`
+	Pasaran_limitglobal_cnaga int     `json:"pasaran_limitglobal_cnaga" validate:"required,numeric"`
+	Pasaran_win3_cnaga        float32 `json:"pasaran_win3_cnaga" validate:"required,numeric"`
+	Pasaran_win4_cnaga        float32 `json:"pasaran_win4_cnaga" validate:"required,numeric"`
+	Pasaran_disc_cnaga        float32 `json:"pasaran_disc_cnaga" validate:"required,numeric"`
 }
 type pasaranconfcjitu struct {
 	Idpasaran                 int     `json:"idpasaran"`
 	Idpasarantogel            string  `json:"idpasarantogel"`
 	Page                      string  `json:"page"`
-	Pasaran_minbet_cjitu      int     `json:"pasaran_minbet_cjitu"`
-	Pasaran_maxbet_cjitu      int     `json:"pasaran_maxbet_cjitu"`
-	Pasaran_limittotal_cjitu  int     `json:"pasaran_limittotal_cjitu"`
-	Pasaran_limitglobal_cjitu int     `json:"pasaran_limitglobal_cjitu"`
-	Pasaran_winas_cjitu       float32 `json:"pasaran_winas_cjitu"`
-	Pasaran_winkop_cjitu      float32 `json:"pasaran_winkop_cjitu"`
-	Pasaran_winkepala_cjitu   float32 `json:"pasaran_winkepala_cjitu"`
-	Pasaran_winekor_cjitu     float32 `json:"pasaran_winekor_cjitu"`
-	Pasaran_desc_cjitu        float32 `json:"pasaran_desc_cjitu"`
+	Pasaran_minbet_cjitu      int     `json:"pasaran_minbet_cjitu" validate:"required,numeric"`
+	Pasaran_maxbet_cjitu      int     `json:"pasaran_maxbet_cjitu" validate:"required,numeric"`
+	Pasaran_limittotal_cjitu  int     `json:"pasaran_limittotal_cjitu" validate:"required,numeric"`
+	Pasaran_limitglobal_cjitu int     `json:"pasaran_limitglobal_cjitu" validate:"required,numeric"`
+	Pasaran_winas_cjitu       float32 `json:"pasaran_winas_cjitu" validate:"required,numeric"`
+	Pasaran_winkop_cjitu      float32 `json:"pasaran_winkop_cjitu" validate:"required,numeric"`
+	Pasaran_winkepala_cjitu   float32 `json:"pasaran_winkepala_cjitu" validate:"required,numeric"`
+	Pasaran_winekor_cjitu     float32 `json:"pasaran_winekor_cjitu" validate:"required,numeric"`
+	Pasaran_desc_cjitu        float32 `json:"pasaran_desc_cjitu" validate:"required,numeric"`
 }
 type pasaranconfc5050 struct {
 	Idpasaran                    int     `json:"idpasaran"`
 	Idpasarantogel               string  `json:"idpasarantogel"`
 	Page                         string  `json:"page"`
-	Pasaran_minbet_5050umum      int     `json:"pasaran_minbet_5050umum"`
-	Pasaran_maxbet_5050umum      int     `json:"pasaran_maxbet_5050umum"`
-	Pasaran_limittotal_5050umum  int     `json:"pasaran_limittotal_5050umum"`
-	Pasaran_limitglobal_5050umum int     `json:"pasaran_limitglobal_5050umum"`
-	Pasaran_keibesar_5050umum    float32 `json:"pasaran_keibesar_5050umum"`
-	Pasaran_keikecil_5050umum    float32 `json:"pasaran_keikecil_5050umum"`
-	Pasaran_keigenap_5050umum    float32 `json:"pasaran_keigenap_5050umum"`
-	Pasaran_keiganjil_5050umum   float32 `json:"pasaran_keiganjil_5050umum"`
-	Pasaran_keitengah_5050umum   float32 `json:"pasaran_keitengah_5050umum"`
-	Pasaran_keitepi_5050umum     float32 `json:"pasaran_keitepi_5050umum"`
-	Pasaran_discbesar_5050umum   float32 `json:"pasaran_discbesar_5050umum"`
-	Pasaran_disckecil_5050umum   float32 `json:"pasaran_disckecil_5050umum"`
-	Pasaran_discgenap_5050umum   float32 `json:"pasaran_discgenap_5050umum"`
-	Pasaran_discganjil_5050umum  float32 `json:"pasaran_discganjil_5050umum"`
-	Pasaran_disctengah_5050umum  float32 `json:"pasaran_disctengah_5050umum"`
-	Pasaran_disctepi_5050umum    float32 `json:"pasaran_disctepi_5050umum"`
+	Pasaran_minbet_5050umum      int     `json:"pasaran_minbet_5050umum" validate:"required,numeric"`
+	Pasaran_maxbet_5050umum      int     `json:"pasaran_maxbet_5050umum" validate:"required,numeric"`
+	Pasaran_limittotal_5050umum  int     `json:"pasaran_limittotal_5050umum" validate:"required,numeric"`
+	Pasaran_limitglobal_5050umum int     `json:"pasaran_limitglobal_5050umum" validate:"required,numeric"`
+	Pasaran_keibesar_5050umum    float32 `json:"pasaran_keibesar_5050umum" validate:"required,numeric"`
+	Pasaran_keikecil_5050umum    float32 `json:"pasaran_keikecil_5050umum" validate:"required,numeric"`
+	Pasaran_keigenap_5050umum    float32 `json:"pasaran_keigenap_5050umum" validate:"required,numeric"`
+	Pasaran_keiganjil_5050umum   float32 `json:"pasaran_keiganjil_5050umum" validate:"required,numeric"`
+	Pasaran_keitengah_5050umum   float32 `json:"pasaran_keitengah_5050umum" validate:"required,numeric"`
+	Pasaran_keitepi_5050umum     float32 `json:"pasaran_keitepi_5050umum" validate:"required,numeric"`
+	Pasaran_discbesar_5050umum   float32 `json:"pasaran_discbesar_5050umum" validate:"numeric"`
+	Pasaran_disckecil_5050umum   float32 `json:"pasaran_disckecil_5050umum" validate:"numeric"`
+	Pasaran_discgenap_5050umum   float32 `json:"pasaran_discgenap_5050umum" validate:"numeric"`
+	Pasaran_discganjil_5050umum  float32 `json:"pasaran_discganjil_5050umum" validate:"numeric"`
+	Pasaran_disctengah_5050umum  float32 `json:"pasaran_disctengah_5050umum" validate:"numeric"`
+	Pasaran_disctepi_5050umum    float32 `json:"pasaran_disctepi_5050umum" validate:"numeric"`
 }
 type pasaranconfc5050special struct {
 	Idpasaran                            int     `json:"idpasaran"`
 	Idpasarantogel                       string  `json:"idpasarantogel"`
 	Page                                 string  `json:"page"`
-	Pasaran_minbet_5050special           int     `json:"pasaran_minbet_5050special"`
-	Pasaran_maxbet_5050special           int     `json:"pasaran_maxbet_5050special"`
-	Pasaran_limittotal_5050special       int     `json:"pasaran_limittotal_5050special"`
-	Pasaran_limitglobal_5050special      int     `json:"pasaran_limitglobal_5050special"`
-	Pasaran_keiasganjil_5050special      float32 `json:"pasaran_keiasganjil_5050special"`
-	Pasaran_keiasgenap_5050special       float32 `json:"pasaran_keiasgenap_5050special"`
-	Pasaran_keiasbesar_5050special       float32 `json:"pasaran_keiasbesar_5050special"`
-	Pasaran_keiaskecil_5050special       float32 `json:"pasaran_keiaskecil_5050special"`
-	Pasaran_keikopganjil_5050special     float32 `json:"pasaran_keikopganjil_5050special"`
-	Pasaran_keikopgenap_5050special      float32 `json:"pasaran_keikopgenap_5050special"`
-	Pasaran_keikopbesar_5050special      float32 `json:"pasaran_keikopbesar_5050special"`
-	Pasaran_keikopkecil_5050special      float32 `json:"pasaran_keikopkecil_5050special"`
-	Pasaran_keikepalaganjil_5050special  float32 `json:"pasaran_keikepalaganjil_5050special"`
-	Pasaran_keikepalagenap_5050special   float32 `json:"pasaran_keikepalagenap_5050special"`
-	Pasaran_keikepalabesar_5050special   float32 `json:"pasaran_keikepalabesar_5050special"`
-	Pasaran_keikepalakecil_5050special   float32 `json:"pasaran_keikepalakecil_5050special"`
-	Pasaran_keiekorganjil_5050special    float32 `json:"pasaran_keiekorganjil_5050special"`
-	Pasaran_keiekorgenap_5050special     float32 `json:"pasaran_keiekorgenap_5050special"`
-	Pasaran_keiekorbesar_5050special     float32 `json:"pasaran_keiekorbesar_5050special"`
-	Pasaran_keiekorkecil_5050special     float32 `json:"pasaran_keiekorkecil_5050special"`
-	Pasaran_discasganjil_5050special     float32 `json:"pasaran_discasganjil_5050special"`
-	Pasaran_discasgenap_5050special      float32 `json:"pasaran_discasgenap_5050special"`
-	Pasaran_discasbesar_5050special      float32 `json:"pasaran_discasbesar_5050special"`
-	Pasaran_discaskecil_5050special      float32 `json:"pasaran_discaskecil_5050special"`
-	Pasaran_disckopganjil_5050special    float32 `json:"pasaran_disckopganjil_5050special"`
-	Pasaran_disckopgenap_5050special     float32 `json:"pasaran_disckopgenap_5050special"`
-	Pasaran_disckopbesar_5050special     float32 `json:"pasaran_disckopbesar_5050special"`
-	Pasaran_disckopkecil_5050special     float32 `json:"pasaran_disckopkecil_5050special"`
-	Pasaran_disckepalaganjil_5050special float32 `json:"pasaran_disckepalaganjil_5050special"`
-	Pasaran_disckepalagenap_5050special  float32 `json:"pasaran_disckepalagenap_5050special"`
-	Pasaran_disckepalabesar_5050special  float32 `json:"pasaran_disckepalabesar_5050special"`
-	Pasaran_disckepalakecil_5050special  float32 `json:"pasaran_disckepalakecil_5050special"`
-	Pasaran_discekorganjil_5050special   float32 `json:"pasaran_discekorganjil_5050special"`
-	Pasaran_discekorgenap_5050special    float32 `json:"pasaran_discekorgenap_5050special"`
-	Pasaran_discekorbesar_5050special    float32 `json:"pasaran_discekorbesar_5050special"`
-	Pasaran_discekorkecil_5050special    float32 `json:"pasaran_discekorkecil_5050special"`
+	Pasaran_minbet_5050special           int     `json:"pasaran_minbet_5050special" validate:"required,numeric"`
+	Pasaran_maxbet_5050special           int     `json:"pasaran_maxbet_5050special" validate:"required,numeric"`
+	Pasaran_limittotal_5050special       int     `json:"pasaran_limittotal_5050special" validate:"required,numeric"`
+	Pasaran_limitglobal_5050special      int     `json:"pasaran_limitglobal_5050special" validate:"required,numeric"`
+	Pasaran_keiasganjil_5050special      float32 `json:"pasaran_keiasganjil_5050special" validate:"required,numeric"`
+	Pasaran_keiasgenap_5050special       float32 `json:"pasaran_keiasgenap_5050special" validate:"required,numeric"`
+	Pasaran_keiasbesar_5050special       float32 `json:"pasaran_keiasbesar_5050special" validate:"required,numeric"`
+	Pasaran_keiaskecil_5050special       float32 `json:"pasaran_keiaskecil_5050special" validate:"required,numeric"`
+	Pasaran_keikopganjil_5050special     float32 `json:"pasaran_keikopganjil_5050special" validate:"required,numeric"`
+	Pasaran_keikopgenap_5050special      float32 `json:"pasaran_keikopgenap_5050special" validate:"required,numeric"`
+	Pasaran_keikopbesar_5050special      float32 `json:"pasaran_keikopbesar_5050special" validate:"required,numeric"`
+	Pasaran_keikopkecil_5050special      float32 `json:"pasaran_keikopkecil_5050special" validate:"required,numeric"`
+	Pasaran_keikepalaganjil_5050special  float32 `json:"pasaran_keikepalaganjil_5050special" validate:"required,numeric"`
+	Pasaran_keikepalagenap_5050special   float32 `json:"pasaran_keikepalagenap_5050special" validate:"required,numeric"`
+	Pasaran_keikepalabesar_5050special   float32 `json:"pasaran_keikepalabesar_5050special" validate:"required,numeric"`
+	Pasaran_keikepalakecil_5050special   float32 `json:"pasaran_keikepalakecil_5050special" validate:"required,numeric"`
+	Pasaran_keiekorganjil_5050special    float32 `json:"pasaran_keiekorganjil_5050special" validate:"required,numeric"`
+	Pasaran_keiekorgenap_5050special     float32 `json:"pasaran_keiekorgenap_5050special" validate:"required,numeric"`
+	Pasaran_keiekorbesar_5050special     float32 `json:"pasaran_keiekorbesar_5050special" validate:"required,numeric"`
+	Pasaran_keiekorkecil_5050special     float32 `json:"pasaran_keiekorkecil_5050special" validate:"required,numeric"`
+	Pasaran_discasganjil_5050special     float32 `json:"pasaran_discasganjil_5050special" validate:"numeric"`
+	Pasaran_discasgenap_5050special      float32 `json:"pasaran_discasgenap_5050special" validate:"numeric"`
+	Pasaran_discasbesar_5050special      float32 `json:"pasaran_discasbesar_5050special" validate:"numeric"`
+	Pasaran_discaskecil_5050special      float32 `json:"pasaran_discaskecil_5050special" validate:"numeric"`
+	Pasaran_disckopganjil_5050special    float32 `json:"pasaran_disckopganjil_5050special" validate:"numeric"`
+	Pasaran_disckopgenap_5050special     float32 `json:"pasaran_disckopgenap_5050special" validate:"numeric"`
+	Pasaran_disckopbesar_5050special     float32 `json:"pasaran_disckopbesar_5050special" validate:"numeric"`
+	Pasaran_disckopkecil_5050special     float32 `json:"pasaran_disckopkecil_5050special" validate:"numeric"`
+	Pasaran_disckepalaganjil_5050special float32 `json:"pasaran_disckepalaganjil_5050special" validate:"numeric"`
+	Pasaran_disckepalagenap_5050special  float32 `json:"pasaran_disckepalagenap_5050special" validate:"numeric"`
+	Pasaran_disckepalabesar_5050special  float32 `json:"pasaran_disckepalabesar_5050special" validate:"numeric"`
+	Pasaran_disckepalakecil_5050special  float32 `json:"pasaran_disckepalakecil_5050special" validate:"numeric"`
+	Pasaran_discekorganjil_5050special   float32 `json:"pasaran_discekorganjil_5050special" validate:"numeric"`
+	Pasaran_discekorgenap_5050special    float32 `json:"pasaran_discekorgenap_5050special" validate:"numeric"`
+	Pasaran_discekorbesar_5050special    float32 `json:"pasaran_discekorbesar_5050special" validate:"numeric"`
+	Pasaran_discekorkecil_5050special    float32 `json:"pasaran_discekorkecil_5050special" validate:"numeric"`
 }
 type pasaranconfc5050kombinasi struct {
 	Idpasaran                                 int     `json:"idpasaran"`
 	Idpasarantogel                            string  `json:"idpasarantogel"`
 	Page                                      string  `json:"page"`
-	Pasaran_minbet_5050kombinasi              int     `json:"pasaran_minbet_5050kombinasi"`
-	Pasaran_maxbet_5050kombinasi              int     `json:"pasaran_maxbet_5050kombinasi"`
-	Pasaran_limittotal_5050kombinasi          int     `json:"pasaran_limittotal_5050kombinasi"`
-	Pasaran_limitglobal_5050kombinasi         int     `json:"pasaran_limitglobal_5050kombinasi"`
-	Pasaran_belakangkeimono_5050kombinasi     float32 `json:"pasaran_belakangkeimono_5050kombinasi"`
-	Pasaran_belakangkeistereo_5050kombinasi   float32 `json:"pasaran_belakangkeistereo_5050kombinasi"`
-	Pasaran_belakangkeikembang_5050kombinasi  float32 `json:"pasaran_belakangkeikembang_5050kombinasi"`
-	Pasaran_belakangkeikempis_5050kombinasi   float32 `json:"pasaran_belakangkeikempis_5050kombinasi"`
-	Pasaran_belakangkeikembar_5050kombinasi   float32 `json:"pasaran_belakangkeikembar_5050kombinasi"`
-	Pasaran_tengahkeimono_5050kombinasi       float32 `json:"pasaran_tengahkeimono_5050kombinasi"`
-	Pasaran_tengahkeistereo_5050kombinasi     float32 `json:"pasaran_tengahkeistereo_5050kombinasi"`
-	Pasaran_tengahkeikembang_5050kombinasi    float32 `json:"pasaran_tengahkeikembang_5050kombinasi"`
-	Pasaran_tengahkeikempis_5050kombinasi     float32 `json:"pasaran_tengahkeikempis_5050kombinasi"`
-	Pasaran_tengahkeikembar_5050kombinasi     float32 `json:"pasaran_tengahkeikembar_5050kombinasi"`
-	Pasaran_depankeimono_5050kombinasi        float32 `json:"pasaran_depankeimono_5050kombinasi"`
-	Pasaran_depankeistereo_5050kombinasi      float32 `json:"pasaran_depankeistereo_5050kombinasi"`
-	Pasaran_depankeikembang_5050kombinasi     float32 `json:"pasaran_depankeikembang_5050kombinasi"`
-	Pasaran_depankeikempis_5050kombinasi      float32 `json:"pasaran_depankeikempis_5050kombinasi"`
-	Pasaran_depankeikembar_5050kombinasi      float32 `json:"pasaran_depankeikembar_5050kombinasi"`
-	Pasaran_belakangdiscmono_5050kombinasi    float32 `json:"pasaran_belakangdiscmono_5050kombinasi"`
-	Pasaran_belakangdiscstereo_5050kombinasi  float32 `json:"pasaran_belakangdiscstereo_5050kombinasi"`
-	Pasaran_belakangdisckembang_5050kombinasi float32 `json:"pasaran_belakangdisckembang_5050kombinasi"`
-	Pasaran_belakangdisckempis_5050kombinasi  float32 `json:"pasaran_belakangdisckempis_5050kombinasi"`
-	Pasaran_belakangdisckembar_5050kombinasi  float32 `json:"pasaran_belakangdisckembar_5050kombinasi"`
-	Pasaran_tengahdiscmono_5050kombinasi      float32 `json:"pasaran_tengahdiscmono_5050kombinasi"`
-	Pasaran_tengahdiscstereo_5050kombinasi    float32 `json:"pasaran_tengahdiscstereo_5050kombinasi"`
-	Pasaran_tengahdisckembang_5050kombinasi   float32 `json:"pasaran_tengahdisckembang_5050kombinasi"`
-	Pasaran_tengahdisckempis_5050kombinasi    float32 `json:"pasaran_tengahdisckempis_5050kombinasi"`
-	Pasaran_tengahdisckembar_5050kombinasi    float32 `json:"pasaran_tengahdisckembar_5050kombinasi"`
-	Pasaran_depandiscmono_5050kombinasi       float32 `json:"pasaran_depandiscmono_5050kombinasi"`
-	Pasaran_depandiscstereo_5050kombinasi     float32 `json:"pasaran_depandiscstereo_5050kombinasi"`
-	Pasaran_depandisckembang_5050kombinasi    float32 `json:"pasaran_depandisckembang_5050kombinasi"`
-	Pasaran_depandisckempis_5050kombinasi     float32 `json:"pasaran_depandisckempis_5050kombinasi"`
-	Pasaran_depandisckembar_5050kombinasi     float32 `json:"pasaran_depandisckembar_5050kombinasi"`
+	Pasaran_minbet_5050kombinasi              int     `json:"pasaran_minbet_5050kombinasi" validate:"required,numeric"`
+	Pasaran_maxbet_5050kombinasi              int     `json:"pasaran_maxbet_5050kombinasi" validate:"required,numeric"`
+	Pasaran_limittotal_5050kombinasi          int     `json:"pasaran_limittotal_5050kombinasi" validate:"required,numeric"`
+	Pasaran_limitglobal_5050kombinasi         int     `json:"pasaran_limitglobal_5050kombinasi" validate:"required,numeric"`
+	Pasaran_belakangkeimono_5050kombinasi     float32 `json:"pasaran_belakangkeimono_5050kombinasi" validate:"required,numeric"`
+	Pasaran_belakangkeistereo_5050kombinasi   float32 `json:"pasaran_belakangkeistereo_5050kombinasi" validate:"required,numeric"`
+	Pasaran_belakangkeikembang_5050kombinasi  float32 `json:"pasaran_belakangkeikembang_5050kombinasi" validate:"required,numeric"`
+	Pasaran_belakangkeikempis_5050kombinasi   float32 `json:"pasaran_belakangkeikempis_5050kombinasi" validate:"required,numeric"`
+	Pasaran_belakangkeikembar_5050kombinasi   float32 `json:"pasaran_belakangkeikembar_5050kombinasi" validate:"required,numeric"`
+	Pasaran_tengahkeimono_5050kombinasi       float32 `json:"pasaran_tengahkeimono_5050kombinasi" validate:"required,numeric"`
+	Pasaran_tengahkeistereo_5050kombinasi     float32 `json:"pasaran_tengahkeistereo_5050kombinasi" validate:"required,numeric"`
+	Pasaran_tengahkeikembang_5050kombinasi    float32 `json:"pasaran_tengahkeikembang_5050kombinasi" validate:"required,numeric"`
+	Pasaran_tengahkeikempis_5050kombinasi     float32 `json:"pasaran_tengahkeikempis_5050kombinasi" validate:"required,numeric"`
+	Pasaran_tengahkeikembar_5050kombinasi     float32 `json:"pasaran_tengahkeikembar_5050kombinasi" validate:"required,numeric"`
+	Pasaran_depankeimono_5050kombinasi        float32 `json:"pasaran_depankeimono_5050kombinasi" validate:"required,numeric"`
+	Pasaran_depankeistereo_5050kombinasi      float32 `json:"pasaran_depankeistereo_5050kombinasi" validate:"required,numeric"`
+	Pasaran_depankeikembang_5050kombinasi     float32 `json:"pasaran_depankeikembang_5050kombinasi" validate:"required,numeric"`
+	Pasaran_depankeikempis_5050kombinasi      float32 `json:"pasaran_depankeikempis_5050kombinasi" validate:"required,numeric"`
+	Pasaran_depankeikembar_5050kombinasi      float32 `json:"pasaran_depankeikembar_5050kombinasi" validate:"required,numeric"`
+	Pasaran_belakangdiscmono_5050kombinasi    float32 `json:"pasaran_belakangdiscmono_5050kombinasi" validate:"numeric"`
+	Pasaran_belakangdiscstereo_5050kombinasi  float32 `json:"pasaran_belakangdiscstereo_5050kombinasi" validate:"numeric"`
+	Pasaran_belakangdisckembang_5050kombinasi float32 `json:"pasaran_belakangdisckembang_5050kombinasi" validate:"numeric"`
+	Pasaran_belakangdisckempis_5050kombinasi  float32 `json:"pasaran_belakangdisckempis_5050kombinasi" validate:"numeric"`
+	Pasaran_belakangdisckembar_5050kombinasi  float32 `json:"pasaran_belakangdisckembar_5050kombinasi" validate:"numeric"`
+	Pasaran_tengahdiscmono_5050kombinasi      float32 `json:"pasaran_tengahdiscmono_5050kombinasi" validate:"numeric"`
+	Pasaran_tengahdiscstereo_5050kombinasi    float32 `json:"pasaran_tengahdiscstereo_5050kombinasi" validate:"numeric"`
+	Pasaran_tengahdisckembang_5050kombinasi   float32 `json:"pasaran_tengahdisckembang_5050kombinasi" validate:"numeric"`
+	Pasaran_tengahdisckempis_5050kombinasi    float32 `json:"pasaran_tengahdisckempis_5050kombinasi" validate:"numeric"`
+	Pasaran_tengahdisckembar_5050kombinasi    float32 `json:"pasaran_tengahdisckembar_5050kombinasi" validate:"numeric"`
+	Pasaran_depandiscmono_5050kombinasi       float32 `json:"pasaran_depandiscmono_5050kombinasi" validate:"numeric"`
+	Pasaran_depandiscstereo_5050kombinasi     float32 `json:"pasaran_depandiscstereo_5050kombinasi" validate:"numeric"`
+	Pasaran_depandisckembang_5050kombinasi    float32 `json:"pasaran_depandisckembang_5050kombinasi" validate:"numeric"`
+	Pasaran_depandisckempis_5050kombinasi     float32 `json:"pasaran_depandisckempis_5050kombinasi" validate:"numeric"`
+	Pasaran_depandisckembar_5050kombinasi     float32 `json:"pasaran_depandisckembar_5050kombinasi" validate:"numeric"`
 }
 type pasaranconfmakaukombinasi struct {
 	Idpasaran                     int     `json:"idpasaran"`
 	Idpasarantogel                string  `json:"idpasarantogel"`
 	Page                          string  `json:"page"`
-	Pasaran_minbet_kombinasi      int     `json:"pasaran_minbet_kombinasi"`
-	Pasaran_maxbet_kombinasi      int     `json:"pasaran_maxbet_kombinasi"`
-	Pasaran_limittotal_kombinasi  int     `json:"pasaran_limittotal_kombinasi"`
-	Pasaran_limitglobal_kombinasi int     `json:"pasaran_limitglobal_kombinasi"`
-	Pasaran_win_kombinasi         float32 `json:"pasaran_win_kombinasi"`
-	Pasaran_disc_kombinasi        float32 `json:"pasaran_disc_kombinasi"`
+	Pasaran_minbet_kombinasi      int     `json:"pasaran_minbet_kombinasi" validate:"required,numeric"`
+	Pasaran_maxbet_kombinasi      int     `json:"pasaran_maxbet_kombinasi" validate:"required,numeric"`
+	Pasaran_limittotal_kombinasi  int     `json:"pasaran_limittotal_kombinasi" validate:"required,numeric"`
+	Pasaran_limitglobal_kombinasi int     `json:"pasaran_limitglobal_kombinasi" validate:"required,numeric"`
+	Pasaran_win_kombinasi         float32 `json:"pasaran_win_kombinasi" validate:"required,numeric"`
+	Pasaran_disc_kombinasi        float32 `json:"pasaran_disc_kombinasi" validate:"required,numeric"`
 }
 type pasaranconfdasar struct {
 	Idpasaran                 int     `json:"idpasaran"`
 	Idpasarantogel            string  `json:"idpasarantogel"`
 	Page                      string  `json:"page"`
-	Pasaran_minbet_dasar      int     `json:"pasaran_minbet_dasar"`
-	Pasaran_maxbet_dasar      int     `json:"pasaran_maxbet_dasar"`
-	Pasaran_limittotal_dasar  int     `json:"pasaran_limittotal_dasar"`
-	Pasaran_limitglobal_dasar int     `json:"pasaran_limitglobal_dasar"`
-	Pasaran_keibesar_dasar    float32 `json:"pasaran_keibesar_dasar"`
-	Pasaran_keikecil_dasar    float32 `json:"pasaran_keikecil_dasar"`
-	Pasaran_keigenap_dasar    float32 `json:"pasaran_keigenap_dasar"`
-	Pasaran_keiganjil_dasar   float32 `json:"pasaran_keiganjil_dasar"`
-	Pasaran_discbesar_dasar   float32 `json:"pasaran_discbesar_dasar"`
-	Pasaran_disckecil_dasar   float32 `json:"pasaran_disckecil_dasar"`
-	Pasaran_discgenap_dasar   float32 `json:"pasaran_discgenap_dasar"`
-	Pasaran_discganjil_dasar  float32 `json:"pasaran_discganjil_dasar"`
+	Pasaran_minbet_dasar      int     `json:"pasaran_minbet_dasar" validate:"required,numeric"`
+	Pasaran_maxbet_dasar      int     `json:"pasaran_maxbet_dasar" validate:"required,numeric"`
+	Pasaran_limittotal_dasar  int     `json:"pasaran_limittotal_dasar" validate:"required,numeric"`
+	Pasaran_limitglobal_dasar int     `json:"pasaran_limitglobal_dasar" validate:"required,numeric"`
+	Pasaran_keibesar_dasar    float32 `json:"pasaran_keibesar_dasar" validate:"numeric"`
+	Pasaran_keikecil_dasar    float32 `json:"pasaran_keikecil_dasar" validate:"numeric"`
+	Pasaran_keigenap_dasar    float32 `json:"pasaran_keigenap_dasar" validate:"numeric"`
+	Pasaran_keiganjil_dasar   float32 `json:"pasaran_keiganjil_dasar" validate:"numeric"`
+	Pasaran_discbesar_dasar   float32 `json:"pasaran_discbesar_dasar" validate:"numeric"`
+	Pasaran_disckecil_dasar   float32 `json:"pasaran_disckecil_dasar" validate:"numeric"`
+	Pasaran_discgenap_dasar   float32 `json:"pasaran_discgenap_dasar" validate:"numeric"`
+	Pasaran_discganjil_dasar  float32 `json:"pasaran_discganjil_dasar" validate:"numeric"`
 }
 type pasaranconfshio struct {
 	Idpasaran                int     `json:"idpasaran"`
 	Idpasarantogel           string  `json:"idpasarantogel"`
 	Page                     string  `json:"page"`
-	Pasaran_minbet_shio      int     `json:"pasaran_minbet_shio"`
-	Pasaran_maxbet_shio      int     `json:"pasaran_maxbet_shio"`
-	Pasaran_limittotal_shio  int     `json:"pasaran_limittotal_shio"`
-	Pasaran_limitglobal_shio int     `json:"pasaran_limitglobal_shio"`
-	Pasaran_shioyear_shio    string  `json:"pasaran_shioyear_shio"`
-	Pasaran_disc_shio        float32 `json:"pasaran_disc_shio"`
-	Pasaran_win_shio         float32 `json:"pasaran_win_shio"`
+	Pasaran_minbet_shio      int     `json:"pasaran_minbet_shio" validate:"required,numeric"`
+	Pasaran_maxbet_shio      int     `json:"pasaran_maxbet_shio" validate:"required,numeric"`
+	Pasaran_limittotal_shio  int     `json:"pasaran_limittotal_shio" validate:"required,numeric"`
+	Pasaran_limitglobal_shio int     `json:"pasaran_limitglobal_shio" validate:"required,numeric"`
+	Pasaran_shioyear_shio    string  `json:"pasaran_shioyear_shio" validate:"required,numeric"`
+	Pasaran_disc_shio        float32 `json:"pasaran_disc_shio" validate:"numeric"`
+	Pasaran_win_shio         float32 `json:"pasaran_win_shio" validate:"required,numeric"`
 }
 
 type responseredis_pasarandetail struct {
@@ -1446,13 +1446,30 @@ func PasaranSaveLimit(c *fiber.Ctx) error {
 	}
 }
 func PasaranSaveConf432d(c *fiber.Ctx) error {
+	var errors []*helpers.ErrorResponse
 	client := new(pasaranconf432)
+	validate := validator.New()
 	if err := c.BodyParser(client); err != nil {
 		c.Status(fiber.StatusBadRequest)
 		return c.JSON(fiber.Map{
 			"status":  fiber.StatusBadRequest,
 			"message": err.Error(),
 			"record":  nil,
+		})
+	}
+	err := validate.Struct(client)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element helpers.ErrorResponse
+			element.Field = err.StructField()
+			element.Tag = err.Tag()
+			errors = append(errors, &element)
+		}
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": "validation",
+			"record":  errors,
 		})
 	}
 	user := c.Locals("jwt").(*jwt.Token)
@@ -1532,13 +1549,30 @@ func PasaranSaveConf432d(c *fiber.Ctx) error {
 	}
 }
 func PasaranSaveConfColokBebas(c *fiber.Ctx) error {
+	var errors []*helpers.ErrorResponse
 	client := new(pasaranconfcbebas)
+	validate := validator.New()
 	if err := c.BodyParser(client); err != nil {
 		c.Status(fiber.StatusBadRequest)
 		return c.JSON(fiber.Map{
 			"status":  fiber.StatusBadRequest,
 			"message": err.Error(),
 			"record":  nil,
+		})
+	}
+	err := validate.Struct(client)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element helpers.ErrorResponse
+			element.Field = err.StructField()
+			element.Tag = err.Tag()
+			errors = append(errors, &element)
+		}
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": "validation",
+			"record":  errors,
 		})
 	}
 	user := c.Locals("jwt").(*jwt.Token)
@@ -1616,13 +1650,30 @@ func PasaranSaveConfColokBebas(c *fiber.Ctx) error {
 	}
 }
 func PasaranSaveConfColokMacau(c *fiber.Ctx) error {
+	var errors []*helpers.ErrorResponse
 	client := new(pasaranconfcmacau)
+	validate := validator.New()
 	if err := c.BodyParser(client); err != nil {
 		c.Status(fiber.StatusBadRequest)
 		return c.JSON(fiber.Map{
 			"status":  fiber.StatusBadRequest,
 			"message": err.Error(),
 			"record":  nil,
+		})
+	}
+	err := validate.Struct(client)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element helpers.ErrorResponse
+			element.Field = err.StructField()
+			element.Tag = err.Tag()
+			errors = append(errors, &element)
+		}
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": "validation",
+			"record":  errors,
 		})
 	}
 	user := c.Locals("jwt").(*jwt.Token)
@@ -1704,6 +1755,8 @@ func PasaranSaveConfColokMacau(c *fiber.Ctx) error {
 	}
 }
 func PasaranSaveConfColokNaga(c *fiber.Ctx) error {
+	var errors []*helpers.ErrorResponse
+	validate := validator.New()
 	client := new(pasaranconfcnaga)
 	if err := c.BodyParser(client); err != nil {
 		c.Status(fiber.StatusBadRequest)
@@ -1711,6 +1764,21 @@ func PasaranSaveConfColokNaga(c *fiber.Ctx) error {
 			"status":  fiber.StatusBadRequest,
 			"message": err.Error(),
 			"record":  nil,
+		})
+	}
+	err := validate.Struct(client)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element helpers.ErrorResponse
+			element.Field = err.StructField()
+			element.Tag = err.Tag()
+			errors = append(errors, &element)
+		}
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": "validation",
+			"record":  errors,
 		})
 	}
 	user := c.Locals("jwt").(*jwt.Token)
@@ -1790,6 +1858,8 @@ func PasaranSaveConfColokNaga(c *fiber.Ctx) error {
 	}
 }
 func PasaranSaveConfColokJitu(c *fiber.Ctx) error {
+	var errors []*helpers.ErrorResponse
+	validate := validator.New()
 	client := new(pasaranconfcjitu)
 	if err := c.BodyParser(client); err != nil {
 		c.Status(fiber.StatusBadRequest)
@@ -1797,6 +1867,21 @@ func PasaranSaveConfColokJitu(c *fiber.Ctx) error {
 			"status":  fiber.StatusBadRequest,
 			"message": err.Error(),
 			"record":  nil,
+		})
+	}
+	err := validate.Struct(client)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element helpers.ErrorResponse
+			element.Field = err.StructField()
+			element.Tag = err.Tag()
+			errors = append(errors, &element)
+		}
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": "validation",
+			"record":  errors,
 		})
 	}
 	user := c.Locals("jwt").(*jwt.Token)
@@ -1880,6 +1965,8 @@ func PasaranSaveConfColokJitu(c *fiber.Ctx) error {
 	}
 }
 func PasaranSaveConf5050Umum(c *fiber.Ctx) error {
+	var errors []*helpers.ErrorResponse
+	validate := validator.New()
 	client := new(pasaranconfc5050)
 	if err := c.BodyParser(client); err != nil {
 		c.Status(fiber.StatusBadRequest)
@@ -1887,6 +1974,21 @@ func PasaranSaveConf5050Umum(c *fiber.Ctx) error {
 			"status":  fiber.StatusBadRequest,
 			"message": err.Error(),
 			"record":  nil,
+		})
+	}
+	err := validate.Struct(client)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element helpers.ErrorResponse
+			element.Field = err.StructField()
+			element.Tag = err.Tag()
+			errors = append(errors, &element)
+		}
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": "validation",
+			"record":  errors,
 		})
 	}
 	user := c.Locals("jwt").(*jwt.Token)
@@ -1984,6 +2086,8 @@ func PasaranSaveConf5050Umum(c *fiber.Ctx) error {
 	}
 }
 func PasaranSaveConf5050Special(c *fiber.Ctx) error {
+	var errors []*helpers.ErrorResponse
+	validate := validator.New()
 	client := new(pasaranconfc5050special)
 	if err := c.BodyParser(client); err != nil {
 		c.Status(fiber.StatusBadRequest)
@@ -1991,6 +2095,21 @@ func PasaranSaveConf5050Special(c *fiber.Ctx) error {
 			"status":  fiber.StatusBadRequest,
 			"message": err.Error(),
 			"record":  nil,
+		})
+	}
+	err := validate.Struct(client)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element helpers.ErrorResponse
+			element.Field = err.StructField()
+			element.Tag = err.Tag()
+			errors = append(errors, &element)
+		}
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": "validation",
+			"record":  errors,
 		})
 	}
 	user := c.Locals("jwt").(*jwt.Token)
@@ -2128,6 +2247,8 @@ func PasaranSaveConf5050Special(c *fiber.Ctx) error {
 	}
 }
 func PasaranSaveConf5050Kombinasi(c *fiber.Ctx) error {
+	var errors []*helpers.ErrorResponse
+	validate := validator.New()
 	client := new(pasaranconfc5050kombinasi)
 	if err := c.BodyParser(client); err != nil {
 		c.Status(fiber.StatusBadRequest)
@@ -2135,6 +2256,21 @@ func PasaranSaveConf5050Kombinasi(c *fiber.Ctx) error {
 			"status":  fiber.StatusBadRequest,
 			"message": err.Error(),
 			"record":  nil,
+		})
+	}
+	err := validate.Struct(client)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element helpers.ErrorResponse
+			element.Field = err.StructField()
+			element.Tag = err.Tag()
+			errors = append(errors, &element)
+		}
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": "validation",
+			"record":  errors,
 		})
 	}
 	user := c.Locals("jwt").(*jwt.Token)
@@ -2268,6 +2404,8 @@ func PasaranSaveConf5050Kombinasi(c *fiber.Ctx) error {
 	}
 }
 func PasaranSaveConfMacauKombinasi(c *fiber.Ctx) error {
+	var errors []*helpers.ErrorResponse
+	validate := validator.New()
 	client := new(pasaranconfmakaukombinasi)
 	if err := c.BodyParser(client); err != nil {
 		c.Status(fiber.StatusBadRequest)
@@ -2275,6 +2413,21 @@ func PasaranSaveConfMacauKombinasi(c *fiber.Ctx) error {
 			"status":  fiber.StatusBadRequest,
 			"message": err.Error(),
 			"record":  nil,
+		})
+	}
+	err := validate.Struct(client)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element helpers.ErrorResponse
+			element.Field = err.StructField()
+			element.Tag = err.Tag()
+			errors = append(errors, &element)
+		}
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": "validation",
+			"record":  errors,
 		})
 	}
 	user := c.Locals("jwt").(*jwt.Token)
@@ -2353,6 +2506,8 @@ func PasaranSaveConfMacauKombinasi(c *fiber.Ctx) error {
 	}
 }
 func PasaranSaveConfDasar(c *fiber.Ctx) error {
+	var errors []*helpers.ErrorResponse
+	validate := validator.New()
 	client := new(pasaranconfdasar)
 	if err := c.BodyParser(client); err != nil {
 		c.Status(fiber.StatusBadRequest)
@@ -2360,6 +2515,21 @@ func PasaranSaveConfDasar(c *fiber.Ctx) error {
 			"status":  fiber.StatusBadRequest,
 			"message": err.Error(),
 			"record":  nil,
+		})
+	}
+	err := validate.Struct(client)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element helpers.ErrorResponse
+			element.Field = err.StructField()
+			element.Tag = err.Tag()
+			errors = append(errors, &element)
+		}
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": "validation",
+			"record":  errors,
 		})
 	}
 	user := c.Locals("jwt").(*jwt.Token)
@@ -2450,6 +2620,8 @@ func PasaranSaveConfDasar(c *fiber.Ctx) error {
 	}
 }
 func PasaranSaveConfShio(c *fiber.Ctx) error {
+	var errors []*helpers.ErrorResponse
+	validate := validator.New()
 	client := new(pasaranconfshio)
 	if err := c.BodyParser(client); err != nil {
 		c.Status(fiber.StatusBadRequest)
@@ -2457,6 +2629,21 @@ func PasaranSaveConfShio(c *fiber.Ctx) error {
 			"status":  fiber.StatusBadRequest,
 			"message": err.Error(),
 			"record":  nil,
+		})
+	}
+	err := validate.Struct(client)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element helpers.ErrorResponse
+			element.Field = err.StructField()
+			element.Tag = err.Tag()
+			errors = append(errors, &element)
+		}
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": "validation",
+			"record":  errors,
 		})
 	}
 	user := c.Locals("jwt").(*jwt.Token)
