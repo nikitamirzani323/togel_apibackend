@@ -290,7 +290,7 @@ type pasaranconfshio struct {
 	Pasaran_maxbet_shio      int     `json:"pasaran_maxbet_shio" validate:"required,numeric"`
 	Pasaran_limittotal_shio  int     `json:"pasaran_limittotal_shio" validate:"required,numeric"`
 	Pasaran_limitglobal_shio int     `json:"pasaran_limitglobal_shio" validate:"required,numeric"`
-	Pasaran_shioyear_shio    string  `json:"pasaran_shioyear_shio" validate:"required,numeric"`
+	Pasaran_shioyear_shio    string  `json:"pasaran_shioyear_shio" validate:"required"`
 	Pasaran_disc_shio        float32 `json:"pasaran_disc_shio" validate:"numeric"`
 	Pasaran_win_shio         float32 `json:"pasaran_win_shio" validate:"required,numeric"`
 }
