@@ -2553,7 +2553,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 		ekor := string([]byte(temp)[3])
 		kepala_2, _ := strconv.Atoi(kepala)
 		ekor_2, _ := strconv.Atoi(ekor)
-		dasar := kepala_2 + ekor_2
+		dasar, _ := strconv.Atoi(kepala + ekor)
 		//BESARKECIL
 		if kepala_2 <= 4 {
 			data = append(data, "KECIL")
@@ -2566,6 +2566,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 		} else {
 			data = append(data, "GANJIL")
 		}
+		log.Printf("DASAR : %d", dasar)
 		//TEPITENGAH
 		if dasar >= 0 && dasar <= 24 {
 			data = append(data, "TEPI")
