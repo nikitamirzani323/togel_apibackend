@@ -31,13 +31,15 @@ type responseredis_adminhome_listruleadmin struct {
 	Adminrule_name        string `json:"adminrule_name"`
 }
 
+const Fieldadmin_home_redis = "LISTADMIN_AGENT_"
+
 func AdminHome(c *fiber.Ctx) error {
 	user := c.Locals("jwt").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	name := claims["name"].(string)
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
-	field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
+	field_redis := Fieldadmin_home_redis + strings.ToLower(client_company)
 	var obj entities.Model_admin
 	var arraobj []entities.Model_admin
 	var obj_listruleadmin responseredis_adminhome_listruleadmin
@@ -212,12 +214,7 @@ func AdminSave(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
-		val_agent := helpers.DeleteRedis(field_redis)
-		log.Printf("Redis Delete AGEN - ADMIN status: %d", val_agent)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_admin(client_company)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -243,12 +240,7 @@ func AdminSave(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
-			val_agent := helpers.DeleteRedis(field_redis)
-			log.Printf("Redis Delete AGEN - ADMIN status: %d", val_agent)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_admin(client_company)
 			return c.JSON(result)
 		}
 	}
@@ -311,12 +303,7 @@ func AdminSaveIplist(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
-		val_agent := helpers.DeleteRedis(field_redis)
-		log.Printf("Redis Delete AGEN - ADMIN status: %d", val_agent)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_admin(client_company)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -341,12 +328,7 @@ func AdminSaveIplist(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
-			val_agent := helpers.DeleteRedis(field_redis)
-			log.Printf("Redis Delete AGEN - ADMIN status: %d", val_agent)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_admin(client_company)
 			return c.JSON(result)
 		}
 	}
@@ -404,12 +386,7 @@ func AdminDeleteIplist(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
-		val_agent := helpers.DeleteRedis(field_redis)
-		log.Printf("Redis Delete AGEN - ADMIN status: %d", val_agent)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_admin(client_company)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -429,13 +406,16 @@ func AdminDeleteIplist(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			field_redis := "LISTADMIN_AGENT_" + strings.ToLower(client_company)
-			val_agent := helpers.DeleteRedis(field_redis)
-			log.Printf("Redis Delete AGEN - ADMIN status: %d", val_agent)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_admin(client_company)
 			return c.JSON(result)
 		}
 	}
+}
+func _deleteredis_admin(company string) {
+	field_redis := Fieldadmin_home_redis + strings.ToLower(company)
+	val_adminagent := helpers.DeleteRedis(field_redis)
+	log.Printf("Redis Delete AGEN - ADMIN status: %d", val_adminagent)
+	log_redis := "LISTLOG_AGENT_" + strings.ToLower(company)
+	val_agent_redis := helpers.DeleteRedis(log_redis)
+	log.Printf("Redis Delete AGEN - LOG status: %d", val_agent_redis)
 }

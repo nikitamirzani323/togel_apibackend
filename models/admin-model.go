@@ -85,6 +85,13 @@ func Fetch_adminHome(company string) (helpers.ResponseAdminManagement, error) {
 
 		helpers.ErrorCheck(err)
 
+		lastlogin := ""
+		if lastlogin_comp_db == "0000-00-00 00:00:00" {
+			lastlogin = ""
+		} else {
+			lastlogin = lastlogin_comp_db
+		}
+
 		obj.No = no
 		obj.Username = username_comp_db
 		obj.Nama = nama_comp_db
@@ -92,7 +99,7 @@ func Fetch_adminHome(company string) (helpers.ResponseAdminManagement, error) {
 		obj.Rule = Get_AdminRule(company, "nmruleadmin", idruleadmin_db)
 		obj.Joindate = createdatecomp_admin_db
 		obj.Timezone = lasttimezone_comp_db
-		obj.Lastlogin = lastlogin_comp_db
+		obj.Lastlogin = lastlogin
 		obj.LastIpaddress = lastipaddres_comp_db
 		obj.Status = status_comp_db
 		arraobj = append(arraobj, obj)
@@ -138,14 +145,14 @@ func Fetch_adminDetail(company, username string) (helpers.ResponseAdminManagemen
 	var obj adminDetail
 	var arraobj []adminDetail
 	var res helpers.ResponseAdminManagement
-	msg := "Success"
+	msg := "Failed"
 	ctx := context.Background()
 	con := db.CreateCon()
 	render_page := time.Now()
 
 	sql := `SELECT 
-		nama_comp ,typeadmin, idruleadmin, status_comp, createcomp_admin, 
-		createdatecomp_admin, updatecomp_admin, updatedatecomp_admin 
+		nama_comp ,typeadmin, idruleadmin, status_comp, 
+		createcomp_admin, createdatecomp_admin, COALESCE(updatecomp_admin,""), COALESCE(updatedatecomp_admin,"") 
 		FROM ` + config.DB_tbl_mst_company_admin + ` 
 		WHERE idcompany = ? 
 		AND username_comp  = ? 
