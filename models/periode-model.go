@@ -2490,6 +2490,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 		if flag_1 && flag_2 {
 			if flag_3 {
 				totalcount = count_1 + count_2 + count_3
+				log.Println("Total Count Colok Naga :", totalcount)
 
 				if totalcount == 3 {
 					_, win = Pasaran_id(idcomppasaran, company, "4_win3digit")
@@ -2497,6 +2498,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 				if totalcount == 4 {
 					_, win = Pasaran_id(idcomppasaran, company, "4_win4digit")
 				}
+				log.Println("WIN COLOK NAGA :", win)
 				if simpandb == "Y" {
 					//UPDATE WIN DETAIL BET
 					stmt, e := con.PrepareContext(ctx, `
@@ -3195,6 +3197,8 @@ func Pasaran_id(idcomppasaran int, company, tipecolumn string) (string, float32)
 			result_number = win4_cmacau_db
 		case "4_win3digit":
 			result_number = win3_cnaga_db
+		case "4_win4digit":
+			result_number = win4_cnaga_db
 		}
 	default:
 		helpers.ErrorCheck(err)

@@ -512,13 +512,15 @@ type responseredis_pasaranonline struct {
 	Haripasaran     string `json:"haripasaran"`
 }
 
+const Fieldpasaran_home_redis = "LISTPASARAN_AGENT_"
+
 func PasaranHome(c *fiber.Ctx) error {
 	user := c.Locals("jwt").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	name := claims["name"].(string)
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
-	field_redis := "LISTPASARAN_AGENT_" + strings.ToLower(client_company)
+	field_redis := Fieldpasaran_home_redis + strings.ToLower(client_company)
 	var obj entities.Model_pasaranHome
 	var arraobj []entities.Model_pasaranHome
 	render_page := time.Now()
@@ -592,7 +594,7 @@ func PasaranDetail(c *fiber.Ctx) error {
 	name := claims["name"].(string)
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
-	field_redis := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
+	field_redis := Fieldpasaran_home_redis + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	var obj responseredis_pasarandetail
 	var arraobj []responseredis_pasarandetail
 	var obj2 responseredis_pasaranonline
@@ -1074,8 +1076,6 @@ func PasaranSave(c *fiber.Ctx) error {
 	name := claims["name"].(string)
 	temp_decp := helpers.Decryption(name)
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
-	field_redis := "LISTPASARAN_AGENT_" + strings.ToLower(client_company)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
 
@@ -1099,17 +1099,7 @@ func PasaranSave(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		//FRONTEND
-		val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
-		log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
-		//AGEN
-		val_agent := helpers.DeleteRedis(field_redis)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, "")
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1139,17 +1129,7 @@ func PasaranSave(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			//FRONTEND
-			val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
-			log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
-			//AGEN
-			val_agent := helpers.DeleteRedis(field_redis)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, "")
 			return c.JSON(result)
 		}
 	}
@@ -1189,8 +1169,6 @@ func PasaranSaveOnline(c *fiber.Ctx) error {
 	client_username, client_company, typeadmin, idruleadmin := helpers.Parsing_Decry(temp_decp, "==")
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis := "LISTPASARAN_AGENT_" + strings.ToLower(client_company)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranOnline(
 			client_username,
@@ -1205,17 +1183,7 @@ func PasaranSaveOnline(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		//FRONTEND
-		val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
-		log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
-		//AGEN
-		val_agent := helpers.DeleteRedis(field_redis)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, "")
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1239,17 +1207,7 @@ func PasaranSaveOnline(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			//FRONTEND
-			val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
-			log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
-			//AGEN
-			val_agent := helpers.DeleteRedis(field_redis)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, "")
 			return c.JSON(result)
 		}
 	}
@@ -1289,8 +1247,6 @@ func PasaranDeleteOnline(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis := "LISTPASARAN_AGENT_" + strings.ToLower(client_company)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Delete_PasaranOnline(
 			client_company,
@@ -1304,17 +1260,7 @@ func PasaranDeleteOnline(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		//FRONTEND
-		val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
-		log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
-		//AGEN
-		val_agent := helpers.DeleteRedis(field_redis)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, "")
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1337,17 +1283,7 @@ func PasaranDeleteOnline(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			//FRONTEND
-			val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
-			log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
-			//AGEN
-			val_agent := helpers.DeleteRedis(field_redis)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, "")
 			return c.JSON(result)
 		}
 	}
@@ -1370,8 +1306,6 @@ func PasaranSaveLimit(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis := "LISTPASARAN_AGENT_" + strings.ToLower(client_company)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranLimitline(
 			client_username,
@@ -1391,17 +1325,7 @@ func PasaranSaveLimit(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		//FRONTEND
-		val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
-		log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
-		//AGEN
-		val_agent := helpers.DeleteRedis(field_redis)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, "")
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1430,17 +1354,7 @@ func PasaranSaveLimit(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			//FRONTEND
-			val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(client_company))
-			log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
-			//AGEN
-			val_agent := helpers.DeleteRedis(field_redis)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN status: %d", val_agent)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, "")
 			return c.JSON(result)
 		}
 	}
@@ -1480,7 +1394,6 @@ func PasaranSaveConf432d(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConf432(
 			client_username, client_company, client.Idpasaran,
@@ -1501,13 +1414,7 @@ func PasaranSaveConf432d(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_4-3-2")
-		log.Printf("Redis Delete Client - CONF 432 status: %d", val_frontend)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1537,13 +1444,7 @@ func PasaranSaveConf432d(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_4-3-2")
-			log.Printf("Redis Delete Client - CONF 432 status: %d", val_frontend)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 			return c.JSON(result)
 		}
 	}
@@ -1583,7 +1484,6 @@ func PasaranSaveConfColokBebas(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfColokBebas(
 			client_username,
@@ -1603,13 +1503,7 @@ func PasaranSaveConfColokBebas(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_colok")
-		log.Printf("Redis Delete Client - CONF COLOK status: %d", val_frontend)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1638,13 +1532,7 @@ func PasaranSaveConfColokBebas(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_colok")
-			log.Printf("Redis Delete Client - CONF COLOK status: %d", val_frontend)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 			return c.JSON(result)
 		}
 	}
@@ -1684,7 +1572,6 @@ func PasaranSaveConfColokMacau(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfColokMacau(
 			client_username,
@@ -1706,13 +1593,7 @@ func PasaranSaveConfColokMacau(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_colok")
-		log.Printf("Redis Delete Client - CONF COLOK status: %d", val_frontend)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1743,13 +1624,7 @@ func PasaranSaveConfColokMacau(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_colok")
-			log.Printf("Redis Delete Client - CONF COLOK status: %d", val_frontend)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 			return c.JSON(result)
 		}
 	}
@@ -1789,7 +1664,6 @@ func PasaranSaveConfColokNaga(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfColokNaga(
 			client_username,
@@ -1810,13 +1684,7 @@ func PasaranSaveConfColokNaga(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_colok")
-		log.Printf("Redis Delete Client - CONF COLOK status: %d", val_frontend)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1846,13 +1714,7 @@ func PasaranSaveConfColokNaga(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_colok")
-			log.Printf("Redis Delete Client - CONF COLOK status: %d", val_frontend)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 			return c.JSON(result)
 		}
 	}
@@ -1892,7 +1754,6 @@ func PasaranSaveConfColokJitu(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfColokJitu(
 			client_username,
@@ -1915,13 +1776,7 @@ func PasaranSaveConfColokJitu(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_colok")
-		log.Printf("Redis Delete Client - CONF COLOK status: %d", val_frontend)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -1953,13 +1808,7 @@ func PasaranSaveConfColokJitu(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_colok")
-			log.Printf("Redis Delete Client - CONF COLOK status: %d", val_frontend)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 			return c.JSON(result)
 		}
 	}
@@ -1999,7 +1848,6 @@ func PasaranSaveConf5050Umum(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConf5050Umum(
 			client_username,
@@ -2029,13 +1877,7 @@ func PasaranSaveConf5050Umum(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_5050")
-		log.Printf("Redis Delete Client - CONF 5050 status: %d", val_frontend)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -2074,13 +1916,7 @@ func PasaranSaveConf5050Umum(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_5050")
-			log.Printf("Redis Delete Client - CONF 5050 status: %d", val_frontend)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 			return c.JSON(result)
 		}
 	}
@@ -2120,7 +1956,6 @@ func PasaranSaveConf5050Special(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConf5050Special(
 			client_username,
@@ -2170,13 +2005,7 @@ func PasaranSaveConf5050Special(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_5050")
-		log.Printf("Redis Delete Client - CONF 5050 status: %d", val_frontend)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -2235,13 +2064,7 @@ func PasaranSaveConf5050Special(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_5050")
-			log.Printf("Redis Delete Client - CONF 5050 status: %d", val_frontend)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 			return c.JSON(result)
 		}
 	}
@@ -2281,7 +2104,6 @@ func PasaranSaveConf5050Kombinasi(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConf5050Kombinasi(
 			client_username,
@@ -2329,13 +2151,7 @@ func PasaranSaveConf5050Kombinasi(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_5050")
-		log.Printf("Redis Delete Client - CONF 5050 status: %d", val_frontend)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -2392,13 +2208,7 @@ func PasaranSaveConf5050Kombinasi(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_5050")
-			log.Printf("Redis Delete Client - CONF 5050 status: %d", val_frontend)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 			return c.JSON(result)
 		}
 	}
@@ -2438,7 +2248,6 @@ func PasaranSaveConfMacauKombinasi(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfMacauKombinasi(
 			client_username,
@@ -2458,14 +2267,7 @@ func PasaranSaveConfMacauKombinasi(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-
-		val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_macaukombinasi")
-		log.Printf("Redis Delete Client - CONF MACAUKOMBINASI status: %d", val_frontend)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -2494,13 +2296,7 @@ func PasaranSaveConfMacauKombinasi(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_macaukombinasi")
-			log.Printf("Redis Delete Client - CONF MACAUKOMBINASI status: %d", val_frontend)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 			return c.JSON(result)
 		}
 	}
@@ -2540,7 +2336,6 @@ func PasaranSaveConfDasar(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfDasar(
 			client_username,
@@ -2566,14 +2361,7 @@ func PasaranSaveConfDasar(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-
-		val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_dasar")
-		log.Printf("Redis Delete Client - CONF DASAR status: %d", val_frontend)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -2608,13 +2396,7 @@ func PasaranSaveConfDasar(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_dasar")
-			log.Printf("Redis Delete Client - CONF DASAR status: %d", val_frontend)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 			return c.JSON(result)
 		}
 	}
@@ -2654,7 +2436,6 @@ func PasaranSaveConfShio(c *fiber.Ctx) error {
 
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
-	field_redis2 := "LISTPASARAN_AGENT_" + strings.ToLower(client_company) + "_" + strconv.Itoa(client.Idpasaran)
 	if typeadmin == "MASTER" {
 		result, err := models.Save_PasaranConfShio(
 			client_username,
@@ -2675,14 +2456,7 @@ func PasaranSaveConfShio(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-
-		val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_shio")
-		log.Printf("Redis Delete Client - CONF SHIO status: %d", val_frontend)
-		val_agent2 := helpers.DeleteRedis(field_redis2)
-		log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -2712,14 +2486,46 @@ func PasaranSaveConfShio(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			val_frontend := helpers.DeleteRedis("config_" + strings.ToLower(client_company) + "_" + strings.ToLower(client.Idpasarantogel) + "_shio")
-			log.Printf("Redis Delete Client - CONF SHIO status: %d", val_frontend)
-			val_agent2 := helpers.DeleteRedis(field_redis2)
-			log.Printf("Redis Delete Agent - PASARAN DETAIL status: %d", val_agent2)
-			log_redis := "LISTLOG_AGENT_" + strings.ToLower(client_company)
-			val_agent_redis := helpers.DeleteRedis(log_redis)
-			log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+			_deleteredis_pasaran(client_company, client.Idpasaran, client.Idpasarantogel)
 			return c.JSON(result)
 		}
+	}
+}
+func _deleteredis_pasaran(company string, idpasaran int, idpasarantogel string) {
+	//AGEN
+	field_home_redis := Fieldpasaran_home_redis + strings.ToLower(company)
+	val_homeredis := helpers.DeleteRedis(field_home_redis)
+	log.Printf("Redis Delete AGEN - PASARAN HOME : %d", val_homeredis)
+
+	field_homedetail_redis := Fieldpasaran_home_redis + strings.ToLower(company) + "_" + strconv.Itoa(idpasaran)
+	val_homedetailredis := helpers.DeleteRedis(field_homedetail_redis)
+	log.Printf("Redis Delete AGEN - PASARAN DETAIL : %d", val_homedetailredis)
+
+	log_redis := "LISTLOG_AGENT_" + strings.ToLower(company)
+	val_agent_redis := helpers.DeleteRedis(log_redis)
+	log.Printf("Redis Delete AGEN - LOG status: %d", val_agent_redis)
+
+	//FRONTEND
+	val_frontend_listpasaran := helpers.DeleteRedis("listpasaran_" + strings.ToLower(company))
+	log.Printf("Redis Delete FRONTEND LISTPASARAN status: %d", val_frontend_listpasaran)
+
+	if idpasarantogel != "" {
+		val_frontend_432d := helpers.DeleteRedis("config_" + strings.ToLower(company) + "_" + strings.ToLower(idpasarantogel) + "_4-3-2")
+		log.Printf("Redis Delete Client - CONF 432 status: %d", val_frontend_432d)
+
+		val_frontend_colok := helpers.DeleteRedis("config_" + strings.ToLower(company) + "_" + strings.ToLower(idpasarantogel) + "_colok")
+		log.Printf("Redis Delete Client - CONF COLOK status: %d", val_frontend_colok)
+
+		val_frontend_5050 := helpers.DeleteRedis("config_" + strings.ToLower(company) + "_" + strings.ToLower(idpasarantogel) + "_5050")
+		log.Printf("Redis Delete Client - CONF 5050 status: %d", val_frontend_5050)
+
+		val_frontend_macau := helpers.DeleteRedis("config_" + strings.ToLower(company) + "_" + strings.ToLower(idpasarantogel) + "_macaukombinasi")
+		log.Printf("Redis Delete Client - CONF MACAUKOMBINASI status: %d", val_frontend_macau)
+
+		val_frontend_dasar := helpers.DeleteRedis("config_" + strings.ToLower(company) + "_" + strings.ToLower(idpasarantogel) + "_dasar")
+		log.Printf("Redis Delete Client - CONF DASAR status: %d", val_frontend_dasar)
+
+		val_frontend_shio := helpers.DeleteRedis("config_" + strings.ToLower(company) + "_" + strings.ToLower(idpasarantogel) + "_shio")
+		log.Printf("Redis Delete Client - CONF SHIO status: %d", val_frontend_shio)
 	}
 }
