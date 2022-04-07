@@ -505,7 +505,7 @@ func Fetch_listbet(company, permainan string, idtrxkeluaran int) (helpers.Respon
 	helpers.ErrorCheck(err)
 
 	for row.Next() {
-		totalbet += 1
+
 		var (
 			idtrxkeluarandetail_db, bet_db                                                                                                                      int
 			datetimedetail_db, ipaddresss_db, username_db, typegame_db, nomortogel_db, browsertogel_db, devicetogel_db                                          string
@@ -520,58 +520,60 @@ func Fetch_listbet(company, permainan string, idtrxkeluaran int) (helpers.Respon
 			&createdatekeluarandetail_db, &updatekeluarandetail_db, &updatedatekeluarandetail_db)
 
 		helpers.ErrorCheck(err)
+		if statuskeluarandetail_db != "CANCEL" {
+			totalbet += 1
+			diskonpercen := diskon_db * 100
+			diskonbet := int(float32(bet_db) * diskon_db)
+			keipercen := kei_db * 100
+			keibet := int(float32(bet_db) * kei_db)
+			bayar := bet_db - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
+			subtotalbayar = subtotalbayar + bayar
+			winhasil := _rumuswinhasil(typegame_db, bayar, bet_db, win_db)
+			totalwin := 0
 
-		diskonpercen := diskon_db * 100
-		diskonbet := int(float32(bet_db) * diskon_db)
-		keipercen := kei_db * 100
-		keibet := int(float32(bet_db) * kei_db)
-		bayar := bet_db - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
-		subtotalbayar = subtotalbayar + bayar
-		winhasil := _rumuswinhasil(typegame_db, bayar, bet_db, win_db)
-		totalwin := 0
+			status_css := ""
+			switch statuskeluarandetail_db {
+			case "RUNNING":
+				totalwin = 0
+				status_css = config.STATUS_RUNNING
+			case "WINNER":
+				totalwin = winhasil
+				subtotalwin = subtotalwin + winhasil
+				status_css = config.STATUS_COMPLETE
+			case "LOSE":
+				totalwin = 0
+				status_css = config.STATUS_CANCEL
+			case "CANCEL":
+				totalwin = 0
+				status_css = config.STATUS_CANCELBET
+			}
 
-		status_css := ""
-		switch statuskeluarandetail_db {
-		case "RUNNING":
-			totalwin = 0
-			status_css = config.STATUS_RUNNING
-		case "WINNER":
-			totalwin = winhasil
-			subtotalwin = subtotalwin + winhasil
-			status_css = config.STATUS_COMPLETE
-		case "LOSE":
-			totalwin = 0
-			status_css = config.STATUS_CANCEL
-		case "CANCEL":
-			totalwin = 0
-			status_css = config.STATUS_CANCELBET
+			obj.Bet_id = idtrxkeluarandetail_db
+			obj.Bet_datetime = datetimedetail_db
+			obj.Bet_ipaddress = ipaddresss_db
+			obj.Bet_device = devicetogel_db
+			obj.Bet_timezone = browsertogel_db
+			obj.Bet_username = username_db
+			obj.Bet_typegame = typegame_db
+			obj.Bet_nomortogel = nomortogel_db
+			obj.Bet_posisitogel = posisitogel_db
+			obj.Bet_bet = bet_db
+			obj.Bet_diskon = diskonbet
+			obj.Bet_diskonpercen = diskonpercen
+			obj.Bet_kei = keibet
+			obj.Bet_keipercen = keipercen
+			obj.Bet_bayar = bayar
+			obj.Bet_win = win_db
+			obj.Bet_totalwin = totalwin
+			obj.Bet_status = statuskeluarandetail_db
+			obj.Bet_statuscss = status_css
+			obj.Bet_create = createkeluarandetail_db
+			obj.Bet_createDate = createdatekeluarandetail_db
+			obj.Bet_update = updatekeluarandetail_db
+			obj.Bet_updateDate = updatedatekeluarandetail_db
+			arraobj = append(arraobj, obj)
+			msg = "Success"
 		}
-
-		obj.Bet_id = idtrxkeluarandetail_db
-		obj.Bet_datetime = datetimedetail_db
-		obj.Bet_ipaddress = ipaddresss_db
-		obj.Bet_device = devicetogel_db
-		obj.Bet_timezone = browsertogel_db
-		obj.Bet_username = username_db
-		obj.Bet_typegame = typegame_db
-		obj.Bet_nomortogel = nomortogel_db
-		obj.Bet_posisitogel = posisitogel_db
-		obj.Bet_bet = bet_db
-		obj.Bet_diskon = diskonbet
-		obj.Bet_diskonpercen = diskonpercen
-		obj.Bet_kei = keibet
-		obj.Bet_keipercen = keipercen
-		obj.Bet_bayar = bayar
-		obj.Bet_win = win_db
-		obj.Bet_totalwin = totalwin
-		obj.Bet_status = statuskeluarandetail_db
-		obj.Bet_statuscss = status_css
-		obj.Bet_create = createkeluarandetail_db
-		obj.Bet_createDate = createdatekeluarandetail_db
-		obj.Bet_update = updatekeluarandetail_db
-		obj.Bet_updateDate = updatedatekeluarandetail_db
-		arraobj = append(arraobj, obj)
-		msg = "Success"
 	}
 	defer row.Close()
 	res.Status = fiber.StatusOK
@@ -1840,6 +1842,7 @@ func Cancelbet_Periode(agent, company string, idtrxkeluaran, idtrxkeluarandetail
 		defer stmt_keluarantogeldetail.Close()
 		if a_keluarantogeldetail > 0 {
 			flag = true
+			msg = "Success"
 			log.Printf("Update Detail tbl_trx_keluarantogel_detail : %d\n", idtrxkeluaran)
 
 			idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
