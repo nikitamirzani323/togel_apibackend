@@ -1027,20 +1027,27 @@ func Periodelistprediksi(c *fiber.Ctx) error {
 	return c.JSON(result)
 }
 func _deleteredis_periode(company string, idtrxkeluaran int, idpasarantogel string) {
+	log.Println("REDIS DELETE")
+	log.Println("COMPANY :", company)
+	log.Println("INVOICE :", idtrxkeluaran)
+	log.Println("PASARAN CODE :", idpasarantogel)
+
 	//AGEN
 	field_home_redis := Fieldperiode_home_redis + strings.ToLower(company)
 	val_homeredis := helpers.DeleteRedis(field_home_redis)
 	log.Printf("Redis Delete AGEN - PERIODE HOME : %d", val_homeredis)
 
-	field_homedetail_redis := Fieldpasaran_home_redis + strings.ToLower(company) + "_INVOICE_" + strconv.Itoa(idtrxkeluaran)
+	field_homedetail_redis := Fieldperiode_home_redis + strings.ToLower(company) + "_INVOICE_" + strconv.Itoa(idtrxkeluaran)
 	val_homedetailredis := helpers.DeleteRedis(field_homedetail_redis)
+	log.Printf("%s\n", field_homedetail_redis)
 	log.Printf("Redis Delete AGEN - PERIODE DETAIL : %d", val_homedetailredis)
 
-	field_homedetail_listmember_redis := Fieldpasaran_home_redis + strings.ToLower(company) + "_INVOICE_" + strconv.Itoa(idtrxkeluaran) + "_LISTMEMBER"
+	field_homedetail_listmember_redis := Fieldperiode_home_redis + strings.ToLower(company) + "_INVOICE_" + strconv.Itoa(idtrxkeluaran) + "_LISTMEMBER"
 	val_homedetaillistmember_redis := helpers.DeleteRedis(field_homedetail_listmember_redis)
+	log.Printf("%s\n", field_homedetail_listmember_redis)
 	log.Printf("Redis Delete AGEN - PERIODE DETAIL LISTMEMBER : %d", val_homedetaillistmember_redis)
 
-	field_homedetail_listbettable_redis := Fieldpasaran_home_redis + strings.ToLower(company) + "_INVOICE_" + strconv.Itoa(idtrxkeluaran) + "_LISTBETTABLE"
+	field_homedetail_listbettable_redis := Fieldperiode_home_redis + strings.ToLower(company) + "_INVOICE_" + strconv.Itoa(idtrxkeluaran) + "_LISTBETTABLE"
 	val_homedetaillistbettable_redis := helpers.DeleteRedis(field_homedetail_listbettable_redis)
 	log.Printf("Redis Delete AGEN - PERIODE DETAIL LISTBETTABLE : %d", val_homedetaillistbettable_redis)
 
