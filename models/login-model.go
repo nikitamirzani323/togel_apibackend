@@ -49,6 +49,11 @@ func Login_Model(username, password, ipaddress, timezone string) (bool, string, 
 	if typeadminDB != "MASTER" {
 		flag = CheckDBTwoField(config.DB_tbl_mst_company_admin_iplist, "username_comp", username, "iplist", ipaddress)
 		if !flag {
+			noteafter := ""
+			noteafter += "DATE : " + tglnow.Format("YYYY-MM-DD HH:mm:ss") + " \n"
+			noteafter += "IP : " + ipaddress + " - Ipaddress is not register"
+			Insert_log(idcompanyDB, username, "LOGIN", "FAILED", "", noteafter)
+
 			return false, "", "", 0, errors.New("Ipaddress is not register")
 		}
 	}
