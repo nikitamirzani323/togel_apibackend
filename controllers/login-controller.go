@@ -79,12 +79,7 @@ func CheckLogin(c *fiber.Ctx) error {
 		if err != nil {
 			return c.SendStatus(fiber.StatusInternalServerError)
 		}
-		log_admin := "LISTADMIN_AGENT_" + strings.ToLower(idcomp)
-		val_agent_admin := helpers.DeleteRedis(log_admin)
-		log.Printf("Redis Delete ADMIN status: %d", val_agent_admin)
-		log_redis := "LISTLOG_AGENT_" + strings.ToLower(idcomp)
-		val_agent_redis := helpers.DeleteRedis(log_redis)
-		log.Printf("Redis Delete LOG status: %d", val_agent_redis)
+		_deleteredis_login(idcomp)
 		return c.JSON(fiber.Map{
 			"status": fiber.StatusOK,
 			"token":  t,
@@ -152,4 +147,12 @@ func GenerateHashPassword(c *fiber.Ctx) error {
 	hash := helpers.HashPasswordMD5(client.Password)
 
 	return c.JSON(hash)
+}
+func _deleteredis_login(idcomp string) {
+	log_admin := "LISTADMIN_AGENT_" + strings.ToLower(idcomp)
+	val_agent_admin := helpers.DeleteRedis(log_admin)
+	log.Printf("Redis Delete ADMIN status: %d", val_agent_admin)
+	log_redis := "LISTLOG_AGENT_" + strings.ToLower(idcomp)
+	val_agent_redis := helpers.DeleteRedis(log_redis)
+	log.Printf("Redis Delete LOG status: %d", val_agent_redis)
 }
