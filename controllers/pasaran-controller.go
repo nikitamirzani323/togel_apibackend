@@ -50,58 +50,82 @@ type pasaransavelimit struct {
 	Pasaran_limitline2dt int    `json:"pasaran_limitline2dt"`
 }
 type pasaranconf432 struct {
-	Idpasaran                   int     `json:"idpasaran"`
-	Idpasarantogel              string  `json:"idpasarantogel"`
-	Page                        string  `json:"page"`
-	Pasaran_minbet_432d         int     `json:"pasaran_minbet_432d" validate:"required,numeric"`
-	Pasaran_maxbet4d_432d       int     `json:"pasaran_maxbet4d_432d" validate:"required,numeric"`
-	Pasaran_maxbet3d_432d       int     `json:"pasaran_maxbet3d_432d" validate:"required,numeric"`
-	Pasaran_maxbet3dd_432d      int     `json:"pasaran_maxbet3dd_432d" validate:"required,numeric"`
-	Pasaran_maxbet2d_432d       int     `json:"pasaran_maxbet2d_432d" validate:"required,numeric"`
-	Pasaran_maxbet2dd_432d      int     `json:"pasaran_maxbet2dd_432d" validate:"required,numeric"`
-	Pasaran_maxbet2dt_432d      int     `json:"pasaran_maxbet2dt_432d" validate:"required,numeric"`
-	Pasaran_limitotal4d_432d    int     `json:"pasaran_limitotal4d_432d" validate:"required,numeric"`
-	Pasaran_limitotal3d_432d    int     `json:"pasaran_limitotal3d_432d" validate:"required,numeric"`
-	Pasaran_limitotal3dd_432d   int     `json:"pasaran_limitotal3dd_432d" validate:"required,numeric"`
-	Pasaran_limitotal2d_432d    int     `json:"pasaran_limitotal2d_432d" validate:"required,numeric"`
-	Pasaran_limitotal2dd_432d   int     `json:"pasaran_limitotal2dd_432d" validate:"required,numeric"`
-	Pasaran_limitotal2dt_432d   int     `json:"pasaran_limitotal2dt_432d" validate:"required,numeric"`
-	Pasaran_limitglobal4d_432d  int     `json:"pasaran_limitglobal4d_432d" validate:"required,numeric"`
-	Pasaran_limitglobal3d_432d  int     `json:"pasaran_limitglobal3d_432d" validate:"required,numeric"`
-	Pasaran_limitglobal3dd_432d int     `json:"pasaran_limitglobal3dd_432d" validate:"required,numeric"`
-	Pasaran_limitglobal2d_432d  int     `json:"pasaran_limitglobal2d_432d" validate:"required,numeric"`
-	Pasaran_limitglobal2dd_432d int     `json:"pasaran_limitglobal2dd_432d" validate:"required,numeric"`
-	Pasaran_limitglobal2dt_432d int     `json:"pasaran_limitglobal2dt_432d" validate:"required,numeric"`
-	Pasaran_win4d_432d          int     `json:"pasaran_win4d_432d" validate:"required,numeric"`
-	Pasaran_win3d_432d          int     `json:"pasaran_win3d_432d" validate:"required,numeric"`
-	Pasaran_win3dd_432d         int     `json:"pasaran_win3dd_432d" validate:"required,numeric"`
-	Pasaran_win2d_432d          int     `json:"pasaran_win2d_432d" validate:"required,numeric"`
-	Pasaran_win2dd_432d         int     `json:"pasaran_win2dd_432d" validate:"required,numeric"`
-	Pasaran_win2dt_432d         int     `json:"pasaran_win2dt_432d" validate:"required,numeric"`
-	Pasaran_win4dnodisc_432d    int     `json:"pasaran_Win4dnodisc_432d" validate:"required,numeric"`
-	Pasaran_win3dnodisc_432d    int     `json:"pasaran_Win3dnodisc_432d" validate:"required,numeric"`
-	Pasaran_win3ddnodisc_432d   int     `json:"pasaran_win3ddnodisc_432d" validate:"required,numeric"`
-	Pasaran_win2dnodisc_432d    int     `json:"pasaran_win2dnodisc_432d" validate:"required,numeric"`
-	Pasaran_win2ddnodisc_432d   int     `json:"pasaran_win2ddnodisc_432d" validate:"required,numeric"`
-	Pasaran_win2dtnodisc_432d   int     `json:"pasaran_win2dtnodisc_432d" validate:"required,numeric"`
-	Pasaran_win4dbb_kena_432d   int     `json:"pasaran_Win4dbb_kena_432d" validate:"required,numeric"`
-	Pasaran_win3dbb_kena_432d   int     `json:"pasaran_Win3dbb_kena_432d" validate:"required,numeric"`
-	Pasaran_win3ddbb_kena_432d  int     `json:"pasaran_win3ddbb_kena_432d" validate:"required,numeric"`
-	Pasaran_win2dbb_kena_432d   int     `json:"pasaran_win2dbb_kena_432d" validate:"required,numeric"`
-	Pasaran_win2ddbb_kena_432d  int     `json:"pasaran_win2ddbb_kena_432d" validate:"required,numeric"`
-	Pasaran_win2dtbb_kena_432d  int     `json:"pasaran_win2dtbb_kena_432d" validate:"required,numeric"`
-	Pasaran_win4dbb_432d        int     `json:"pasaran_win4dbb_432d" validate:"required,numeric"`
-	Pasaran_win3dbb_432d        int     `json:"pasaran_win3dbb_432d" validate:"required,numeric"`
-	Pasaran_win3ddbb_432d       int     `json:"pasaran_win3ddbb_432d" validate:"required,numeric"`
-	Pasaran_win2dbb_432d        int     `json:"pasaran_win2dbb_432d" validate:"required,numeric"`
-	Pasaran_win2ddbb_432d       int     `json:"pasaran_win2ddbb_432d" validate:"required,numeric"`
-	Pasaran_win2dtbb_432d       int     `json:"pasaran_win2dtbb_432d" validate:"required,numeric"`
-	Pasaran_disc4d_432d         float32 `json:"pasaran_disc4d_432d" validate:"required,numeric"`
-	Pasaran_disc3d_432d         float32 `json:"pasaran_disc3d_432d" validate:"required,numeric"`
-	Pasaran_disc3dd_432d        float32 `json:"pasaran_disc3dd_432d" validate:"required,numeric"`
-	Pasaran_disc2d_432d         float32 `json:"pasaran_disc2d_432d" validate:"required,numeric"`
-	Pasaran_disc2dd_432d        float32 `json:"pasaran_disc2dd_432d" validate:"required,numeric"`
-	Pasaran_disc2dt_432d        float32 `json:"pasaran_disc2dt_432d" validate:"required,numeric"`
+	Idpasaran                          int     `json:"idpasaran"`
+	Idpasarantogel                     string  `json:"idpasarantogel"`
+	Page                               string  `json:"page"`
+	Pasaran_minbet_432d                int     `json:"pasaran_minbet_432d" validate:"required,numeric"`
+	Pasaran_maxbet4d_432d              int     `json:"pasaran_maxbet4d_432d" validate:"required,numeric"`
+	Pasaran_maxbet3d_432d              int     `json:"pasaran_maxbet3d_432d" validate:"required,numeric"`
+	Pasaran_maxbet3dd_432d             int     `json:"pasaran_maxbet3dd_432d" validate:"required,numeric"`
+	Pasaran_maxbet2d_432d              int     `json:"pasaran_maxbet2d_432d" validate:"required,numeric"`
+	Pasaran_maxbet2dd_432d             int     `json:"pasaran_maxbet2dd_432d" validate:"required,numeric"`
+	Pasaran_maxbet2dt_432d             int     `json:"pasaran_maxbet2dt_432d" validate:"required,numeric"`
+	Pasaran_maxbet4d_fullbb_432d       int     `json:"pasaran_maxbet4d_fullbb_432d" validate:"required,numeric"`
+	Pasaran_maxbet3d_fullbb_432d       int     `json:"pasaran_maxbet3d_fullbb_432d" validate:"required,numeric"`
+	Pasaran_maxbet3dd_fullbb_432d      int     `json:"pasaran_maxbet3dd_fullbb_432d" validate:"required,numeric"`
+	Pasaran_maxbet2d_fullbb_432d       int     `json:"pasaran_maxbet2d_fullbb_432d" validate:"required,numeric"`
+	Pasaran_maxbet2dd_fullbb_432d      int     `json:"pasaran_maxbet2dd_fullbb_432d" validate:"required,numeric"`
+	Pasaran_maxbet2dt_fullbb_432d      int     `json:"pasaran_maxbet2dt_fullbb_432d" validate:"required,numeric"`
+	Pasaran_maxbuy4d_432d              int     `json:"pasaran_maxbuy4d_432d" validate:"required,numeric"`
+	Pasaran_maxbuy3d_432d              int     `json:"pasaran_maxbuy3d_432d" validate:"required,numeric"`
+	Pasaran_maxbuy3dd_432d             int     `json:"pasaran_maxbuy3dd_432d" validate:"required,numeric"`
+	Pasaran_maxbuy2d_432d              int     `json:"pasaran_maxbuy2d_432d" validate:"required,numeric"`
+	Pasaran_maxbuy2dd_432d             int     `json:"pasaran_maxbuy2dd_432d" validate:"required,numeric"`
+	Pasaran_maxbuy2dt_432d             int     `json:"pasaran_maxbuy2dt_432d" validate:"required,numeric"`
+	Pasaran_limitotal4d_432d           int     `json:"pasaran_limitotal4d_432d" validate:"required,numeric"`
+	Pasaran_limitotal3d_432d           int     `json:"pasaran_limitotal3d_432d" validate:"required,numeric"`
+	Pasaran_limitotal3dd_432d          int     `json:"pasaran_limitotal3dd_432d" validate:"required,numeric"`
+	Pasaran_limitotal2d_432d           int     `json:"pasaran_limitotal2d_432d" validate:"required,numeric"`
+	Pasaran_limitotal2dd_432d          int     `json:"pasaran_limitotal2dd_432d" validate:"required,numeric"`
+	Pasaran_limitotal2dt_432d          int     `json:"pasaran_limitotal2dt_432d" validate:"required,numeric"`
+	Pasaran_limitglobal4d_432d         int     `json:"pasaran_limitglobal4d_432d" validate:"required,numeric"`
+	Pasaran_limitglobal3d_432d         int     `json:"pasaran_limitglobal3d_432d" validate:"required,numeric"`
+	Pasaran_limitglobal3dd_432d        int     `json:"pasaran_limitglobal3dd_432d" validate:"required,numeric"`
+	Pasaran_limitglobal2d_432d         int     `json:"pasaran_limitglobal2d_432d" validate:"required,numeric"`
+	Pasaran_limitglobal2dd_432d        int     `json:"pasaran_limitglobal2dd_432d" validate:"required,numeric"`
+	Pasaran_limitglobal2dt_432d        int     `json:"pasaran_limitglobal2dt_432d" validate:"required,numeric"`
+	Pasaran_limitotal4d_fullbb_432d    int     `json:"pasaran_limitotal4d_fullbb_432d" validate:"required,numeric"`
+	Pasaran_limitotal3d_fullbb_432d    int     `json:"pasaran_limitotal3d_fullbb_432d" validate:"required,numeric"`
+	Pasaran_limitotal3dd_fullbb_432d   int     `json:"pasaran_limitotal3dd_fullbb_432d" validate:"required,numeric"`
+	Pasaran_limitotal2d_fullbb_432d    int     `json:"pasaran_limitotal2d_fullbb_432d" validate:"required,numeric"`
+	Pasaran_limitotal2dd_fullbb_432d   int     `json:"pasaran_limitotal2dd_fullbb_432d" validate:"required,numeric"`
+	Pasaran_limitotal2dt_fullbb_432d   int     `json:"pasaran_limitotal2dt_fullbb_432d" validate:"required,numeric"`
+	Pasaran_limitglobal4d_fullbb_432d  int     `json:"pasaran_limitglobal4d_fullbb_432d" validate:"required,numeric"`
+	Pasaran_limitglobal3d_fullbb_432d  int     `json:"pasaran_limitglobal3d_fullbb_432d" validate:"required,numeric"`
+	Pasaran_limitglobal3dd_fullbb_432d int     `json:"pasaran_limitglobal3dd_fullbb_432d" validate:"required,numeric"`
+	Pasaran_limitglobal2d_fullbb_432d  int     `json:"pasaran_limitglobal2d_fullbb_432d" validate:"required,numeric"`
+	Pasaran_limitglobal2dd_fullbb_432d int     `json:"pasaran_limitglobal2dd_fullbb_432d" validate:"required,numeric"`
+	Pasaran_limitglobal2dt_fullbb_432d int     `json:"pasaran_limitglobal2dt_fullbb_432d" validate:"required,numeric"`
+	Pasaran_win4d_432d                 int     `json:"pasaran_win4d_432d" validate:"required,numeric"`
+	Pasaran_win3d_432d                 int     `json:"pasaran_win3d_432d" validate:"required,numeric"`
+	Pasaran_win3dd_432d                int     `json:"pasaran_win3dd_432d" validate:"required,numeric"`
+	Pasaran_win2d_432d                 int     `json:"pasaran_win2d_432d" validate:"required,numeric"`
+	Pasaran_win2dd_432d                int     `json:"pasaran_win2dd_432d" validate:"required,numeric"`
+	Pasaran_win2dt_432d                int     `json:"pasaran_win2dt_432d" validate:"required,numeric"`
+	Pasaran_win4dnodisc_432d           int     `json:"pasaran_Win4dnodisc_432d" validate:"required,numeric"`
+	Pasaran_win3dnodisc_432d           int     `json:"pasaran_Win3dnodisc_432d" validate:"required,numeric"`
+	Pasaran_win3ddnodisc_432d          int     `json:"pasaran_win3ddnodisc_432d" validate:"required,numeric"`
+	Pasaran_win2dnodisc_432d           int     `json:"pasaran_win2dnodisc_432d" validate:"required,numeric"`
+	Pasaran_win2ddnodisc_432d          int     `json:"pasaran_win2ddnodisc_432d" validate:"required,numeric"`
+	Pasaran_win2dtnodisc_432d          int     `json:"pasaran_win2dtnodisc_432d" validate:"required,numeric"`
+	Pasaran_win4dbb_kena_432d          int     `json:"pasaran_Win4dbb_kena_432d" validate:"required,numeric"`
+	Pasaran_win3dbb_kena_432d          int     `json:"pasaran_Win3dbb_kena_432d" validate:"required,numeric"`
+	Pasaran_win3ddbb_kena_432d         int     `json:"pasaran_win3ddbb_kena_432d" validate:"required,numeric"`
+	Pasaran_win2dbb_kena_432d          int     `json:"pasaran_win2dbb_kena_432d" validate:"required,numeric"`
+	Pasaran_win2ddbb_kena_432d         int     `json:"pasaran_win2ddbb_kena_432d" validate:"required,numeric"`
+	Pasaran_win2dtbb_kena_432d         int     `json:"pasaran_win2dtbb_kena_432d" validate:"required,numeric"`
+	Pasaran_win4dbb_432d               int     `json:"pasaran_win4dbb_432d" validate:"required,numeric"`
+	Pasaran_win3dbb_432d               int     `json:"pasaran_win3dbb_432d" validate:"required,numeric"`
+	Pasaran_win3ddbb_432d              int     `json:"pasaran_win3ddbb_432d" validate:"required,numeric"`
+	Pasaran_win2dbb_432d               int     `json:"pasaran_win2dbb_432d" validate:"required,numeric"`
+	Pasaran_win2ddbb_432d              int     `json:"pasaran_win2ddbb_432d" validate:"required,numeric"`
+	Pasaran_win2dtbb_432d              int     `json:"pasaran_win2dtbb_432d" validate:"required,numeric"`
+	Pasaran_disc4d_432d                float32 `json:"pasaran_disc4d_432d" validate:"required,numeric"`
+	Pasaran_disc3d_432d                float32 `json:"pasaran_disc3d_432d" validate:"required,numeric"`
+	Pasaran_disc3dd_432d               float32 `json:"pasaran_disc3dd_432d" validate:"required,numeric"`
+	Pasaran_disc2d_432d                float32 `json:"pasaran_disc2d_432d" validate:"required,numeric"`
+	Pasaran_disc2dd_432d               float32 `json:"pasaran_disc2dd_432d" validate:"required,numeric"`
+	Pasaran_disc2dt_432d               float32 `json:"pasaran_disc2dt_432d" validate:"required,numeric"`
 }
 type pasaranconfcbebas struct {
 	Idpasaran                  int     `json:"idpasaran"`
@@ -109,6 +133,7 @@ type pasaranconfcbebas struct {
 	Page                       string  `json:"page"`
 	Pasaran_minbet_cbebas      int     `json:"pasaran_minbet_cbebas" validate:"required,numeric"`
 	Pasaran_maxbet_cbebas      int     `json:"pasaran_maxbet_cbebas" validate:"required,numeric"`
+	Pasaran_maxbuy_cbebas      int     `json:"pasaran_maxbuy_cbebas" validate:"required,numeric"`
 	Pasaran_limitotal_cbebas   int     `json:"pasaran_limitotal_cbebas" validate:"required,numeric"`
 	Pasaran_limitglobal_cbebas int     `json:"pasaran_limitglobal_cbebas" validate:"required,numeric"`
 	Pasaran_win_cbebas         float32 `json:"pasaran_win_cbebas" validate:"required,numeric"`
@@ -120,6 +145,7 @@ type pasaranconfcmacau struct {
 	Page                       string  `json:"page"`
 	Pasaran_minbet_cmacau      int     `json:"pasaran_minbet_cmacau" validate:"required,numeric"`
 	Pasaran_maxbet_cmacau      int     `json:"pasaran_maxbet_cmacau" validate:"required,numeric"`
+	Pasaran_maxbuy_cmacau      int     `json:"pasaran_maxbuy_cmacau" validate:"required,numeric"`
 	Pasaran_limitotal_cmacau   int     `json:"pasaran_limitotal_cmacau" validate:"required,numeric"`
 	Pasaran_limitglobal_cmacau int     `json:"pasaran_limitglobal_cmacau" validate:"required,numeric"`
 	Pasaran_win2_cmacau        float32 `json:"pasaran_win2_cmacau" validate:"required,numeric"`
@@ -133,6 +159,7 @@ type pasaranconfcnaga struct {
 	Page                      string  `json:"page"`
 	Pasaran_minbet_cnaga      int     `json:"pasaran_minbet_cnaga" validate:"required,numeric"`
 	Pasaran_maxbet_cnaga      int     `json:"pasaran_maxbet_cnaga" validate:"required,numeric"`
+	Pasaran_maxbuy_cnaga      int     `json:"pasaran_maxbuy_cnaga" validate:"required,numeric"`
 	Pasaran_limittotal_cnaga  int     `json:"pasaran_limittotal_cnaga" validate:"required,numeric"`
 	Pasaran_limitglobal_cnaga int     `json:"pasaran_limitglobal_cnaga" validate:"required,numeric"`
 	Pasaran_win3_cnaga        float32 `json:"pasaran_win3_cnaga" validate:"required,numeric"`
@@ -145,6 +172,7 @@ type pasaranconfcjitu struct {
 	Page                      string  `json:"page"`
 	Pasaran_minbet_cjitu      int     `json:"pasaran_minbet_cjitu" validate:"required,numeric"`
 	Pasaran_maxbet_cjitu      int     `json:"pasaran_maxbet_cjitu" validate:"required,numeric"`
+	Pasaran_maxbuy_cjitu      int     `json:"pasaran_maxbuy_cjitu" validate:"required,numeric"`
 	Pasaran_limittotal_cjitu  int     `json:"pasaran_limittotal_cjitu" validate:"required,numeric"`
 	Pasaran_limitglobal_cjitu int     `json:"pasaran_limitglobal_cjitu" validate:"required,numeric"`
 	Pasaran_winas_cjitu       float32 `json:"pasaran_winas_cjitu" validate:"required,numeric"`
@@ -159,6 +187,7 @@ type pasaranconfc5050 struct {
 	Page                         string  `json:"page"`
 	Pasaran_minbet_5050umum      int     `json:"pasaran_minbet_5050umum" validate:"required,numeric"`
 	Pasaran_maxbet_5050umum      int     `json:"pasaran_maxbet_5050umum" validate:"required,numeric"`
+	Pasaran_maxbuy_5050umum      int     `json:"pasaran_maxbuy_5050umum" validate:"required,numeric"`
 	Pasaran_limittotal_5050umum  int     `json:"pasaran_limittotal_5050umum" validate:"required,numeric"`
 	Pasaran_limitglobal_5050umum int     `json:"pasaran_limitglobal_5050umum" validate:"required,numeric"`
 	Pasaran_keibesar_5050umum    float32 `json:"pasaran_keibesar_5050umum" validate:"required,numeric"`
@@ -180,6 +209,7 @@ type pasaranconfc5050special struct {
 	Page                                 string  `json:"page"`
 	Pasaran_minbet_5050special           int     `json:"pasaran_minbet_5050special" validate:"required,numeric"`
 	Pasaran_maxbet_5050special           int     `json:"pasaran_maxbet_5050special" validate:"required,numeric"`
+	Pasaran_maxbuy_5050special           int     `json:"pasaran_maxbuy_5050special" validate:"required,numeric"`
 	Pasaran_limittotal_5050special       int     `json:"pasaran_limittotal_5050special" validate:"required,numeric"`
 	Pasaran_limitglobal_5050special      int     `json:"pasaran_limitglobal_5050special" validate:"required,numeric"`
 	Pasaran_keiasganjil_5050special      float32 `json:"pasaran_keiasganjil_5050special" validate:"required,numeric"`
@@ -221,6 +251,7 @@ type pasaranconfc5050kombinasi struct {
 	Page                                      string  `json:"page"`
 	Pasaran_minbet_5050kombinasi              int     `json:"pasaran_minbet_5050kombinasi" validate:"required,numeric"`
 	Pasaran_maxbet_5050kombinasi              int     `json:"pasaran_maxbet_5050kombinasi" validate:"required,numeric"`
+	Pasaran_maxbuy_5050kombinasi              int     `json:"pasaran_maxbuy_5050kombinasi" validate:"required,numeric"`
 	Pasaran_limittotal_5050kombinasi          int     `json:"pasaran_limittotal_5050kombinasi" validate:"required,numeric"`
 	Pasaran_limitglobal_5050kombinasi         int     `json:"pasaran_limitglobal_5050kombinasi" validate:"required,numeric"`
 	Pasaran_belakangkeimono_5050kombinasi     float32 `json:"pasaran_belakangkeimono_5050kombinasi" validate:"required,numeric"`
@@ -260,6 +291,7 @@ type pasaranconfmakaukombinasi struct {
 	Page                          string  `json:"page"`
 	Pasaran_minbet_kombinasi      int     `json:"pasaran_minbet_kombinasi" validate:"required,numeric"`
 	Pasaran_maxbet_kombinasi      int     `json:"pasaran_maxbet_kombinasi" validate:"required,numeric"`
+	Pasaran_maxbuy_kombinasi      int     `json:"pasaran_maxbuy_kombinasi" validate:"required,numeric"`
 	Pasaran_limittotal_kombinasi  int     `json:"pasaran_limittotal_kombinasi" validate:"required,numeric"`
 	Pasaran_limitglobal_kombinasi int     `json:"pasaran_limitglobal_kombinasi" validate:"required,numeric"`
 	Pasaran_win_kombinasi         float32 `json:"pasaran_win_kombinasi" validate:"required,numeric"`
@@ -271,6 +303,7 @@ type pasaranconfdasar struct {
 	Page                      string  `json:"page"`
 	Pasaran_minbet_dasar      int     `json:"pasaran_minbet_dasar" validate:"required,numeric"`
 	Pasaran_maxbet_dasar      int     `json:"pasaran_maxbet_dasar" validate:"required,numeric"`
+	Pasaran_maxbuy_dasar      int     `json:"pasaran_maxbuy_dasar" validate:"required,numeric"`
 	Pasaran_limittotal_dasar  int     `json:"pasaran_limittotal_dasar" validate:"required,numeric"`
 	Pasaran_limitglobal_dasar int     `json:"pasaran_limitglobal_dasar" validate:"required,numeric"`
 	Pasaran_keibesar_dasar    float32 `json:"pasaran_keibesar_dasar" validate:"numeric"`
@@ -288,6 +321,7 @@ type pasaranconfshio struct {
 	Page                     string  `json:"page"`
 	Pasaran_minbet_shio      int     `json:"pasaran_minbet_shio" validate:"required,numeric"`
 	Pasaran_maxbet_shio      int     `json:"pasaran_maxbet_shio" validate:"required,numeric"`
+	Pasaran_maxbuy_shio      int     `json:"pasaran_maxbuy_shio" validate:"required,numeric"`
 	Pasaran_limittotal_shio  int     `json:"pasaran_limittotal_shio" validate:"required,numeric"`
 	Pasaran_limitglobal_shio int     `json:"pasaran_limitglobal_shio" validate:"required,numeric"`
 	Pasaran_shioyear_shio    string  `json:"pasaran_shioyear_shio" validate:"required"`
@@ -317,6 +351,18 @@ type responseredis_pasarandetail struct {
 	Maxbet2d_432d                     float32 `json:"maxbet2d_432d"`
 	Maxbet2dd_432d                    float32 `json:"maxbet2dd_432d"`
 	Maxbet2dt_432d                    float32 `json:"maxbet2dt_432d"`
+	Maxbet4d_fullbb_432d              float32 `json:"maxbet4d_fullbb_432d"`
+	Maxbet3d_fullbb_432d              float32 `json:"maxbet3d_fullbb_432d"`
+	Maxbet3dd_fullbb_432d             float32 `json:"maxbet3dd_fullbb_432d"`
+	Maxbet2d_fullbb_432d              float32 `json:"maxbet2d_fullbb_432d"`
+	Maxbet2dd_fullbb_432d             float32 `json:"maxbet2dd_fullbb_432d"`
+	Maxbet2dt_fullbb_432d             float32 `json:"maxbet2dt_fullbb_432d"`
+	Maxbuy4d_432d                     float32 `json:"maxbuy4d_432d"`
+	Maxbuy3d_432d                     float32 `json:"maxbuy3d_432d"`
+	Maxbuy3dd_432d                    float32 `json:"maxbuy3dd_432d"`
+	Maxbuy2d_432d                     float32 `json:"maxbuy2d_432d"`
+	Maxbuy2dd_432d                    float32 `json:"maxbuy2dd_432d"`
+	Maxbuy2dt_432d                    float32 `json:"maxbuy2dt_432d"`
 	Limitotal4d_432d                  float32 `json:"limitotal4d_432d"`
 	Limitotal3d_432d                  float32 `json:"limitotal3d_432d"`
 	Limitotal3dd_432d                 float32 `json:"limitotal3dd_432d"`
@@ -329,6 +375,18 @@ type responseredis_pasarandetail struct {
 	Limitglobal2d_432d                float32 `json:"limitglobal2d_432d"`
 	Limitglobal2dd_432d               float32 `json:"limitglobal2dd_432d"`
 	Limitglobal2dt_432d               float32 `json:"limitglobal2dt_432d"`
+	Limitotal4d_fullbb_432d           float32 `json:"limitotal4d_fullbb_432d"`
+	Limitotal3d_fullbb_432d           float32 `json:"limitotal3d_fullbb_432d"`
+	Limitotal3dd_fullbb_432d          float32 `json:"limitotal3dd_fullbb_432d"`
+	Limitotal2d_fullbb_432d           float32 `json:"limitotal2d_fullbb_432d"`
+	Limitotal2dd_fullbb_432d          float32 `json:"limitotal2dd_fullbb_432d"`
+	Limitotal2dt_fullbb_432d          float32 `json:"limitotal2dt_fullbb_432d"`
+	Limitglobal4d_fullbb_432d         float32 `json:"limitglobal4d_fullbb_432d"`
+	Limitglobal3d_fullbb_432d         float32 `json:"limitglobal3d_fullbb_432d"`
+	Limitglobal3dd_fullbb_432d        float32 `json:"limitglobal3dd_fullbb_432d"`
+	Limitglobal2d_fullbb_432d         float32 `json:"limitglobal2d_fullbb_432d"`
+	Limitglobal2dd_fullbb_432d        float32 `json:"limitglobal2dd_fullbb_432d"`
+	Limitglobal2dt_fullbb_432d        float32 `json:"limitglobal2dt_fullbb_432d"`
 	Disc4d_432d                       float32 `json:"disc4d_432d"`
 	Disc3d_432d                       float32 `json:"disc3d_432d"`
 	Disc3dd_432d                      float32 `json:"disc3dd_432d"`
@@ -361,12 +419,14 @@ type responseredis_pasarandetail struct {
 	Win2dtbb_432d                     float32 `json:"win2dtbb_432d"`
 	Minbet_cbebas                     float32 `json:"minbet_cbebas"`
 	Maxbet_cbebas                     float32 `json:"maxbet_cbebas"`
+	Maxbuy_cbebas                     float32 `json:"maxbuy_cbebas"`
 	Win_cbebas                        float32 `json:"win_cbebas"`
 	Disc_cbebas                       float32 `json:"disc_cbebas"`
 	Limitglobal_cbebas                float32 `json:"limitglobal_cbebas"`
 	Limittotal_cbebas                 float32 `json:"limittotal_cbebas"`
 	Minbet_cmacau                     float32 `json:"minbet_cmacau"`
 	Maxbet_cmacau                     float32 `json:"maxbet_cmacau"`
+	Maxbuy_cmacau                     float32 `json:"maxbuy_cmacau"`
 	Win2d_cmacau                      float32 `json:"win2d_cmacau"`
 	Win3d_cmacau                      float32 `json:"win3d_cmacau"`
 	Win4d_cmacau                      float32 `json:"win4d_cmacau"`
@@ -375,6 +435,7 @@ type responseredis_pasarandetail struct {
 	Limitotal_cmacau                  float32 `json:"limitotal_cmacau"`
 	Minbet_cnaga                      float32 `json:"minbet_cnaga"`
 	Maxbet_cnaga                      float32 `json:"maxbet_cnaga"`
+	Maxbuy_cnaga                      float32 `json:"maxbuy_cnaga"`
 	Win3_cnaga                        float32 `json:"win3_cnaga"`
 	Win4_cnaga                        float32 `json:"win4_cnaga"`
 	Disc_cnaga                        float32 `json:"disc_cnaga"`
@@ -382,6 +443,7 @@ type responseredis_pasarandetail struct {
 	Limittotal_cnaga                  float32 `json:"limittotal_cnaga"`
 	Minbet_cjitu                      float32 `json:"minbet_cjitu"`
 	Maxbet_cjitu                      float32 `json:"maxbet_cjitu"`
+	Maxbuy_cjitu                      float32 `json:"maxbuy_cjitu"`
 	Winas_cjitu                       float32 `json:"winas_cjitu"`
 	Winkop_cjitu                      float32 `json:"winkop_cjitu"`
 	Winkepala_cjitu                   float32 `json:"winkepala_cjitu"`
@@ -391,6 +453,7 @@ type responseredis_pasarandetail struct {
 	Limittotal_cjitu                  float32 `json:"limittotal_cjitu"`
 	Minbet_5050umum                   float32 `json:"minbet_5050umum"`
 	Maxbet_5050umum                   float32 `json:"maxbet_5050umum"`
+	Maxbuy_5050umum                   float32 `json:"maxbuy_5050umum"`
 	Keibesar_5050umum                 float32 `json:"keibesar_5050umum"`
 	Keikecil_5050umum                 float32 `json:"keikecil_5050umum"`
 	Keigenap_5050umum                 float32 `json:"keigenap_5050umum"`
@@ -407,6 +470,7 @@ type responseredis_pasarandetail struct {
 	Limittotal_5050umum               float32 `json:"limittotal_5050umum"`
 	Minbet_5050special                float32 `json:"minbet_5050special"`
 	Maxbet_5050special                float32 `json:"maxbet_5050special"`
+	Maxbuy_5050special                float32 `json:"maxbuy_5050special"`
 	Keiasganjil_5050special           float32 `json:"keiasganjil_5050special"`
 	Keiasgenap_5050special            float32 `json:"keiasgenap_5050special"`
 	Keiasbesar_5050special            float32 `json:"keiasbesar_5050special"`
@@ -443,6 +507,7 @@ type responseredis_pasarandetail struct {
 	Limittotal_5050special            float32 `json:"limittotal_5050special"`
 	Minbet_5050kombinasi              float32 `json:"minbet_5050kombinasi"`
 	Maxbet_5050kombinasi              float32 `json:"maxbet_5050kombinasi"`
+	Maxbuy_5050kombinasi              float32 `json:"maxbuy_5050kombinasi"`
 	Belakangkeimono_5050kombinasi     float32 `json:"belakangkeimono_5050kombinasi"`
 	Belakangkeistereo_5050kombinasi   float32 `json:"belakangkeistereo_5050kombinasi"`
 	Belakangkeikembang_5050kombinasi  float32 `json:"belakangkeikembang_5050kombinasi"`
@@ -477,12 +542,14 @@ type responseredis_pasarandetail struct {
 	Limittotal_5050kombinasi          float32 `json:"limittotal_5050kombinasi"`
 	Minbet_kombinasi                  float32 `json:"minbet_kombinasi"`
 	Maxbet_kombinasi                  float32 `json:"maxbet_kombinasi"`
+	Maxbuy_kombinasi                  float32 `json:"maxbuy_kombinasi"`
 	Win_kombinasi                     float32 `json:"win_kombinasi"`
 	Disc_kombinasi                    float32 `json:"disc_kombinasi"`
 	Limitglobal_kombinasi             float32 `json:"limitglobal_kombinasi"`
 	Limittotal_kombinasi              float32 `json:"limittotal_kombinasi"`
 	Minbet_dasar                      float32 `json:"minbet_dasar"`
 	Maxbet_dasar                      float32 `json:"maxbet_dasar"`
+	Maxbuy_dasar                      float32 `json:"maxbuy_dasar"`
 	Keibesar_dasar                    float32 `json:"keibesar_dasar"`
 	Keikecil_dasar                    float32 `json:"keikecil_dasar"`
 	Keigenap_dasar                    float32 `json:"keigenap_dasar"`
@@ -495,6 +562,7 @@ type responseredis_pasarandetail struct {
 	Limittotal_dasar                  float32 `json:"limittotal_dasar"`
 	Minbet_shio                       float32 `json:"minbet_shio"`
 	Maxbet_shio                       float32 `json:"maxbet_shio"`
+	Maxbuy_shio                       float32 `json:"maxbuy_shio"`
 	Win_shio                          float32 `json:"win_shio"`
 	Disc_shio                         float32 `json:"disc_shio"`
 	Shioyear_shio                     string  `json:"shioyear_shio"`
@@ -626,6 +694,21 @@ func PasaranDetail(c *fiber.Ctx) error {
 		maxbet2d_432d, _ := jsonparser.GetInt(value, "maxbet2d_432d")
 		maxbet2dd_432d, _ := jsonparser.GetInt(value, "maxbet2dd_432d")
 		maxbet2dt_432d, _ := jsonparser.GetInt(value, "maxbet2dt_432d")
+
+		maxbet4d_fullbb_432d, _ := jsonparser.GetInt(value, "maxbet4d_fullbb_432d")
+		maxbet3d_fullbb_432d, _ := jsonparser.GetInt(value, "maxbet3d_fullbb_432d")
+		maxbet3dd_fullbb_432d, _ := jsonparser.GetInt(value, "maxbet3dd_fullbb_432d")
+		maxbet2d_fullbb_432d, _ := jsonparser.GetInt(value, "maxbet2d_fullbb_432d")
+		maxbet2dd_fullbb_432d, _ := jsonparser.GetInt(value, "maxbet2dd_fullbb_432d")
+		maxbet2dt_fullbb_432d, _ := jsonparser.GetInt(value, "maxbet2dt_fullbb_432d")
+
+		maxbuy4d_432d, _ := jsonparser.GetInt(value, "maxbuy4d_432d")
+		maxbuy3d_432d, _ := jsonparser.GetInt(value, "maxbuy3d_432d")
+		maxbuy3dd_432d, _ := jsonparser.GetInt(value, "maxbuy3dd_432d")
+		maxbuy2d_432d, _ := jsonparser.GetInt(value, "maxbuy2d_432d")
+		maxbuy2dd_432d, _ := jsonparser.GetInt(value, "maxbuy2dd_432d")
+		maxbuy2dt_432d, _ := jsonparser.GetInt(value, "maxbuy2dt_432d")
+
 		limitotal4d_432d, _ := jsonparser.GetInt(value, "limitotal4d_432d")
 		limitotal3d_432d, _ := jsonparser.GetInt(value, "limitotal3d_432d")
 		limitotal3dd_432d, _ := jsonparser.GetInt(value, "limitotal3dd_432d")
@@ -638,6 +721,20 @@ func PasaranDetail(c *fiber.Ctx) error {
 		limitglobal2d_432d, _ := jsonparser.GetInt(value, "limitglobal2d_432d")
 		limitglobal2dd_432d, _ := jsonparser.GetInt(value, "limitglobal2dd_432d")
 		limitglobal2dt_432d, _ := jsonparser.GetInt(value, "limitglobal2dt_432d")
+
+		limitotal4d_fullbb_432d, _ := jsonparser.GetInt(value, "limitotal4d_fullbb_432d")
+		limitotal3d_fullbb_432d, _ := jsonparser.GetInt(value, "limitotal3d_fullbb_432d")
+		limitotal3dd_fullbb_432d, _ := jsonparser.GetInt(value, "limitotal3dd_fullbb_432d")
+		limitotal2d_fullbb_432d, _ := jsonparser.GetInt(value, "limitotal2d_fullbb_432d")
+		limitotal2dd_fullbb_432d, _ := jsonparser.GetInt(value, "limitotal2dd_fullbb_432d")
+		limitotal2dt_fullbb_432d, _ := jsonparser.GetInt(value, "limitotal2dt_fullbb_432d")
+		limitglobal4d_fullbb_432d, _ := jsonparser.GetInt(value, "limitglobal4d_fullbb_432d")
+		limitglobal3d_fullbb_432d, _ := jsonparser.GetInt(value, "limitglobal3d_fullbb_432d")
+		limitglobal3dd_fullbb_432d, _ := jsonparser.GetInt(value, "limitglobal3dd_fullbb_432d")
+		limitglobal2d_fullbb_432d, _ := jsonparser.GetInt(value, "limitglobal2d_fullbb_432d")
+		limitglobal2dd_fullbb_432d, _ := jsonparser.GetInt(value, "limitglobal2dd_fullbb_432d")
+		limitglobal2dt_fullbb_432d, _ := jsonparser.GetInt(value, "limitglobal2dt_fullbb_432d")
+
 		disc4d_432d, _ := jsonparser.GetFloat(value, "disc4d_432d")
 		disc3d_432d, _ := jsonparser.GetFloat(value, "disc3d_432d")
 		disc3dd_432d, _ := jsonparser.GetFloat(value, "disc3dd_432d")
@@ -670,12 +767,14 @@ func PasaranDetail(c *fiber.Ctx) error {
 		win2dtbb_432d, _ := jsonparser.GetFloat(value, "win2dtbb_432d")
 		minbet_cbebas, _ := jsonparser.GetInt(value, "minbet_cbebas")
 		maxbet_cbebas, _ := jsonparser.GetInt(value, "maxbet_cbebas")
+		maxbuy_cbebas, _ := jsonparser.GetInt(value, "maxbuy_cbebas")
 		win_cbebas, _ := jsonparser.GetFloat(value, "win_cbebas")
 		disc_cbebas, _ := jsonparser.GetFloat(value, "disc_cbebas")
 		limitglobal_cbebas, _ := jsonparser.GetInt(value, "limitglobal_cbebas")
 		limittotal_cbebas, _ := jsonparser.GetInt(value, "limittotal_cbebas")
 		minbet_cmacau, _ := jsonparser.GetInt(value, "minbet_cmacau")
 		maxbet_cmacau, _ := jsonparser.GetInt(value, "maxbet_cmacau")
+		maxbuy_cmacau, _ := jsonparser.GetInt(value, "maxbuy_cmacau")
 		win2d_cmacau, _ := jsonparser.GetFloat(value, "win2d_cmacau")
 		win3d_cmacau, _ := jsonparser.GetFloat(value, "win3d_cmacau")
 		win4d_cmacau, _ := jsonparser.GetFloat(value, "win4d_cmacau")
@@ -684,6 +783,7 @@ func PasaranDetail(c *fiber.Ctx) error {
 		limitotal_cmacau, _ := jsonparser.GetInt(value, "limitotal_cmacau")
 		minbet_cnaga, _ := jsonparser.GetInt(value, "minbet_cnaga")
 		maxbet_cnaga, _ := jsonparser.GetInt(value, "maxbet_cnaga")
+		maxbuy_cnaga, _ := jsonparser.GetInt(value, "maxbuy_cnaga")
 		win3_cnaga, _ := jsonparser.GetFloat(value, "win3_cnaga")
 		win4_cnaga, _ := jsonparser.GetFloat(value, "win4_cnaga")
 		disc_cnaga, _ := jsonparser.GetFloat(value, "disc_cnaga")
@@ -691,6 +791,7 @@ func PasaranDetail(c *fiber.Ctx) error {
 		limittotal_cnaga, _ := jsonparser.GetInt(value, "limittotal_cnaga")
 		minbet_cjitu, _ := jsonparser.GetInt(value, "minbet_cjitu")
 		maxbet_cjitu, _ := jsonparser.GetInt(value, "maxbet_cjitu")
+		maxbuy_cjitu, _ := jsonparser.GetInt(value, "maxbuy_cjitu")
 		winas_cjitu, _ := jsonparser.GetFloat(value, "winas_cjitu")
 		winkop_cjitu, _ := jsonparser.GetFloat(value, "winkop_cjitu")
 		winkepala_cjitu, _ := jsonparser.GetFloat(value, "winkepala_cjitu")
@@ -700,6 +801,7 @@ func PasaranDetail(c *fiber.Ctx) error {
 		limittotal_cjitu, _ := jsonparser.GetInt(value, "limittotal_cjitu")
 		minbet_5050umum, _ := jsonparser.GetInt(value, "minbet_5050umum")
 		maxbet_5050umum, _ := jsonparser.GetInt(value, "maxbet_5050umum")
+		maxbuy_5050umum, _ := jsonparser.GetInt(value, "maxbuy_5050umum")
 		keibesar_5050umum, _ := jsonparser.GetFloat(value, "keibesar_5050umum")
 		keikecil_5050umum, _ := jsonparser.GetFloat(value, "keikecil_5050umum")
 		keigenap_5050umum, _ := jsonparser.GetFloat(value, "keigenap_5050umum")
@@ -716,6 +818,7 @@ func PasaranDetail(c *fiber.Ctx) error {
 		limittotal_5050umum, _ := jsonparser.GetInt(value, "limittotal_5050umum")
 		minbet_5050special, _ := jsonparser.GetInt(value, "minbet_5050special")
 		maxbet_5050special, _ := jsonparser.GetInt(value, "maxbet_5050special")
+		maxbuy_5050special, _ := jsonparser.GetInt(value, "maxbuy_5050special")
 		keiasganjil_5050special, _ := jsonparser.GetFloat(value, "keiasganjil_5050special")
 		keiasgenap_5050special, _ := jsonparser.GetFloat(value, "keiasgenap_5050special")
 		keiasbesar_5050special, _ := jsonparser.GetFloat(value, "keiasbesar_5050special")
@@ -752,6 +855,7 @@ func PasaranDetail(c *fiber.Ctx) error {
 		limittotal_5050special, _ := jsonparser.GetInt(value, "limittotal_5050special")
 		minbet_5050kombinasi, _ := jsonparser.GetInt(value, "minbet_5050kombinasi")
 		maxbet_5050kombinasi, _ := jsonparser.GetInt(value, "maxbet_5050kombinasi")
+		maxbuy_5050kombinasi, _ := jsonparser.GetInt(value, "maxbuy_5050kombinasi")
 		belakangkeimono_5050kombinasi, _ := jsonparser.GetFloat(value, "belakangkeimono_5050kombinasi")
 		belakangkeistereo_5050kombinasi, _ := jsonparser.GetFloat(value, "belakangkeistereo_5050kombinasi")
 		belakangkeikembang_5050kombinasi, _ := jsonparser.GetFloat(value, "belakangkeikembang_5050kombinasi")
@@ -786,12 +890,14 @@ func PasaranDetail(c *fiber.Ctx) error {
 		limittotal_5050kombinasi, _ := jsonparser.GetInt(value, "limittotal_5050kombinasi")
 		minbet_kombinasi, _ := jsonparser.GetInt(value, "minbet_kombinasi")
 		maxbet_kombinasi, _ := jsonparser.GetInt(value, "maxbet_kombinasi")
+		maxbuy_kombinasi, _ := jsonparser.GetInt(value, "maxbuy_kombinasi")
 		win_kombinasi, _ := jsonparser.GetFloat(value, "win_kombinasi")
 		disc_kombinasi, _ := jsonparser.GetFloat(value, "disc_kombinasi")
 		limitglobal_kombinasi, _ := jsonparser.GetInt(value, "limitglobal_kombinasi")
 		limittotal_kombinasi, _ := jsonparser.GetInt(value, "limittotal_kombinasi")
 		minbet_dasar, _ := jsonparser.GetInt(value, "minbet_dasar")
 		maxbet_dasar, _ := jsonparser.GetInt(value, "maxbet_dasar")
+		maxbuy_dasar, _ := jsonparser.GetInt(value, "maxbuy_dasar")
 		keibesar_dasar, _ := jsonparser.GetFloat(value, "keibesar_dasar")
 		keikecil_dasar, _ := jsonparser.GetFloat(value, "keikecil_dasar")
 		keigenap_dasar, _ := jsonparser.GetFloat(value, "keigenap_dasar")
@@ -804,6 +910,7 @@ func PasaranDetail(c *fiber.Ctx) error {
 		limittotal_dasar, _ := jsonparser.GetInt(value, "limittotal_dasar")
 		minbet_shio, _ := jsonparser.GetInt(value, "minbet_shio")
 		maxbet_shio, _ := jsonparser.GetInt(value, "maxbet_shio")
+		maxbuy_shio, _ := jsonparser.GetInt(value, "maxbuy_shio")
 		win_shio, _ := jsonparser.GetFloat(value, "win_shio")
 		disc_shio, _ := jsonparser.GetFloat(value, "disc_shio")
 		shioyear_shio, _ := jsonparser.GetString(value, "shioyear_shio")
@@ -837,6 +944,18 @@ func PasaranDetail(c *fiber.Ctx) error {
 		obj.Maxbet2d_432d = float32(maxbet2d_432d)
 		obj.Maxbet2dd_432d = float32(maxbet2dd_432d)
 		obj.Maxbet2dt_432d = float32(maxbet2dt_432d)
+		obj.Maxbet4d_fullbb_432d = float32(maxbet4d_fullbb_432d)
+		obj.Maxbet3d_fullbb_432d = float32(maxbet3d_fullbb_432d)
+		obj.Maxbet3dd_fullbb_432d = float32(maxbet3dd_fullbb_432d)
+		obj.Maxbet2d_fullbb_432d = float32(maxbet2d_fullbb_432d)
+		obj.Maxbet2dd_fullbb_432d = float32(maxbet2dd_fullbb_432d)
+		obj.Maxbet2dt_fullbb_432d = float32(maxbet2dt_fullbb_432d)
+		obj.Maxbuy4d_432d = float32(maxbuy4d_432d)
+		obj.Maxbuy3d_432d = float32(maxbuy3d_432d)
+		obj.Maxbuy3dd_432d = float32(maxbuy3dd_432d)
+		obj.Maxbuy2d_432d = float32(maxbuy2d_432d)
+		obj.Maxbuy2dd_432d = float32(maxbuy2dd_432d)
+		obj.Maxbuy2dt_432d = float32(maxbuy2dt_432d)
 		obj.Limitotal4d_432d = float32(limitotal4d_432d)
 		obj.Limitotal3d_432d = float32(limitotal3d_432d)
 		obj.Limitotal3dd_432d = float32(limitotal3dd_432d)
@@ -849,6 +968,18 @@ func PasaranDetail(c *fiber.Ctx) error {
 		obj.Limitglobal2d_432d = float32(limitglobal2d_432d)
 		obj.Limitglobal2dd_432d = float32(limitglobal2dd_432d)
 		obj.Limitglobal2dt_432d = float32(limitglobal2dt_432d)
+		obj.Limitotal4d_fullbb_432d = float32(limitotal4d_fullbb_432d)
+		obj.Limitotal3d_fullbb_432d = float32(limitotal3d_fullbb_432d)
+		obj.Limitotal3dd_fullbb_432d = float32(limitotal3dd_fullbb_432d)
+		obj.Limitotal2d_fullbb_432d = float32(limitotal2d_fullbb_432d)
+		obj.Limitotal2dd_fullbb_432d = float32(limitotal2dd_fullbb_432d)
+		obj.Limitotal2dt_fullbb_432d = float32(limitotal2dt_fullbb_432d)
+		obj.Limitglobal4d_fullbb_432d = float32(limitglobal4d_fullbb_432d)
+		obj.Limitglobal3d_fullbb_432d = float32(limitglobal3d_fullbb_432d)
+		obj.Limitglobal3dd_fullbb_432d = float32(limitglobal3dd_fullbb_432d)
+		obj.Limitglobal2d_fullbb_432d = float32(limitglobal2d_fullbb_432d)
+		obj.Limitglobal2dd_fullbb_432d = float32(limitglobal2dd_fullbb_432d)
+		obj.Limitglobal2dt_fullbb_432d = float32(limitglobal2dt_fullbb_432d)
 		obj.Disc4d_432d = float32(disc4d_432d)
 		obj.Disc3d_432d = float32(disc3d_432d)
 		obj.Disc3dd_432d = float32(disc3dd_432d)
@@ -881,12 +1012,14 @@ func PasaranDetail(c *fiber.Ctx) error {
 		obj.Win2dtbb_432d = float32(win2dtbb_432d)
 		obj.Minbet_cbebas = float32(minbet_cbebas)
 		obj.Maxbet_cbebas = float32(maxbet_cbebas)
+		obj.Maxbuy_cbebas = float32(maxbuy_cbebas)
 		obj.Win_cbebas = float32(win_cbebas)
 		obj.Disc_cbebas = float32(disc_cbebas)
 		obj.Limitglobal_cbebas = float32(limitglobal_cbebas)
 		obj.Limittotal_cbebas = float32(limittotal_cbebas)
 		obj.Minbet_cmacau = float32(minbet_cmacau)
 		obj.Maxbet_cmacau = float32(maxbet_cmacau)
+		obj.Maxbuy_cmacau = float32(maxbuy_cmacau)
 		obj.Win2d_cmacau = float32(win2d_cmacau)
 		obj.Win3d_cmacau = float32(win3d_cmacau)
 		obj.Win4d_cmacau = float32(win4d_cmacau)
@@ -895,6 +1028,7 @@ func PasaranDetail(c *fiber.Ctx) error {
 		obj.Limitotal_cmacau = float32(limitotal_cmacau)
 		obj.Minbet_cnaga = float32(minbet_cnaga)
 		obj.Maxbet_cnaga = float32(maxbet_cnaga)
+		obj.Maxbuy_cnaga = float32(maxbuy_cnaga)
 		obj.Win3_cnaga = float32(win3_cnaga)
 		obj.Win4_cnaga = float32(win4_cnaga)
 		obj.Disc_cnaga = float32(disc_cnaga)
@@ -902,6 +1036,7 @@ func PasaranDetail(c *fiber.Ctx) error {
 		obj.Limittotal_cnaga = float32(limittotal_cnaga)
 		obj.Minbet_cjitu = float32(minbet_cjitu)
 		obj.Maxbet_cjitu = float32(maxbet_cjitu)
+		obj.Maxbuy_cjitu = float32(maxbuy_cjitu)
 		obj.Winas_cjitu = float32(winas_cjitu)
 		obj.Winkop_cjitu = float32(winkop_cjitu)
 		obj.Winkepala_cjitu = float32(winkepala_cjitu)
@@ -911,6 +1046,7 @@ func PasaranDetail(c *fiber.Ctx) error {
 		obj.Limittotal_cjitu = float32(limittotal_cjitu)
 		obj.Minbet_5050umum = float32(minbet_5050umum)
 		obj.Maxbet_5050umum = float32(maxbet_5050umum)
+		obj.Maxbuy_5050umum = float32(maxbuy_5050umum)
 		obj.Keibesar_5050umum = float32(keibesar_5050umum)
 		obj.Keikecil_5050umum = float32(keikecil_5050umum)
 		obj.Keigenap_5050umum = float32(keigenap_5050umum)
@@ -927,6 +1063,7 @@ func PasaranDetail(c *fiber.Ctx) error {
 		obj.Limittotal_5050umum = float32(limittotal_5050umum)
 		obj.Minbet_5050special = float32(minbet_5050special)
 		obj.Maxbet_5050special = float32(maxbet_5050special)
+		obj.Maxbuy_5050special = float32(maxbuy_5050special)
 		obj.Keiasganjil_5050special = float32(keiasganjil_5050special)
 		obj.Keiasgenap_5050special = float32(keiasgenap_5050special)
 		obj.Keiasbesar_5050special = float32(keiasbesar_5050special)
@@ -963,6 +1100,7 @@ func PasaranDetail(c *fiber.Ctx) error {
 		obj.Limittotal_5050special = float32(limittotal_5050special)
 		obj.Minbet_5050kombinasi = float32(minbet_5050kombinasi)
 		obj.Maxbet_5050kombinasi = float32(maxbet_5050kombinasi)
+		obj.Maxbuy_5050kombinasi = float32(maxbuy_5050kombinasi)
 		obj.Belakangkeimono_5050kombinasi = float32(belakangkeimono_5050kombinasi)
 		obj.Belakangkeistereo_5050kombinasi = float32(belakangkeistereo_5050kombinasi)
 		obj.Belakangkeikembang_5050kombinasi = float32(belakangkeikembang_5050kombinasi)
@@ -997,12 +1135,14 @@ func PasaranDetail(c *fiber.Ctx) error {
 		obj.Limittotal_5050kombinasi = float32(limittotal_5050kombinasi)
 		obj.Minbet_kombinasi = float32(minbet_kombinasi)
 		obj.Maxbet_kombinasi = float32(maxbet_kombinasi)
+		obj.Maxbuy_kombinasi = float32(maxbuy_kombinasi)
 		obj.Win_kombinasi = float32(win_kombinasi)
 		obj.Disc_kombinasi = float32(disc_kombinasi)
 		obj.Limitglobal_kombinasi = float32(limitglobal_kombinasi)
 		obj.Limittotal_kombinasi = float32(limittotal_kombinasi)
 		obj.Minbet_dasar = float32(minbet_dasar)
 		obj.Maxbet_dasar = float32(maxbet_dasar)
+		obj.Maxbuy_dasar = float32(maxbuy_dasar)
 		obj.Keibesar_dasar = float32(keibesar_dasar)
 		obj.Keikecil_dasar = float32(keikecil_dasar)
 		obj.Keigenap_dasar = float32(keigenap_dasar)
@@ -1015,6 +1155,7 @@ func PasaranDetail(c *fiber.Ctx) error {
 		obj.Limittotal_dasar = float32(limittotal_dasar)
 		obj.Minbet_shio = float32(minbet_shio)
 		obj.Maxbet_shio = float32(maxbet_shio)
+		obj.Maxbuy_shio = float32(maxbuy_shio)
 		obj.Win_shio = float32(win_shio)
 		obj.Disc_shio = float32(disc_shio)
 		obj.Shioyear_shio = shioyear_shio
@@ -1399,13 +1540,17 @@ func PasaranSaveConf432d(c *fiber.Ctx) error {
 			client_username, client_company, client.Idpasaran,
 			client.Pasaran_minbet_432d,
 			client.Pasaran_maxbet4d_432d, client.Pasaran_maxbet3d_432d, client.Pasaran_maxbet3dd_432d, client.Pasaran_maxbet2d_432d, client.Pasaran_maxbet2dd_432d, client.Pasaran_maxbet2dt_432d,
+			client.Pasaran_maxbet4d_fullbb_432d, client.Pasaran_maxbet3d_fullbb_432d, client.Pasaran_maxbet3dd_fullbb_432d, client.Pasaran_maxbet2d_fullbb_432d, client.Pasaran_maxbet2dd_fullbb_432d, client.Pasaran_maxbet2dt_fullbb_432d,
+			client.Pasaran_maxbuy4d_432d, client.Pasaran_maxbuy3d_432d, client.Pasaran_maxbuy3dd_432d, client.Pasaran_maxbuy2d_432d, client.Pasaran_maxbuy2dd_432d, client.Pasaran_maxbuy2dt_432d,
 			client.Pasaran_win4d_432d, client.Pasaran_win3d_432d, client.Pasaran_win3dd_432d, client.Pasaran_win2d_432d, client.Pasaran_win2dd_432d, client.Pasaran_win2dt_432d,
 			client.Pasaran_win4dnodisc_432d, client.Pasaran_win3dnodisc_432d, client.Pasaran_win3ddnodisc_432d, client.Pasaran_win2dnodisc_432d, client.Pasaran_win2ddnodisc_432d, client.Pasaran_win2dtnodisc_432d,
 			client.Pasaran_win4dbb_kena_432d, client.Pasaran_win3dbb_kena_432d, client.Pasaran_win3ddbb_kena_432d, client.Pasaran_win2dbb_kena_432d, client.Pasaran_win2ddbb_kena_432d, client.Pasaran_win2dtbb_kena_432d,
 			client.Pasaran_win4dbb_432d, client.Pasaran_win3dbb_432d, client.Pasaran_win3ddbb_432d, client.Pasaran_win2dbb_432d, client.Pasaran_win2ddbb_432d, client.Pasaran_win2dtbb_432d,
 			client.Pasaran_disc4d_432d, client.Pasaran_disc3d_432d, client.Pasaran_disc3dd_432d, client.Pasaran_disc2d_432d, client.Pasaran_disc2dd_432d, client.Pasaran_disc2dt_432d,
 			client.Pasaran_limitglobal4d_432d, client.Pasaran_limitglobal3d_432d, client.Pasaran_limitglobal3dd_432d, client.Pasaran_limitglobal2d_432d, client.Pasaran_limitglobal2dd_432d, client.Pasaran_limitglobal2dt_432d,
-			client.Pasaran_limitotal4d_432d, client.Pasaran_limitotal3d_432d, client.Pasaran_limitotal3dd_432d, client.Pasaran_limitotal2d_432d, client.Pasaran_limitotal2dd_432d, client.Pasaran_limitotal2dt_432d)
+			client.Pasaran_limitotal4d_432d, client.Pasaran_limitotal3d_432d, client.Pasaran_limitotal3dd_432d, client.Pasaran_limitotal2d_432d, client.Pasaran_limitotal2dd_432d, client.Pasaran_limitotal2dt_432d,
+			client.Pasaran_limitglobal4d_fullbb_432d, client.Pasaran_limitglobal3d_fullbb_432d, client.Pasaran_limitglobal3dd_fullbb_432d, client.Pasaran_limitglobal2d_fullbb_432d, client.Pasaran_limitglobal2dd_fullbb_432d, client.Pasaran_limitglobal2dt_fullbb_432d,
+			client.Pasaran_limitotal4d_fullbb_432d, client.Pasaran_limitotal3d_fullbb_432d, client.Pasaran_limitotal3dd_fullbb_432d, client.Pasaran_limitotal2d_fullbb_432d, client.Pasaran_limitotal2dd_fullbb_432d, client.Pasaran_limitotal2dt_fullbb_432d)
 		if err != nil {
 			c.Status(fiber.StatusBadRequest)
 			return c.JSON(fiber.Map{
@@ -1491,6 +1636,7 @@ func PasaranSaveConfColokBebas(c *fiber.Ctx) error {
 			client.Idpasaran,
 			client.Pasaran_minbet_cbebas,
 			client.Pasaran_maxbet_cbebas,
+			client.Pasaran_maxbuy_cbebas,
 			client.Pasaran_win_cbebas,
 			client.Pasaran_disc_cbebas,
 			client.Pasaran_limitglobal_cbebas,
@@ -1579,6 +1725,7 @@ func PasaranSaveConfColokMacau(c *fiber.Ctx) error {
 			client.Idpasaran,
 			client.Pasaran_minbet_cmacau,
 			client.Pasaran_maxbet_cmacau,
+			client.Pasaran_maxbuy_cmacau,
 			client.Pasaran_win2_cmacau,
 			client.Pasaran_win3_cmacau,
 			client.Pasaran_win4_cmacau,
@@ -1671,6 +1818,7 @@ func PasaranSaveConfColokNaga(c *fiber.Ctx) error {
 			client.Idpasaran,
 			client.Pasaran_minbet_cnaga,
 			client.Pasaran_maxbet_cnaga,
+			client.Pasaran_maxbuy_cnaga,
 			client.Pasaran_win3_cnaga,
 			client.Pasaran_win4_cnaga,
 			client.Pasaran_disc_cnaga,
@@ -1761,6 +1909,7 @@ func PasaranSaveConfColokJitu(c *fiber.Ctx) error {
 			client.Idpasaran,
 			client.Pasaran_minbet_cjitu,
 			client.Pasaran_maxbet_cjitu,
+			client.Pasaran_maxbuy_cjitu,
 			client.Pasaran_winas_cjitu,
 			client.Pasaran_winkop_cjitu,
 			client.Pasaran_winkepala_cjitu,
@@ -1855,6 +2004,7 @@ func PasaranSaveConf5050Umum(c *fiber.Ctx) error {
 			client.Idpasaran,
 			client.Pasaran_minbet_5050umum,
 			client.Pasaran_maxbet_5050umum,
+			client.Pasaran_maxbuy_5050umum,
 			client.Pasaran_keibesar_5050umum,
 			client.Pasaran_keikecil_5050umum,
 			client.Pasaran_keigenap_5050umum,
@@ -1963,6 +2113,7 @@ func PasaranSaveConf5050Special(c *fiber.Ctx) error {
 			client.Idpasaran,
 			client.Pasaran_minbet_5050special,
 			client.Pasaran_maxbet_5050special,
+			client.Pasaran_maxbuy_5050special,
 			client.Pasaran_keiasganjil_5050special,
 			client.Pasaran_keiasgenap_5050special,
 			client.Pasaran_keiasbesar_5050special,
@@ -2111,6 +2262,7 @@ func PasaranSaveConf5050Kombinasi(c *fiber.Ctx) error {
 			client.Idpasaran,
 			client.Pasaran_minbet_5050kombinasi,
 			client.Pasaran_maxbet_5050kombinasi,
+			client.Pasaran_maxbuy_5050kombinasi,
 			client.Pasaran_belakangkeimono_5050kombinasi,
 			client.Pasaran_belakangkeistereo_5050kombinasi,
 			client.Pasaran_belakangkeikembang_5050kombinasi,
@@ -2255,6 +2407,7 @@ func PasaranSaveConfMacauKombinasi(c *fiber.Ctx) error {
 			client.Idpasaran,
 			client.Pasaran_minbet_kombinasi,
 			client.Pasaran_maxbet_kombinasi,
+			client.Pasaran_maxbuy_kombinasi,
 			client.Pasaran_win_kombinasi,
 			client.Pasaran_disc_kombinasi,
 			client.Pasaran_limitglobal_kombinasi,
@@ -2284,6 +2437,7 @@ func PasaranSaveConfMacauKombinasi(c *fiber.Ctx) error {
 				client.Idpasaran,
 				client.Pasaran_minbet_kombinasi,
 				client.Pasaran_maxbet_kombinasi,
+				client.Pasaran_maxbuy_kombinasi,
 				client.Pasaran_win_kombinasi,
 				client.Pasaran_disc_kombinasi,
 				client.Pasaran_limitglobal_kombinasi,
@@ -2343,6 +2497,7 @@ func PasaranSaveConfDasar(c *fiber.Ctx) error {
 			client.Idpasaran,
 			client.Pasaran_minbet_dasar,
 			client.Pasaran_maxbet_dasar,
+			client.Pasaran_maxbuy_dasar,
 			client.Pasaran_keibesar_dasar,
 			client.Pasaran_keikecil_dasar,
 			client.Pasaran_keigenap_dasar,
@@ -2444,6 +2599,7 @@ func PasaranSaveConfShio(c *fiber.Ctx) error {
 			client.Pasaran_shioyear_shio,
 			client.Pasaran_minbet_shio,
 			client.Pasaran_maxbet_shio,
+			client.Pasaran_maxbuy_shio,
 			client.Pasaran_win_shio,
 			client.Pasaran_disc_shio,
 			client.Pasaran_limitglobal_shio,

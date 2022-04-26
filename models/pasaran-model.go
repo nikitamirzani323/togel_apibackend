@@ -116,10 +116,18 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 		A.limitline_4d, A.limitline_3d, A.limitline_3dd, A.limitline_2d, A.limitline_2dd, A.limitline_2dt, A.bbfs, 
 		A.1_minbet as minbet_432d, A.1_maxbet4d as maxbet4d_432d, A.1_maxbet3d as maxbet3d_432d, A.1_maxbet3dd as maxbet3dd_432d, 
 		A.1_maxbet2d as maxbet2d_432d, A.1_maxbet2dd as maxbet2dd_432d, A.1_maxbet2dt as maxbet2dt_432d, 
+		A.1_maxbet4d_fullbb as maxbet4d_fullbb_432d, A.1_maxbet3d_fullbb as maxbet3d_fullbb_432d, A.1_maxbet3dd_fullbb as maxbet3dd_fullbb_432d,
+		A.1_maxbet2d_fullbb as maxbet2d_fullbb_432d, A.1_maxbet2dd_fullbb as maxbet2dd_fullbb_432d, A.1_maxbet2dt_fullbb as maxbet2dt_fullbb_432d,
+		A.1_maxbuy4d as maxbuy4d_432d, A.1_maxbuy3d as maxbuy3d_432d, A.1_maxbuy3dd as maxbuy3dd_432d,
+		A.1_maxbuy2d as maxbuy2d_432d, A.1_maxbuy2dd as maxbuy2dd_432d, A.1_maxbuy2dt as maxbuy2dt_432d,
 		A.1_limittotal4d as limitotal4d_432d, A.1_limittotal3d as limitotal3d_432d, A.1_limittotal3dd as limitotal3dd_432d, 
 		A.1_limittotal2d as limitotal2d_432d, A.1_limittotal2dd as limitotal2dd_432d, A.1_limittotal2dt as limitotal2dt_432d, 
 		A.1_limitbuang4d as limitglobal4d_432d, A.1_limitbuang3d as limitglobal3d_432d, A.1_limitbuang3dd as limitglobal3dd_432d, 
 		A.1_limitbuang2d as limitglobal2d_432d, A.1_limitbuang2dd as limitglobal2dd_432d, A.1_limitbuang2dt as limitglobal2dt_432d, 
+		A.1_limitbuang4d_fullbb as limitbuang4d_fullbb_432d, A.1_limitbuang3d_fullbb as limitbuang3d_fullbb_432d, A.1_limitbuang3dd_fullbb as limitbuang3dd_fullbb_432d, 
+		A.1_limitbuang2d_fullbb as limitbuang2d_fullbb_432d, A.1_limitbuang2dd_fullbb as limitbuang2dd_fullbb_432d, A.1_limitbuang2dt_fullbb as limitbuang2dt_fullbb_432d, 
+		A.1_limittotal4d_fullbb as limittotal4d_fullbb_432d, A.1_limittotal3d_fullbb as limittotal3d_fullbb_432d, A.1_limittotal3dd_fullbb as limittotal3dd_fullbb_432d, 
+		A.1_limittotal2d_fullbb as limittotal2d_fullbb_432d, A.1_limittotal2dd_fullbb as limittotal2dd_fullbb_432d, A.1_limittotal2dt_fullbb as limittotal2dt_fullbb_432d, 
 		A.1_disc4d as disc4d_432d, A.1_disc3d as disc3d_432d, A.1_disc3dd as disc3dd_432d, 
 		A.1_disc2d as disc2d_432d, A.1_disc2dd as disc2dd_432d, A.1_disc2dt as disc2dt_432d, 
 		A.1_win4d as win4d_432d, A.1_win3d as win3d_432d, A.1_win3dd as win3dd_432d, 
@@ -130,25 +138,25 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 		A.1_win2dbb_kena as win2dbb_kena_432d, A.1_win2ddbb_kena as win2ddbb_kena_432d, A.1_win2dtbb_kena as win2dtbb_kena_432d,
 		A.1_win4dbb as win4dbb_432d, A.1_win3dbb as win3dbb_432d, A.1_win3ddbb as win3dbb_432d, 
 		A.1_win2dbb as win2dbb_432d, A.1_win2ddbb as win2ddbb_432d, A.1_win2dtbb as win2dtbb_432d,
-		A.2_minbet as minbet_cbebas, A.2_maxbet as maxbet_cbebas, 
+		A.2_minbet as minbet_cbebas, A.2_maxbet as maxbet_cbebas, A.2_maxbuy as maxbuy_cbebas,
 		A.2_win as win_cbebas, A.2_disc as disc_cbebas, 
 		A.2_limitbuang as limitglobal_cbebas, A.2_limitotal as limittotal_cbebas, 
-		A.3_minbet as minbet_cmacau, A.3_maxbet as maxbet_cmacau, 
+		A.3_minbet as minbet_cmacau, A.3_maxbet as maxbet_cmacau, A.3_maxbuy as maxbuy_cmacau,
 		A.3_win2digit as win2d_cmacau, A.3_win3digit as win3d_cmacau, A.3_win4digit as win4d_cmacau, 
 		A.3_disc as disc_cmacau, A.3_limitbuang as limitglobal_cmacau, A.3_limittotal as limitotal_cmacau, 
-		A.4_minbet as minbet_cnaga, A.4_maxbet as maxbet_cnaga, 
+		A.4_minbet as minbet_cnaga, A.4_maxbet as maxbet_cnaga, A.4_maxbuy as maxbuy_cnaga,
 		A.4_win3digit as win3_cnaga, A.4_win4digit as win4_cnaga, 
 		A.4_disc as disc_cnaga, A.4_limitbuang as limitglobal_cnaga, A.4_limittotal as limittotal_cnaga, 
-		A.5_minbet as minbet_cjitu, A.5_maxbet as maxbet_cjitu, 
+		A.5_minbet as minbet_cjitu, A.5_maxbet as maxbet_cjitu, A.5_maxbuy as maxbuy_cjitu, 
 		A.5_winas as winas_cjitu, A.5_winkop as winkop_cjitu, A.5_winkepala as winkepala_cjitu, A.5_winekor as winekor_cjitu, 
 		A.5_desic as desc_cjitu, A.5_limitbuang as limitglobal_cjitu, A.5_limitotal as limittotal_cjitu, 
-		A.6_minbet as minbet_5050umum, A.6_maxbet as maxbet_5050umum, 
+		A.6_minbet as minbet_5050umum, A.6_maxbet as maxbet_5050umum, A.6_maxbuy as maxbuy_5050umum,
 		A.6_keibesar as keibesar_5050umum, A.6_keikecil as keikecil_5050umum, A.6_keigenap as keigenap_5050umum, 
 		A.6_keiganjil as keiganjil_5050umum, A.6_keitengah as keitengah_5050umum, A.6_keitepi as keitepi_5050umum, 
 		A.6_discbesar as discbesar_5050umum, A.6_disckecil as disckecil_5050umum, A.6_discgenap as discgenap_5050umum, 
 		A.6_discganjil as discganjil_5050umum, A.6_disctengah as disctengah_5050umum, A.6_disctepi as disctepi_5050umum, 
 		A.6_limitbuang as limitglobal_5050umum, A.6_limittotal as limittotal_5050umum, 
-		A.7_minbet as minbet_5050special, A.7_maxbet as maxbet_5050special,
+		A.7_minbet as minbet_5050special, A.7_maxbet as maxbet_5050special, A.7_maxbuy as maxbuy_5050special,
 		A.7_keiasganjil as keiasganjil_5050special, A.7_keiasgenap as keiasgenap_5050special, A.7_keiasbesar as keiasbesar_5050special, 
 		A.7_keiaskecil as keiaskecil_5050special, A.7_keikopganjil as keikopganjil_5050special, A.7_keikopgenap as keikopgenap_5050special, 
 		A.7_keikopbesar as keikopbesar_5050special, A.7_keikopkecil as keikopkecil_5050special, A.7_keikepalaganjil as keikepalaganjil_5050special, 
@@ -161,7 +169,7 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 		A.7_disckepalagenap as disckepalagenap_5050special, A.7_disckepalabesar as disckepalabesar_5050special, A.7_disckepalakecil as disckepalakecil_5050special, 
 		A.7_discekorganjil as discekorganjil_5050special, A.7_discekorgenap as discekorgenap_5050special, A.7_discekorbesar as discekorbesar_5050special, 
 		A.7_discekorkecil as discekorkecil_5050special, A.7_limitbuang as limitglobal_5050special, A.7_limittotal as limittotal_5050special, 
-		A.8_minbet as minbet_5050kombinasi, A.8_maxbet as maxbet_5050kombinasi, 
+		A.8_minbet as minbet_5050kombinasi, A.8_maxbet as maxbet_5050kombinasi, A.8_maxbuy as maxbuy_5050kombinasi,
 		A.8_belakangkeimono as belakangkeimono_5050kombinasi, A.8_belakangkeistereo as belakangkeistereo_5050kombinasi, A.8_belakangkeikembang as belakangkeikembang_5050kombinasi, A.8_belakangkeikempis as belakangkeikempis_5050kombinasi, A.8_belakangkeikembar as belakangkeikembar_5050kombinasi, 
 		A.8_tengahkeimono as tengahkeimono_5050kombinasi, A.8_tengahkeistereo as tengahkeistereo_5050kombinasi, A.8_tengahkeikembang as tengahkeikembang_5050kombinasi, A.8_tengahkeikempis as tengahkeikempis_5050kombinasi, A.8_tengahkeikembar as tengahkeikembar_5050kombinasi, 
 		A.8_depankeimono as depankeimono_5050kombinasi, A.8_depankeistereo as depankeistereo_5050kombinasi, A.8_depankeikembang as depankeikembang_5050kombinasi, A.8_depankeikempis as depankeikempis_5050kombinasi, A.8_depankeikembar as depankeikembar_5050kombinasi, 
@@ -169,12 +177,14 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 		A.8_tengahdiscmono as tengahdiscmono_5050kombinasi, A.8_tengahdiscstereo as tengahdiscstereo_5050kombinasi, A.8_tengahdisckembang as tengahdisckembang_5050kombinasi, A.8_tengahdisckempis as tengahdisckempis_5050kombinasi, A.8_tengahdisckembar as tengahdisckembar_5050kombinasi, 
 		A.8_depandiscmono as depandiscmono_5050kombinasi, A.8_depandiscstereo as depandiscstereo_5050kombinasi, A.8_depandisckembang as depandisckembang_5050kombinasi, A.8_depandisckempis as depandisckempis_5050kombinasi, A.8_depandisckembar as depandisckembar_5050kombinasi, 
 		A.8_limitbuang as limitglobal_5050kombinasi, A.8_limittotal as limittotal_5050kombinasi, 
-		A.9_minbet as minbet_kombinasi, A.9_maxbet as maxbet_kombinasi, A.9_win as win_kombinasi, A.9_discount as disc_kombinasi, A.9_limitbuang as limitglobal_kombinasi, A.9_limittotal as limittotal_kombinasi, 
-		A.10_minbet as minbet_dasar, A.10_maxbet as maxbet_dasar, 
+		A.9_minbet as minbet_kombinasi, A.9_maxbet as maxbet_kombinasi, A.9_maxbuy as maxbuy_kombinasi,
+		A.9_win as win_kombinasi, A.9_discount as disc_kombinasi, A.9_limitbuang as limitglobal_kombinasi, A.9_limittotal as limittotal_kombinasi, 
+		A.10_minbet as minbet_dasar, A.10_maxbet as maxbet_dasar, A.10_maxbuy as maxbuy_dasar,
 		A.10_keibesar as keibesar_dasar, A.10_keikecil as keikecil_dasar, A.10_keigenap as keigenap_dasar, A.10_keiganjil as keiganjil_dasar, 
 		A.10_discbesar as discbesar_dasar, A.10_disckecil as disckecil_dasar, A.10_discigenap as discgenap_dasar, A.10_discganjil as discganjil_dasar, 
 		A.10_limitbuang as limitglobal_dasar, A.10_limittotal as limittotal_dasar, 
-		A.11_minbet as minbet_shio, A.11_maxbet as maxbet_shio, A.11_win as win_shio, A.11_disc as disc_shio, A.11_limitbuang as limitglobal_shio, A.11_limittotal as limittotal_shio, 
+		A.11_minbet as minbet_shio, A.11_maxbet as maxbet_shio, A.11_maxbuy as maxbuy_shio,
+		A.11_win as win_shio, A.11_disc as disc_shio, A.11_limitbuang as limitglobal_shio, A.11_limittotal as limittotal_shio, 
 		A.11_shiotahunini as shioyear_shio, 
 		A.createcomppas, A.createdatecomppas, 
 		A.updatecomppas, A.updatedatecompas 
@@ -188,25 +198,29 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 		createcomppas_db, createdatecomppas_db, updatecomppas_db, updatedatecompas_db                                                                                                                                                                                                                            string
 		displaypasaran_db, limitline_4d_db, limitline_3d_db, limitline_3dd_db, limitline_2d_db, limitline_2dd_db, limitline_2dt_db, bbfs_db                                                                                                                                                                      int
 		minbet_432d_db, maxbet4d_432d_db, maxbet3d_432d_db, maxbet3dd_432d_db, maxbet2d_432d_db, maxbet2dd_432d_db, maxbet2dt_432d_db                                                                                                                                                                            float32
+		maxbet4d_fullbb_432d_db, maxbet3d_fullbb_432d_db, maxbet3dd_fullbb_432d_db, maxbet2d_fullbb_432d_db, maxbet2dd_fullbb_432d_db, maxbet2dt_fullbb_432d_db                                                                                                                                                  float32
+		maxbuy4d_432d_db, maxbuy3d_432d_db, maxbuy3dd_432d_db, maxbuy2d_432d_db, maxbuy2dd_432d_db, maxbuy2dt_432d_db                                                                                                                                                                                            float32
 		limitotal4d_432d_db, limitotal3d_432d_db, limitotal3dd_432d_db, limitotal2d_432d_db, limitotal2dd_432d_db, limitotal2dt_432d_db                                                                                                                                                                          float32
 		limitglobal4d_432d_db, limitglobal3d_432d_db, limitglobal3dd_432d_db, limitglobal2d_432d_db, limitglobal2dd_432d_db, limitglobal2dt_432d_db                                                                                                                                                              float32
+		limitbuang4d_fullbb_432d_db, limitbuang3d_fullbb_432d_db, limitbuang3dd_fullbb_432d_db, limitbuang2d_fullbb_432d_db, limitbuang2dd_fullbb_432d_db, limitbuang2dt_fullbb_432d_db                                                                                                                          float32
+		limittotal4d_fullbb_432d_db, limittotal3d_fullbb_432d_db, limittotal3dd_fullbb_432d_db, limittotal2d_fullbb_432d_db, limittotal2dd_fullbb_432d_db, limittotal2dt_fullbb_432d_db                                                                                                                          float32
 		disc4d_432d_db, disc3d_432d_db, disc3dd_432d_db, disc2d_432d_db, disc2dd_432d_db, disc2dt_432d_db                                                                                                                                                                                                        float32
 		win4d_432d_db, win3d_432d_db, win3dd_432d_db, win2d_432d_db, win2dd_432d_db, win2dt_432d_db                                                                                                                                                                                                              float32
 		win4dnodisc_432d_db, win3dnodisc_432d_db, win3ddnodisc_432d_db, win2dnodisc_432d_db, win2ddnodisc_432d_db, win2dtnodisc_432d_db                                                                                                                                                                          float32
 		win4dbb_kena_432d_db, win3dbb_kena_432d_db, win3ddbb_kena_432d_db, win2dbb_kena_432d_db, win2ddbb_kena_432d_db, win2dtbb_kena_432d_db                                                                                                                                                                    float32
 		win4dbb_432d_db, win3dbb_432d_db, win3ddbb_432d_db, win2dbb_432d_db, win2ddbb_432d_db, win2dtbb_432d_db                                                                                                                                                                                                  float32
-		minbet_cbebas_db, maxbet_cbebas_db, win_cbebas_db, disc_cbebas_db, limitglobal_cbebas_db, limittotal_cbebas_db                                                                                                                                                                                           float32
-		minbet_cmacau_db, maxbet_cmacau_db, win2d_cmacau_db, win3d_cmacau_db, win4d_cmacau_db, disc_cmacau_db, limitglobal_cmacau_db, limitotal_cmacau_db                                                                                                                                                        float32
-		minbet_cnaga_db, maxbet_cnaga_db, win3_cnaga_db, win4_cnaga_db, disc_cnaga_db, limitglobal_cnaga_db, limittotal_cnaga_db                                                                                                                                                                                 float32
-		minbet_cjitu_db, maxbet_cjitu_db, winas_cjitu_db, winkop_cjitu_db, winkepala_cjitu_db, winekor_cjitu_db, desc_cjitu_db, limitglobal_cjitu_db, limittotal_cjitu_db                                                                                                                                        float32
-		minbet_5050umum_db, maxbet_5050umum_db, keibesar_5050umum_db, keikecil_5050umum_db, keigenap_5050umum_db, keiganjil_5050umum_db, keitengah_5050umum_db, keitepi_5050umum_db                                                                                                                              float32
+		minbet_cbebas_db, maxbet_cbebas_db, maxbuy_cbebas_db, win_cbebas_db, disc_cbebas_db, limitglobal_cbebas_db, limittotal_cbebas_db                                                                                                                                                                         float32
+		minbet_cmacau_db, maxbet_cmacau_db, maxbuy_cmacau_db, win2d_cmacau_db, win3d_cmacau_db, win4d_cmacau_db, disc_cmacau_db, limitglobal_cmacau_db, limitotal_cmacau_db                                                                                                                                      float32
+		minbet_cnaga_db, maxbet_cnaga_db, maxbuy_cnaga_db, win3_cnaga_db, win4_cnaga_db, disc_cnaga_db, limitglobal_cnaga_db, limittotal_cnaga_db                                                                                                                                                                float32
+		minbet_cjitu_db, maxbet_cjitu_db, maxbuy_cjitu_db, winas_cjitu_db, winkop_cjitu_db, winkepala_cjitu_db, winekor_cjitu_db, desc_cjitu_db, limitglobal_cjitu_db, limittotal_cjitu_db                                                                                                                       float32
+		minbet_5050umum_db, maxbet_5050umum_db, maxbuy_5050umum_db, keibesar_5050umum_db, keikecil_5050umum_db, keigenap_5050umum_db, keiganjil_5050umum_db, keitengah_5050umum_db, keitepi_5050umum_db                                                                                                          float32
 		discbesar_5050umum_db, disckecil_5050umum_db, discgenap_5050umum_db, discganjil_5050umum_db, disctengah_5050umum_db, disctepi_5050umum_db, limitglobal_5050umum_db, limittotal_5050umum_db                                                                                                               float32
-		minbet_5050special_db, maxbet_5050special_db, keiasganjil_5050special_db, keiasgenap_5050special_db, keiasbesar_5050special_db, keiaskecil_5050special_db, keikopganjil_5050special_db, keikopgenap_5050special_db                                                                                       float32
+		minbet_5050special_db, maxbet_5050special_db, maxbuy_5050special_db, keiasganjil_5050special_db, keiasgenap_5050special_db, keiasbesar_5050special_db, keiaskecil_5050special_db, keikopganjil_5050special_db, keikopgenap_5050special_db                                                                float32
 		keikopbesar_5050special_db, keikopkecil_5050special_db, keikepalaganjil_5050special_db, keikepalagenap_5050special_db, keikepalabesar_5050special_db, keikepalakecil_5050special_db, keiekorganjil_5050special_db, keiekorgenap_5050special_db, keiekorbesar_5050special_db, keiekorkecil_5050special_db float32
 		discasganjil_5050special_db, discasgenap_5050special_db, discasbesar_5050special_db, discaskecil_5050special_db, disckopganjil_5050special_db, disckopgenap_5050special_db, disckopbesar_5050special_db, disckopkecil_5050special_db, disckepalaganjil_5050special_db, disckepalagenap_5050special_db    float32
 		disckepalabesar_5050special_db, disckepalakecil_5050special_db, discekorganjil_5050special_db, discekorgenap_5050special_db, discekorbesar_5050special_db, discekorkecil_5050special_db                                                                                                                  float32
 		limitglobal_5050special_db, limittotal_5050special_db                                                                                                                                                                                                                                                    float32
-		minbet_5050kombinasi_db, maxbet_5050kombinasi_db                                                                                                                                                                                                                                                         float32
+		minbet_5050kombinasi_db, maxbet_5050kombinasi_db, maxbuy_5050kombinasi_db                                                                                                                                                                                                                                float32
 		belakangkeimono_5050kombinasi_db, belakangkeistereo_5050kombinasi_db, belakangkeikembang_5050kombinasi_db, belakangkeikempis_5050kombinasi_db, belakangkeikembar_5050kombinasi_db                                                                                                                        float32
 		tengahkeimono_5050kombinasi_db, tengahkeistereo_5050kombinasi_db, tengahkeikembang_5050kombinasi_db, tengahkeikempis_5050kombinasi_db, tengahkeikembar_5050kombinasi_db                                                                                                                                  float32
 		depankeimono_5050kombinasi_db, depankeistereo_5050kombinasi_db, depankeikembang_5050kombinasi_db, depankeikempis_5050kombinasi_db, depankeikembar_5050kombinasi_db                                                                                                                                       float32
@@ -214,9 +228,9 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 		tengahdiscmono_5050kombinasi_db, tengahdiscstereo_5050kombinasi_db, tengahdisckembang_5050kombinasi_db, tengahdisckempis_5050kombinasi_db, tengahdisckembar_5050kombinasi_db                                                                                                                             float32
 		depandiscmono_5050kombinasi_db, depandiscstereo_5050kombinasi_db, depandisckembang_5050kombinasi_db, depandisckempis_5050kombinasi_db, depandisckembar_5050kombinasi_db                                                                                                                                  float32
 		limitglobal_5050kombinasi_db, limittotal_5050kombinasi_db                                                                                                                                                                                                                                                float32
-		minbet_kombinasi_db, maxbet_kombinasi_db, win_kombinasi_db, disc_kombinasi_db, limitglobal_kombinasi_db, limittotal_kombinasi_db                                                                                                                                                                         float32
-		minbet_dasar_db, maxbet_dasar_db, keibesar_dasar_db, keikecil_dasar_db, keigenap_dasar_db, keiganjil_dasar_db, discbesar_dasar_db, disckecil_dasar_db, discgenap_dasar_db, discganjil_dasar_db, limitglobal_dasar_db, limittotal_dasar_db                                                                float32
-		minbet_shio_db, maxbet_shio_db, win_shio_db, disc_shio_db, limitglobal_shio_db, limittotal_shio_db                                                                                                                                                                                                       float32
+		minbet_kombinasi_db, maxbet_kombinasi_db, maxbuy_kombinasi_db, win_kombinasi_db, disc_kombinasi_db, limitglobal_kombinasi_db, limittotal_kombinasi_db                                                                                                                                                    float32
+		minbet_dasar_db, maxbet_dasar_db, maxbuy_dasar_db, keibesar_dasar_db, keikecil_dasar_db, keigenap_dasar_db, keiganjil_dasar_db, discbesar_dasar_db, disckecil_dasar_db, discgenap_dasar_db, discganjil_dasar_db, limitglobal_dasar_db, limittotal_dasar_db                                               float32
+		minbet_shio_db, maxbet_shio_db, maxbuy_shio_db, win_shio_db, disc_shio_db, limitglobal_shio_db, limittotal_shio_db                                                                                                                                                                                       float32
 		shioyear_shio_db                                                                                                                                                                                                                                                                                         string
 	)
 	err := con.QueryRowContext(ctx, sql_select, company, idcomppasaran).Scan(
@@ -224,27 +238,31 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 		&jamjadwal_db, &jamopen_db, &statuspasaranactive_db, &displaypasaran_db, &nmpasarantogel_db,
 		&limitline_4d_db, &limitline_3d_db, &limitline_3dd_db, &limitline_2d_db, &limitline_2dd_db, &limitline_2dt_db, &bbfs_db,
 		&minbet_432d_db, &maxbet4d_432d_db, &maxbet3d_432d_db, &maxbet3dd_432d_db, &maxbet2d_432d_db, &maxbet2dd_432d_db, &maxbet2dt_432d_db,
+		&maxbet4d_fullbb_432d_db, &maxbet3d_fullbb_432d_db, &maxbet3dd_fullbb_432d_db, &maxbet2d_fullbb_432d_db, &maxbet2dd_fullbb_432d_db, &maxbet2dt_fullbb_432d_db,
+		&maxbuy4d_432d_db, &maxbuy3d_432d_db, &maxbuy3dd_432d_db, &maxbuy2d_432d_db, &maxbuy2dd_432d_db, &maxbuy2dt_432d_db, &maxbet2dt_fullbb_432d_db,
 		&limitotal4d_432d_db, &limitotal3d_432d_db, &limitotal3dd_432d_db, &limitotal2d_432d_db, &limitotal2dd_432d_db, &limitotal2dt_432d_db,
 		&limitglobal4d_432d_db, &limitglobal3d_432d_db, &limitglobal3dd_432d_db, &limitglobal2d_432d_db, &limitglobal2dd_432d_db, &limitglobal2dt_432d_db,
+		&limitbuang4d_fullbb_432d_db, &limitbuang3d_fullbb_432d_db, &limitbuang3dd_fullbb_432d_db, &limitbuang2d_fullbb_432d_db, &limitbuang2dd_fullbb_432d_db, &limitbuang2dt_fullbb_432d_db,
+		&limittotal4d_fullbb_432d_db, &limittotal3d_fullbb_432d_db, &limittotal3dd_fullbb_432d_db, &limittotal2d_fullbb_432d_db, &limittotal2dd_fullbb_432d_db, &limittotal2dt_fullbb_432d_db,
 		&disc4d_432d_db, &disc3d_432d_db, &disc3dd_432d_db, &disc2d_432d_db, &disc2dd_432d_db, &disc2dt_432d_db,
 		&win4d_432d_db, &win3d_432d_db, &win3dd_432d_db, &win2d_432d_db, &win2dd_432d_db, &win2dt_432d_db,
 		&win4dnodisc_432d_db, &win3dnodisc_432d_db, &win3ddnodisc_432d_db, &win2dnodisc_432d_db, &win2ddnodisc_432d_db, &win2dtnodisc_432d_db,
 		&win4dbb_kena_432d_db, &win3dbb_kena_432d_db, &win3ddbb_kena_432d_db, &win2dbb_kena_432d_db, &win2ddbb_kena_432d_db, &win2dtbb_kena_432d_db,
 		&win4dbb_432d_db, &win3dbb_432d_db, &win3ddbb_432d_db, &win2dbb_432d_db, &win2ddbb_432d_db, &win2dtbb_432d_db,
-		&minbet_cbebas_db, &maxbet_cbebas_db, &win_cbebas_db, &disc_cbebas_db, &limitglobal_cbebas_db, &limittotal_cbebas_db,
-		&minbet_cmacau_db, &maxbet_cmacau_db, &win2d_cmacau_db, &win3d_cmacau_db, &win4d_cmacau_db, &disc_cmacau_db, &limitglobal_cmacau_db, &limitotal_cmacau_db,
-		&minbet_cnaga_db, &maxbet_cnaga_db, &win3_cnaga_db, &win4_cnaga_db, &disc_cnaga_db, &limitglobal_cnaga_db, &limittotal_cnaga_db,
-		&minbet_cjitu_db, &maxbet_cjitu_db,
+		&minbet_cbebas_db, &maxbet_cbebas_db, &maxbuy_cbebas_db, &win_cbebas_db, &disc_cbebas_db, &limitglobal_cbebas_db, &limittotal_cbebas_db,
+		&minbet_cmacau_db, &maxbet_cmacau_db, &maxbuy_cmacau_db, &win2d_cmacau_db, &win3d_cmacau_db, &win4d_cmacau_db, &disc_cmacau_db, &limitglobal_cmacau_db, &limitotal_cmacau_db,
+		&minbet_cnaga_db, &maxbet_cnaga_db, &maxbuy_cbebas_db, &win3_cnaga_db, &win4_cnaga_db, &disc_cnaga_db, &limitglobal_cnaga_db, &limittotal_cnaga_db,
+		&minbet_cjitu_db, &maxbet_cjitu_db, &maxbuy_cjitu_db,
 		&winas_cjitu_db, &winkop_cjitu_db, &winkepala_cjitu_db, &winekor_cjitu_db,
 		&desc_cjitu_db, &limitglobal_cjitu_db, &limittotal_cjitu_db,
-		&minbet_5050umum_db, &maxbet_5050umum_db,
+		&minbet_5050umum_db, &maxbet_5050umum_db, &maxbuy_5050umum_db,
 		&keibesar_5050umum_db, &keikecil_5050umum_db, &keigenap_5050umum_db, &keiganjil_5050umum_db, &keitengah_5050umum_db, &keitepi_5050umum_db,
 		&discbesar_5050umum_db, &disckecil_5050umum_db, &discgenap_5050umum_db, &discganjil_5050umum_db, &disctengah_5050umum_db, &disctepi_5050umum_db, &limitglobal_5050umum_db, &limittotal_5050umum_db,
-		&minbet_5050special_db, &maxbet_5050special_db, &keiasganjil_5050special_db, &keiasgenap_5050special_db, &keiasbesar_5050special_db, &keiaskecil_5050special_db, &keikopganjil_5050special_db, &keikopgenap_5050special_db,
+		&minbet_5050special_db, &maxbet_5050special_db, &maxbuy_5050special_db, &keiasganjil_5050special_db, &keiasgenap_5050special_db, &keiasbesar_5050special_db, &keiaskecil_5050special_db, &keikopganjil_5050special_db, &keikopgenap_5050special_db,
 		&keikopbesar_5050special_db, &keikopkecil_5050special_db, &keikepalaganjil_5050special_db, &keikepalagenap_5050special_db, &keikepalabesar_5050special_db, &keikepalakecil_5050special_db, &keiekorganjil_5050special_db, &keiekorgenap_5050special_db, &keiekorbesar_5050special_db, &keiekorkecil_5050special_db,
 		&discasganjil_5050special_db, &discasgenap_5050special_db, &discasbesar_5050special_db, &discaskecil_5050special_db, &disckopganjil_5050special_db, &disckopgenap_5050special_db, &disckopbesar_5050special_db, &disckopkecil_5050special_db, &disckepalaganjil_5050special_db, &disckepalagenap_5050special_db,
 		&disckepalabesar_5050special_db, &disckepalakecil_5050special_db, &discekorganjil_5050special_db, &discekorgenap_5050special_db, &discekorbesar_5050special_db, &discekorkecil_5050special_db, &limitglobal_5050special_db, &limittotal_5050special_db,
-		&minbet_5050kombinasi_db, &maxbet_5050kombinasi_db,
+		&minbet_5050kombinasi_db, &maxbet_5050kombinasi_db, &maxbuy_5050kombinasi_db,
 		&belakangkeimono_5050kombinasi_db, &belakangkeistereo_5050kombinasi_db, &belakangkeikembang_5050kombinasi_db, &belakangkeikempis_5050kombinasi_db, &belakangkeikembar_5050kombinasi_db,
 		&tengahkeimono_5050kombinasi_db, &tengahkeistereo_5050kombinasi_db, &tengahkeikembang_5050kombinasi_db, &tengahkeikempis_5050kombinasi_db, &tengahkeikembar_5050kombinasi_db,
 		&depankeimono_5050kombinasi_db, &depankeistereo_5050kombinasi_db, &depankeikembang_5050kombinasi_db, &depankeikempis_5050kombinasi_db, &depankeikembar_5050kombinasi_db,
@@ -252,9 +270,9 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 		&tengahdiscmono_5050kombinasi_db, &tengahdiscstereo_5050kombinasi_db, &tengahdisckembang_5050kombinasi_db, &tengahdisckempis_5050kombinasi_db, &tengahdisckembar_5050kombinasi_db,
 		&depandiscmono_5050kombinasi_db, &depandiscstereo_5050kombinasi_db, &depandisckembang_5050kombinasi_db, &depandisckempis_5050kombinasi_db, &depandisckembar_5050kombinasi_db,
 		&limitglobal_5050kombinasi_db, &limittotal_5050kombinasi_db,
-		&minbet_kombinasi_db, &maxbet_kombinasi_db, &win_kombinasi_db, &disc_kombinasi_db, &limitglobal_kombinasi_db, &limittotal_kombinasi_db,
-		&minbet_dasar_db, &maxbet_dasar_db, &keibesar_dasar_db, &keikecil_dasar_db, &keigenap_dasar_db, &keiganjil_dasar_db, &discbesar_dasar_db, &disckecil_dasar_db, &discgenap_dasar_db, &discganjil_dasar_db, &limitglobal_dasar_db, &limittotal_dasar_db,
-		&minbet_shio_db, &maxbet_shio_db, &win_shio_db, &disc_shio_db, &limitglobal_shio_db, &limittotal_shio_db, &shioyear_shio_db,
+		&minbet_kombinasi_db, &maxbet_kombinasi_db, &maxbuy_kombinasi_db, &win_kombinasi_db, &disc_kombinasi_db, &limitglobal_kombinasi_db, &limittotal_kombinasi_db,
+		&minbet_dasar_db, &maxbet_dasar_db, &maxbuy_dasar_db, &keibesar_dasar_db, &keikecil_dasar_db, &keigenap_dasar_db, &keiganjil_dasar_db, &discbesar_dasar_db, &disckecil_dasar_db, &discgenap_dasar_db, &discganjil_dasar_db, &limitglobal_dasar_db, &limittotal_dasar_db,
+		&minbet_shio_db, &maxbet_shio_db, &maxbuy_shio_db, &win_shio_db, &disc_shio_db, &limitglobal_shio_db, &limittotal_shio_db, &shioyear_shio_db,
 		&createcomppas_db,
 		&createdatecomppas_db,
 		&updatecomppas_db,
@@ -282,6 +300,18 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	obj.Maxbet2d_432d = maxbet2d_432d_db
 	obj.Maxbet2dd_432d = maxbet2dd_432d_db
 	obj.Maxbet2dt_432d = maxbet2dt_432d_db
+	obj.Maxbet4d_fullbb_432d = maxbet4d_fullbb_432d_db
+	obj.Maxbet3d_fullbb_432d = maxbet3d_fullbb_432d_db
+	obj.Maxbet3dd_fullbb_432d = maxbet3dd_fullbb_432d_db
+	obj.Maxbet2d_fullbb_432d = maxbet2d_fullbb_432d_db
+	obj.Maxbet2dd_fullbb_432d = maxbet2dd_fullbb_432d_db
+	obj.Maxbet2dt_fullbb_432d = maxbet2dt_fullbb_432d_db
+	obj.Maxbuy4d_432d = maxbuy4d_432d_db
+	obj.Maxbuy3d_432d = maxbuy3d_432d_db
+	obj.Maxbuy3dd_432d = maxbuy3dd_432d_db
+	obj.Maxbuy2d_432d = maxbuy2d_432d_db
+	obj.Maxbuy2dd_432d = maxbuy2dd_432d_db
+	obj.Maxbuy2dt_432d = maxbuy2dt_432d_db
 	obj.Limitotal4d_432d = limitotal4d_432d_db
 	obj.Limitotal3d_432d = limitotal3d_432d_db
 	obj.Limitotal3dd_432d = limitotal3dd_432d_db
@@ -294,6 +324,18 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	obj.Limitglobal2d_432d = limitglobal2d_432d_db
 	obj.Limitglobal2dd_432d = limitglobal2dd_432d_db
 	obj.Limitglobal2dt_432d = limitglobal2dt_432d_db
+	obj.Limitotal4d_fullbb_432d = limitbuang4d_fullbb_432d_db
+	obj.Limitotal3d_fullbb_432d = limitbuang3d_fullbb_432d_db
+	obj.Limitotal3dd_fullbb_432d = limitbuang3dd_fullbb_432d_db
+	obj.Limitotal2d_fullbb_432d = limitbuang2d_fullbb_432d_db
+	obj.Limitotal2dd_fullbb_432d = limitbuang2dd_fullbb_432d_db
+	obj.Limitotal2dt_fullbb_432d = limitbuang2dt_fullbb_432d_db
+	obj.Limitglobal4d_fullbb_432d = limitbuang4d_fullbb_432d_db
+	obj.Limitglobal3d_fullbb_432d = limitbuang3d_fullbb_432d_db
+	obj.Limitglobal3dd_fullbb_432d = limitbuang3dd_fullbb_432d_db
+	obj.Limitglobal2d_fullbb_432d = limitbuang2d_fullbb_432d_db
+	obj.Limitglobal2dd_fullbb_432d = limitbuang2dd_fullbb_432d_db
+	obj.Limitglobal2dt_fullbb_432d = limitbuang2dt_fullbb_432d_db
 	obj.Disc4d_432d = disc4d_432d_db
 	obj.Disc3d_432d = disc3d_432d_db
 	obj.Disc3dd_432d = disc3dd_432d_db
@@ -326,12 +368,14 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	obj.Win2dtbb_432d = win2dtbb_432d_db
 	obj.Minbet_cbebas = minbet_cbebas_db
 	obj.Maxbet_cbebas = maxbet_cbebas_db
+	obj.Maxbuy_cbebas = maxbuy_cbebas_db
 	obj.Win_cbebas = win_cbebas_db
 	obj.Disc_cbebas = disc_cbebas_db
 	obj.Limitglobal_cbebas = limitglobal_cbebas_db
 	obj.Limittotal_cbebas = limittotal_cbebas_db
 	obj.Minbet_cmacau = minbet_cmacau_db
 	obj.Maxbet_cmacau = maxbet_cmacau_db
+	obj.Maxbuy_cmacau = maxbuy_cmacau_db
 	obj.Win2d_cmacau = win2d_cmacau_db
 	obj.Win3d_cmacau = win3d_cmacau_db
 	obj.Win4d_cmacau = win4d_cmacau_db
@@ -340,6 +384,7 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	obj.Limitotal_cmacau = limitotal_cmacau_db
 	obj.Minbet_cnaga = minbet_cnaga_db
 	obj.Maxbet_cnaga = maxbet_cnaga_db
+	obj.Maxbuy_cnaga = maxbuy_cnaga_db
 	obj.Win3_cnaga = win3_cnaga_db
 	obj.Win4_cnaga = win4_cnaga_db
 	obj.Disc_cnaga = disc_cnaga_db
@@ -347,6 +392,7 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	obj.Limittotal_cnaga = limittotal_cnaga_db
 	obj.Minbet_cjitu = minbet_cjitu_db
 	obj.Maxbet_cjitu = maxbet_cjitu_db
+	obj.Maxbuy_cjitu = maxbuy_cjitu_db
 	obj.Winas_cjitu = winas_cjitu_db
 	obj.Winkop_cjitu = winkop_cjitu_db
 	obj.Winkepala_cjitu = winkepala_cjitu_db
@@ -356,6 +402,7 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	obj.Limittotal_cjitu = limittotal_cjitu_db
 	obj.Minbet_5050umum = minbet_5050umum_db
 	obj.Maxbet_5050umum = maxbet_5050umum_db
+	obj.Maxbuy_5050umum = maxbuy_5050umum_db
 	obj.Keibesar_5050umum = keibesar_5050umum_db
 	obj.Keikecil_5050umum = keikecil_5050umum_db
 	obj.Keigenap_5050umum = keigenap_5050umum_db
@@ -372,6 +419,7 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	obj.Limittotal_5050umum = limittotal_5050umum_db
 	obj.Minbet_5050special = minbet_5050special_db
 	obj.Maxbet_5050special = maxbet_5050special_db
+	obj.Maxbuy_5050special = maxbuy_5050special_db
 	obj.Keiasganjil_5050special = keiasganjil_5050special_db
 	obj.Keiasgenap_5050special = keiasgenap_5050special_db
 	obj.Keiasbesar_5050special = keiasbesar_5050special_db
@@ -408,6 +456,7 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	obj.Limittotal_5050special = limittotal_5050special_db
 	obj.Minbet_5050kombinasi = minbet_5050kombinasi_db
 	obj.Maxbet_5050kombinasi = maxbet_5050kombinasi_db
+	obj.Maxbuy_5050kombinasi = maxbuy_5050kombinasi_db
 	obj.Belakangkeimono_5050kombinasi = belakangkeimono_5050kombinasi_db
 	obj.Belakangkeistereo_5050kombinasi = belakangkeistereo_5050kombinasi_db
 	obj.Belakangkeikembang_5050kombinasi = belakangkeikembang_5050kombinasi_db
@@ -442,12 +491,14 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	obj.Limittotal_5050kombinasi = limittotal_5050kombinasi_db
 	obj.Minbet_kombinasi = minbet_kombinasi_db
 	obj.Maxbet_kombinasi = maxbet_kombinasi_db
+	obj.Maxbuy_kombinasi = maxbuy_kombinasi_db
 	obj.Win_kombinasi = win_kombinasi_db
 	obj.Disc_kombinasi = disc_kombinasi_db
 	obj.Limitglobal_kombinasi = limitglobal_kombinasi_db
 	obj.Limittotal_kombinasi = limittotal_kombinasi_db
 	obj.Minbet_dasar = minbet_dasar_db
 	obj.Maxbet_dasar = maxbet_dasar_db
+	obj.Maxbuy_dasar = maxbuy_dasar_db
 	obj.Keibesar_dasar = keibesar_dasar_db
 	obj.Keikecil_dasar = keikecil_dasar_db
 	obj.Keigenap_dasar = keigenap_dasar_db
@@ -460,6 +511,7 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 	obj.Limittotal_dasar = limittotal_dasar_db
 	obj.Minbet_shio = minbet_shio_db
 	obj.Maxbet_shio = maxbet_shio_db
+	obj.Maxbuy_shio = maxbuy_shio_db
 	obj.Win_shio = win_shio_db
 	obj.Disc_shio = disc_shio_db
 	obj.Shioyear_shio = shioyear_shio_db
@@ -727,13 +779,17 @@ func Save_PasaranConf432(
 	company string,
 	idcomppasaran int,
 	minbet, maxbet4d, maxbet3d, maxbet3dd, maxbet2d, maxbet2dd, maxbet2dt int,
+	maxbet4d_fulbb, maxbet3d_fulbb, maxbet3dd_fulbb, maxbet2d_fulbb, maxbet2dd_fulbb, maxbet2dt_fulbb int,
+	maxbuy4d, maxbuy3d, maxbuy3dd, maxbuy2d, maxbuy2dd, maxbuy2dt int,
 	win4d, win3d, win3dd, win2d, win2dd, win2dt int,
 	win4dnodisc, win3dnodisc, win3ddnodisc, win2dnodisc, win2ddnodisc, win2dtnodisc int,
 	win4dbb_kena, win3dbb_kena, win3ddbb_kena, win2dbb_kena, win2ddbb_kena, win2dtbb_kena int,
 	win4dbb, win3dbb, win3ddbb, win2dbb, win2ddbb, win2dtbb int,
 	disc4d, disc3d, disc3dd, disc2d, disc2dd, disc2dt float32,
 	limitglobal4d, limitglobal3d, limitglobal3dd, limitglobal2d, limitglobal2dd, limitglobal2dt int,
-	limittotal4d, limittotal3d, limittotal3dd, limittotal2d, limittotal2dd, limittotal2dt int) (helpers.Response, error) {
+	limittotal4d, limittotal3d, limittotal3dd, limittotal2d, limittotal2dd, limittotal2dt int,
+	limitglobal4d_fullbb, limitglobal3d_fullbb, limitglobal3dd_fullbb, limitglobal2d_fullbb, limitglobal2dd_fullbb, limitglobal2dt_fullbb int,
+	limittotal4d_fullbb, limittotal3d_fullbb, limittotal3dd_fullbb, limittotal2d_fullbb, limittotal2dd_fullbb, limittotal2dt_fullbb int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
 	render_page := time.Now()
@@ -746,13 +802,17 @@ func Save_PasaranConf432(
 			UPDATE 
 			` + config.DB_tbl_mst_company_game_pasaran + ` 
 			SET 1_minbet=? , 1_maxbet4d=?, 1_maxbet3d=?, 1_maxbet3dd=?, 1_maxbet2d=?, 1_maxbet2dd=?, 1_maxbet2dt=?, 
+			1_maxbet4d_fullbb=?, 1_maxbet3d_fullbb=?, 1_maxbet3dd_fullbb=?, 1_maxbet2d_fullbb=?, 1_maxbet2dd_fullbb=?, 1_maxbet2dt_fullbb=?, 
+			1_maxbuy4d=?, 1_maxbuy3d=?, 1_maxbuy3dd=?, 1_maxbuy2d=?, 1_maxbuy2dd=?, 1_maxbuy2dt=?, 
 			1_win4d=?, 1_win3d=?, 1_win3dd=?, 1_win2d=?, 1_win2dd=?, 1_win2dt=?, 
 			1_win4dnodisc=?, 1_win3dnodisc=?, 1_win3ddnodisc=?, 1_win2dnodisc=?, 1_win2ddnodisc=?, 1_win2dtnodisc=?, 
 			1_win4dbb_kena=?, 1_win3dbb_kena=?, 1_win3ddbb_kena=?, 1_win2dbb_kena=?, 1_win2ddbb_kena=?, 1_win2dtbb_kena=?, 
 			1_win4dbb=?, 1_win3dbb=?, 1_win3ddbb=?, 1_win2dbb=?, 1_win2ddbb=?, 1_win2dtbb=?, 
 			1_disc4d=?, 1_disc3d=?, 1_disc3dd=?, 1_disc2d=?, 1_disc2dd=?, 1_disc2dt=?, 
 			1_limitbuang4d=?, 1_limitbuang3d=?, 1_limitbuang3dd=?, 1_limitbuang2d=?, 1_limitbuang2dd=?, 1_limitbuang2dt=?,  
-			1_limittotal4d=?, 1_limittotal3d=?, 1_limittotal3dd=?, 1_limittotal2d=?, 1_limittotal2dd=?, 1_limittotal2dt=?,    
+			1_limittotal4d=?, 1_limittotal3d=?, 1_limittotal3dd=?, 1_limittotal2d=?, 1_limittotal2dd=?, 1_limittotal2dt=?,  
+			1_limitbuang4d_fullbb=?, 1_limitbuang3d_fullbb=?, 1_limitbuang3dd_fullbb=?, 1_limitbuang2d_fullbb=?, 1_limitbuang2dd_fullbb=?, 1_limitbuang2dt_fullbb=?,  
+			1_limittotal4d_fullbb=?, 1_limittotal3d_fullbb=?, 1_limittotal3dd_fullbb=?, 1_limittotal2d_fullbb=?, 1_limittotal2dd_fullbb=?, 1_limittotal2dt_fullbb=?,   
 			updatecomppas=?, updatedatecompas=? 
 			WHERE idcomppasaran=? AND idcompany=? 
 		`
@@ -765,6 +825,8 @@ func Save_PasaranConf432(
 		log.Printf("DISC 2DT : %s", fmt.Sprintf("%.3f", disc2dt))
 		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			minbet, maxbet4d, maxbet3d, maxbet3dd, maxbet2d, maxbet2dd, maxbet2dt,
+			maxbet4d_fulbb, maxbet3d_fulbb, maxbet3dd_fulbb, maxbet2d_fulbb, maxbet2dd_fulbb, maxbet2dt_fulbb,
+			maxbuy4d, maxbuy3d, maxbuy3dd, maxbuy2d, maxbuy2dd, maxbuy2dt,
 			win4d, win3d, win3dd, win2d, win2dd, win2dt,
 			win4dnodisc, win3dnodisc, win3ddnodisc, win2dnodisc, win2ddnodisc, win2dtnodisc,
 			win4dbb_kena, win3dbb_kena, win3ddbb_kena, win2dbb_kena, win2ddbb_kena, win2dtbb_kena,
@@ -772,6 +834,8 @@ func Save_PasaranConf432(
 			fmt.Sprintf("%.3f", disc4d), fmt.Sprintf("%.3f", disc3d), fmt.Sprintf("%.3f", disc3dd), fmt.Sprintf("%.3f", disc2d), fmt.Sprintf("%.3f", disc2dd), fmt.Sprintf("%.3f", disc2dt),
 			limitglobal4d, limitglobal3d, limitglobal3dd, limitglobal2d, limitglobal2dd, limitglobal2dt,
 			limittotal4d, limittotal3d, limittotal3dd, limittotal2d, limittotal2dd, limittotal2dt,
+			limitglobal4d_fullbb, limitglobal3d_fullbb, limitglobal3dd_fullbb, limitglobal2d_fullbb, limitglobal2dd_fullbb, limitglobal2dt_fullbb,
+			limittotal4d_fullbb, limittotal3d_fullbb, limittotal3dd_fullbb, limittotal2d_fullbb, limittotal2dd_fullbb, limittotal2dt_fullbb,
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
@@ -791,6 +855,18 @@ func Save_PasaranConf432(
 			noteafter += "MAXIMAL BET2D - " + strconv.Itoa(maxbet2d) + "<br />"
 			noteafter += "MAXIMAL BET2DD - " + strconv.Itoa(maxbet2dd) + "<br />"
 			noteafter += "MAXIMAL BET2DT - " + strconv.Itoa(maxbet2dt) + "<br />"
+			noteafter += "MAXIMAL BET4D FULLBB - " + strconv.Itoa(maxbet4d_fulbb) + "<br />"
+			noteafter += "MAXIMAL BET3D FULLBB - " + strconv.Itoa(maxbet3d_fulbb) + "<br />"
+			noteafter += "MAXIMAL BET3DD FULLBB - " + strconv.Itoa(maxbet3dd_fulbb) + "<br />"
+			noteafter += "MAXIMAL BET2D FULLBB - " + strconv.Itoa(maxbet2d_fulbb) + "<br />"
+			noteafter += "MAXIMAL BET2DD FULLBB - " + strconv.Itoa(maxbet2dd_fulbb) + "<br />"
+			noteafter += "MAXIMAL BET2DT FULLBB - " + strconv.Itoa(maxbet2dt_fulbb) + "<br />"
+			noteafter += "MAXIMAL BUY4D - " + strconv.Itoa(maxbuy4d) + "<br />"
+			noteafter += "MAXIMAL BUY3D - " + strconv.Itoa(maxbuy3d) + "<br />"
+			noteafter += "MAXIMAL BUY3DD - " + strconv.Itoa(maxbuy3dd) + "<br />"
+			noteafter += "MAXIMAL BUY2D - " + strconv.Itoa(maxbuy2d) + "<br />"
+			noteafter += "MAXIMAL BUY2DD - " + strconv.Itoa(maxbuy2dd) + "<br />"
+			noteafter += "MAXIMAL BUY2DT - " + strconv.Itoa(maxbuy2dt) + "<br />"
 			noteafter += "WIN4D - " + strconv.Itoa(win4d) + "<br />"
 			noteafter += "WIN3D - " + strconv.Itoa(win3d) + "<br />"
 			noteafter += "WIN3DD - " + strconv.Itoa(win3dd) + "<br />"
@@ -832,6 +908,17 @@ func Save_PasaranConf432(
 			noteafter += "LIMIT TOTAL 3DD - " + strconv.Itoa(limittotal3dd) + "<br />"
 			noteafter += "LIMIT TOTAL 2D - " + strconv.Itoa(limittotal2d) + "<br />"
 			noteafter += "LIMIT TOTAL 2DD - " + strconv.Itoa(limittotal2dd) + "<br />"
+			noteafter += "LIMIT GLOBAL 4D FULLBB - " + strconv.Itoa(limitglobal4d_fullbb) + "<br />"
+			noteafter += "LIMIT GLOBAL 3D FULLBB - " + strconv.Itoa(limitglobal3d_fullbb) + "<br />"
+			noteafter += "LIMIT GLOBAL 3DD FULLBB - " + strconv.Itoa(limitglobal3dd_fullbb) + "<br />"
+			noteafter += "LIMIT GLOBAL 2D FULLBB - " + strconv.Itoa(limitglobal2d_fullbb) + "<br />"
+			noteafter += "LIMIT GLOBAL 2DD FULLBB - " + strconv.Itoa(limitglobal2dd_fullbb) + "<br />"
+			noteafter += "LIMIT GLOBAL 2DT FULLBB - " + strconv.Itoa(limitglobal2dt_fullbb) + "<br />"
+			noteafter += "LIMIT TOTAL 4D FULLBB - " + strconv.Itoa(limittotal4d_fullbb) + "<br />"
+			noteafter += "LIMIT TOTAL 3D FULLBB - " + strconv.Itoa(limittotal3d_fullbb) + "<br />"
+			noteafter += "LIMIT TOTAL 3DD FULLBB - " + strconv.Itoa(limittotal3dd_fullbb) + "<br />"
+			noteafter += "LIMIT TOTAL 2D FULLBB - " + strconv.Itoa(limittotal2d_fullbb) + "<br />"
+			noteafter += "LIMIT TOTAL 2DD FULLBB - " + strconv.Itoa(limittotal2dd_fullbb) + "<br />"
 			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - 4-3-2", "", noteafter)
 		} else {
 			log.Println(msg_update)
@@ -847,7 +934,7 @@ func Save_PasaranConfColokBebas(
 	agent string,
 	company string,
 	idcomppasaran int,
-	minbet, maxbet int,
+	minbet, maxbet, maxbuy int,
 	win, disc float32,
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
@@ -861,7 +948,8 @@ func Save_PasaranConfColokBebas(
 		sql_update := `
 			UPDATE 
 			` + config.DB_tbl_mst_company_game_pasaran + `  
-			SET 2_minbet=? , 2_maxbet=?, 2_win=?, 2_disc=?, 
+			SET 2_minbet=? , 2_maxbet=?, 2_maxbuy=?, 
+			2_win=?, 2_disc=?, 
 			2_limitbuang=?, 2_limitotal=?, 
 			updatecomppas=?, updatedatecompas=? 
 			WHERE idcomppasaran=? AND idcompany=? 
@@ -870,7 +958,7 @@ func Save_PasaranConfColokBebas(
 		log.Printf("WIN : %s", fmt.Sprintf("%.3f", win))
 		log.Printf("DISC : %s", fmt.Sprintf("%.3f", disc))
 		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
-			minbet, maxbet,
+			minbet, maxbet, maxbuy,
 			fmt.Sprintf("%.3f", win), fmt.Sprintf("%.3f", disc),
 			limitglobal, limittotal,
 			agent,
@@ -887,6 +975,7 @@ func Save_PasaranConfColokBebas(
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
+			noteafter += "MAXIMAL BUY - " + strconv.Itoa(maxbuy) + "<br />"
 			noteafter += "WIN - " + fmt.Sprintf("%.3f", win) + "<br />"
 			noteafter += "DISC - " + fmt.Sprintf("%.3f", disc) + "<br />"
 			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "<br />"
@@ -906,7 +995,7 @@ func Save_PasaranConfColokMacau(
 	agent string,
 	company string,
 	idcomppasaran int,
-	minbet, maxbet int,
+	minbet, maxbet, maxbuy int,
 	win2, win3, win4, disc float32,
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
@@ -920,7 +1009,8 @@ func Save_PasaranConfColokMacau(
 		sql_update := `
 			UPDATE 
 			` + config.DB_tbl_mst_company_game_pasaran + `  
-			SET 3_minbet=? , 3_maxbet=?, 3_win2digit=?, 3_win3digit=?, 3_win4digit=?, 
+			SET 3_minbet=? , 3_maxbet=?, 3_maxbuy=?,
+			3_win2digit=?, 3_win3digit=?, 3_win4digit=?, 
 			3_disc=?, 3_limitbuang=?, 3_limittotal=?,  
 			updatecomppas=?, updatedatecompas=? 
 			WHERE idcomppasaran=? AND idcompany=? 
@@ -931,7 +1021,7 @@ func Save_PasaranConfColokMacau(
 		log.Printf("WIN 4 : %s", fmt.Sprintf("%.3f", win4))
 		log.Printf("DISC : %s", fmt.Sprintf("%.3f", disc))
 		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
-			minbet, maxbet,
+			minbet, maxbet, maxbuy,
 			fmt.Sprintf("%.3f", win2), fmt.Sprintf("%.3f", win3), fmt.Sprintf("%.3f", win4), fmt.Sprintf("%.3f", disc),
 			limitglobal, limittotal,
 			agent,
@@ -948,6 +1038,7 @@ func Save_PasaranConfColokMacau(
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
+			noteafter += "MAXIMAL BUY - " + strconv.Itoa(maxbuy) + "<br />"
 			noteafter += "DISC - " + fmt.Sprintf("%.2f", disc) + "<br />"
 			noteafter += "WIN2 - " + fmt.Sprintf("%.2f", win2) + "<br />"
 			noteafter += "WIN3 - " + fmt.Sprintf("%.2f", win3) + "<br />"
@@ -969,7 +1060,7 @@ func Save_PasaranConfColokNaga(
 	agent string,
 	company string,
 	idcomppasaran int,
-	minbet, maxbet int,
+	minbet, maxbet, maxbuy int,
 	win3, win4, disc float32,
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
@@ -983,7 +1074,8 @@ func Save_PasaranConfColokNaga(
 		sql_update := `
 			UPDATE 
 			` + config.DB_tbl_mst_company_game_pasaran + `  
-			SET 4_minbet=? , 4_maxbet=?, 4_win3digit=?, 4_win4digit=?,  
+			SET 4_minbet=? , 4_maxbet=?, 4_maxbuy=?,  
+			4_win3digit=?, 4_win4digit=?,  
 			4_disc=?, 4_limitbuang=?, 4_limittotal=?,  
 			updatecomppas=?, updatedatecompas=? 
 			WHERE idcomppasaran=? AND idcompany=? 
@@ -993,7 +1085,7 @@ func Save_PasaranConfColokNaga(
 		log.Printf("WIN 4 : %s", fmt.Sprintf("%.3f", win4))
 		log.Printf("DISC : %s", fmt.Sprintf("%.3f", disc))
 		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
-			minbet, maxbet,
+			minbet, maxbet, maxbuy,
 			fmt.Sprintf("%.3f", win3), fmt.Sprintf("%.3f", win4), fmt.Sprintf("%.3f", disc),
 			limitglobal, limittotal,
 			agent,
@@ -1010,6 +1102,7 @@ func Save_PasaranConfColokNaga(
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
+			noteafter += "MAXIMAL BUY - " + strconv.Itoa(maxbuy) + "<br />"
 			noteafter += "DISC - " + fmt.Sprintf("%.2f", disc) + "<br />"
 			noteafter += "WIN3 - " + fmt.Sprintf("%.2f", win3) + "<br />"
 			noteafter += "WIN4 - " + fmt.Sprintf("%.2f", win4) + "<br />"
@@ -1030,7 +1123,7 @@ func Save_PasaranConfColokJitu(
 	agent string,
 	company string,
 	idcomppasaran int,
-	minbet, maxbet int,
+	minbet, maxbet, maxbuy int,
 	winas, winkop, winkepala, winekor, disc float32,
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
@@ -1044,7 +1137,7 @@ func Save_PasaranConfColokJitu(
 		sql_update := `
 			UPDATE 
 			` + config.DB_tbl_mst_company_game_pasaran + ` 
-			SET 5_minbet=? , 5_maxbet=?, 
+			SET 5_minbet=? , 5_maxbet=?, 5_maxbuy=?, 
 			5_winas=?, 5_winkop=?, 5_winkepala=?, 5_winekor=?,
 			5_desic=?, 5_limitbuang=?, 5_limitotal=?,  
 			updatecomppas=?, updatedatecompas=? 
@@ -1057,7 +1150,7 @@ func Save_PasaranConfColokJitu(
 		log.Printf("WIN EKOR : %s", fmt.Sprintf("%.3f", winekor))
 		log.Printf("DISC : %s", fmt.Sprintf("%.3f", disc))
 		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
-			minbet, maxbet,
+			minbet, maxbet, maxbuy,
 			fmt.Sprintf("%.3f", winas), fmt.Sprintf("%.3f", winkop), fmt.Sprintf("%.3f", winkepala), fmt.Sprintf("%.3f", winekor),
 			disc,
 			limitglobal, limittotal,
@@ -1075,6 +1168,7 @@ func Save_PasaranConfColokJitu(
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
+			noteafter += "MAXIMAL BUY - " + strconv.Itoa(maxbuy) + "<br />"
 			noteafter += "DISC - " + fmt.Sprintf("%.2f", disc) + "<br />"
 			noteafter += "WIN_AS - " + fmt.Sprintf("%.2f", winas) + "<br />"
 			noteafter += "WIN_KOP - " + fmt.Sprintf("%.2f", winkop) + "<br />"
@@ -1097,7 +1191,7 @@ func Save_PasaranConf5050Umum(
 	agent string,
 	company string,
 	idcomppasaran int,
-	minbet, maxbet int,
+	minbet, maxbet, maxbuy int,
 	keibesar, keikecil, keigenap, keiganjil, keitengah, keitepi float32,
 	discbesar, disckecil, discgenap, discganjil, disctengah, disctepi float32,
 	limitglobal, limittotal int) (helpers.Response, error) {
@@ -1112,7 +1206,7 @@ func Save_PasaranConf5050Umum(
 		sql_update := `
 			UPDATE 
 			` + config.DB_tbl_mst_company_game_pasaran + `  
-			SET 6_minbet=? , 6_maxbet=?, 
+			SET 6_minbet=? , 6_maxbet=?, 6_maxbuy=?,
 			6_keibesar=?, 6_keikecil=?, 6_keigenap=?, 6_keiganjil=?, 6_keitengah=?, 6_keitepi=?, 
 			6_discbesar=?, 6_disckecil=?, 6_discgenap=?, 6_discganjil=?, 6_disctengah=?, 6_disctepi=?,  
 			6_limitbuang=?, 6_limittotal=?,  
@@ -1133,7 +1227,7 @@ func Save_PasaranConf5050Umum(
 		log.Printf("DISC TENGAH : %s", fmt.Sprintf("%.3f", disctengah))
 		log.Printf("DISC TEPI : %s", fmt.Sprintf("%.3f", disctepi))
 		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
-			minbet, maxbet,
+			minbet, maxbet, maxbuy,
 			fmt.Sprintf("%.3f", keibesar), fmt.Sprintf("%.3f", keikecil), fmt.Sprintf("%.3f", keigenap), fmt.Sprintf("%.3f", keiganjil),
 			fmt.Sprintf("%.3f", keitengah), fmt.Sprintf("%.3f", keitepi),
 			fmt.Sprintf("%.3f", discbesar), fmt.Sprintf("%.3f", disckecil), fmt.Sprintf("%.3f", discgenap), fmt.Sprintf("%.3f", discganjil),
@@ -1153,6 +1247,7 @@ func Save_PasaranConf5050Umum(
 			noteafter += "PASARAN - " + nmpasarantogel + "\n"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "\n"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "\n"
+			noteafter += "MAXIMAL BUY - " + strconv.Itoa(maxbuy) + "\n"
 			noteafter += "DISC BESAR - " + fmt.Sprintf("%.3f", discbesar) + "\n"
 			noteafter += "DISC KECIL - " + fmt.Sprintf("%.3f", disckecil) + "\n"
 			noteafter += "DISC GENAP - " + fmt.Sprintf("%.3f", discgenap) + "\n"
@@ -1182,7 +1277,7 @@ func Save_PasaranConf5050Special(
 	agent string,
 	company string,
 	idcomppasaran int,
-	minbet, maxbet int,
+	minbet, maxbet, maxbuy int,
 	keiasganjil, keiasgenap, keiasbesar, keiaskecil float32,
 	keikopganjil, keikopgenap, keikopbesar, keikopkecil float32,
 	keikepalaganjil, keikepalagenap, keikepalabesar, keikepalakecil float32,
@@ -1203,7 +1298,7 @@ func Save_PasaranConf5050Special(
 		sql_update := `
 			UPDATE 
 			` + config.DB_tbl_mst_company_game_pasaran + ` 
-			SET 7_minbet=? , 7_maxbet=?, 
+			SET 7_minbet=? , 7_maxbet=?, 7_maxbuy=?,
 			7_keiasganjil=?, 7_keiasgenap=?, 7_keiasbesar=?, 7_keiaskecil=?, 
 			7_keikopganjil=?, 7_keikopgenap=?, 7_keikopbesar=?, 7_keikopkecil=?, 
 			7_keikepalaganjil=?, 7_keikepalagenap=?, 7_keikepalabesar=?, 7_keikepalakecil=?,  
@@ -1251,7 +1346,7 @@ func Save_PasaranConf5050Special(
 		log.Printf("DISC EKOR BESAR : %s", fmt.Sprintf("%.3f", discekorbesar))
 		log.Printf("DISC EKOR KECIL : %s", fmt.Sprintf("%.3f", discekorkecil))
 		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
-			minbet, maxbet,
+			minbet, maxbet, maxbuy,
 			fmt.Sprintf("%.3f", keiasganjil), fmt.Sprintf("%.3f", keiasgenap), fmt.Sprintf("%.3f", keiasbesar), fmt.Sprintf("%.3f", keiaskecil),
 			fmt.Sprintf("%.3f", keikopganjil), fmt.Sprintf("%.3f", keikopgenap), fmt.Sprintf("%.3f", keikopbesar), fmt.Sprintf("%.3f", keikopkecil),
 			fmt.Sprintf("%.3f", keikepalaganjil), fmt.Sprintf("%.3f", keikepalagenap), fmt.Sprintf("%.3f", keikepalabesar), fmt.Sprintf("%.3f", keikepalakecil),
@@ -1276,6 +1371,7 @@ func Save_PasaranConf5050Special(
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
+			noteafter += "MAXIMAL BUY - " + strconv.Itoa(maxbuy) + "<br />"
 			noteafter += "DISC AS GANJIL - " + fmt.Sprintf("%.3f", discasganjil) + "<br />"
 			noteafter += "DISC AS GENAP - " + fmt.Sprintf("%.3f", discasgenap) + "<br />"
 			noteafter += "DISC AS BESAR - " + fmt.Sprintf("%.3f", discasbesar) + "<br />"
@@ -1325,7 +1421,7 @@ func Save_PasaranConf5050Kombinasi(
 	agent string,
 	company string,
 	idcomppasaran int,
-	minbet, maxbet int,
+	minbet, maxbet, maxbuy int,
 	belakangkeimono, belakangkeistereo, belakangkeikembang, belakangkeikempis, belakangkeikembar float32,
 	tengahkeimono, tengahkeistereo, tengahkeikembang, tengahkeikempis, tengahkeikembar float32,
 	depankeimono, depankeistereo, depankeikembang, depankeikempis, depankeikembar float32,
@@ -1344,7 +1440,7 @@ func Save_PasaranConf5050Kombinasi(
 		sql_update := `
 			UPDATE 
 			` + config.DB_tbl_mst_company_game_pasaran + `  
-			SET 8_minbet=? , 8_maxbet=?, 
+			SET 8_minbet=? , 8_maxbet=?, 8_maxbuy=?,
 			8_belakangkeimono=?, 8_belakangkeistereo=?, 8_belakangkeikembang=?, 8_belakangkeikempis=?, 8_belakangkeikembar=?, 
 			8_tengahkeimono=?, 8_tengahkeistereo=?, 8_tengahkeikembang=?, 8_tengahkeikempis=?, 8_tengahkeikembar=?, 
 			8_depankeimono=?, 8_depankeistereo=?, 8_depankeikembang=?, 8_depankeikempis=?, 8_depankeikembar=?, 
@@ -1389,7 +1485,7 @@ func Save_PasaranConf5050Kombinasi(
 		log.Printf("DEPAN DISC KEMBAR : %s", fmt.Sprintf("%.3f", depandisckembar))
 
 		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
-			minbet, maxbet,
+			minbet, maxbet, maxbuy,
 			fmt.Sprintf("%.3f", belakangkeimono), fmt.Sprintf("%.3f", belakangkeistereo), fmt.Sprintf("%.3f", belakangkeikembang),
 			fmt.Sprintf("%.3f", belakangkeikempis), fmt.Sprintf("%.3f", belakangkeikembar),
 			fmt.Sprintf("%.3f", tengahkeimono), fmt.Sprintf("%.3f", tengahkeistereo), fmt.Sprintf("%.3f", tengahkeikembang),
@@ -1418,6 +1514,7 @@ func Save_PasaranConf5050Kombinasi(
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
+			noteafter += "MAXIMAL BUY - " + strconv.Itoa(maxbuy) + "<br />"
 			noteafter += "DEPAN KEI MONO - " + fmt.Sprintf("%.3f", depankeimono) + "<br />"
 			noteafter += "DEPAN KEI STEREO - " + fmt.Sprintf("%.3f", depankeistereo) + "<br />"
 			noteafter += "DEPAN KEI KEMBANG - " + fmt.Sprintf("%.3f", depankeikembang) + "<br />"
@@ -1465,7 +1562,7 @@ func Save_PasaranConfMacauKombinasi(
 	agent string,
 	company string,
 	idcomppasaran int,
-	minbet, maxbet int,
+	minbet, maxbet, maxbuy int,
 	win, disc float32,
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
@@ -1479,7 +1576,8 @@ func Save_PasaranConfMacauKombinasi(
 		sql_update := `
 			UPDATE 
 			` + config.DB_tbl_mst_company_game_pasaran + `  
-			SET 9_minbet=? , 9_maxbet=?, 9_win=?, 9_discount=?, 
+			SET 9_minbet=? , 9_maxbet=?, 9_maxbuy=?,
+			9_win=?, 9_discount=?, 
 			9_limitbuang=?, 9_limittotal=?, 
 			updatecomppas=?, updatedatecompas=? 
 			WHERE idcomppasaran=? AND idcompany=? 
@@ -1488,7 +1586,7 @@ func Save_PasaranConfMacauKombinasi(
 		log.Printf("WIN : %s", fmt.Sprintf("%.3f", win))
 		log.Printf("DISC : %s", fmt.Sprintf("%.3f", disc))
 		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
-			minbet, maxbet,
+			minbet, maxbet, maxbuy,
 			fmt.Sprintf("%.3f", win), fmt.Sprintf("%.3f", disc),
 			limitglobal, limittotal,
 			agent,
@@ -1505,6 +1603,7 @@ func Save_PasaranConfMacauKombinasi(
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
+			noteafter += "MAXIMAL BUY - " + strconv.Itoa(maxbuy) + "<br />"
 			noteafter += "WIN - " + fmt.Sprintf("%.3f", win) + "<br />"
 			noteafter += "DISC - " + fmt.Sprintf("%.3f", disc) + "<br />"
 			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "<br />"
@@ -1524,7 +1623,7 @@ func Save_PasaranConfDasar(
 	agent string,
 	company string,
 	idcomppasaran int,
-	minbet, maxbet int,
+	minbet, maxbet, maxbuy int,
 	keibesar, keikecil, keigenap, keiganjil float32,
 	discbesar, disckecil, discigenap, discganjil float32,
 	limitglobal, limittotal int) (helpers.Response, error) {
@@ -1539,7 +1638,7 @@ func Save_PasaranConfDasar(
 		sql_update := `
 			UPDATE 
 			` + config.DB_tbl_mst_company_game_pasaran + `  
-			SET 10_minbet=? , 10_maxbet=?, 
+			SET 10_minbet=? , 10_maxbet=?, 10_maxbuy=?,
 			10_keibesar=?, 10_keikecil=?, 10_keigenap=?, 10_keiganjil=?, 
 			10_discbesar=?, 10_disckecil=?, 10_discigenap=?, 10_discganjil=?, 
 			10_limitbuang=?, 10_limittotal=?, 
@@ -1556,7 +1655,7 @@ func Save_PasaranConfDasar(
 		log.Printf("DISC GENAP : %s", fmt.Sprintf("%.3f", discigenap))
 		log.Printf("DISC GANJIL : %s", fmt.Sprintf("%.3f", discganjil))
 		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
-			minbet, maxbet,
+			minbet, maxbet, maxbuy,
 			fmt.Sprintf("%.3f", keibesar), fmt.Sprintf("%.3f", keikecil), fmt.Sprintf("%.3f", keigenap), fmt.Sprintf("%.3f", keiganjil),
 			fmt.Sprintf("%.3f", discbesar), fmt.Sprintf("%.3f", disckecil), fmt.Sprintf("%.3f", discigenap), fmt.Sprintf("%.3f", discganjil),
 			limitglobal,
@@ -1575,6 +1674,7 @@ func Save_PasaranConfDasar(
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
+			noteafter += "MAXIMAL BUY - " + strconv.Itoa(maxbuy) + "<br />"
 			noteafter += "DISC BESAR - " + fmt.Sprintf("%.3f", discbesar) + "<br />"
 			noteafter += "DISC KECIL - " + fmt.Sprintf("%.3f", disckecil) + "<br />"
 			noteafter += "DISC GENAP - " + fmt.Sprintf("%.3f", discigenap) + "<br />"
@@ -1597,7 +1697,7 @@ func Save_PasaranConfShio(
 	company string,
 	idcomppasaran int,
 	shiotahunini string,
-	minbet, maxbet int,
+	minbet, maxbet, maxbuy int,
 	win, disc float32,
 	limitglobal, limittotal int) (helpers.Response, error) {
 	var res helpers.Response
@@ -1611,7 +1711,7 @@ func Save_PasaranConfShio(
 		sql_update := `
 			UPDATE 
 			` + config.DB_tbl_mst_company_game_pasaran + `  
-			SET 11_shiotahunini=? , 11_minbet=?, 11_maxbet=?, 
+			SET 11_shiotahunini=? , 11_minbet=?, 11_maxbet=?, 11_maxbuy=?, 
 			11_win=?, 11_disc=?, 
 			11_limitbuang=?, 11_limittotal=?, 
 			updatecomppas=?, updatedatecompas=? 
@@ -1622,7 +1722,7 @@ func Save_PasaranConfShio(
 		log.Printf("DISC : %s", fmt.Sprintf("%.3f", disc))
 		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			shiotahunini,
-			minbet, maxbet,
+			minbet, maxbet, maxbuy,
 			fmt.Sprintf("%.3f", win), fmt.Sprintf("%.3f", disc),
 			limitglobal, limittotal,
 			agent,
@@ -1639,6 +1739,7 @@ func Save_PasaranConfShio(
 			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 			noteafter += "MINIMAL BET - " + strconv.Itoa(minbet) + "<br />"
 			noteafter += "MAXIMAL BET - " + strconv.Itoa(maxbet) + "<br />"
+			noteafter += "MAXIMAL BUY - " + strconv.Itoa(maxbuy) + "<br />"
 			noteafter += "WIN - " + fmt.Sprintf("%.3f", win) + "<br />"
 			noteafter += "DISC - " + fmt.Sprintf("%.3f", disc) + "<br />"
 			noteafter += "LIMIT GLOBAL  - " + strconv.Itoa(limitglobal) + "<br />"
