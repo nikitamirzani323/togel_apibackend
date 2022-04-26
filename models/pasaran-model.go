@@ -234,12 +234,11 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 		shioyear_shio_db                                                                                                                                                                                                                                                                                         string
 	)
 	err := con.QueryRowContext(ctx, sql_select, company, idcomppasaran).Scan(
-		&idpasarantogel_db, &pasarandiundi_db, &pasaranurl_db, &jamtutup_db,
-		&jamjadwal_db, &jamopen_db, &statuspasaranactive_db, &displaypasaran_db, &nmpasarantogel_db,
+		&idpasarantogel_db, &pasarandiundi_db, &pasaranurl_db, &jamtutup_db, &jamjadwal_db, &jamopen_db, &statuspasaranactive_db, &displaypasaran_db, &nmpasarantogel_db,
 		&limitline_4d_db, &limitline_3d_db, &limitline_3dd_db, &limitline_2d_db, &limitline_2dd_db, &limitline_2dt_db, &bbfs_db,
 		&minbet_432d_db, &maxbet4d_432d_db, &maxbet3d_432d_db, &maxbet3dd_432d_db, &maxbet2d_432d_db, &maxbet2dd_432d_db, &maxbet2dt_432d_db,
 		&maxbet4d_fullbb_432d_db, &maxbet3d_fullbb_432d_db, &maxbet3dd_fullbb_432d_db, &maxbet2d_fullbb_432d_db, &maxbet2dd_fullbb_432d_db, &maxbet2dt_fullbb_432d_db,
-		&maxbuy4d_432d_db, &maxbuy3d_432d_db, &maxbuy3dd_432d_db, &maxbuy2d_432d_db, &maxbuy2dd_432d_db, &maxbuy2dt_432d_db, &maxbet2dt_fullbb_432d_db,
+		&maxbuy4d_432d_db, &maxbuy3d_432d_db, &maxbuy3dd_432d_db, &maxbuy2d_432d_db, &maxbuy2dd_432d_db, &maxbuy2dt_432d_db,
 		&limitotal4d_432d_db, &limitotal3d_432d_db, &limitotal3dd_432d_db, &limitotal2d_432d_db, &limitotal2dd_432d_db, &limitotal2dt_432d_db,
 		&limitglobal4d_432d_db, &limitglobal3d_432d_db, &limitglobal3dd_432d_db, &limitglobal2d_432d_db, &limitglobal2dd_432d_db, &limitglobal2dt_432d_db,
 		&limitbuang4d_fullbb_432d_db, &limitbuang3d_fullbb_432d_db, &limitbuang3dd_fullbb_432d_db, &limitbuang2d_fullbb_432d_db, &limitbuang2dd_fullbb_432d_db, &limitbuang2dt_fullbb_432d_db,
