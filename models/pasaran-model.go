@@ -250,7 +250,7 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 		&win4dbb_432d_db, &win3dbb_432d_db, &win3ddbb_432d_db, &win2dbb_432d_db, &win2ddbb_432d_db, &win2dtbb_432d_db,
 		&minbet_cbebas_db, &maxbet_cbebas_db, &maxbuy_cbebas_db, &win_cbebas_db, &disc_cbebas_db, &limitglobal_cbebas_db, &limittotal_cbebas_db,
 		&minbet_cmacau_db, &maxbet_cmacau_db, &maxbuy_cmacau_db, &win2d_cmacau_db, &win3d_cmacau_db, &win4d_cmacau_db, &disc_cmacau_db, &limitglobal_cmacau_db, &limitotal_cmacau_db,
-		&minbet_cnaga_db, &maxbet_cnaga_db, &maxbuy_cbebas_db, &win3_cnaga_db, &win4_cnaga_db, &disc_cnaga_db, &limitglobal_cnaga_db, &limittotal_cnaga_db,
+		&minbet_cnaga_db, &maxbet_cnaga_db, &maxbuy_cnaga_db, &win3_cnaga_db, &win4_cnaga_db, &disc_cnaga_db, &limitglobal_cnaga_db, &limittotal_cnaga_db,
 		&minbet_cjitu_db, &maxbet_cjitu_db, &maxbuy_cjitu_db,
 		&winas_cjitu_db, &winkop_cjitu_db, &winkepala_cjitu_db, &winekor_cjitu_db,
 		&desc_cjitu_db, &limitglobal_cjitu_db, &limittotal_cjitu_db,
