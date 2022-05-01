@@ -565,24 +565,21 @@ func Fetch_detail(company string, idcomppasaran int) (helpers.ResponsePasaran, e
 func Save_Pasaran(agent string, company string, idcomppasaran int, pasarandiundi, pasaranurl, jamtutup, jamjadwal, jamopen, statuspasaranactive string, displaypasaran int) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	con := db.CreateCon()
-	ctx := context.Background()
 	render_page := time.Now()
 	msg := "Failed"
 
 	pasarancode, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 	tipepasaran := Pasaranmaster_id(pasarancode, "tipepasaran")
 	if tipepasaran != "WAJIB" {
-		stmt, e := con.Prepare(`
-					UPDATE 
-					` + config.DB_tbl_mst_company_game_pasaran + `  
-					SET pasarandiundi=? , pasaranurl=?, 
-					jamtutup=?, jamjadwal=?, jamopen=?, statuspasaranactive=?, displaypasaran=?, 
-					updatecomppas=?, updatedatecompas=? 
-					WHERE idcomppasaran=? AND idcompany=? 
-				`)
-		helpers.ErrorCheck(e)
-		rec, e := stmt.ExecContext(ctx,
+		sql_update := `
+			UPDATE 
+			` + config.DB_tbl_mst_company_game_pasaran + `  
+			SET pasarandiundi=? , pasaranurl=?, 
+			jamtutup=?, jamjadwal=?, jamopen=?, statuspasaranactive=?, displaypasaran=?, 
+			updatecomppas=?, updatedatecompas=? 
+			WHERE idcomppasaran=? AND idcompany=?  
+		`
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
 			pasarandiundi,
 			pasaranurl,
 			jamtutup,
@@ -594,11 +591,7 @@ func Save_Pasaran(agent string, company string, idcomppasaran int, pasarandiundi
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			idcomppasaran,
 			company)
-		helpers.ErrorCheck(e)
-
-		update, err_update := rec.RowsAffected()
-		helpers.ErrorCheck(err_update)
-		if update > 0 {
+		if flag_update {
 			msg = "Success"
 
 			idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
@@ -613,6 +606,41 @@ func Save_Pasaran(agent string, company string, idcomppasaran int, pasarandiundi
 			noteafter += "PASARAN STATUS - " + statuspasaranactive + "<br />"
 			noteafter += "PASARAN DISPLAY - " + strconv.Itoa(displaypasaran)
 			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN", "", noteafter)
+		} else {
+			log.Println(msg_update)
+		}
+
+	} else {
+		sql_update := `
+			UPDATE 
+			` + config.DB_tbl_mst_company_game_pasaran + `  
+			SET displaypasaran=?, 
+			updatecomppas=?, updatedatecompas=? 
+			WHERE idcomppasaran=? AND idcompany=?  
+		`
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_mst_company_game_pasaran, "UPDATE",
+			displaypasaran,
+			agent,
+			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+			idcomppasaran,
+			company)
+		if flag_update {
+			msg = "Success"
+
+			idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
+			nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
+			noteafter := ""
+			noteafter += "PASARAN - " + nmpasarantogel + "<br />"
+			noteafter += "PASARAN DI UNDI - " + pasarandiundi + "<br />"
+			noteafter += "PASARAN URL - " + pasaranurl + "<br />"
+			noteafter += "PASARAN JAM TUTUP - " + jamtutup + "<br />"
+			noteafter += "PASARAN JAM JADWAL - " + jamjadwal + "<br />"
+			noteafter += "PASARAN JAM OPEN - " + jamopen + "<br />"
+			noteafter += "PASARAN STATUS - " + statuspasaranactive + "<br />"
+			noteafter += "PASARAN DISPLAY - " + strconv.Itoa(displaypasaran)
+			Insert_log(company, agent, "PASARAN", "UPDATE PASARAN", "", noteafter)
+		} else {
+			log.Println(msg_update)
 		}
 	}
 	res.Status = fiber.StatusOK
@@ -625,8 +653,6 @@ func Save_Pasaran(agent string, company string, idcomppasaran int, pasarandiundi
 func Save_PasaranOnline(agent, company string, idcomppasaran int, haripasaran string) (helpers.Response, error) {
 	var res helpers.Response
 	tglnow, _ := goment.New()
-	con := db.CreateCon()
-	ctx := context.Background()
 	render_page := time.Now()
 	flag := false
 	msg := "Failed"
@@ -638,30 +664,23 @@ func Save_PasaranOnline(agent, company string, idcomppasaran int, haripasaran st
 		if !flag {
 			field_col := "tbl_mst_company_game_pasaran_offline_" + tglnow.Format("YYYY")
 			idrecord_counter := Get_counter(field_col)
-			sql_insert := `
-			INSERT INTO 
-			` + config.DB_tbl_mst_company_game_pasaran_offline + `(
-				idcomppasaranoff , idcomppasaran, idcompany, haripasaran,
-				createcomppasaranoff, createdatecomppasaranoff)
-			VALUES(?,?,?,?,?,?)
-		`
-			stmt, e := con.PrepareContext(ctx, sql_insert)
-			helpers.ErrorCheck(e)
 			var idrecord string = tglnow.Format("YYYY") + strconv.Itoa(idrecord_counter)
-			rec, e := stmt.ExecContext(ctx,
+			sql_insert := `
+				INSERT INTO 
+				` + config.DB_tbl_mst_company_game_pasaran_offline + `(
+					idcomppasaranoff , idcomppasaran, idcompany, haripasaran,
+					createcomppasaranoff, createdatecomppasaranoff)
+				VALUES(?,?,?,?,?,?)
+			`
+			flag_insert, msg_insert := Exec_SQL(sql_insert, config.DB_tbl_mst_company_game_pasaran_offline, "INSERT",
 				idrecord,
 				idcomppasaran,
 				company,
 				haripasaran,
 				agent,
 				tglnow.Format("YYYY-MM-DD HH:mm:ss"))
-			helpers.ErrorCheck(e)
 
-			insert, err_insert := rec.RowsAffected()
-			helpers.ErrorCheck(err_insert)
-			fmt.Printf("The last inserted row id: %d\n", insert)
-			defer stmt.Close()
-			if insert > 0 {
+			if flag_insert {
 				msg = "Success"
 				idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 				nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
@@ -670,6 +689,8 @@ func Save_PasaranOnline(agent, company string, idcomppasaran int, haripasaran st
 				noteafter += "PASARAN - " + nmpasarantogel + "<br />"
 				noteafter += "HARI PASARAN - " + haripasaran
 				Insert_log(company, agent, "PASARAN", "UPDATE PASARAN - NEW ONLINE", "", noteafter)
+			} else {
+				log.Println(msg_insert)
 			}
 		} else {
 			msg = "Duplicate Entry"
