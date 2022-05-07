@@ -10,7 +10,6 @@ import (
 	"bitbucket.org/isbtotogroup/apibackend_go/entities"
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
 	"github.com/gofiber/fiber/v2"
-	"github.com/nleeper/goment"
 )
 
 type dashboardparent struct {
@@ -77,16 +76,14 @@ func Fetch_dashboardwinlose(company, year string) (helpers.Response, error) {
 	return res, nil
 }
 
-func Fetch_dashboard(company string) (helpers.Response, error) {
-	var obj dashboardparent
-	var arraobj []dashboardparent
+func Fetch_dashboard(company, year string) (helpers.Response, error) {
+	var obj entities.Model_dashboardagenpasaranwinlose_parent
+	var arraobj []entities.Model_dashboardagenpasaranwinlose_parent
 	var res helpers.Response
 	msg := "Error"
 	con := db.CreateCon()
 	ctx := context.Background()
 	render_page := time.Now()
-
-	tglnow, _ := goment.New()
 
 	sql_periode := `SELECT 
 			A.idcomppasaran , A.idpasarantogel, B.nmpasarantogel 
@@ -94,7 +91,7 @@ func Fetch_dashboard(company string) (helpers.Response, error) {
 			JOIN ` + config.DB_tbl_mst_pasaran_togel + ` as B ON B.idpasarantogel  = A.idpasarantogel  
 			WHERE A.idcompany = ? 
 			AND A.statuspasaranactive = 'Y' 
-			ORDER BY B.nmpasarantogel DESC 
+			ORDER BY B.nmpasarantogel ASC  
 		`
 	row, err := con.QueryContext(ctx, sql_periode, company)
 	helpers.ErrorCheck(err)
@@ -106,58 +103,45 @@ func Fetch_dashboard(company string) (helpers.Response, error) {
 
 		err = row.Scan(&idcomppasaran_db, &idpasarantogel_db, &nmpasarantogel_db)
 		helpers.ErrorCheck(err)
-		var objdetail dashboarddetail
-		var arraobjdetail []dashboarddetail
+		var objdetail entities.Model_dashboardagenpasaranwinlose_child
+		var arraobjdetail []entities.Model_dashboardagenpasaranwinlose_child
 		for i := 1; i < 13; i++ {
-			month_name := ""
-			month_number := ""
+			periode := ""
+			idinvoice := 0
 			switch i {
 			case 1:
-				month_name = "JAN"
-				month_number = "01"
+				periode = year + "-01"
 			case 2:
-				month_name = "FEB"
-				month_number = "02"
+				periode = year + "-02"
 			case 3:
-				month_name = "MAR"
-				month_number = "03"
+				periode = year + "-03"
 			case 4:
-				month_name = "APR"
-				month_number = "04"
+				periode = year + "-04"
 			case 5:
-				month_name = "MAY"
-				month_number = "05"
+				periode = year + "-05"
 			case 6:
-				month_name = "JUN"
-				month_number = "06"
+				periode = year + "-06"
 			case 7:
-				month_name = "JUL"
-				month_number = "07"
+				periode = year + "-07"
 			case 8:
-				month_name = "AUG"
-				month_number = "08"
+				periode = year + "-08"
 			case 9:
-				month_name = "SEP"
-				month_number = "09"
+				periode = year + "-09"
 			case 10:
-				month_name = "OCT"
-				month_number = "10"
+				periode = year + "-10"
 			case 11:
-				month_name = "NOV"
-				month_number = "11"
+				periode = year + "-11"
 			case 12:
-				month_name = "DEC"
-				month_number = "12"
+				periode = year + "-12"
 			}
-			start := tglnow.Format("YYYY-") + month_number + "-" + "01"
-			end := tglnow.Format("YYYY-") + month_number + "-" + helpers.GetEndRangeDate(month_name)
-			var winlose int = _winlose(company, start, end, idcomppasaran_db)
-			objdetail.Pasaranwinlose = winlose
+			idinvoice = _invoicewinlose_getidinvoice(company, year, periode)
+			var winlose int = _invoicewinlosepasaran_id(idinvoice, idcomppasaran_db)
+			objdetail.Dashboardagenpasaran_winlose = winlose
 			arraobjdetail = append(arraobjdetail, objdetail)
 			msg = "Success"
 		}
-		obj.Pasaranname = nmpasarantogel_db
-		obj.Pasarandetail = arraobjdetail
+		obj.Dashboardagenpasaran_nmpasaran = nmpasarantogel_db
+		obj.Dashboardagenpasaran_detail = arraobjdetail
 		arraobj = append(arraobj, obj)
 	}
 	defer row.Close()
@@ -169,31 +153,54 @@ func Fetch_dashboard(company string) (helpers.Response, error) {
 	return res, nil
 }
 
-func _winlose(company, start, end string, idcomppasaran int) int {
+func _invoicewinlose_getidinvoice(company, year, periode string) int {
 	con := db.CreateCon()
 	ctx := context.Background()
-	var winlose float64 = 0
-	tbl_trx_keluarantogel, _, _ := Get_mappingdatabase(company)
-
-	sql_keluaran := `SELECT
-		COALESCE(SUM(total_outstanding-total_cancel-winlose),0 )  as winlose
-		FROM ` + tbl_trx_keluarantogel + `  
-		WHERE idcompany = ? 
-		AND idcomppasaran = ? 
-		AND datekeluaran >= ? 
-		AND datekeluaran <= ? 
-		AND keluarantogel != ''  
+	result := 0
+	sql_select := `SELECT 
+		idcompinvoice  
+		FROM ` + config.DB_tbl_trx_company_invoice + `  
+		WHERE yearinvoice = ? 
+		AND idcompany = ? 
+		AND periodeinvoice = ? 
 	`
-	row := con.QueryRowContext(ctx, sql_keluaran, company, idcomppasaran, start, end)
-	switch e := row.Scan(&winlose); e {
+	var (
+		idcompinvoice_db int
+	)
+	rows := con.QueryRowContext(ctx, sql_select, year, company, periode)
+	switch err := rows.Scan(&idcompinvoice_db); err {
 	case sql.ErrNoRows:
 
 	case nil:
-
+		result = idcompinvoice_db
 	default:
-		panic(e)
+		helpers.ErrorCheck(err)
 	}
-	return int(winlose)
+	return result
+}
+func _invoicewinlosepasaran_id(idcompinvoice, idcomppasaran int) int {
+	con := db.CreateCon()
+	ctx := context.Background()
+	result := 0
+	sql_select := `SELECT 
+		winlosecomppasaran  
+		FROM ` + config.DB_tbl_trx_company_invoice_detail + `   
+		WHERE idcompinvoice = ? 
+		AND idcomppasaran = ? 
+	`
+	var (
+		winlosecomp_db int
+	)
+	rows := con.QueryRowContext(ctx, sql_select, idcompinvoice, idcomppasaran)
+	switch err := rows.Scan(&winlosecomp_db); err {
+	case sql.ErrNoRows:
+
+	case nil:
+		result = winlosecomp_db
+	default:
+		helpers.ErrorCheck(err)
+	}
+	return result
 }
 func _invoicewinlose_id(company, year, periode string) int {
 	con := db.CreateCon()

@@ -13,6 +13,7 @@ const (
 	DB_tbl_mst_permainan                    string = "tbl_mst_permainan"
 	DB_tbl_trx_log                          string = "tbl_trx_log"
 	DB_tbl_trx_company_invoice              string = "tbl_trx_company_invoice"
+	DB_tbl_trx_company_invoice_detail       string = "tbl_trx_company_invoice_detail"
 	STATUS_RUNNING                          string = "background:#FFEB3B;font-weight:bold;color:black;"
 	STATUS_COMPLETE                         string = "background:#8BC34A;font-weight:bold;color:black;"
 	STATUS_CANCEL                           string = "background:#E91E63;font-weight:bold;color:white;"

@@ -82,7 +82,7 @@ func DashboardWinlose(c *fiber.Ctx) error {
 	})
 	if !flag {
 		result, err := models.Fetch_dashboardwinlose(client_company, client.Year)
-		helpers.SetRedis(Fielddashboard_redis+"_"+strings.ToLower(client_company)+"_"+client.Year, result, time.Hour*24)
+		helpers.SetRedis(Fielddashboard_redis+"_"+strings.ToLower(client_company)+"_"+client.Year, result, time.Minute*30)
 		log.Println("DASHBOARD WINLOSE MYSQL")
 		if err != nil {
 			c.Status(fiber.StatusBadRequest)
@@ -103,39 +103,65 @@ func DashboardWinlose(c *fiber.Ctx) error {
 		})
 	}
 }
-func DashboardHome(c *fiber.Ctx) error {
+func DashboardWinlosepasaran(c *fiber.Ctx) error {
+	var errors []*helpers.ErrorResponse
+	client := new(entities.Controller_dashboardwinlose)
+	validate := validator.New()
+	if err := c.BodyParser(client); err != nil {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": err.Error(),
+			"record":  nil,
+		})
+	}
+	err := validate.Struct(client)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element helpers.ErrorResponse
+			element.Field = err.StructField()
+			element.Tag = err.Tag()
+			errors = append(errors, &element)
+		}
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": "validation",
+			"record":  errors,
+		})
+	}
+
 	user := c.Locals("jwt").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	name := claims["name"].(string)
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 
-	field_redis := "DASHBOARD_CHART_AGENT_" + strings.ToLower(client_company)
-	var obj responseredis_dashboardchart
-	var arraobj []responseredis_dashboardchart
+	var obj entities.Model_dashboardagenpasaranwinlose_parent
+	var arraobj []entities.Model_dashboardagenpasaranwinlose_parent
 	render_page := time.Now()
-	resultredis, flag := helpers.GetRedis(field_redis)
+	resultredis, flag := helpers.GetRedis(Fielddashboard_redis + "_pasaran_" + strings.ToLower(client_company) + "_" + client.Year)
 	jsonredis := []byte(resultredis)
 	record_RD, _, _, _ := jsonparser.Get(jsonredis, "record")
 	jsonparser.ArrayEach(record_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-		pasaran_name, _ := jsonparser.GetString(value, "pasaran_name")
-		child_RD, _, _, _ := jsonparser.Get(value, "pasaran_detial")
-		var obj_child responseredis_dashboardchartchild
-		var arraobj_child []responseredis_dashboardchartchild
+		dashboardagenpasaran_nmpasaran, _ := jsonparser.GetString(value, "dashboardagenpasaran_nmpasaran")
+		child_RD, _, _, _ := jsonparser.Get(value, "dashboardagenpasaran_detail")
+		var obj_child entities.Model_dashboardagenpasaranwinlose_child
+		var arraobj_child []entities.Model_dashboardagenpasaranwinlose_child
 		jsonparser.ArrayEach(child_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-			Pasaranwinlose, _ := jsonparser.GetInt(value, "Pasaranwinlose")
-			obj_child.Pasaranwinlose = int(Pasaranwinlose)
+			dashboardagenpasaran_winlose, _ := jsonparser.GetInt(value, "dashboardagenpasaran_winlose")
+			obj_child.Dashboardagenpasaran_winlose = int(dashboardagenpasaran_winlose)
 			arraobj_child = append(arraobj_child, obj_child)
 		})
 
-		obj.Pasaran_name = pasaran_name
-		obj.Pasaran_detial = arraobj_child
+		obj.Dashboardagenpasaran_nmpasaran = dashboardagenpasaran_nmpasaran
+		obj.Dashboardagenpasaran_detail = arraobj_child
 		arraobj = append(arraobj, obj)
 	})
 	if !flag {
-		result, err := models.Fetch_dashboard(client_company)
-		helpers.SetRedis(field_redis, result, time.Hour*24)
-		log.Println("DASHBOARD MYSQL")
+		result, err := models.Fetch_dashboard(client_company, client.Year)
+		helpers.SetRedis(Fielddashboard_redis+"_pasaran_"+strings.ToLower(client_company)+"_"+client.Year, result, time.Minute*30)
+		log.Println("DASHBOARD WINLOSE PASARAN MYSQL")
 		if err != nil {
 			c.Status(fiber.StatusBadRequest)
 			return c.JSON(fiber.Map{
@@ -146,7 +172,7 @@ func DashboardHome(c *fiber.Ctx) error {
 		}
 		return c.JSON(result)
 	} else {
-		log.Println("DASHBOARD CACHE")
+		log.Println("DASHBOARD WINLOSE PASARAN CACHE")
 		return c.JSON(fiber.Map{
 			"status":  fiber.StatusOK,
 			"message": "Success",
