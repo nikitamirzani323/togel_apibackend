@@ -65,7 +65,8 @@ func Init() *fiber.App {
 	api.Post("saveadminrule", controllers.SaveAdminruleDetail)
 	api.Post("saveadminruleconf", controllers.SaveAdminruleConf)
 
-	api.Post("dashboardwinlose", controllers.DashboardHome)
+	api.Post("dashboardwinlose", controllers.DashboardWinlose)
+	api.Post("dashboardpasaranwinlose", controllers.DashboardHome)
 	api.Post("reportwinlose", controllers.Reportwinlose)
 
 	api.Post("log", controllers.LogHome)

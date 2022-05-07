@@ -3,10 +3,12 @@ package models
 import (
 	"context"
 	"database/sql"
+	"log"
 	"time"
 
 	"bitbucket.org/isbtotogroup/apibackend_go/config"
 	"bitbucket.org/isbtotogroup/apibackend_go/db"
+	"bitbucket.org/isbtotogroup/apibackend_go/entities"
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/nleeper/goment"
@@ -18,6 +20,44 @@ type dashboardparent struct {
 }
 type dashboarddetail struct {
 	Pasaranwinlose int
+}
+
+func Fetch_dashboardwinlose(company, year string) (helpers.Response, error) {
+	var obj entities.Model_dashboardwinlose
+	var arraobj []entities.Model_dashboardwinlose
+	var res helpers.Response
+	msg := "Data Not Found"
+	con := db.CreateCon()
+	ctx := context.Background()
+	render_page := time.Now()
+	log.Println(company)
+	log.Println(year)
+	sql_periode := `SELECT 
+			winlosecomp 
+			FROM ` + config.DB_tbl_trx_company_invoice + ` 
+			WHERE yearinvoice = ? 
+			AND idcompany = ?  
+			ORDER BY periodeinvoice ASC  
+		`
+	row, err := con.QueryContext(ctx, sql_periode, year, company)
+	helpers.ErrorCheck(err)
+	for row.Next() {
+		var (
+			winlosecomp_db int
+		)
+		err = row.Scan(&winlosecomp_db)
+		helpers.ErrorCheck(err)
+		obj.Winlose = winlosecomp_db
+		arraobj = append(arraobj, obj)
+		msg = "Success"
+	}
+	defer row.Close()
+
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = arraobj
+	res.Time = time.Since(render_page).String()
+	return res, nil
 }
 
 func Fetch_dashboard(company string) (helpers.Response, error) {
