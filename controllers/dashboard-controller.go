@@ -58,16 +58,26 @@ func DashboardWinlose(c *fiber.Ctx) error {
 	temp_decp := helpers.Decryption(name)
 	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
 
-	var obj entities.Model_dashboardwinlose
-	var arraobj []entities.Model_dashboardwinlose
+	var obj entities.Model_dashboardwinlose_parent
+	var arraobj []entities.Model_dashboardwinlose_parent
 	render_page := time.Now()
 	resultredis, flag := helpers.GetRedis(Fielddashboard_redis + "_" + strings.ToLower(client_company) + "_" + client.Year)
 	jsonredis := []byte(resultredis)
 	record_RD, _, _, _ := jsonparser.Get(jsonredis, "record")
 	jsonparser.ArrayEach(record_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-		winlose, _ := jsonparser.GetInt(value, "winlose")
+		dashboardwinlose_nmagen, _ := jsonparser.GetString(value, "dashboardwinlose_nmagen")
+		child_RD, _, _, _ := jsonparser.Get(value, "dashboardwinlose_detail")
 
-		obj.Winlose = int(winlose)
+		var obj_child entities.Model_dashboardwinlose_child
+		var arraobj_child []entities.Model_dashboardwinlose_child
+		jsonparser.ArrayEach(child_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
+			dashboardwinlose_winlose, _ := jsonparser.GetInt(value, "dashboardwinlose_winlose")
+			obj_child.Dashboardwinlose_winlose = int(dashboardwinlose_winlose)
+			arraobj_child = append(arraobj_child, obj_child)
+		})
+
+		obj.Dashboardwinlose_nmagen = dashboardwinlose_nmagen
+		obj.Dashboardwinlose_detail = arraobj_child
 		arraobj = append(arraobj, obj)
 	})
 	if !flag {
