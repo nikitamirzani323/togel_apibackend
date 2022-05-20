@@ -507,10 +507,10 @@ func Fetch_listbet(company, permainan string, idtrxkeluaran int) (helpers.Respon
 	for row.Next() {
 
 		var (
-			idtrxkeluarandetail_db, bet_db                                                                                                                      int
+			idtrxkeluarandetail_db                                                                                                                              int
 			datetimedetail_db, ipaddresss_db, username_db, typegame_db, nomortogel_db, browsertogel_db, devicetogel_db                                          string
 			statuskeluarandetail_db, posisitogel_db, createkeluarandetail_db, createdatekeluarandetail_db, updatekeluarandetail_db, updatedatekeluarandetail_db string
-			diskon_db, win_db, kei_db                                                                                                                           float32
+			diskon_db, win_db, kei_db, bet_db                                                                                                                   float32
 		)
 
 		err = row.Scan(
@@ -526,9 +526,9 @@ func Fetch_listbet(company, permainan string, idtrxkeluaran int) (helpers.Respon
 			diskonbet := int(float32(bet_db) * diskon_db)
 			keipercen := kei_db * 100
 			keibet := int(float32(bet_db) * kei_db)
-			bayar := bet_db - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
+			bayar := int(bet_db) - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
 			subtotalbayar = subtotalbayar + bayar
-			winhasil := _rumuswinhasil(typegame_db, bayar, bet_db, win_db)
+			winhasil := _rumuswinhasil(typegame_db, bayar, int(bet_db), win_db)
 			totalwin := 0
 
 			status_css := ""
@@ -557,7 +557,7 @@ func Fetch_listbet(company, permainan string, idtrxkeluaran int) (helpers.Respon
 			obj.Bet_typegame = typegame_db
 			obj.Bet_nomortogel = nomortogel_db
 			obj.Bet_posisitogel = posisitogel_db
-			obj.Bet_bet = bet_db
+			obj.Bet_bet = int(bet_db)
 			obj.Bet_diskon = diskonbet
 			obj.Bet_diskonpercen = diskonpercen
 			obj.Bet_kei = keibet
@@ -616,10 +616,10 @@ func Fetch_listbetbystatus(company, status string, idtrxkeluaran int) (helpers.R
 	for row.Next() {
 		totalbet += 1
 		var (
-			idtrxkeluarandetail_db, bet_db                                                                                                                      int
+			idtrxkeluarandetail_db                                                                                                                              int
 			datetimedetail_db, ipaddresss_db, username_db, typegame_db, nomortogel_db, browsertogel_db, devicetogel_db                                          string
 			statuskeluarandetail_db, posisitogel_db, createkeluarandetail_db, createdatekeluarandetail_db, updatekeluarandetail_db, updatedatekeluarandetail_db string
-			diskon_db, win_db, kei_db                                                                                                                           float32
+			diskon_db, win_db, kei_db, bet_db                                                                                                                   float32
 		)
 
 		err = row.Scan(
@@ -634,9 +634,9 @@ func Fetch_listbetbystatus(company, status string, idtrxkeluaran int) (helpers.R
 		diskonbet := int(float32(bet_db) * diskon_db)
 		keipercen := kei_db * 100
 		keibet := int(float32(bet_db) * kei_db)
-		bayar := bet_db - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
+		bayar := int(bet_db) - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
 		subtotalbayar = subtotalbayar + bayar
-		winhasil := _rumuswinhasil(typegame_db, bayar, bet_db, win_db)
+		winhasil := _rumuswinhasil(typegame_db, bayar, int(bet_db), win_db)
 		totalwin := 0
 
 		status_css := ""
@@ -665,7 +665,7 @@ func Fetch_listbetbystatus(company, status string, idtrxkeluaran int) (helpers.R
 		obj.Bet_typegame = typegame_db
 		obj.Bet_nomortogel = nomortogel_db
 		obj.Bet_posisitogel = posisitogel_db
-		obj.Bet_bet = bet_db
+		obj.Bet_bet = int(bet_db)
 		obj.Bet_diskon = diskonbet
 		obj.Bet_diskonpercen = diskonpercen
 		obj.Bet_kei = keibet
@@ -723,10 +723,10 @@ func Fetch_listbetbyusername(company, username string, idtrxkeluaran int) (helpe
 	for row.Next() {
 		totalbet += 1
 		var (
-			idtrxkeluarandetail_db, bet_db                                                                                                                      int
+			idtrxkeluarandetail_db                                                                                                                              int
 			datetimedetail_db, ipaddresss_db, username_db, typegame_db, nomortogel_db, browsertogel_db, devicetogel_db                                          string
 			statuskeluarandetail_db, posisitogel_db, createkeluarandetail_db, createdatekeluarandetail_db, updatekeluarandetail_db, updatedatekeluarandetail_db string
-			diskon_db, win_db, kei_db                                                                                                                           float32
+			diskon_db, win_db, kei_db, bet_db                                                                                                                   float32
 		)
 
 		err = row.Scan(
@@ -741,9 +741,9 @@ func Fetch_listbetbyusername(company, username string, idtrxkeluaran int) (helpe
 		diskonbet := int(float32(bet_db) * diskon_db)
 		keipercen := kei_db * 100
 		keibet := int(float32(bet_db) * kei_db)
-		bayar := bet_db - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
+		bayar := int(bet_db) - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
 		subtotalbayar = subtotalbayar + bayar
-		winhasil := _rumuswinhasil(typegame_db, bayar, bet_db, win_db)
+		winhasil := _rumuswinhasil(typegame_db, bayar, int(bet_db), win_db)
 		totalwin := 0
 
 		status_css := ""
@@ -772,7 +772,7 @@ func Fetch_listbetbyusername(company, username string, idtrxkeluaran int) (helpe
 		obj.Bet_typegame = typegame_db
 		obj.Bet_nomortogel = nomortogel_db
 		obj.Bet_posisitogel = posisitogel_db
-		obj.Bet_bet = bet_db
+		obj.Bet_bet = int(bet_db)
 		obj.Bet_diskon = diskonbet
 		obj.Bet_diskonpercen = diskonpercen
 		obj.Bet_kei = keibet
@@ -1011,8 +1011,9 @@ func Fetch_bettable(company, permainan string, idtrxkeluaran int) (helpers.Respo
 	helpers.ErrorCheck(err_betgroup)
 	for row_betgroup.Next() {
 		var (
-			nomortogel_db               string
-			totalmember_db, totalbet_db int
+			nomortogel_db  string
+			totalmember_db int
+			totalbet_db    float32
 		)
 
 		err := row_betgroup.Scan(&nomortogel_db, &totalmember_db, &totalbet_db)
@@ -1020,7 +1021,7 @@ func Fetch_bettable(company, permainan string, idtrxkeluaran int) (helpers.Respo
 
 		objdetail.Nomortogel = nomortogel_db
 		objdetail.Totalmember = totalmember_db
-		objdetail.Totalbet = totalbet_db
+		objdetail.Totalbet = int(totalbet_db)
 		arraobjdetail = append(arraobjdetail, objdetail)
 		msg = "Success"
 	}
