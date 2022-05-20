@@ -1159,9 +1159,9 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 			for row_detailbet.Next() {
 				mutex.Lock()
 				var (
-					idtrxkeluarandetail_db, bet_db             int
+					idtrxkeluarandetail_db                     int
 					typegame_db, nomortogel_db, posisitogel_db string
-					diskon_db, kei_db                          float32
+					diskon_db, kei_db, bet_db                  float32
 				)
 
 				err_detailbet = row_detailbet.Scan(
@@ -1217,9 +1217,9 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 			totalwin := 0
 			for row_detailbetwinner.Next() {
 				var (
-					bet_db, idtrxkeluarandetail_db2 int
-					username_db, typegame_db        string
-					diskon_db, kei_db, win_db       float32
+					idtrxkeluarandetail_db2           int
+					username_db, typegame_db          string
+					diskon_db, kei_db, win_db, bet_db float32
 				)
 
 				err_detailbetwinner = row_detailbetwinner.Scan(
@@ -1230,8 +1230,8 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 					&diskon_db,
 					&kei_db,
 					&win_db)
-				bayar := bet_db - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
-				winhasil := _rumuswinhasil(typegame_db, bayar, bet_db, win_db)
+				bayar := int(bet_db) - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
+				winhasil := _rumuswinhasil(typegame_db, bayar, int(bet_db), win_db)
 				totalwin = totalwin + winhasil
 
 				//UPDATE DETAIL KELUARAN MEMBER WINHASIL
@@ -1276,9 +1276,9 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 			totalcancel := 0
 			for row_detailbetcancel.Next() {
 				var (
-					bet_db, idtrxkeluarandetail_db2 int
-					username_db, typegame_db        string
-					diskon_db, kei_db, win_db       float32
+					idtrxkeluarandetail_db2           int
+					username_db, typegame_db          string
+					diskon_db, kei_db, win_db, bet_db float32
 				)
 
 				err_detailbetcancel = row_detailbetcancel.Scan(
@@ -1289,7 +1289,7 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 					&diskon_db,
 					&kei_db,
 					&win_db)
-				bayar := bet_db - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
+				bayar := int(bet_db) - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
 				totalcancel = totalcancel + bayar
 
 				//UPDATE DETAIL KELUARAN MEMBER CANCELBET
