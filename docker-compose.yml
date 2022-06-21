@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  toto-api-agen:
+    container_name: toto-api-agen
+    image: toto-api-agen:0.0.1
+    build: .
+    ports:
+      - 7072:7072
+    restart: always

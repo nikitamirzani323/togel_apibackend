@@ -2805,6 +2805,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 		data_4 := ""
 		depan := ""
 		tengah := ""
+		tengah2 := ""
 		belakang := ""
 
 		as := string([]byte(temp)[0])
@@ -2840,12 +2841,16 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 
 		depan = "DEPAN_" + data_1 + "_" + data_2
 		tengah = "TENGAH_" + data_2 + "_" + data_3
+		tengah2 = "TENGAH_" + data_3 + "_" + data_2
 		belakang = "BELAKANG_" + data_3 + "_" + data_4
 
 		if depan == nomorkeluaran {
 			flag = true
 		}
 		if tengah == nomorkeluaran {
+			flag = true
+		}
+		if tengah2 == nomorkeluaran {
 			flag = true
 		}
 		if belakang == nomorkeluaran {
