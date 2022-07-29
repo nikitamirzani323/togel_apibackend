@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"math"
 	"runtime"
 	"strconv"
 	"sync"
@@ -726,7 +727,8 @@ func Fetch_listbetbyusername(company, username string, idtrxkeluaran int) (helpe
 			idtrxkeluarandetail_db                                                                                                                              int
 			datetimedetail_db, ipaddresss_db, username_db, typegame_db, nomortogel_db, browsertogel_db, devicetogel_db                                          string
 			statuskeluarandetail_db, posisitogel_db, createkeluarandetail_db, createdatekeluarandetail_db, updatekeluarandetail_db, updatedatekeluarandetail_db string
-			diskon_db, win_db, kei_db, bet_db                                                                                                                   float32
+			diskon_db, kei_db                                                                                                                                   float64
+			win_db, bet_db                                                                                                                                      float32
 		)
 
 		err = row.Scan(
@@ -738,14 +740,13 @@ func Fetch_listbetbyusername(company, username string, idtrxkeluaran int) (helpe
 		helpers.ErrorCheck(err)
 
 		diskonpercen := diskon_db * 100
-		diskonbet := int(float32(bet_db) * diskon_db)
+		diskonbet := math.Ceil(float64(bet_db) * diskon_db)
 		keipercen := kei_db * 100
-		keibet := int(float32(bet_db) * kei_db)
-		bayar := int(bet_db) - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
+		keibet := math.Ceil(float64(bet_db) * kei_db)
+		bayar := int(bet_db) - int(diskonbet) - int(keibet)
 		subtotalbayar = subtotalbayar + bayar
 		winhasil := _rumuswinhasil(typegame_db, bayar, int(bet_db), win_db)
 		totalwin := 0
-
 		status_css := ""
 		switch statuskeluarandetail_db {
 		case "RUNNING":
@@ -773,10 +774,10 @@ func Fetch_listbetbyusername(company, username string, idtrxkeluaran int) (helpe
 		obj.Bet_nomortogel = nomortogel_db
 		obj.Bet_posisitogel = posisitogel_db
 		obj.Bet_bet = int(bet_db)
-		obj.Bet_diskon = diskonbet
-		obj.Bet_diskonpercen = diskonpercen
-		obj.Bet_kei = keibet
-		obj.Bet_keipercen = keipercen
+		obj.Bet_diskon = int(diskonbet)
+		obj.Bet_diskonpercen = float32(diskonpercen)
+		obj.Bet_kei = int(keibet)
+		obj.Bet_keipercen = float32(keipercen)
 		obj.Bet_bayar = bayar
 		obj.Bet_win = win_db
 		obj.Bet_totalwin = totalwin
