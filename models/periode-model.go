@@ -155,7 +155,8 @@ func Fetch_periode(company string) (helpers.ResponsePasaran, error) {
 			JOIN ` + config.DB_tbl_mst_company_game_pasaran + ` as B ON B.idcomppasaran = A.idcomppasaran  
 			JOIN ` + config.DB_tbl_mst_pasaran_togel + ` as C ON C.idpasarantogel  = B.idpasarantogel  
 			WHERE A.idcompany = ? 
-			ORDER BY A.datekeluaran DESC LIMIT 100 
+			AND A.keluarantogel = "" 
+			ORDER BY A.datekeluaran DESC  
 		`
 	row, err := con.QueryContext(ctx, sql_periode, company)
 
