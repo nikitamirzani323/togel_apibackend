@@ -20,6 +20,8 @@ func Init() *fiber.App {
 
 	api.Post("home", controllers.Home)
 	api.Post("generatepassword", controllers.GenerateHashPassword)
+
+	api.Post("allpasarandashboard", controllers.PasaranDashboardHome)
 	api.Post("allpasaran", controllers.PasaranHome)
 	api.Post("editpasaran", controllers.PasaranDetail)
 	api.Post("savepasaran", controllers.PasaranSave)

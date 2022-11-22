@@ -580,8 +580,99 @@ type responseredis_pasaranonline struct {
 	Haripasaran     string `json:"haripasaran"`
 }
 
+const Fieldpasaran_dashboardhome_redis = "LISTDASHBOARDPASARAN_AGENT_"
 const Fieldpasaran_home_redis = "LISTPASARAN_AGENT_"
 
+func PasaranDashboardHome(c *fiber.Ctx) error {
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
+	_, client_company, _, _ := helpers.Parsing_Decry(temp_decp, "==")
+	field_redis := Fieldpasaran_dashboardhome_redis + strings.ToLower(client_company)
+	var obj entities.Model_pasaranDashboardHome
+	var arraobj []entities.Model_pasaranDashboardHome
+	render_page := time.Now()
+	resultredis, flag := helpers.GetRedis(field_redis)
+	jsonredis := []byte(resultredis)
+	record_RD, _, _, _ := jsonparser.Get(jsonredis, "record")
+	jsonparser.ArrayEach(record_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
+		idcomppasaran, _ := jsonparser.GetInt(value, "idcomppasaran")
+		nmpasarantogel, _ := jsonparser.GetString(value, "nmpasarantogel")
+		pasarandiundi, _ := jsonparser.GetString(value, "pasarandiundi")
+		jamtutup, _ := jsonparser.GetString(value, "jamtutup")
+		jamjadwal, _ := jsonparser.GetString(value, "jamjadwal")
+		jamopen, _ := jsonparser.GetString(value, "jamopen")
+		displaypasaran, _ := jsonparser.GetInt(value, "displaypasaran")
+		statuspasaran, _ := jsonparser.GetString(value, "statuspasaran")
+		statuspasaran_css, _ := jsonparser.GetString(value, "statuspasaran_css")
+
+		var obj_periode entities.Model_periodeDashboard
+		var arraobj_periode []entities.Model_periodeDashboard
+		listperiode_RD, _, _, _ := jsonparser.Get(value, "listperiode")
+		jsonparser.ArrayEach(listperiode_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
+			pasaran_invoice, _ := jsonparser.GetInt(value, "pasaran_invoice")
+			pasaran_nomorperiode, _ := jsonparser.GetString(value, "pasaran_nomorperiode")
+			pasaran_tanggal, _ := jsonparser.GetString(value, "pasaran_tanggal")
+			pasaran_keluaran, _ := jsonparser.GetString(value, "pasaran_keluaran")
+			pasaran_totalmember, _ := jsonparser.GetInt(value, "pasaran_totalmember")
+			pasaran_totalbet, _ := jsonparser.GetFloat(value, "pasaran_totalbet")
+			pasaran_totaloutstanding, _ := jsonparser.GetFloat(value, "pasaran_totaloutstanding")
+			pasaran_totalcancelbet, _ := jsonparser.GetFloat(value, "pasaran_totalcancelbet")
+			pasaran_winlose, _ := jsonparser.GetFloat(value, "pasaran_winlose")
+			pasaran_revisi, _ := jsonparser.GetInt(value, "pasaran_revisi")
+			pasaran_msgrevisi, _ := jsonparser.GetString(value, "pasaran_msgrevisi")
+
+			obj_periode.Idtrxkeluaran = int(pasaran_invoice)
+			obj_periode.Nomorperiode = pasaran_nomorperiode
+			obj_periode.Tanggalperiode = pasaran_tanggal
+			obj_periode.Keluarantogel = pasaran_keluaran
+			obj_periode.Total_Member = float32(pasaran_totalmember)
+			obj_periode.Total_bet = float32(pasaran_totalbet)
+			obj_periode.Total_outstanding = float32(pasaran_totaloutstanding)
+			obj_periode.Total_cancelbet = float32(pasaran_totalcancelbet)
+			obj_periode.Winlose = float32(pasaran_winlose)
+			obj_periode.Revisi = int(pasaran_revisi)
+			obj_periode.Msgrevisi = pasaran_msgrevisi
+			arraobj_periode = append(arraobj_periode, obj_periode)
+		})
+
+		obj.Idcomppasaran = int(idcomppasaran)
+		obj.Nmpasarantogel = nmpasarantogel
+		obj.PasaranDiundi = pasarandiundi
+		obj.Jamtutup = jamtutup
+		obj.Jamjadwal = jamjadwal
+		obj.Jamopen = jamopen
+		obj.Displaypasaran = int(displaypasaran)
+		obj.StatusPasaran = statuspasaran
+		obj.StatusPasarancss = statuspasaran_css
+		obj.Listperiode = arraobj_periode
+		arraobj = append(arraobj, obj)
+	})
+
+	if !flag {
+		result, err := models.Fetch_homedashboard(client_company)
+		helpers.SetRedis(field_redis, result, time.Hour*24)
+		log.Println("PASARAN DASHBOARD MYSQL")
+		if err != nil {
+			c.Status(fiber.StatusBadRequest)
+			return c.JSON(fiber.Map{
+				"status":  fiber.StatusBadRequest,
+				"message": err.Error(),
+				"record":  nil,
+			})
+		}
+		return c.JSON(result)
+	} else {
+		log.Println("PASARAN DASHBOARD CACHE")
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusOK,
+			"message": "Success",
+			"record":  arraobj,
+			"time":    time.Since(render_page).String(),
+		})
+	}
+}
 func PasaranHome(c *fiber.Ctx) error {
 	user := c.Locals("jwt").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)

@@ -1,5 +1,17 @@
 package entities
 
+type Model_pasaranDashboardHome struct {
+	Idcomppasaran    int         `json:"idcomppasaran"`
+	Nmpasarantogel   string      `json:"nmpasarantogel"`
+	PasaranDiundi    string      `json:"pasarandiundi"`
+	Jamtutup         string      `json:"jamtutup"`
+	Jamjadwal        string      `json:"jamjadwal"`
+	Jamopen          string      `json:"jamopen"`
+	Displaypasaran   int         `json:"displaypasaran"`
+	StatusPasaran    string      `json:"statuspasaran"`
+	StatusPasarancss string      `json:"statuspasaran_css"`
+	Listperiode      interface{} `json:"listperiode"`
+}
 type Model_pasaranHome struct {
 	Idcomppasaran          int    `json:"idcomppasaran"`
 	Nmpasarantogel         string `json:"nmpasarantogel"`
