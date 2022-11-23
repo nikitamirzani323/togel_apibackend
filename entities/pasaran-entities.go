@@ -1,16 +1,21 @@
 package entities
 
 type Model_pasaranDashboardHome struct {
-	Idcomppasaran    int         `json:"idcomppasaran"`
-	Nmpasarantogel   string      `json:"nmpasarantogel"`
-	PasaranDiundi    string      `json:"pasarandiundi"`
-	PasaranURL       string      `json:"pasaranurl"`
-	Jamtutup         string      `json:"jamtutup"`
-	Jamjadwal        string      `json:"jamjadwal"`
-	Jamopen          string      `json:"jamopen"`
-	StatusPasaran    string      `json:"statuspasaran"`
-	StatusPasarancss string      `json:"statuspasaran_css"`
-	Listperiode      interface{} `json:"listperiode"`
+	Idcomppasaran        int    `json:"idcomppasaran"`
+	Nmpasarantogel       string `json:"nmpasarantogel"`
+	PasaranDiundi        string `json:"pasarandiundi"`
+	PasaranURL           string `json:"pasaranurl"`
+	Jamtutup             string `json:"jamtutup"`
+	Jamjadwal            string `json:"jamjadwal"`
+	Jamopen              string `json:"jamopen"`
+	StatusPasaran        string `json:"statuspasaran"`
+	StatusPasarancss     string `json:"statuspasaran_css"`
+	Periode_idinvoice    int    `json:"periode_idinvoice"`
+	Periode_nomorperiode string `json:"periode_nomorperiode"`
+	Periode_tglperiode   string `json:"periode_tglperiode"`
+	Periode_total_member int    `json:"periode_total_member"`
+	Periode_total_bet    int    `json:"periode_total_bet"`
+	Periode_total_bayar  int    `json:"periode_total_bayar"`
 }
 type Model_pasaranHome struct {
 	Idcomppasaran          int    `json:"idcomppasaran"`

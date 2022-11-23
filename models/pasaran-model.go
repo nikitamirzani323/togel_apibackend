@@ -65,9 +65,12 @@ func Fetch_homedashboard(company string) (helpers.Response, error) {
 		if statuspasaran_db == "OFFLINE" {
 			statuscss = config.STATUS_CANCEL
 		}
-
-		var obj_periode entities.Model_periodeDashboard
-		var arraobj_periode []entities.Model_periodeDashboard
+		periode_idinvoice := 0
+		periode_nomorperiode := ""
+		periode_tglperiode := ""
+		periode_total_member := 0
+		periode_total_bet := 0
+		periode_total_bayar := 0
 		sql_periode := `SELECT 
 			idtrxkeluaran, keluaranperiode, datekeluaran, keluarantogel
 			FROM ` + tbl_trx_keluarantogel + ` 
@@ -87,17 +90,15 @@ func Fetch_homedashboard(company string) (helpers.Response, error) {
 			err = row_periode.Scan(&idtrxkeluaran_db, &keluaranperiode_db, &datekeluaran_db, &keluarantogel_db)
 
 			helpers.ErrorCheck(err)
-
 			totalmembertogel := _togel_member_COUNT(idtrxkeluaran_db, company)
 			totalbet := _togel_bet_SUM(idtrxkeluaran_db, company)
 			totalbayar := _togel_bayar_SUM(idtrxkeluaran_db, company)
-			obj_periode.Idtrxkeluaran = idtrxkeluaran_db
-			obj_periode.Nomorperiode = idpasarantogel_db + "-" + strconv.Itoa(keluaranperiode_db)
-			obj_periode.Tanggalperiode = datekeluaran_db
-			obj_periode.Total_Member = totalmembertogel
-			obj_periode.Total_bet = totalbet
-			obj_periode.Total_outstanding = totalbayar
-			arraobj_periode = append(arraobj_periode, obj_periode)
+			periode_idinvoice = idtrxkeluaran_db
+			periode_nomorperiode = idpasarantogel_db + "-" + strconv.Itoa(keluaranperiode_db)
+			periode_tglperiode = datekeluaran_db
+			periode_total_member = totalmembertogel
+			periode_total_bet = totalbet
+			periode_total_bayar = totalbayar
 		}
 		defer row_periode.Close()
 
@@ -110,7 +111,12 @@ func Fetch_homedashboard(company string) (helpers.Response, error) {
 		obj.Jamopen = jamopen_db
 		obj.StatusPasaran = statuspasaran_db
 		obj.StatusPasarancss = statuscss
-		obj.Listperiode = arraobj_periode
+		obj.Periode_idinvoice = periode_idinvoice
+		obj.Periode_nomorperiode = periode_nomorperiode
+		obj.Periode_tglperiode = periode_tglperiode
+		obj.Periode_total_member = periode_total_member
+		obj.Periode_total_bet = periode_total_bet
+		obj.Periode_total_bayar = periode_total_bayar
 		arraobj = append(arraobj, obj)
 		msg = "Success"
 	}

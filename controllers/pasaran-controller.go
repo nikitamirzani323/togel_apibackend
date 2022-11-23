@@ -606,28 +606,12 @@ func PasaranDashboardHome(c *fiber.Ctx) error {
 		jamopen, _ := jsonparser.GetString(value, "jamopen")
 		statuspasaran, _ := jsonparser.GetString(value, "statuspasaran")
 		statuspasaran_css, _ := jsonparser.GetString(value, "statuspasaran_css")
-
-		var obj_periode entities.Model_periodeDashboard
-		var arraobj_periode []entities.Model_periodeDashboard
-		listperiode_RD, _, _, _ := jsonparser.Get(value, "listperiode")
-		jsonparser.ArrayEach(listperiode_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-			pasaran_invoice, _ := jsonparser.GetInt(value, "pasaran_invoice")
-			pasaran_nomorperiode, _ := jsonparser.GetString(value, "pasaran_nomorperiode")
-			pasaran_tanggal, _ := jsonparser.GetString(value, "pasaran_tanggal")
-			pasaran_keluaran, _ := jsonparser.GetString(value, "pasaran_keluaran")
-			pasaran_totalmember, _ := jsonparser.GetInt(value, "pasaran_totalmember")
-			pasaran_totalbet, _ := jsonparser.GetInt(value, "pasaran_totalbet")
-			pasaran_totaloutstanding, _ := jsonparser.GetInt(value, "pasaran_totaloutstanding")
-
-			obj_periode.Idtrxkeluaran = int(pasaran_invoice)
-			obj_periode.Nomorperiode = pasaran_nomorperiode
-			obj_periode.Tanggalperiode = pasaran_tanggal
-			obj_periode.Keluarantogel = pasaran_keluaran
-			obj_periode.Total_Member = int(pasaran_totalmember)
-			obj_periode.Total_bet = int(pasaran_totalbet)
-			obj_periode.Total_outstanding = int(pasaran_totaloutstanding)
-			arraobj_periode = append(arraobj_periode, obj_periode)
-		})
+		periode_idinvoice, _ := jsonparser.GetInt(value, "periode_idinvoice")
+		periode_nomorperiode, _ := jsonparser.GetString(value, "periode_nomorperiode")
+		periode_tglperiode, _ := jsonparser.GetString(value, "periode_tglperiode")
+		periode_total_member, _ := jsonparser.GetInt(value, "periode_total_member")
+		periode_total_bet, _ := jsonparser.GetInt(value, "periode_total_bet")
+		periode_total_bayar, _ := jsonparser.GetInt(value, "periode_total_bayar")
 
 		obj.Idcomppasaran = int(idcomppasaran)
 		obj.Nmpasarantogel = nmpasarantogel
@@ -638,7 +622,12 @@ func PasaranDashboardHome(c *fiber.Ctx) error {
 		obj.Jamopen = jamopen
 		obj.StatusPasaran = statuspasaran
 		obj.StatusPasarancss = statuspasaran_css
-		obj.Listperiode = arraobj_periode
+		obj.Periode_idinvoice = int(periode_idinvoice)
+		obj.Periode_nomorperiode = periode_nomorperiode
+		obj.Periode_tglperiode = periode_tglperiode
+		obj.Periode_total_member = int(periode_total_member)
+		obj.Periode_total_bet = int(periode_total_bet)
+		obj.Periode_total_bayar = int(periode_total_bayar)
 		arraobj = append(arraobj, obj)
 	})
 
