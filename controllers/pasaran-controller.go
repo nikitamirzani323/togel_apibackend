@@ -600,6 +600,7 @@ func PasaranDashboardHome(c *fiber.Ctx) error {
 		idcomppasaran, _ := jsonparser.GetInt(value, "idcomppasaran")
 		nmpasarantogel, _ := jsonparser.GetString(value, "nmpasarantogel")
 		pasarandiundi, _ := jsonparser.GetString(value, "pasarandiundi")
+		pasaranurl, _ := jsonparser.GetString(value, "pasaranurl")
 		jamtutup, _ := jsonparser.GetString(value, "jamtutup")
 		jamjadwal, _ := jsonparser.GetString(value, "jamjadwal")
 		jamopen, _ := jsonparser.GetString(value, "jamopen")
@@ -631,6 +632,7 @@ func PasaranDashboardHome(c *fiber.Ctx) error {
 		obj.Idcomppasaran = int(idcomppasaran)
 		obj.Nmpasarantogel = nmpasarantogel
 		obj.PasaranDiundi = pasarandiundi
+		obj.PasaranURL = pasaranurl
 		obj.Jamtutup = jamtutup
 		obj.Jamjadwal = jamjadwal
 		obj.Jamopen = jamopen

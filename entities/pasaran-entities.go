@@ -4,6 +4,7 @@ type Model_pasaranDashboardHome struct {
 	Idcomppasaran    int         `json:"idcomppasaran"`
 	Nmpasarantogel   string      `json:"nmpasarantogel"`
 	PasaranDiundi    string      `json:"pasarandiundi"`
+	PasaranURL       string      `json:"pasaranurl"`
 	Jamtutup         string      `json:"jamtutup"`
 	Jamjadwal        string      `json:"jamjadwal"`
 	Jamopen          string      `json:"jamopen"`

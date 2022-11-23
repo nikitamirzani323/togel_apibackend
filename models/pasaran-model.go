@@ -31,7 +31,7 @@ func Fetch_homedashboard(company string) (helpers.Response, error) {
 	render_page := time.Now()
 	tbl_trx_keluarantogel, _, _ := Get_mappingdatabase(company)
 	sql_select := `SELECT 
-		A.idcomppasaran, A.pasarandiundi, A.jamtutup, A.jamjadwal, A.jamopen, 
+		A.idcomppasaran, A.pasarandiundi, A.jamtutup, A.jamjadwal, A.jamopen, A.pasaranurl, 
 		A.statuspasaran, B.nmpasarantogel, A.idpasarantogel    
 		FROM ` + config.DB_tbl_mst_company_game_pasaran + ` as A 
 		JOIN ` + config.DB_tbl_mst_pasaran_togel + ` as B ON B.idpasarantogel = A.idpasarantogel 
@@ -49,13 +49,13 @@ func Fetch_homedashboard(company string) (helpers.Response, error) {
 
 	for row.Next() {
 		var (
-			idcomppasaran_db                                                                                                int
-			pasarandiundi_db, jamtutup_db, jamjadwal_db, jamopen_db, nmpasarantogel_db, idpasarantogel_db, statuspasaran_db string
+			idcomppasaran_db                                                                                                               int
+			pasarandiundi_db, jamtutup_db, jamjadwal_db, jamopen_db, pasaranurl_db, nmpasarantogel_db, idpasarantogel_db, statuspasaran_db string
 		)
 
 		err = row.Scan(
 			&idcomppasaran_db, &pasarandiundi_db,
-			&jamtutup_db, &jamjadwal_db, &jamopen_db,
+			&jamtutup_db, &jamjadwal_db, &jamopen_db, &pasaranurl_db,
 			&statuspasaran_db, &nmpasarantogel_db, &idpasarantogel_db)
 
 		if err != nil {
@@ -104,6 +104,7 @@ func Fetch_homedashboard(company string) (helpers.Response, error) {
 		obj.Idcomppasaran = idcomppasaran_db
 		obj.Nmpasarantogel = nmpasarantogel_db
 		obj.PasaranDiundi = pasarandiundi_db
+		obj.PasaranURL = pasaranurl_db
 		obj.Jamtutup = jamtutup_db
 		obj.Jamjadwal = jamjadwal_db
 		obj.Jamopen = jamopen_db
