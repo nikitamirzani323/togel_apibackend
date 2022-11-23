@@ -32,8 +32,7 @@ func Fetch_homedashboard(company string) (helpers.Response, error) {
 	tbl_trx_keluarantogel, _, _ := Get_mappingdatabase(company)
 	sql_select := `SELECT 
 		A.idcomppasaran, A.pasarandiundi, A.jamtutup, A.jamjadwal, A.jamopen, 
-		A.displaypasaran, A.statuspasaran, 
-		B.nmpasarantogel, A.idpasarantogel    
+		A.statuspasaran, B.nmpasarantogel, A.idpasarantogel    
 		FROM ` + config.DB_tbl_mst_company_game_pasaran + ` as A 
 		JOIN ` + config.DB_tbl_mst_pasaran_togel + ` as B ON B.idpasarantogel = A.idpasarantogel 
 		WHERE A.idcompany = ? 
@@ -50,15 +49,14 @@ func Fetch_homedashboard(company string) (helpers.Response, error) {
 
 	for row.Next() {
 		var (
-			idcomppasaran_db, displaypasaran_db                                                                             int
+			idcomppasaran_db                                                                                                int
 			pasarandiundi_db, jamtutup_db, jamjadwal_db, jamopen_db, nmpasarantogel_db, idpasarantogel_db, statuspasaran_db string
 		)
 
 		err = row.Scan(
 			&idcomppasaran_db, &pasarandiundi_db,
 			&jamtutup_db, &jamjadwal_db, &jamopen_db,
-			&displaypasaran_db, &statuspasaran_db,
-			&nmpasarantogel_db, &idpasarantogel_db)
+			&statuspasaran_db, &nmpasarantogel_db, &idpasarantogel_db)
 
 		if err != nil {
 			return res, err
@@ -71,9 +69,7 @@ func Fetch_homedashboard(company string) (helpers.Response, error) {
 		var obj_periode entities.Model_periodeDashboard
 		var arraobj_periode []entities.Model_periodeDashboard
 		sql_periode := `SELECT 
-			idtrxkeluaran, keluaranperiode, datekeluaran, keluarantogel, 
-			total_member, total_bet, total_outstanding, winlose, total_cancel, 
-			revisi, noterevisi    
+			idtrxkeluaran, keluaranperiode, datekeluaran, keluarantogel
 			FROM ` + tbl_trx_keluarantogel + ` 
 			WHERE idcompany = ? 
 			AND idcomppasaran = ? 
@@ -84,27 +80,23 @@ func Fetch_homedashboard(company string) (helpers.Response, error) {
 		helpers.ErrorCheck(err_periode)
 		for row_periode.Next() {
 			var (
-				idtrxkeluaran_db, keluaranperiode_db, revisi_db                                  int
-				datekeluaran_db, keluarantogel_db, noterevisi_db                                 string
-				total_member_db, total_bet_db, total_outstanding_db, winlose_db, total_cancel_db float32
+				idtrxkeluaran_db, keluaranperiode_db int
+				datekeluaran_db, keluarantogel_db    string
 			)
 
-			err = row_periode.Scan(
-				&idtrxkeluaran_db, &keluaranperiode_db, &datekeluaran_db, &keluarantogel_db,
-				&total_member_db, &total_bet_db, &total_outstanding_db, &winlose_db, &total_cancel_db, &revisi_db,
-				&noterevisi_db)
+			err = row_periode.Scan(&idtrxkeluaran_db, &keluaranperiode_db, &datekeluaran_db, &keluarantogel_db)
 
 			helpers.ErrorCheck(err)
+
+			totalmembertogel := _togel_member_COUNT(idtrxkeluaran_db, company)
+			totalbet := _togel_bet_SUM(idtrxkeluaran_db, company)
+			totalbayar := _togel_bayar_SUM(idtrxkeluaran_db, company)
 			obj_periode.Idtrxkeluaran = idtrxkeluaran_db
 			obj_periode.Nomorperiode = idpasarantogel_db + "-" + strconv.Itoa(keluaranperiode_db)
 			obj_periode.Tanggalperiode = datekeluaran_db
-			obj_periode.Total_Member = total_member_db
-			obj_periode.Total_bet = total_bet_db
-			obj_periode.Total_outstanding = total_outstanding_db
-			obj_periode.Winlose = winlose_db
-			obj_periode.Total_cancelbet = total_cancel_db
-			obj_periode.Revisi = revisi_db
-			obj_periode.Msgrevisi = noterevisi_db
+			obj_periode.Total_Member = totalmembertogel
+			obj_periode.Total_bet = totalbet
+			obj_periode.Total_outstanding = totalbayar
 			arraobj_periode = append(arraobj_periode, obj_periode)
 		}
 		defer row_periode.Close()
@@ -115,7 +107,6 @@ func Fetch_homedashboard(company string) (helpers.Response, error) {
 		obj.Jamtutup = jamtutup_db
 		obj.Jamjadwal = jamjadwal_db
 		obj.Jamopen = jamopen_db
-		obj.Displaypasaran = displaypasaran_db
 		obj.StatusPasaran = statuspasaran_db
 		obj.StatusPasarancss = statuscss
 		obj.Listperiode = arraobj_periode
