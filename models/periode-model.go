@@ -2545,7 +2545,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 		as := string([]byte(temp)[0]) + "_AS"
 		kop := string([]byte(temp)[1]) + "_KOP"
 		kepala := string([]byte(temp)[2]) + "_KEPALA"
-		ekor := string([]byte(temp)[3]) + "_KEKOR"
+		ekor := string([]byte(temp)[3]) + "_EKOR"
 
 		if as == nomorkeluaran {
 			flag = true
