@@ -10,9 +10,9 @@ import (
 
 type Generatorsave struct {
 	Page        string `json:"page"`
-	Invoice     string `json:"invoice" `
-	Totalmember int    `json:"totalmember" `
-	Totalrow    int    `json:"totalrow" `
+	Invoice     string `json:"invoice" validate:"required"`
+	Totalmember int    `json:"totalmember" validate:"required"`
+	Totalrow    int    `json:"totalrow" validate:"required"`
 }
 
 func GeneratorSave(c *fiber.Ctx) error {
