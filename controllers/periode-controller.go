@@ -1058,6 +1058,9 @@ func _deleteredis_periode(company string, idtrxkeluaran int, idpasarantogel stri
 	val_agent_dashboard := helpers.DeleteRedis("DASHBOARD_CHART_AGENT_" + strings.ToLower(company))
 	log.Printf("Redis Delete AGENT DASHBOARD status: %d", val_agent_dashboard)
 
+	val_agent_dashboard_pasaranhome := helpers.DeleteRedis("LISTDASHBOARDPASARAN_AGENT_" + strings.ToLower(company))
+	log.Printf("Redis Delete AGENT DASHBOARD PASARAN status: %d", val_agent_dashboard_pasaranhome)
+
 	val_agent4d := helpers.DeleteRedis(Fieldperiode_home_redis + strings.ToLower(company) + "_INVOICE_" + strconv.Itoa(idtrxkeluaran) + "_LISTPERMAINAN_4D")
 	val_agent3d := helpers.DeleteRedis(Fieldperiode_home_redis + strings.ToLower(company) + "_INVOICE_" + strconv.Itoa(idtrxkeluaran) + "_LISTPERMAINAN_3D")
 	val_agent2d := helpers.DeleteRedis(Fieldperiode_home_redis + strings.ToLower(company) + "_INVOICE_" + strconv.Itoa(idtrxkeluaran) + "_LISTPERMAINAN_2D")
