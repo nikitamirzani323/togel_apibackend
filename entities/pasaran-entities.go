@@ -2,6 +2,7 @@ package entities
 
 type Model_pasaranDashboardHome struct {
 	Idcomppasaran        int    `json:"idcomppasaran"`
+	Codepasarantogel     string `json:"codepasarantogel"`
 	Nmpasarantogel       string `json:"nmpasarantogel"`
 	PasaranDiundi        string `json:"pasarandiundi"`
 	PasaranURL           string `json:"pasaranurl"`

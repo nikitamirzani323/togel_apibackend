@@ -103,6 +103,7 @@ func Fetch_homedashboard(company string) (helpers.Response, error) {
 		defer row_periode.Close()
 
 		obj.Idcomppasaran = idcomppasaran_db
+		obj.Codepasarantogel = idpasarantogel_db
 		obj.Nmpasarantogel = nmpasarantogel_db
 		obj.PasaranDiundi = pasarandiundi_db
 		obj.PasaranURL = pasaranurl_db

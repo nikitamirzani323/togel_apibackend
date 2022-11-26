@@ -598,6 +598,7 @@ func PasaranDashboardHome(c *fiber.Ctx) error {
 	record_RD, _, _, _ := jsonparser.Get(jsonredis, "record")
 	jsonparser.ArrayEach(record_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
 		idcomppasaran, _ := jsonparser.GetInt(value, "idcomppasaran")
+		codepasarantogel, _ := jsonparser.GetString(value, "codepasarantogel")
 		nmpasarantogel, _ := jsonparser.GetString(value, "nmpasarantogel")
 		pasarandiundi, _ := jsonparser.GetString(value, "pasarandiundi")
 		pasaranurl, _ := jsonparser.GetString(value, "pasaranurl")
@@ -614,6 +615,7 @@ func PasaranDashboardHome(c *fiber.Ctx) error {
 		periode_total_bayar, _ := jsonparser.GetInt(value, "periode_total_bayar")
 
 		obj.Idcomppasaran = int(idcomppasaran)
+		obj.Codepasarantogel = codepasarantogel
 		obj.Nmpasarantogel = nmpasarantogel
 		obj.PasaranDiundi = pasarandiundi
 		obj.PasaranURL = pasaranurl
