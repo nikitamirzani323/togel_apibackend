@@ -34,7 +34,7 @@ func Init() {
 	db.SetMaxIdleConns(10)
 	db.SetMaxOpenConns(100)
 	db.SetConnMaxIdleTime(5 * time.Minute)
-	db.SetConnMaxLifetime(60 * time.Minute)
+	db.SetConnMaxLifetime(60 * time.Second)
 	err = db.Ping()
 	helpers.ErrorCheck(err)
 }

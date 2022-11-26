@@ -9,9 +9,10 @@ import (
 )
 
 type Generatorsave struct {
-	Idpasaran int    `json:"idpasaran" validate:"required"`
-	Page      string `json:"page"`
-	Invoice   int    `json:"invoice" `
+	Page        string `json:"page"`
+	Invoice     string `json:"invoice" `
+	Totalmember int    `json:"totalmember" `
+	Totalrow    int    `json:"totalrow" `
 }
 
 func GeneratorSave(c *fiber.Ctx) error {
@@ -49,7 +50,7 @@ func GeneratorSave(c *fiber.Ctx) error {
 	ruleadmin := models.Get_AdminRule(client_company, "ruleadmin", idruleadmin)
 	flag_page := models.Get_listitemsearch(ruleadmin, ",", client.Page)
 	if typeadmin == "MASTER" {
-		result, err := models.Save_Generator(client_username, client_company, client.Invoice)
+		result, err := models.Save_Generator(client_username, client_company, client.Invoice, client.Totalmember, client.Totalrow)
 		if err != nil {
 			c.Status(fiber.StatusBadRequest)
 			return c.JSON(fiber.Map{
@@ -68,7 +69,7 @@ func GeneratorSave(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		} else {
-			result, err := models.Save_Generator(client_username, client_company, client.Invoice)
+			result, err := models.Save_Generator(client_username, client_company, client.Invoice, client.Totalmember, client.Totalrow)
 			if err != nil {
 				c.Status(fiber.StatusBadRequest)
 				return c.JSON(fiber.Map{

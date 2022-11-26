@@ -29,7 +29,7 @@ func Get_counter(field_column string) int {
 	case sql.ErrNoRows:
 		log.Println("No rows were returned!")
 	case nil:
-		log.Println(counter)
+		// log.Println(counter)
 	default:
 		panic(e)
 	}
@@ -41,8 +41,8 @@ func Get_counter(field_column string) int {
 		helpers.ErrorCheck(e)
 		a, e := res.RowsAffected()
 		helpers.ErrorCheck(e)
-		if a > 0 {
-			log.Println("UPDATE")
+		if a < 0 {
+			log.Println("Failed Update Counter")
 		}
 	} else {
 		stmt, e := con.PrepareContext(ctx, "insert into "+config.DB_tbl_counter+" (nmcounter, counter) values (?, ?)")
@@ -77,7 +77,6 @@ func CheckDB(table, field, value string) bool {
 					FROM ` + table + ` 
 					WHERE ` + field + ` = ? 
 				`
-	log.Println(sql_db)
 	row := con.QueryRowContext(ctx, sql_db, value)
 	switch e := row.Scan(&field); e {
 	case sql.ErrNoRows:
