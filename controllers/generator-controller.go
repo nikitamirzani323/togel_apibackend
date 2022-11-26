@@ -63,6 +63,8 @@ func GeneratorSave(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
+		noinvoice, _ := strconv.Atoi(client.Invoice)
+		_deleteredis_generator(client_company, noinvoice)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -82,6 +84,8 @@ func GeneratorSave(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
+			noinvoice, _ := strconv.Atoi(client.Invoice)
+			_deleteredis_generator(client_company, noinvoice)
 			return c.JSON(result)
 		}
 	}
