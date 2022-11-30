@@ -1,6 +1,8 @@
 package models
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"runtime"
@@ -12,16 +14,22 @@ import (
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/nleeper/goment"
+	amqp "github.com/rabbitmq/amqp091-go"
 )
 
+type senderJobs struct {
+	Totaldata int
+	Record    interface{}
+}
 type generatorJobs struct {
-	Idtrxkeluaran  string
-	Datetimedetail string
-	Company        string
-	Username       string
-	Nomortogel     string
-	create         string
-	createDate     string
+	Idtrxkeluarandetail string
+	Idtrxkeluaran       string
+	Datetimedetail      string
+	Company             string
+	Username            string
+	Nomortogel          string
+	create              string
+	createDate          string
 }
 type generatorResult struct {
 	Idtrxkeluarandetail string
@@ -67,21 +75,87 @@ func _runner_worker(fieldtable, agent, company, idtrxkeluaran string, totalmembe
 		wg.Add(1)
 		go _doJobInsertTransaksi(fieldtable, jobs_bet, results_bet, wg)
 	}
+	year := tglnow.Format("YY")
+	month := tglnow.Format("MM")
+	field_column_counter := fieldtable + tglnow.Format("YYYY") + month
+	counter_before, counter_after := Get_counterbooking(field_column_counter, totalmember*totaljob)
+
+	conn, err := amqp.Dial("amqp://guest:guest@157.230.255.100:5672/")
+	failOnError(err, "Failed to connect to RabbitMQ")
+	defer conn.Close()
+
+	ch, err := conn.Channel()
+	failOnError(err, "Failed to open a channel")
+	defer ch.Close()
+
+	q, err := ch.QueueDeclare(
+		"generator", // name
+		false,       // durable
+		false,       // delete when unused
+		false,       // exclusive
+		false,       // no-wait
+		nil,         // arguments
+	)
+	failOnError(err, "Failed to declare a queue")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
 	for x := 0; x < totalmember; x++ {
+		var obj_sender senderJobs
+		var arraobj_sender []senderJobs
+		var obj generatorJobs
+		var arraobj []generatorJobs
+		temp_total_sender := 0
 		username_member := "developer_" + strconv.Itoa(x)
 		for i := 0; i < totaljob; i++ {
+			temp_total_sender = temp_total_sender + 1
+			idrecord_counter2 := strconv.Itoa(counter_before)
+			idrecord := string(year) + string(month) + idrecord_counter2
+
 			prize_4D := helpers.GenerateNumber(4)
 
 			jobs_bet <- generatorJobs{
-				Idtrxkeluaran:  idtrxkeluaran,
-				Datetimedetail: tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-				Company:        company,
-				Username:       username_member,
-				Nomortogel:     prize_4D,
-				create:         agent,
-				createDate:     tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+				Idtrxkeluarandetail: idrecord,
+				Idtrxkeluaran:       idtrxkeluaran,
+				Datetimedetail:      tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+				Company:             company,
+				Username:            username_member,
+				Nomortogel:          prize_4D,
+				create:              agent,
+				createDate:          tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 			}
+			obj.Idtrxkeluarandetail = idrecord
+			obj.Idtrxkeluaran = idtrxkeluaran
+			obj.Datetimedetail = tglnow.Format("YYYY-MM-DD HH:mm:ss")
+			obj.Company = company
+			obj.Username = username_member
+			obj.Nomortogel = prize_4D
+			obj.create = agent
+			obj.createDate = tglnow.Format("YYYY-MM-DD HH:mm:ss")
+			arraobj = append(arraobj, obj)
+			if counter_before > counter_after {
+				log.Println("Counter Troubke")
+			}
+			// log.Println(idrecord)
+			counter_before = counter_before + 1
 		}
+		obj_sender.Totaldata = temp_total_sender
+		obj_sender.Record = arraobj
+		arraobj_sender = append(arraobj_sender, obj_sender)
+		body, _ := json.Marshal(arraobj_sender)
+
+		err = ch.PublishWithContext(ctx,
+			"",     // exchange
+			q.Name, // routing key
+			false,  // mandatory
+			false,  // immediate
+			amqp.Publishing{
+				ContentType: "text/plain",
+				Body:        []byte(body),
+			})
+		failOnError(err, "Failed to publish a message")
+		log.Printf(" [x] Sent %s\n", body)
 	}
 	close(jobs_bet)
 
@@ -101,7 +175,7 @@ func _runner_worker(fieldtable, agent, company, idtrxkeluaran string, totalmembe
 	_deleteredis_generator(company, noinvoice)
 }
 func _doJobInsertTransaksi(fieldtable string, jobs <-chan generatorJobs, results chan<- generatorResult, wg *sync.WaitGroup) {
-	tglnow, _ := goment.New()
+
 	for capture := range jobs {
 		for {
 			var outerError error
@@ -126,24 +200,17 @@ func _doJobInsertTransaksi(fieldtable string, jobs <-chan generatorJobs, results
 						?, ?
 					)
 				`
-				year := tglnow.Format("YY")
-				month := tglnow.Format("MM")
-				field_column_counter := fieldtable + tglnow.Format("YYYY") + month
-				idrecord_counter := Get_counter(field_column_counter)
-
-				idrecord_counter2 := strconv.Itoa(idrecord_counter)
-				idrecord := string(year) + string(month) + idrecord_counter2
 				flag_insert, msg_insert := Exec_SQL(sql_insert, fieldtable, "INSERT",
-					idrecord, capture.Idtrxkeluaran, capture.Datetimedetail,
+					capture.Idtrxkeluarandetail, capture.Idtrxkeluaran, capture.Datetimedetail,
 					"127.0.0.1", capture.Company, capture.Username, "4D", capture.Nomortogel, "FULL", 100, 0, 4000, 0,
 					"ASIA/JAKARTA", "WEBSITE", "RUNNING",
 					capture.create, capture.createDate)
 
 				if !flag_insert {
 
-					results <- generatorResult{Idtrxkeluarandetail: idrecord, Message: msg_insert, Status: "Failed"}
+					results <- generatorResult{Idtrxkeluarandetail: capture.Idtrxkeluarandetail, Message: msg_insert, Status: "Failed"}
 				} else {
-					results <- generatorResult{Idtrxkeluarandetail: idrecord, Message: "Tidak ada masalah", Status: "Success"}
+					results <- generatorResult{Idtrxkeluarandetail: capture.Idtrxkeluarandetail, Message: "Tidak ada masalah", Status: "Success"}
 				}
 
 			}(&outerError)
@@ -226,4 +293,9 @@ func _deleteredis_generator(company string, idtrxkeluaran int) {
 	log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS WINNER: %d", val_agentwinner)
 	log.Printf("Redis Delete AGENT PERIODE DETAIL LIST BET STATUS CANCEL: %d", val_agentcancel)
 
+}
+func failOnError(err error, msg string) {
+	if err != nil {
+		log.Panicf("%s: %s", msg, err)
+	}
 }

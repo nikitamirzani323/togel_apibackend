@@ -14,6 +14,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.0.0 // indirect
 	github.com/joho/godotenv v1.3.0 // indirect
 	github.com/nleeper/goment v1.4.2 // indirect
+	github.com/rabbitmq/amqp091-go v1.5.0 // indirect
 	github.com/tkuchiki/go-timezone v0.2.2 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
 	golang.org/x/sys v0.0.0-20210906170528-6f6e22806c34 // indirect

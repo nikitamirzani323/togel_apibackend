@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	s "strings"
+	"time"
 
 	"bitbucket.org/isbtotogroup/apibackend_go/config"
 	"bitbucket.org/isbtotogroup/apibackend_go/db"
@@ -18,6 +19,10 @@ func Get_counter(field_column string) int {
 	con := db.CreateCon()
 	ctx := context.Background()
 	idrecord_counter := 0
+	field_redis := field_column + "_counter"
+	resultredis, flagredis := helpers.GetRedis(field_redis)
+	log.Println(flagredis)
+	log.Println(resultredis)
 	sqlcounter := `SELECT 
 					counter 
 					FROM ` + config.DB_tbl_counter + ` 
@@ -35,27 +40,65 @@ func Get_counter(field_column string) int {
 	}
 	if counter > 0 {
 		idrecord_counter = int(counter) + 1
-		stmt, e := con.PrepareContext(ctx, "UPDATE "+config.DB_tbl_counter+" SET counter=? WHERE nmcounter=? ")
-		helpers.ErrorCheck(e)
-		res, e := stmt.ExecContext(ctx, idrecord_counter, field_column)
-		helpers.ErrorCheck(e)
-		a, e := res.RowsAffected()
-		helpers.ErrorCheck(e)
-		if a < 0 {
-			log.Println("Failed Update Counter")
+		sql_update := `UPDATE ` + config.DB_tbl_counter + ` SET counter=? WHERE nmcounter=? `
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_counter, "UPDATE", idrecord_counter, field_column)
+		if !flag_update {
+			log.Println(msg_update)
+		} else {
+			helpers.SetRedis(field_redis, idrecord_counter, time.Hour*5)
 		}
 	} else {
-		stmt, e := con.PrepareContext(ctx, "insert into "+config.DB_tbl_counter+" (nmcounter, counter) values (?, ?)")
-		helpers.ErrorCheck(e)
-		res, e := stmt.ExecContext(ctx, field_column, 1)
-		helpers.ErrorCheck(e)
-		id, e := res.RowsAffected()
-		helpers.ErrorCheck(e)
-		log.Println("Insert id", id)
-		log.Println("NEW")
 		idrecord_counter = 1
+		sql_insert := `insert into ` + config.DB_tbl_counter + ` (nmcounter, counter) values (?, ?) `
+		flag_insert, msg_insert := Exec_SQL(sql_insert, config.DB_tbl_counter, "INSERT", field_column, idrecord_counter)
+		if !flag_insert {
+			log.Println(msg_insert)
+		} else {
+			helpers.SetRedis(field_redis, idrecord_counter, time.Hour*5)
+		}
+
 	}
 	return idrecord_counter
+}
+func Get_counterbooking(field_column string, booking int) (int, int) {
+	con := db.CreateCon()
+	ctx := context.Background()
+	idrecord_counter := 0
+	counter_before := 0
+
+	sqlcounter := `SELECT 
+					counter 
+					FROM ` + config.DB_tbl_counter + ` 
+					WHERE nmcounter = ? 
+				`
+	var counter int = 0
+	row := con.QueryRowContext(ctx, sqlcounter, field_column)
+	switch e := row.Scan(&counter); e {
+	case sql.ErrNoRows:
+		log.Println("No rows were returned!")
+	case nil:
+		// log.Println(counter)
+	default:
+		panic(e)
+	}
+	if counter > 0 {
+		counter_before = int(counter)
+		idrecord_counter = int(counter) + booking
+		sql_update := `UPDATE ` + config.DB_tbl_counter + ` SET counter=? WHERE nmcounter=? `
+		flag_update, msg_update := Exec_SQL(sql_update, config.DB_tbl_counter, "UPDATE", idrecord_counter, field_column)
+		if !flag_update {
+			log.Println(msg_update)
+		}
+	} else {
+		idrecord_counter = booking
+		sql_insert := `insert into ` + config.DB_tbl_counter + ` (nmcounter, counter) values (?, ?) `
+		flag_insert, msg_insert := Exec_SQL(sql_insert, config.DB_tbl_counter, "INSERT", field_column, idrecord_counter)
+		if !flag_insert {
+			log.Println(msg_insert)
+		}
+
+	}
+	return counter_before + 1, idrecord_counter
 }
 func Get_listitemsearch(data, pemisah, search string) bool {
 	flag := false
