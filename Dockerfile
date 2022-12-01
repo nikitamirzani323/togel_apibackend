@@ -25,6 +25,7 @@ ENV DB_REDIS_PASSWORD="asdQWE123!@#"
 ENV DB_REDIS_NAME="0"
 ENV JWT_SECRET_KEY="secrettotobackend"
 ENV JWT_SECRET_KEY_EXPIRE_MINUTES_COUNT=1440
+ENV AMQP_SERVER_URL="amqp://guest:guest@157.230.255.100:5672/"
 ENV TZ=Asia/Jakarta
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
