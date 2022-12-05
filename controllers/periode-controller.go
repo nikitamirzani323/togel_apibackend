@@ -734,7 +734,6 @@ func PeriodeSave(c *fiber.Ctx) error {
 				"record":  nil,
 			})
 		}
-		_deleteredis_periode(client_company, client.Idtrxkeluaran, client.Idpasarantogel)
 		return c.JSON(result)
 	} else {
 		if !flag_page {
@@ -757,7 +756,6 @@ func PeriodeSave(c *fiber.Ctx) error {
 					"record":  nil,
 				})
 			}
-			_deleteredis_periode(client_company, client.Idtrxkeluaran, client.Idpasarantogel)
 			return c.JSON(result)
 		}
 	}

@@ -3,9 +3,11 @@ package models
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 	"math"
+	"os"
 	"runtime"
 	"strconv"
 	"sync"
@@ -16,6 +18,7 @@ import (
 	"bitbucket.org/isbtotogroup/apibackend_go/helpers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/nleeper/goment"
+	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 var mutex sync.RWMutex
@@ -1047,6 +1050,13 @@ type dataresult struct {
 	Message             string
 	Status              string
 }
+type senderJobssaveperiode struct {
+	Idtrxkeluaran string
+	Company       string
+	Idcomppasaran string
+	Keluarantogel string
+	Agent         string
+}
 
 func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string) (helpers.Response, error) {
 	var res helpers.Response
@@ -1054,10 +1064,11 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 	con := db.CreateCon()
 	ctx := context.Background()
 	flag := false
+	msg := "Failed"
 	idcomppasaran := 0
 	datekeluaran := ""
 	render_page := time.Now()
-	tbl_trx_keluarantogel, tbl_trx_keluarantogel_detail, tbl_trx_keluarantogel_member := Get_mappingdatabase(company)
+	tbl_trx_keluarantogel, _, _ := Get_mappingdatabase(company)
 
 	temp_nomor := len(keluarantogel)
 
@@ -1077,27 +1088,21 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 		helpers.ErrorCheck(err)
 		if idcomppasaran > 0 {
 			//UPDATE PARENT
-			stmt_keluarantogel, e := con.PrepareContext(ctx, `
+			sql_updateparent := `
 				UPDATE 
-				`+tbl_trx_keluarantogel+`   
+				` + tbl_trx_keluarantogel + `   
 				SET keluarantogel=?,  
 				updatekeluaran=?, updatedatekeluaran=? 
 				WHERE idtrxkeluaran=? AND idcompany=? 
-			`)
-			helpers.ErrorCheck(e)
-			rec_keluarantogel, e_keluarantogel := stmt_keluarantogel.ExecContext(ctx,
-				keluarantogel,
-				agent,
+				`
+			flag_updateparent, msg_updateparent := Exec_SQL(sql_updateparent, tbl_trx_keluarantogel, "UPDATE",
+				keluarantogel, agent,
 				tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-				idtrxkeluaran,
-				company)
-			helpers.ErrorCheck(e_keluarantogel)
+				idtrxkeluaran, company)
 
-			a_keluarantogel, e_keluarantogel := rec_keluarantogel.RowsAffected()
-			helpers.ErrorCheck(e_keluarantogel)
-
-			defer stmt_keluarantogel.Close()
-			if a_keluarantogel > 0 {
+			if flag_updateparent {
+				msg = "Succes"
+				log.Println(msg_updateparent)
 				flag = true
 				log.Printf("Update Parent tbl_trx_keluarantogel : %d\n", idtrxkeluaran)
 				idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
@@ -1107,265 +1112,53 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 				noteafter += "PASARAN : " + nmpasarantogel + "<br />"
 				noteafter += "KELUARAN : " + keluarantogel
 				Insert_log(company, agent, "PERIODE", "UPDATE KELUARAN", "", noteafter)
-			} else {
-				log.Println("Update tbl_trx_keluarantogel failed")
-			}
-		}
 
-		if flag {
-			//UPDATE COMPANY PASARAN - OFFLINE
-			stmt_companypasaran, e := con.PrepareContext(ctx, `
-				UPDATE 
-				`+config.DB_tbl_mst_company_game_pasaran+`    
-				SET statuspasaran=?,  
-				updatecomppas=?, updatedatecompas=? 
-				WHERE idcomppasaran=? AND idcompany=? 
-			`)
-			helpers.ErrorCheck(e)
-			rec_companypasaran, e_companypasaran := stmt_companypasaran.ExecContext(ctx,
-				"OFFLINE",
-				agent,
-				tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-				idcomppasaran,
-				company)
-			helpers.ErrorCheck(e_companypasaran)
+				//rabbitmq
+				var obj_sender senderJobssaveperiode
+				var arraobj_sender []senderJobssaveperiode
+				AMPQ := os.Getenv("AMQP_SERVER_URL")
+				conn, err := amqp.Dial(AMPQ)
+				failOnError(err, "Failed to connect to RabbitMQ")
+				defer conn.Close()
 
-			a_companypasaran, e_companypasaran := rec_companypasaran.RowsAffected()
-			helpers.ErrorCheck(e_companypasaran)
-			if a_companypasaran < 1 {
-				flag = false
-				log.Println("Update tbl_mst_company_game_pasaran failed")
-			} else {
-				log.Printf("Update tbl_mst_company_game_pasaran : %d\n", idcomppasaran)
-			}
-			defer stmt_companypasaran.Close()
-			if flag {
-				sql_detailbet := `SELECT 
-					idtrxkeluarandetail, typegame, bet, diskon, kei, nomortogel, posisitogel    
-					FROM ` + tbl_trx_keluarantogel_detail + `  
-					WHERE idtrxkeluaran = ? 
-					AND idcompany = ? 
-					AND statuskeluarandetail = "RUNNING" 
-				`
+				ch, err := conn.Channel()
+				failOnError(err, "Failed to open a channel")
+				defer ch.Close()
 
-				row_detailbet, err_detailbet := con.QueryContext(ctx, sql_detailbet, idtrxkeluaran, company)
+				q, err := ch.QueueDeclare(
+					"agensaveperiode", // name
+					false,             // durable
+					false,             // delete when unused
+					false,             // exclusive
+					false,             // no-wait
+					nil,               // arguments
+				)
+				failOnError(err, "Failed to declare a queue")
 
-				helpers.ErrorCheck(err_detailbet)
-				runtime.GOMAXPROCS(8)
-				totalWorker := 100
-				totals_bet := _togel_bet_SUM_RUNNING(idtrxkeluaran, company)
-				buffer_bet := totals_bet + 1
-				jobs_bet := make(chan datajobs, buffer_bet)
-				results_bet := make(chan dataresult, buffer_bet)
+				ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+				defer cancel()
 
-				wg := &sync.WaitGroup{}
-				for w := 0; w < totalWorker; w++ {
-					wg.Add(1)
-					mutex.Lock()
-					go _doJobUpdateTransaksi(tbl_trx_keluarantogel_detail, jobs_bet, results_bet, con, wg)
-					mutex.Unlock()
-				}
-				for row_detailbet.Next() {
-					mutex.Lock()
-					var (
-						idtrxkeluarandetail_db                     int
-						typegame_db, nomortogel_db, posisitogel_db string
-						diskon_db, kei_db, bet_db                  float32
-					)
+				obj_sender.Idtrxkeluaran = strconv.Itoa(idtrxkeluaran)
+				obj_sender.Company = company
+				obj_sender.Idcomppasaran = strconv.Itoa(idcomppasaran)
+				obj_sender.Agent = agent
+				obj_sender.Keluarantogel = keluarantogel
+				arraobj_sender = append(arraobj_sender, obj_sender)
+				body, _ := json.Marshal(arraobj_sender)
 
-					err_detailbet = row_detailbet.Scan(
-						&idtrxkeluarandetail_db,
-						&typegame_db,
-						&bet_db,
-						&diskon_db,
-						&kei_db,
-						&nomortogel_db, &posisitogel_db)
-
-					helpers.ErrorCheck(err_detailbet)
-					statuskeluarandetail, _ := _rumusTogel(keluarantogel, typegame_db, nomortogel_db, posisitogel_db, company, "Y", idcomppasaran, idtrxkeluarandetail_db)
-					jobs_bet <- datajobs{
-						Idtrxkeluarandetail:      strconv.Itoa(idtrxkeluarandetail_db),
-						Idtrxkeluaran:            strconv.Itoa(idtrxkeluaran),
-						Statuskeluarandetail:     statuskeluarandetail,
-						Updatekeluarandetail:     agent,
-						Updatedatekeluarandetail: tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-					}
-					mutex.Unlock()
-				}
-				defer row_detailbet.Close()
-				close(jobs_bet)
-				for a := 1; a <= totals_bet; a++ { //RESULT
-					flag_result := <-results_bet
-					if flag_result.Status == "Failed" {
-						flag = false
-						log.Printf("ID : %s, Message: %s", flag_result.Idtrxkeluarandetail, flag_result.Message)
-					}
-
-				}
-				close(results_bet)
-				wg.Wait()
-				log.Println("TIME JOBS: ", time.Since(render_page).String())
-				log.Println("FLAGS: ", flag)
-			}
-
-			if flag {
-				//UPDATE WINHASIL DI tbl_trx_keluarantogel_detail
-				sql_detailbetwinner := `SELECT
-					idtrxkeluarandetail, username, typegame, bet, diskon, kei, win 
-					FROM ` + tbl_trx_keluarantogel_detail + `
-					WHERE idtrxkeluaran = ?
-					AND idcompany = ?
-					AND statuskeluarandetail = "WINNER"
-				`
-				row_detailbetwinner, err_detailbetwinner := con.QueryContext(ctx, sql_detailbetwinner, idtrxkeluaran, company)
-
-				helpers.ErrorCheck(err_detailbetwinner)
-				totalmembertogel := _togel_member_COUNT(idtrxkeluaran, company)
-				totalbet := _togel_bet_SUM(idtrxkeluaran, company)
-				totalbayar := _togel_bayar_SUM(idtrxkeluaran, company)
-				totalwin := 0
-				for row_detailbetwinner.Next() {
-					var (
-						idtrxkeluarandetail_db2           int
-						username_db, typegame_db          string
-						diskon_db, kei_db, win_db, bet_db float32
-					)
-
-					err_detailbetwinner = row_detailbetwinner.Scan(
-						&idtrxkeluarandetail_db2,
-						&username_db,
-						&typegame_db,
-						&bet_db,
-						&diskon_db,
-						&kei_db,
-						&win_db)
-					bayar := int(bet_db) - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
-					winhasil := _rumuswinhasil(typegame_db, bayar, int(bet_db), win_db)
-					totalwin = totalwin + winhasil
-
-					//UPDATE DETAIL KELUARAN MEMBER WINHASIL
-					stmt_detailkeluaranwin_member, e := con.PrepareContext(ctx, `
-					UPDATE
-					`+tbl_trx_keluarantogel_detail+`
-					SET winhasil=? ,
-					updatekeluarandetail=?, updatedatekeluarandetail=?
-					WHERE idtrxkeluarandetail=?  AND idtrxkeluaran=? AND username=?
-					`)
-					helpers.ErrorCheck(e)
-					rec_detailkeluaran_member, e_detailkeluaran_member := stmt_detailkeluaranwin_member.ExecContext(ctx,
-						winhasil,
-						agent,
-						tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-						idtrxkeluarandetail_db2, idtrxkeluaran, username_db)
-					helpers.ErrorCheck(e_detailkeluaran_member)
-
-					a_detailkeluaran_member, e_detailkeluaran_member := rec_detailkeluaran_member.RowsAffected()
-					helpers.ErrorCheck(e_detailkeluaran_member)
-					if a_detailkeluaran_member < 1 {
-						flag = false
-						log.Println("Update tbl_trx_keluarantogel_detail MEMBER WIN failed")
-					} else {
-						log.Printf("Update MEMBER WIN tbl_trx_keluarantogel_detail : %d\n", idtrxkeluarandetail_db2)
-					}
-					defer stmt_detailkeluaranwin_member.Close()
-				}
-				defer row_detailbetwinner.Close()
-
-				//UPDATE CANCELBET DI tbl_trx_keluarantogel_detail
-				sql_detailbetcancel := `SELECT
-					idtrxkeluarandetail, username, typegame, bet, diskon, kei, win
-					FROM ` + tbl_trx_keluarantogel_detail + `
-					WHERE idtrxkeluaran = ?
-					AND idcompany = ?
-					AND statuskeluarandetail = "CANCEL"
-				`
-				row_detailbetcancel, err_detailbetcancel := con.QueryContext(ctx, sql_detailbetcancel, idtrxkeluaran, company)
-
-				helpers.ErrorCheck(err_detailbetcancel)
-				totalcancel := 0
-				for row_detailbetcancel.Next() {
-					var (
-						idtrxkeluarandetail_db2           int
-						username_db, typegame_db          string
-						diskon_db, kei_db, win_db, bet_db float32
-					)
-
-					err_detailbetcancel = row_detailbetcancel.Scan(
-						&idtrxkeluarandetail_db2,
-						&username_db,
-						&typegame_db,
-						&bet_db,
-						&diskon_db,
-						&kei_db,
-						&win_db)
-					bayar := int(bet_db) - int(float32(bet_db)*diskon_db) - int(float32(bet_db)*kei_db)
-					totalcancel = totalcancel + bayar
-
-					//UPDATE DETAIL KELUARAN MEMBER CANCELBET
-					stmt_detailkeluarancancel_member, e := con.PrepareContext(ctx, `
-						UPDATE
-						`+tbl_trx_keluarantogel_detail+`
-						SET cancelbet=? ,
-						updatekeluarandetail=?, updatedatekeluarandetail=?
-						WHERE idtrxkeluarandetail=?  AND idtrxkeluaran=? AND username=?
-						`)
-					helpers.ErrorCheck(e)
-					rec_detailkeluaran_member, e_detailkeluaran_member := stmt_detailkeluarancancel_member.ExecContext(ctx,
-						bayar,
-						agent,
-						tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-						idtrxkeluarandetail_db2, idtrxkeluaran, username_db)
-					helpers.ErrorCheck(e_detailkeluaran_member)
-
-					a_detailkeluaran_member, e_detailkeluaran_member := rec_detailkeluaran_member.RowsAffected()
-					helpers.ErrorCheck(e_detailkeluaran_member)
-					if a_detailkeluaran_member < 1 {
-						flag = false
-						log.Println("Update tbl_trx_keluarantogel_detail MEMBER CANCEL failed")
-					} else {
-						log.Printf("Update MEMBER CANCEL tbl_trx_keluarantogel_detail : %d\n", idtrxkeluarandetail_db2)
-					}
-					defer stmt_detailkeluarancancel_member.Close()
-				}
-				defer row_detailbetwinner.Close()
-
-				log.Printf("TOTAL BET: %d - TOTAL BAYAR: %d - TOTAL WIN: %d - TOTAL MEMBER:%d - TOTAL CANCEL:%d", totalbet, totalbayar, totalwin, totalmembertogel, totalcancel)
-				if totalbet > 0 {
-					//UPDATE DETAIL KELUARAN
-					stmt_detailkeluaran2, e := con.PrepareContext(ctx, `
-						UPDATE
-						`+tbl_trx_keluarantogel+`
-						SET total_bet=? , total_outstanding=?, winlose=?, total_member=?, total_cancel=?, 
-						updatekeluaran=?, updatedatekeluaran=?
-						WHERE idtrxkeluaran=?
-					`)
-					helpers.ErrorCheck(e)
-
-					rec_detailkeluaran2, e_detailkeluaran2 := stmt_detailkeluaran2.ExecContext(ctx,
-						totalbet,
-						totalbayar,
-						totalwin,
-						totalmembertogel,
-						totalcancel,
-						agent,
-						tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-						idtrxkeluaran)
-					helpers.ErrorCheck(e_detailkeluaran2)
-
-					a_detailkeluaran2, e_detailkeluaran2 := rec_detailkeluaran2.RowsAffected()
-					if a_detailkeluaran2 < 1 {
-						flag = false
-						log.Println("Update tbl_trx_keluarantogel failed")
-					} else {
-						log.Printf("Update tbl_trx_keluarantogel id: %d\n", idtrxkeluaran)
-					}
-					helpers.ErrorCheck(e_detailkeluaran2)
-
-					defer stmt_detailkeluaran2.Close()
-				}
+				err = ch.PublishWithContext(ctx,
+					"",     // exchange
+					q.Name, // routing key
+					false,  // mandatory
+					false,  // immediate
+					amqp.Publishing{
+						ContentType: "text/plain",
+						Body:        []byte(body),
+					})
+				failOnError(err, "Failed to publish a message")
+				log.Printf(" [x] Sent %s\n", body)
 
 				//NEW PASARAN
-				idpasarantogel, _ := Pasaran_id(idcomppasaran, company, "idpasarantogel")
 				year := tglnow.Format("YYYY")
 				month := tglnow.Format("MM")
 				field_col := tbl_trx_keluarantogel + year + month
@@ -1373,9 +1166,10 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 				idkeluaran := tglnow.Format("YY") + tglnow.Format("MM") + tglnow.Format("DD") + tglnow.Format("HH") + strconv.Itoa(idkeluaran_counter)
 				field_col = company + "_" + idpasarantogel + "_" + year
 				idperiode_counter := Get_counter(field_col)
-				stmt_newpasaran, e_newpasaran := con.PrepareContext(ctx, `
+
+				sql_insert := `
 					insert into
-					`+tbl_trx_keluarantogel+` (
+					` + tbl_trx_keluarantogel + ` (
 						idtrxkeluaran, yearmonth, idcomppasaran,
 						idcompany, keluaranperiode, datekeluaran,
 						createkeluaran, createdatekeluaran
@@ -1384,10 +1178,8 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 						?, ?, ?,
 						?, ?
 					)
-				`)
-				helpers.ErrorCheck(e_newpasaran)
-				defer stmt_newpasaran.Close()
-				res_newpasaran, e_newpasaran := stmt_newpasaran.ExecContext(ctx,
+				`
+				flag_insert, msg_insert := Exec_SQL(sql_insert, tbl_trx_keluarantogel, "UPDATE",
 					idkeluaran,
 					tglnow.Format("YYYY-MM"),
 					idcomppasaran,
@@ -1396,126 +1188,22 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 					Get_NextPasaran(company, datekeluaran, idcomppasaran),
 					agent,
 					tglnow.Format("YYYY-MM-DD HH:mm:ss"))
-				helpers.ErrorCheck(e_newpasaran)
-				insert, e := res_newpasaran.RowsAffected()
-				helpers.ErrorCheck(e)
-				if insert > 0 {
+
+				if flag_insert {
+
+					msg = "Succes"
+					log.Println(msg_insert)
 					log.Println("Data Berhasil di save")
 				}
-				//UPDATE COMPANY PASARAN - ONLINE
-				stmt_compgamepasaran, e := con.PrepareContext(ctx, `
-					UPDATE
-					`+config.DB_tbl_mst_company_game_pasaran+`
-					SET statuspasaran=?,
-					updatecomppas=?, updatedatecompas=?
-					WHERE idcomppasaran=? AND idcompany=?
-				`)
-				helpers.ErrorCheck(e)
-
-				rec_compgamepasaran, e_compgamepasaran := stmt_compgamepasaran.ExecContext(ctx,
-					"ONLINE",
-					agent,
-					tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-					idcomppasaran,
-					company)
-				helpers.ErrorCheck(e_compgamepasaran)
-
-				a_compgamepasaran, e_compgamepasaran := rec_compgamepasaran.RowsAffected()
-				if a_compgamepasaran < 1 {
-					flag = false
-					log.Println("Update tbl_mst_company_game_pasaran failed")
-				} else {
-					log.Printf("Update tbl_mst_company_game_pasaran id: %d\n", idtrxkeluaran)
-				}
-				helpers.ErrorCheck(e_compgamepasaran)
-				defer stmt_compgamepasaran.Close()
-
-				totalmember_tblmember := _togel_totalmember_COUNT(idtrxkeluaran, company)
-
-				if totalmember_tblmember < 1 {
-					// INSERT TABLE TOGEL MEMBER
-					sql_detailgroupmember := `SELECT
-						username,
-						count(username) as totalbet,
-						sum(bet-(bet*diskon)-(bet*kei)) as totalbayar,
-						sum(winhasil) as totalwin, 
-						sum(cancelbet) as totalcancel 
-						FROM ` + tbl_trx_keluarantogel_detail + `
-						WHERE idtrxkeluaran = ?
-						AND idcompany = ?
-						GROUP BY username
-					`
-					row_detailgroupmember, err_detailgroupmember := con.QueryContext(ctx, sql_detailgroupmember, idtrxkeluaran, company)
-					helpers.ErrorCheck(err_detailgroupmember)
-					for row_detailgroupmember.Next() {
-						var (
-							totalbet_db, totalbayar_db, totalwin_db, totalcancel_db int
-							username_db                                             string
-						)
-
-						err_detailgroupmember = row_detailgroupmember.Scan(
-							&username_db,
-							&totalbet_db,
-							&totalbayar_db,
-							&totalwin_db, &totalcancel_db)
-
-						field_col2 := tbl_trx_keluarantogel_member + year + month
-						idkeluaranmember_counter := Get_counter(field_col2)
-						idkeluaranmember := year + month + strconv.Itoa(idkeluaranmember_counter)
-						//INSERT TABLE KELUARAN TOGEL MEMBER
-						stmt_keluaranmember, e_keluaranmember := con.PrepareContext(ctx, `
-							insert into
-							`+tbl_trx_keluarantogel_member+` (
-								idkeluaranmember, idtrxkeluaran, idcompany,
-								username, totalbet, totalbayar, totalwin, totalcancel, 
-								createkeluaranmember, createdatekeluaranmember
-							) values (
-								?, ?, ?,
-								?, ?, ?, ?, ?, 
-								?, ?
-							)
-						`)
-						helpers.ErrorCheck(e_keluaranmember)
-						defer stmt_keluaranmember.Close()
-						res_keluaranmember, e_keluaranmember := stmt_keluaranmember.ExecContext(ctx,
-							idkeluaranmember,
-							idtrxkeluaran,
-							company,
-							username_db,
-							totalbet_db,
-							totalbayar_db,
-							totalwin_db,
-							totalcancel_db,
-							agent,
-							tglnow.Format("YYYY-MM-DD HH:mm:ss"))
-						helpers.ErrorCheck(e_keluaranmember)
-						insert_keluaranmember2, e_keluaranmember2 := res_keluaranmember.RowsAffected()
-						helpers.ErrorCheck(e_keluaranmember2)
-						log.Println("Affected :", insert_keluaranmember2)
-						if insert_keluaranmember2 > 0 {
-							log.Println("Data Member tbl_trx_keluarantogel_member Berhasil di save ")
-						} else {
-							log.Println("Data Member tbl_trx_keluarantogel_member failed ")
-						}
-					}
-				} else {
-					log.Println("Data Member tbl_trx_keluarantogel_member Failed ")
-				}
 			}
+
 		}
 	}
 
-	if flag {
-		res.Status = fiber.StatusOK
-		res.Message = "Success"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = "Failed"
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	}
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 
 	return res, nil
 }
