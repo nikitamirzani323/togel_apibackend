@@ -1190,7 +1190,6 @@ func Save_Periode(agent, company string, idtrxkeluaran int, keluarantogel string
 					tglnow.Format("YYYY-MM-DD HH:mm:ss"))
 
 				if flag_insert {
-
 					msg = "Succes"
 					log.Println(msg_insert)
 					log.Println("Data Berhasil di save")
