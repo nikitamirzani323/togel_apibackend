@@ -1252,10 +1252,7 @@ func Save_PeriodeNew(agent, company string, idcomppasaran int) (helpers.Response
 		idkeluaran := tglnow.Format("YY") + tglnow.Format("MM") + tglnow.Format("DD") + tglnow.Format("HH") + strconv.Itoa(idkeluaran_counter)
 		field_col = company + "_" + idpasarantogel + "_" + year
 		idperiode_counter := Get_counter(field_col)
-		stmt_newpasaran, e_newpasaran := con.PrepareContext(ctx, sql_insert)
-		helpers.ErrorCheck(e_newpasaran)
-		defer stmt_newpasaran.Close()
-		res_newpasaran, e_newpasaran := stmt_newpasaran.ExecContext(ctx,
+		flag_insert, msg_insert := Exec_SQL(sql_insert, tbl_trx_keluarantogel, "INSERT",
 			idkeluaran,
 			tglnow.Format("YYYY-MM"),
 			idcomppasaran,
@@ -1264,13 +1261,11 @@ func Save_PeriodeNew(agent, company string, idcomppasaran int) (helpers.Response
 			Get_NextPasaran(company, tglnow.Format("YYYY-MM-DD"), idcomppasaran),
 			agent,
 			tglnow.Format("YYYY-MM-DD HH:mm:ss"))
-		helpers.ErrorCheck(e_newpasaran)
-		insert, e := res_newpasaran.RowsAffected()
-		helpers.ErrorCheck(e)
-		if insert > 0 {
+
+		if flag_insert {
+			msg = "Succes"
+			log.Println(msg_insert)
 			flag = true
-			msg = "Success"
-			log.Println("Data Berhasil di save", idkeluaran)
 
 			nmpasarantogel := Pasaranmaster_id(idpasarantogel, "nmpasarantogel")
 
@@ -1278,50 +1273,16 @@ func Save_PeriodeNew(agent, company string, idcomppasaran int) (helpers.Response
 			noteafter += "INVOICE - " + idkeluaran + "<br />"
 			noteafter += "PASARAN : " + nmpasarantogel
 			Insert_log(company, agent, "PERIODE", "NEW PASARAN MANUAL", "", noteafter)
-		}
-		//UPDATE COMPANY PASARAN - ONLINE
-		sql_update := `
-			UPDATE 
-			` + config.DB_tbl_mst_company_game_pasaran + `    
-			SET statuspasaran=?,  
-			updatecomppas=?, updatedatecompas=? 
-			WHERE idcomppasaran=? AND idcompany=? 
-		`
-		stmt_compgamepasaran, e := con.PrepareContext(ctx, sql_update)
-		helpers.ErrorCheck(e)
-
-		rec_compgamepasaran, e_compgamepasaran := stmt_compgamepasaran.ExecContext(ctx,
-			"ONLINE",
-			agent,
-			tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-			idcomppasaran,
-			company)
-		helpers.ErrorCheck(e_compgamepasaran)
-
-		a_compgamepasaran, e_compgamepasaran := rec_compgamepasaran.RowsAffected()
-		if a_compgamepasaran < 1 {
-			flag = false
-			log.Println("Update tbl_mst_company_game_pasaran failed")
 		} else {
-			flag = true
-			msg = "Success"
-			log.Printf("Update tbl_mst_company_game_pasaran id: %s\n", idkeluaran)
+			log.Println(msg_insert)
 		}
-		helpers.ErrorCheck(e_compgamepasaran)
-		defer stmt_compgamepasaran.Close()
+
 	}
 
-	if flag {
-		res.Status = fiber.StatusOK
-		res.Message = msg
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	} else {
-		res.Status = fiber.StatusBadRequest
-		res.Message = msg
-		res.Record = nil
-		res.Time = time.Since(render_page).String()
-	}
+	res.Status = fiber.StatusOK
+	res.Message = msg
+	res.Record = nil
+	res.Time = time.Since(render_page).String()
 
 	return res, nil
 }
