@@ -1688,17 +1688,16 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 					for b, _ := range temp4d {
 						for c, _ := range temp4d {
 							for d, _ := range temp4d {
-								temp_loop := string([]byte(temp4d)[a]) + string([]byte(temp4d)[b]) + string([]byte(temp4d)[c]) + string([]byte(temp4d)[d])
-								if len(temp4d_arr) > 0 {
-									for x := 0; x < len(temp4d_arr); x++ {
-										if temp_loop != temp4d_arr[x] {
-											temp4d_arr = append(temp4d_arr, temp_loop)
+								if string([]byte(temp4d)[a]) != string([]byte(temp4d)[b]) && string([]byte(temp4d)[a]) != string([]byte(temp4d)[c]) && string([]byte(temp4d)[a]) != string([]byte(temp4d)[d]) {
+									if string([]byte(temp4d)[b]) != string([]byte(temp4d)[c]) && string([]byte(temp4d)[b]) != string([]byte(temp4d)[d]) {
+										if string([]byte(temp4d)[c]) != string([]byte(temp4d)[d]) {
+											temp_loop := string([]byte(temp4d)[a]) + string([]byte(temp4d)[b]) + string([]byte(temp4d)[c]) + string([]byte(temp4d)[d])
+											if temp4d != temp_loop {
+												temp4d_arr = append(temp4d_arr, temp_loop)
+											}
 										}
 									}
-								} else {
-									temp4d_arr = append(temp4d_arr, temp_loop)
 								}
-								temp_loop = ""
 							}
 						}
 					}
