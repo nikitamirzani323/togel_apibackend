@@ -18,7 +18,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/nleeper/goment"
 	amqp "github.com/rabbitmq/amqp091-go"
-	"golang.org/x/exp/slices"
 )
 
 var mutex sync.RWMutex
@@ -1689,17 +1688,24 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 					for b, _ := range temp4d {
 						for c, _ := range temp4d {
 							for d, _ := range temp4d {
-								temp_loop := string([]byte(temp4d)[a]) + string([]byte(temp4d)[b]) + string([]byte(temp4d)[c]) + string([]byte(temp4d)[d])
-								if !slices.Contains(temp4d_arr, temp_loop) {
-									temp4d_arr = append(temp4d_arr, temp_loop)
+								if a != b && a != c && a != d {
+									if b != c && b != d {
+										if c != d {
+											temp_loop := string([]byte(temp4d)[a]) + string([]byte(temp4d)[b]) + string([]byte(temp4d)[c]) + string([]byte(temp4d)[d])
+											if temp4d != temp_loop {
+												temp4d_arr = append(temp4d_arr, temp_loop)
+											}
+											temp_loop = ""
+										}
+									}
 								}
-								temp_loop = ""
 							}
 						}
 					}
 				}
-				for a, _ := range temp4d_arr {
-					if temp4d_arr[a] == nomorkeluaran {
+				removeDuplicateValuesSlice := _removeDuplicateValues(temp4d_arr)
+				for a, _ := range removeDuplicateValuesSlice {
+					if removeDuplicateValuesSlice[a] == nomorkeluaran {
 						result = "WINNER"
 						flag_bb_4D = true
 					}
@@ -1723,16 +1729,21 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 				for a, _ := range temp3d {
 					for b, _ := range temp3d {
 						for c, _ := range temp3d {
-							temp_loop := string([]byte(temp3d)[a]) + string([]byte(temp3d)[b]) + string([]byte(temp3d)[c])
-							if !slices.Contains(temp3d_arr, temp_loop) {
-								temp3d_arr = append(temp3d_arr, temp_loop)
+							if a != b && a != c {
+								if b != c {
+									temp_loop := string([]byte(temp3d)[a]) + string([]byte(temp3d)[b]) + string([]byte(temp3d)[c])
+									if temp3d != temp_loop {
+										temp3d_arr = append(temp3d_arr, temp_loop)
+									}
+									temp_loop = ""
+								}
 							}
-							temp_loop = ""
 						}
 					}
 				}
-				for a, _ := range temp3d_arr {
-					if temp3d_arr[a] == nomorkeluaran {
+				removeDuplicateValuesSlice := _removeDuplicateValues(temp3d_arr)
+				for a, _ := range removeDuplicateValuesSlice {
+					if removeDuplicateValuesSlice[a] == nomorkeluaran {
 						result = "WINNER"
 						flag_bb_3D = true
 					}
@@ -1756,11 +1767,15 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 				for a, _ := range temp3dd {
 					for b, _ := range temp3dd {
 						for c, _ := range temp3dd {
-							temp_loop := string([]byte(temp3dd)[a]) + string([]byte(temp3dd)[b]) + string([]byte(temp3dd)[c])
-							if !slices.Contains(temp3dd_arr, temp_loop) {
-								temp3dd_arr = append(temp3dd_arr, temp_loop)
+							if a != b && a != c {
+								if b != c {
+									temp_loop := string([]byte(temp3dd)[a]) + string([]byte(temp3dd)[b]) + string([]byte(temp3dd)[c])
+									if temp3dd != temp_loop {
+										temp3dd_arr = append(temp3dd_arr, temp_loop)
+									}
+									temp_loop = ""
+								}
 							}
-							temp_loop = ""
 						}
 					}
 				}
@@ -1788,15 +1803,18 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 				flag_bb_2D := false
 				for a, _ := range temp2d {
 					for b, _ := range temp2d {
-						temp_loop := string([]byte(temp2d)[a]) + string([]byte(temp2d)[b])
-						if !slices.Contains(temp2d_arr, temp_loop) {
-							temp2d_arr = append(temp2d_arr, temp_loop)
+						if a != b {
+							temp_loop := string([]byte(temp2d)[a]) + string([]byte(temp2d)[b])
+							if temp2d != temp_loop {
+								temp2d_arr = append(temp2d_arr, temp_loop)
+							}
+							temp_loop = ""
 						}
-						temp_loop = ""
 					}
 				}
-				for a, _ := range temp2d_arr {
-					if temp2d_arr[a] == nomorkeluaran {
+				removeDuplicateValuesSlice := _removeDuplicateValues(temp2d_arr)
+				for a, _ := range removeDuplicateValuesSlice {
+					if removeDuplicateValuesSlice[a] == nomorkeluaran {
 						result = "WINNER"
 						flag_bb_2D = true
 					}
@@ -1819,15 +1837,18 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 				flag_bb_2DD := false
 				for a, _ := range temp2dd {
 					for b, _ := range temp2dd {
-						temp_loop := string([]byte(temp2dd)[a]) + string([]byte(temp2dd)[b])
-						if !slices.Contains(temp2dd_arr, temp_loop) {
-							temp2dd_arr = append(temp2dd_arr, temp_loop)
+						if a != b {
+							temp_loop := string([]byte(temp2dd)[a]) + string([]byte(temp2dd)[b])
+							if temp2dd != temp_loop {
+								temp2dd_arr = append(temp2dd_arr, temp_loop)
+							}
+							temp_loop = ""
 						}
-						temp_loop = ""
 					}
 				}
-				for a, _ := range temp2dd_arr {
-					if temp2dd_arr[a] == nomorkeluaran {
+				removeDuplicateValuesSlice := _removeDuplicateValues(temp2dd_arr)
+				for a, _ := range removeDuplicateValuesSlice {
+					if removeDuplicateValuesSlice[a] == nomorkeluaran {
 						result = "WINNER"
 						flag_bb_2DD = true
 					}
@@ -1850,15 +1871,18 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 				flag_bb_2DT := false
 				for a, _ := range temp2dt {
 					for b, _ := range temp2dt {
-						temp_loop := string([]byte(temp2dt)[a]) + string([]byte(temp2dt)[b])
-						if !slices.Contains(temp2dt_arr, temp_loop) {
-							temp2dt_arr = append(temp2dt_arr, temp_loop)
+						if a != b {
+							temp_loop := string([]byte(temp2dt)[a]) + string([]byte(temp2dt)[b])
+							if temp2dt != temp_loop {
+								temp2dt_arr = append(temp2dt_arr, temp_loop)
+							}
+							temp_loop = ""
 						}
-						temp_loop = ""
 					}
 				}
-				for a, _ := range temp2dt_arr {
-					if temp2dt_arr[a] == nomorkeluaran {
+				removeDuplicateValuesSlice := _removeDuplicateValues(temp2dt_arr)
+				for a, _ := range removeDuplicateValuesSlice {
+					if removeDuplicateValuesSlice[a] == nomorkeluaran {
 						result = "WINNER"
 						flag_bb_2DT = true
 					}
@@ -2369,6 +2393,21 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 		}
 	}
 	return result, win
+}
+func _removeDuplicateValues(intSlice []string) []string {
+	keys := make(map[string]bool)
+	list := []string{}
+
+	// If the key(values of the slice) is not equal
+	// to the already present value in new slice (list)
+	// then we append it. else we jump on another element.
+	for _, entry := range intSlice {
+		if _, value := keys[entry]; !value {
+			keys[entry] = true
+			list = append(list, entry)
+		}
+	}
+	return list
 }
 func _updatevaluewinbytipe(nmtable string, win float32, idtrxkeluarandetail int) {
 	tglnow, _ := goment.New()
