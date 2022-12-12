@@ -1657,9 +1657,6 @@ func _rumuswinhasil(permainan string, bayar int, bet int, win float32) int {
 	return winhasil
 }
 func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb string, idcomppasaran, idtrxkeluarandetail int) (string, float32) {
-	con := db.CreateCon()
-	ctx := context.Background()
-	tglnow, _ := goment.New()
 	var result string = "LOSE"
 	var win float32 = 0
 
@@ -1691,16 +1688,17 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 					for b, _ := range temp4d {
 						for c, _ := range temp4d {
 							for d, _ := range temp4d {
-								if string([]byte(temp4d)[a]) != string([]byte(temp4d)[b]) && string([]byte(temp4d)[a]) != string([]byte(temp4d)[c]) && string([]byte(temp4d)[a]) != string([]byte(temp4d)[d]) {
-									if string([]byte(temp4d)[b]) != string([]byte(temp4d)[c]) && string([]byte(temp4d)[b]) != string([]byte(temp4d)[d]) {
-										if string([]byte(temp4d)[c]) != string([]byte(temp4d)[d]) {
-											temp_loop := string([]byte(temp4d)[a]) + string([]byte(temp4d)[b]) + string([]byte(temp4d)[c]) + string([]byte(temp4d)[d])
-											if temp4d != temp_loop {
-												temp4d_arr = append(temp4d_arr, temp_loop)
-											}
+								temp_loop := string([]byte(temp4d)[a]) + string([]byte(temp4d)[b]) + string([]byte(temp4d)[c]) + string([]byte(temp4d)[d])
+								if len(temp4d_arr) > 0 {
+									for x := 0; x < len(temp4d_arr); x++ {
+										if temp_loop != temp4d_arr[x] {
+											temp4d_arr = append(temp4d_arr, temp_loop)
 										}
 									}
+								} else {
+									temp4d_arr = append(temp4d_arr, temp_loop)
 								}
+								temp_loop = ""
 							}
 						}
 					}
@@ -1716,23 +1714,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 					_, win_db := Pasaran_id(idcomppasaran, company, "1_win4dbb")
 					win = win_db
 					if simpandb == "Y" {
-						sql_update := `
-							UPDATE 
-							` + tbl_trx_keluarantogel_detail + `     
-							SET win=?, 
-							updatekeluarandetail=?, updatedatekeluarandetail=? 
-							WHERE idtrxkeluarandetail=? 
-						`
-						flag_update, msg_update := Exec_SQL(sql_update, tbl_trx_keluarantogel_detail, "UPDATE",
-							win_db,
-							"SYSTEM",
-							tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-							idtrxkeluarandetail)
-						if flag_update {
-							log.Println(msg_update)
-						} else {
-							log.Println(msg_update)
-						}
+						_updatevaluewinbytipe(tbl_trx_keluarantogel_detail, win_db, idtrxkeluarandetail)
 					}
 				}
 			}
@@ -1746,15 +1728,17 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 				for a, _ := range temp3d {
 					for b, _ := range temp3d {
 						for c, _ := range temp3d {
-							if string([]byte(temp3d)[a]) != string([]byte(temp3d)[b]) && string([]byte(temp3d)[a]) != string([]byte(temp3d)[c]) {
-								if string([]byte(temp3d)[b]) != string([]byte(temp3d)[c]) {
-									temp_loop := string([]byte(temp3d)[a]) + string([]byte(temp3d)[b]) + string([]byte(temp3d)[c])
-									if temp3d != temp_loop {
+							temp_loop := string([]byte(temp3d)[a]) + string([]byte(temp3d)[b]) + string([]byte(temp3d)[c])
+							if len(temp3d_arr) > 0 {
+								for x := 0; x < len(temp3d_arr); x++ {
+									if temp_loop != temp3d_arr[x] {
 										temp3d_arr = append(temp3d_arr, temp_loop)
 									}
 								}
+							} else {
+								temp3d_arr = append(temp3d_arr, temp_loop)
 							}
-
+							temp_loop = ""
 						}
 					}
 				}
@@ -1769,23 +1753,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 					_, win_db := Pasaran_id(idcomppasaran, company, "1_win3dbb")
 					win = win_db
 					if simpandb == "Y" {
-						sql_update := `
-							UPDATE 
-							` + tbl_trx_keluarantogel_detail + `     
-							SET win=?, 
-							updatekeluarandetail=?, updatedatekeluarandetail=? 
-							WHERE idtrxkeluarandetail=? 
-						`
-						flag_update, msg_update := Exec_SQL(sql_update, tbl_trx_keluarantogel_detail, "UPDATE",
-							win_db,
-							"SYSTEM",
-							tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-							idtrxkeluarandetail)
-						if flag_update {
-							log.Println(msg_update)
-						} else {
-							log.Println(msg_update)
-						}
+						_updatevaluewinbytipe(tbl_trx_keluarantogel_detail, win_db, idtrxkeluarandetail)
 					}
 				}
 			}
@@ -1799,15 +1767,17 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 				for a, _ := range temp3dd {
 					for b, _ := range temp3dd {
 						for c, _ := range temp3dd {
-							if string([]byte(temp3dd)[a]) != string([]byte(temp3dd)[b]) && string([]byte(temp3dd)[a]) != string([]byte(temp3dd)[c]) {
-								if string([]byte(temp3dd)[b]) != string([]byte(temp3dd)[c]) {
-									temp_loop := string([]byte(temp3dd)[a]) + string([]byte(temp3dd)[b]) + string([]byte(temp3dd)[c])
-									if temp3dd != temp_loop {
+							temp_loop := string([]byte(temp3dd)[a]) + string([]byte(temp3dd)[b]) + string([]byte(temp3dd)[c])
+							if len(temp3dd_arr) > 0 {
+								for x := 0; x < len(temp3dd_arr); x++ {
+									if temp_loop != temp3dd_arr[x] {
 										temp3dd_arr = append(temp3dd_arr, temp_loop)
 									}
 								}
+							} else {
+								temp3dd_arr = append(temp3dd_arr, temp_loop)
 							}
-
+							temp_loop = ""
 						}
 					}
 				}
@@ -1822,23 +1792,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 					_, win_db := Pasaran_id(idcomppasaran, company, "1_win3ddbb")
 					win = win_db
 					if simpandb == "Y" {
-						sql_update := `
-							UPDATE 
-							` + tbl_trx_keluarantogel_detail + `     
-							SET win=?, 
-							updatekeluarandetail=?, updatedatekeluarandetail=? 
-							WHERE idtrxkeluarandetail=? 
-						`
-						flag_update, msg_update := Exec_SQL(sql_update, tbl_trx_keluarantogel_detail, "UPDATE",
-							win_db,
-							"SYSTEM",
-							tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-							idtrxkeluarandetail)
-						if flag_update {
-							log.Println(msg_update)
-						} else {
-							log.Println(msg_update)
-						}
+						_updatevaluewinbytipe(tbl_trx_keluarantogel_detail, win_db, idtrxkeluarandetail)
 					}
 				}
 			}
@@ -1851,12 +1805,17 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 				flag_bb_2D := false
 				for a, _ := range temp2d {
 					for b, _ := range temp2d {
-						if string([]byte(temp2d)[a]) != string([]byte(temp2d)[b]) {
-							temp_loop := string([]byte(temp2d)[a]) + string([]byte(temp2d)[b])
-							if temp2d != temp_loop {
-								temp2d_arr = append(temp2d_arr, temp_loop)
+						temp_loop := string([]byte(temp2d)[a]) + string([]byte(temp2d)[b])
+						if len(temp2d_arr) > 0 {
+							for x := 0; x < len(temp2d_arr); x++ {
+								if temp_loop != temp2d_arr[x] {
+									temp2d_arr = append(temp2d_arr, temp_loop)
+								}
 							}
+						} else {
+							temp2d_arr = append(temp2d_arr, temp_loop)
 						}
+						temp_loop = ""
 					}
 				}
 				for a, _ := range temp2d_arr {
@@ -1870,23 +1829,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 					_, win_db := Pasaran_id(idcomppasaran, company, "1_win2dbb")
 					win = win_db
 					if simpandb == "Y" {
-						sql_update := `
-							UPDATE 
-							` + tbl_trx_keluarantogel_detail + `     
-							SET win=?, 
-							updatekeluarandetail=?, updatedatekeluarandetail=? 
-							WHERE idtrxkeluarandetail=? 
-						`
-						flag_update, msg_update := Exec_SQL(sql_update, tbl_trx_keluarantogel_detail, "UPDATE",
-							win_db,
-							"SYSTEM",
-							tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-							idtrxkeluarandetail)
-						if flag_update {
-							log.Println(msg_update)
-						} else {
-							log.Println(msg_update)
-						}
+						_updatevaluewinbytipe(tbl_trx_keluarantogel_detail, win_db, idtrxkeluarandetail)
 					}
 				}
 			}
@@ -1899,12 +1842,17 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 				flag_bb_2DD := false
 				for a, _ := range temp2dd {
 					for b, _ := range temp2dd {
-						if string([]byte(temp2dd)[a]) != string([]byte(temp2dd)[b]) {
-							temp_loop := string([]byte(temp2dd)[a]) + string([]byte(temp2dd)[b])
-							if temp2dd != temp_loop {
-								temp2dd_arr = append(temp2dd_arr, temp_loop)
+						temp_loop := string([]byte(temp2dd)[a]) + string([]byte(temp2dd)[b])
+						if len(temp2dd_arr) > 0 {
+							for x := 0; x < len(temp2dd_arr); x++ {
+								if temp_loop != temp2dd_arr[x] {
+									temp2dd_arr = append(temp2dd_arr, temp_loop)
+								}
 							}
+						} else {
+							temp2dd_arr = append(temp2dd_arr, temp_loop)
 						}
+						temp_loop = ""
 					}
 				}
 				for a, _ := range temp2dd_arr {
@@ -1918,23 +1866,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 					_, win_db := Pasaran_id(idcomppasaran, company, "1_win2ddbb")
 					win = win_db
 					if simpandb == "Y" {
-						sql_update := `
-							UPDATE 
-							` + tbl_trx_keluarantogel_detail + `     
-							SET win=?, 
-							updatekeluarandetail=?, updatedatekeluarandetail=? 
-							WHERE idtrxkeluarandetail=? 
-						`
-						flag_update, msg_update := Exec_SQL(sql_update, tbl_trx_keluarantogel_detail, "UPDATE",
-							win_db,
-							"SYSTEM",
-							tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-							idtrxkeluarandetail)
-						if flag_update {
-							log.Println(msg_update)
-						} else {
-							log.Println(msg_update)
-						}
+						_updatevaluewinbytipe(tbl_trx_keluarantogel_detail, win_db, idtrxkeluarandetail)
 					}
 				}
 			}
@@ -1947,12 +1879,17 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 				flag_bb_2DT := false
 				for a, _ := range temp2dt {
 					for b, _ := range temp2dt {
-						if string([]byte(temp2dt)[a]) != string([]byte(temp2dt)[b]) {
-							temp_loop := string([]byte(temp2dt)[a]) + string([]byte(temp2dt)[b])
-							if temp2dt != temp_loop {
-								temp2dt_arr = append(temp2dt_arr, temp_loop)
+						temp_loop := string([]byte(temp2dt)[a]) + string([]byte(temp2dt)[b])
+						if len(temp2dt_arr) > 0 {
+							for x := 0; x < len(temp2dt_arr); x++ {
+								if temp_loop != temp2dt_arr[x] {
+									temp2dt_arr = append(temp2dt_arr, temp_loop)
+								}
 							}
+						} else {
+							temp2dt_arr = append(temp2dt_arr, temp_loop)
 						}
+						temp_loop = ""
 					}
 				}
 				for a, _ := range temp2dt_arr {
@@ -1966,23 +1903,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 					_, win_db := Pasaran_id(idcomppasaran, company, "1_win2dtbb")
 					win = win_db
 					if simpandb == "Y" {
-						sql_update := `
-							UPDATE 
-							` + tbl_trx_keluarantogel_detail + `     
-							SET win=?, 
-							updatekeluarandetail=?, updatedatekeluarandetail=? 
-							WHERE idtrxkeluarandetail=? 
-						`
-						flag_update, msg_update := Exec_SQL(sql_update, tbl_trx_keluarantogel_detail, "UPDATE",
-							win_db,
-							"SYSTEM",
-							tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-							idtrxkeluarandetail)
-						if flag_update {
-							log.Println(msg_update)
-						} else {
-							log.Println(msg_update)
-						}
+						_updatevaluewinbytipe(tbl_trx_keluarantogel_detail, win_db, idtrxkeluarandetail)
 					}
 				}
 			}
@@ -2014,25 +1935,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 
 			if simpandb == "Y" {
 				//UPDATE WIN DETAIL BET
-				stmt, e := con.PrepareContext(ctx, `
-					UPDATE 
-					`+tbl_trx_keluarantogel_detail+`     
-					SET win=?, 
-					updatekeluarandetail=?, updatedatekeluarandetail=? 
-					WHERE idtrxkeluarandetail=? 
-				`)
-				helpers.ErrorCheck(e)
-				rec, e := stmt.ExecContext(ctx,
-					win,
-					"SYSTEM",
-					tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-					idtrxkeluarandetail)
-				helpers.ErrorCheck(e)
-
-				a, e := rec.RowsAffected()
-				helpers.ErrorCheck(e)
-				fmt.Printf("The last id: %d\n", a)
-				defer stmt.Close()
+				_updatevaluewinbytipe(tbl_trx_keluarantogel_detail, win, idtrxkeluarandetail)
 			}
 			result = "WINNER"
 		}
@@ -2066,26 +1969,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 			}
 			if simpandb == "Y" {
 				//UPDATE WIN DETAIL BET
-				stmt, e := con.PrepareContext(ctx, `
-					UPDATE 
-					`+tbl_trx_keluarantogel_detail+`     
-					SET win=?, 
-					updatekeluarandetail=?, updatedatekeluarandetail=? 
-					WHERE idtrxkeluarandetail=? 
-				`)
-				helpers.ErrorCheck(e)
-				rec, e := stmt.ExecContext(ctx,
-					win,
-					"SYSTEM",
-					tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-					idtrxkeluarandetail)
-				helpers.ErrorCheck(e)
-
-				a, e := rec.RowsAffected()
-				helpers.ErrorCheck(e)
-				fmt.Printf("The last id: %d\n", a)
-				defer stmt.Close()
-				fmt.Println(win)
+				_updatevaluewinbytipe(tbl_trx_keluarantogel_detail, win, idtrxkeluarandetail)
 			}
 			result = "WINNER"
 		}
@@ -2126,27 +2010,7 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 				log.Println("WIN COLOK NAGA :", win)
 				if simpandb == "Y" {
 					//UPDATE WIN DETAIL BET
-					stmt, e := con.PrepareContext(ctx, `
-						UPDATE 
-						`+tbl_trx_keluarantogel_detail+`     
-						SET win=?,  
-						updatekeluarandetail=?, updatedatekeluarandetail=? 
-						WHERE idtrxkeluarandetail=? 
-					`)
-					helpers.ErrorCheck(e)
-					rec, e := stmt.ExecContext(ctx,
-						win,
-						"SYSTEM",
-						tglnow.Format("YYYY-MM-DD HH:mm:ss"),
-						idtrxkeluarandetail)
-					helpers.ErrorCheck(e)
-
-					a, e := rec.RowsAffected()
-					helpers.ErrorCheck(e)
-					fmt.Printf("The last id: %d\n", a)
-					defer stmt.Close()
-					fmt.Println(win)
-					fmt.Println(win)
+					_updatevaluewinbytipe(tbl_trx_keluarantogel_detail, win, idtrxkeluarandetail)
 				}
 				result = "WINNER"
 			}
@@ -2540,6 +2404,24 @@ func _rumusTogel(angka, tipe, nomorkeluaran, posisitogel, company, simpandb stri
 		}
 	}
 	return result, win
+}
+func _updatevaluewinbytipe(nmtable string, win float32, idtrxkeluarandetail int) {
+	tglnow, _ := goment.New()
+	sql_update := `
+		UPDATE 
+		` + nmtable + `     
+		SET win=?, 
+		updatekeluarandetail=?, updatedatekeluarandetail=? 
+		WHERE idtrxkeluarandetail=? 
+	`
+	flag_update, msg_update := Exec_SQL(sql_update, nmtable, "UPDATE",
+		win,
+		"SYSTEM",
+		tglnow.Format("YYYY-MM-DD HH:mm:ss"),
+		idtrxkeluarandetail)
+	if !flag_update {
+		log.Println(msg_update)
+	}
 }
 func _tableshio(shiodata string) string {
 	log.Printf("Shio : %s", shiodata)
